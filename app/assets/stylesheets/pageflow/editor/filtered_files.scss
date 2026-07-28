@@ -43,6 +43,14 @@
     }
   }
 
+  // Clipping keeps the first and last row from poking out of the
+  // rounded corners.
+  &-list {
+    border: solid 1px var(--ui-on-surface-color-lighter);
+    border-radius: rounded(md);
+    overflow: clip;
+  }
+
   // Keeps search field, sort menu and file type pills in reach while
   // scrolling through a long list of files.
   &-header {

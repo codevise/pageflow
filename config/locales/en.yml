@@ -1548,6 +1548,9 @@ en:
           blank: "-"
         file_preview_progress_bar_view:
           position: Playback position
+        files_blank_slate_view:
+          empty_folder: 'This folder does not contain any files, yet.'
+          no_matches: 'No file matches the current filter.'
         files_view:
           add: Add
           authenticating: Authenticating
@@ -1570,6 +1573,10 @@ en:
           sort:
             alphabetical: 'Alphabetical'
             most_recent: 'Most recent'
+        folder_item_view:
+          file_count:
+            one: '1 file'
+            other: '%{count} files'
         inputs:
           file_input:
             auto_default_text_track: "(Auto)"

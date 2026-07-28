@@ -1,0 +1,69 @@
+.file_folders {
+  &-pictogram {
+    @include background-icon-center(var(--ui-primary-color-light), 28px);
+    @include folder-icon;
+
+    flex-shrink: 0;
+    width: space(14);
+    height: space(14);
+    margin: space(1) 0 space(1) space(1);
+    border-radius: rounded(sm);
+    background-color: var(--ui-on-surface-color-lightest);
+  }
+
+  // Unlike the two lines of a file row, name and file count are stacked
+  // right next to each other, so that the row keeps its height.
+  &-info {
+    display: flex;
+    flex: 1;
+    align-items: flex-start;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  &-button {
+    flex: 1;
+    align-self: center;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+
+    // Navigating into the folder is the only action of the row, so the
+    // whole row becomes the target of the button.
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+  }
+
+  &-title {
+    display: flex;
+    align-items: center;
+    gap: space(1);
+    margin-bottom: space(1);
+  }
+
+  &-name {
+    @include label;
+  }
+
+  &-chevron {
+    @include right-open-icon;
+
+    flex-shrink: 0;
+    color: var(--ui-primary-color-light);
+  }
+
+  &-file_count {
+    display: block;
+    color: var(--ui-on-surface-color-light);
+  }
+}

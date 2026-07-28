@@ -36,6 +36,28 @@ describe('pageflow.CollectionView', () => {
     });
   });
 
+  describe('with blankSlateViewOptions option', () => {
+    it('passes options to blank slate view', () => {
+      const BlankSlateView = Marionette.ItemView.extend({
+        template: () => '',
+
+        onRender() {
+          this.$el.text(this.options.text);
+        }
+      });
+      const collectionView = new CollectionView({
+        collection: new Backbone.Collection(),
+        itemViewConstructor: Marionette.View.extend(),
+        blankSlateViewConstructor: BlankSlateView,
+        blankSlateViewOptions: {text: 'Nothing here'}
+      });
+
+      collectionView.render();
+
+      expect(collectionView.$el.text()).toBe('Nothing here');
+    });
+  });
+
   describe('with loadingViewConstructor and blankSlateViewConstructor option', () => {
     function createCollectionView(collection) {
       var LoadingView = Marionette.View.extend({className: 'loading'});

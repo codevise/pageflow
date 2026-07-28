@@ -8,6 +8,7 @@ import {DropDownButtonView} from './DropDownButtonView';
 import {FileMetaDataOverlayView} from './FileMetaDataOverlayView';
 import {FileSettingsDialogView} from './FileSettingsDialogView';
 import {FileThumbnailView} from './FileThumbnailView';
+import {listHighlighting} from './mixins/listHighlighting';
 import {loadable} from './mixins/loadable';
 
 import template from '../templates/fileItem.jst';
@@ -19,7 +20,7 @@ export const FileItemView = Marionette.ItemView.extend({
   tagName: 'li',
   template,
 
-  mixins: [loadable],
+  mixins: [loadable, listHighlighting],
 
   ui: {
     fileName: '.file_name',
@@ -56,16 +57,6 @@ export const FileItemView = Marionette.ItemView.extend({
 
   initialize: function() {
     this.menuItems = this.createMenuItems();
-
-    if (this.options.listHighlight) {
-      this.listenTo(this.options.listHighlight, 'change:currentCid change:active', () => {
-        if (this.updateHighlight()) {
-          this.el.scrollIntoView({block: 'nearest', behavior: 'smooth'});
-        }
-      });
-
-      this.listenTo(this.options.listHighlight, 'selected:' + this.model.cid, this.select);
-    }
   },
 
   createMenuItems: function() {
@@ -111,7 +102,6 @@ export const FileItemView = Marionette.ItemView.extend({
     }));
 
     this.renderActionsDropDown();
-    this.updateHighlight();
   },
 
   // Built on first use. Rendering an overlay for every row would make
@@ -265,20 +255,6 @@ export const FileItemView = Marionette.ItemView.extend({
     }
 
     return false;
-  },
-
-  updateHighlight: function() {
-    if (!this.options.listHighlight) {
-      return false;
-    }
-
-    var highlighted = this.options.listHighlight.get('currentCid') === this.model.cid &&
-                      this.options.listHighlight.get('active');
-
-    this.$el.toggleClass('keyboard_highlight', highlighted);
-    this.$el.attr('aria-selected', highlighted ? 'true' : null);
-
-    return highlighted;
   },
 
   onClose: function() {

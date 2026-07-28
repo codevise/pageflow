@@ -52,7 +52,7 @@ describe('SidebarController', () => {
     it('passes requested file type name to files view', () => {
       const {controller, region} = setupFiles();
 
-      controller.files('image_files', 'some_handler', '{}');
+      controller.files('image_files', null, 'some_handler', '{}');
 
       expect(shownView(region).options).toMatchObject({
         fileTypeName: 'image_files',
@@ -63,7 +63,7 @@ describe('SidebarController', () => {
     it('allows selecting any file type if no collection name is given', () => {
       const {controller, region} = setupFiles();
 
-      controller.files(null, 'some_handler', '{}');
+      controller.files(null, null, 'some_handler', '{}');
 
       expect(shownView(region).options).toMatchObject({
         fileTypeName: undefined,
@@ -74,11 +74,40 @@ describe('SidebarController', () => {
     it('allows selecting any file type for default suffix', () => {
       const {controller, region} = setupFiles();
 
-      controller.files('image_files:default', 'some_handler', '{}');
+      controller.files('image_files:default', null, 'some_handler', '{}');
 
       expect(shownView(region).options).toMatchObject({
         fileTypeName: 'image_files',
         allowSelectingAny: true
+      });
+    });
+
+    it('passes requested folder perma id to files view as number', () => {
+      const {controller, region} = setupFiles();
+
+      controller.files('image_files', '5');
+
+      expect(shownView(region).options).toMatchObject({folderPermaId: 5});
+    });
+
+    it('passes no folder perma id for the root list', () => {
+      const {controller, region} = setupFiles();
+
+      controller.files('image_files');
+
+      expect(shownView(region).options.folderPermaId).toBeUndefined();
+    });
+
+    it('passes route params required to navigate between folders', () => {
+      const {controller, region} = setupFiles();
+
+      controller.files('image_files:default', '5', 'some_handler', '{}', 'large');
+
+      expect(shownView(region).options.pathParams).toEqual({
+        collectionName: 'image_files:default',
+        handler: 'some_handler',
+        payload: '{}',
+        filterName: 'large'
       });
     });
 

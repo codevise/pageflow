@@ -635,23 +635,23 @@ describe('FilteredFilesView', () => {
       expect(banner.querySelector('.filtered_files-banner_name')).toHaveTextContent('an image');
     });
 
-    it('stays in the files list when dismissed', () => {
-      const banner = setup({
-        selectionHandler: {...selectionHandler, getReferer: () => '/some/referer'}
-      });
+    it('leaves selection mode when dismissed', () => {
+      const onDismissSelection = jest.fn();
+      const banner = setup({selectionHandler, onDismissSelection});
 
       dismissButton(banner).click();
 
-      expect(editor.router.navigate).toHaveBeenCalledWith('/files', {trigger: true});
+      expect(onDismissSelection).toHaveBeenCalled();
       expect(dismissButton(banner)).toHaveAttribute('title', 'Cancel selection');
     });
 
     it('drops the filter when dismissed while not selecting', () => {
-      const banner = setup({filterName: 'with_projection'});
+      const onDismissSelection = jest.fn();
+      const banner = setup({filterName: 'with_projection', onDismissSelection});
 
       dismissButton(banner).click();
 
-      expect(editor.router.navigate).toHaveBeenCalledWith('/files', {trigger: true});
+      expect(onDismissSelection).toHaveBeenCalled();
       expect(dismissButton(banner)).toHaveAttribute('title', 'Reset filter');
     });
   });

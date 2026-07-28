@@ -1556,6 +1556,9 @@ de:
           blank: "-"
         file_preview_progress_bar_view:
           position: Wiedergabeposition
+        files_blank_slate_view:
+          empty_folder: 'Dieser Ordner enthält noch keine Dateien.'
+          no_matches: 'Keine Datei entspricht dem aktuellen Filter.'
         files_view:
           add: Hinzufügen
           authenticating: Authentifizieren
@@ -1578,6 +1581,10 @@ de:
           sort:
             alphabetical: 'Alphabetisch'
             most_recent: 'Zuletzt hochgeladen'
+        folder_item_view:
+          file_count:
+            one: '1 Datei'
+            other: '%{count} Dateien'
         inputs:
           file_input:
             auto_default_text_track: "(Automatisch)"

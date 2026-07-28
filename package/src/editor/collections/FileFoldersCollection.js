@@ -48,5 +48,25 @@ export const FileFoldersCollection = Backbone.Collection.extend({
     return this.filter(function(other) {
       return other.get('parent_folder_perma_id') === permaId;
     });
+  },
+
+  descendantPermaIdsOf: function(folder) {
+    return this.collectDescendantPermaIds(folder, []);
+  },
+
+  // Broken data with a folder nested inside one of its own descendants
+  // would make walking down the tree recurse forever.
+  collectDescendantPermaIds: function(folder, result) {
+    if (result.indexOf(folder.get('perma_id')) >= 0) {
+      return result;
+    }
+
+    result.push(folder.get('perma_id'));
+
+    this.childrenOf(folder).forEach(function(child) {
+      this.collectDescendantPermaIds(child, result);
+    }, this);
+
+    return result;
   }
 });

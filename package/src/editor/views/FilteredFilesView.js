@@ -9,16 +9,16 @@ import {DropDownButtonView} from './DropDownButtonView';
 import {editor} from '../base';
 
 import {CombinedFilesCollection} from '../collections/CombinedFilesCollection';
+import {ConcatenatedCollection} from '../collections/ConcatenatedCollection';
 import {SubsetCollection} from '../collections/SubsetCollection';
-import {FileItemView} from './FileItemView';
+import {FilesBlankSlateView} from './FilesBlankSlateView';
+import {FilesListItemView} from './FilesListItemView';
 import {FileTypePillsView} from './FileTypePillsView';
 import {Search} from '../models/Search';
 import {ListHighlight} from '../models/ListHighlight';
 import {ListSearchFieldView} from './ListSearchFieldView';
 
 import template from '../templates/filteredFiles.jst';
-
-import blankSlateTemplate from '../templates/filesBlankSlate.jst';
 
 export const FilteredFilesView = Marionette.ItemView.extend({
   template,
@@ -30,15 +30,16 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     bannerDismiss: '.filtered_files-banner_dismiss',
     header: '.filtered_files-header',
     filterBar: '.filtered_files-filter_bar',
+    list: '.filtered_files-list',
     sort: '.filtered_files-sort',
   },
 
   events: {
     // Leaves selection mode and any named filter behind, but stays in
-    // the files list. Returning to where the selection was requested
-    // from is what the back button is for.
+    // the files list and in the current folder. Returning to where the
+    // selection was requested from is what the back button is for.
     'click .filtered_files-banner_dismiss': function() {
-      editor.navigate('/files', {trigger: true});
+      this.options.onDismissSelection();
       return false;
     }
   },
@@ -74,11 +75,33 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       });
     }
 
-    this.searchFilteredCollection = this.search.applyTo(this.selectedFiles ||
+    if (this.options.fileFolders) {
+      this.folderFiles = new SubsetCollection({
+        parent: this.selectedFiles || this.combinedFiles,
+        filter: this.matchesFolder.bind(this),
+        watchAttribute: 'folder_perma_id'
+      });
+
+      this.visibleFolders = new SubsetCollection({
+        parent: this.options.fileFolders,
+        filter: this.isChildOfFolder.bind(this),
+        watchAttribute: 'parent_folder_perma_id'
+      });
+    }
+
+    this.searchFilteredCollection = this.search.applyTo(this.folderFiles ||
+                                                       this.selectedFiles ||
                                                        this.combinedFiles);
 
+    // Folders and files form one list, so that keyboard navigation
+    // reaches both and the blank slate only appears once neither is
+    // left.
+    this.listItems = new ConcatenatedCollection({
+      collections: [this.visibleFolders, this.searchFilteredCollection].filter(Boolean)
+    });
+
     if (this.options.selectionHandler) {
-      this.listHighlight = new ListHighlight({}, {collection: this.searchFilteredCollection});
+      this.listHighlight = new ListHighlight({}, {collection: this.listItems});
     }
   },
 
@@ -190,22 +213,23 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       tagName: 'ul',
       id: 'filtered_files',
       className: 'files',
-      collection: this.searchFilteredCollection,
-      itemViewConstructor: FileItemView,
-      itemViewOptions: file => ({
-        metaDataAttributes: file.fileType().metaDataAttributes,
+      collection: this.listItems,
+      itemViewConstructor: FilesListItemView,
+      itemViewOptions: {
+        onSelect: this.options.onSelectFolder,
+        fileFolders: this.options.fileFolders,
+        files: this.selectedFiles || this.combinedFiles,
         selectionHandler: this.options.selectionHandler,
         listHighlight: this.listHighlight
-      }),
-      blankSlateViewConstructor: Marionette.ItemView.extend({
-        template: blankSlateTemplate,
-        serializeData: function(){
-          return {
-            text: blankSlateText
-          };
-        }
-      })
-    })));
+      },
+      blankSlateViewConstructor: FilesBlankSlateView,
+      blankSlateViewOptions: {
+        text: blankSlateText,
+        folder: this.options.folder,
+        fileFolders: this.options.fileFolders,
+        files: this.combinedFiles
+      }
+    })), {to: this.ui.list});
   },
 
   filterTranslation: function(keyName, options) {
@@ -237,13 +261,28 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     return this.options.fileTypeSelection.matches(file);
   },
 
+  matchesFolder: function(file) {
+    return file.get('folder_perma_id') === this.folderPermaId();
+  },
+
+  isChildOfFolder: function(folder) {
+    return folder.get('parent_folder_perma_id') === this.folderPermaId();
+  },
+
+  folderPermaId: function() {
+    return this.options.folder ? this.options.folder.get('perma_id') : null;
+  },
+
   onClose: function() {
     Marionette.ItemView.prototype.onClose.call(this);
 
     this.filteredCollections?.forEach(collection => collection.dispose());
     this.selectedFiles?.dispose();
+    this.folderFiles?.dispose();
+    this.visibleFolders?.dispose();
     this.combinedFiles.dispose();
     this.searchFilteredCollection.dispose();
+    this.listItems.dispose();
   }
 });
 

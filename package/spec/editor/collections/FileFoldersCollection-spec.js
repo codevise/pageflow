@@ -96,6 +96,38 @@ describe('FileFoldersCollection', () => {
     });
   });
 
+  describe('#descendantPermaIdsOf', () => {
+    it('includes perma ids of folder and all folders below it', () => {
+      const fileFolders = collection([
+        {perma_id: 1, name: 'Interviews'},
+        {perma_id: 2, name: 'Raw', parent_folder_perma_id: 1},
+        {perma_id: 3, name: 'Takes', parent_folder_perma_id: 2},
+        {perma_id: 4, name: 'Landscapes'}
+      ]);
+
+      const permaIds = fileFolders.descendantPermaIdsOf(fileFolders.byPermaId(1));
+
+      expect(permaIds.sort()).toEqual([1, 2, 3]);
+    });
+
+    it('returns own perma id for folder without children', () => {
+      const fileFolders = collection([{perma_id: 1, name: 'Interviews'}]);
+
+      expect(fileFolders.descendantPermaIdsOf(fileFolders.byPermaId(1))).toEqual([1]);
+    });
+
+    it('stops at folders which are their own descendants', () => {
+      const fileFolders = collection([
+        {perma_id: 1, name: 'Interviews', parent_folder_perma_id: 2},
+        {perma_id: 2, name: 'Raw', parent_folder_perma_id: 1}
+      ]);
+
+      const permaIds = fileFolders.descendantPermaIdsOf(fileFolders.byPermaId(1));
+
+      expect(permaIds.sort()).toEqual([1, 2]);
+    });
+  });
+
   describe('persistence', () => {
     support.useFakeXhr(() => testContext);
 

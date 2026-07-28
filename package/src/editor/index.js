@@ -9,6 +9,7 @@ export * from './app';
 export * from './base';
 
 export * from './utils/entryTypeEditorControllerUrls';
+export * from './utils/filesPath';
 export * from './utils/formDataUtils';
 export * from './utils/stylesheet';
 
@@ -156,7 +157,10 @@ export * from './views/ThemeItemView';
 export * from './views/LockedView';
 export * from './views/ChangeThemeDialogView';
 export * from './views/ConfirmEncodingView';
+export * from './views/FilesBlankSlateView';
+export * from './views/FilesListItemView';
 export * from './views/FilteredFilesView';
+export * from './views/FolderItemView';
 export * from './views/DropDownButtonItemView';
 export * from './views/EditMetaDataView';
 export * from './views/ListView';
@@ -164,6 +168,7 @@ export * from './views/PageLinkItemView';
 export * from './views/FilesExplorerView';
 export * from './views/mixins/selectableView';
 export * from './views/mixins/failureIndicatingView';
+export * from './views/mixins/listHighlighting';
 export * from './views/mixins/loadable';
 export * from './views/mixins/dialogView';
 export * from './views/mixins/modelLifecycleTrackingView';

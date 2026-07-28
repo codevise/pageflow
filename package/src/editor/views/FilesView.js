@@ -13,6 +13,7 @@ import {FilteredFilesView} from './FilteredFilesView';
 import {ChooseImporterView} from './ChooseImporterView';
 import {FilesImporterView} from './FilesImporterView';
 import {SelectButtonView} from './SelectButtonView';
+import {filesPath} from '../utils/filesPath';
 
 import {state} from '$state';
 
@@ -80,7 +81,7 @@ export const FilesView = Marionette.ItemView.extend({
       if (this.options.selectionHandler) {
         this.listenTo(this.fileTypeSelection, 'change:collectionNames', function() {
           if (this.displaysUnselectableFileTypes()) {
-            editor.navigate('/files', {trigger: true});
+            this.leaveSelectionMode();
           }
         });
       }
@@ -97,6 +98,10 @@ export const FilesView = Marionette.ItemView.extend({
       entry: this.model,
       fileTypes: fileTypes,
       fileTypeSelection: this.fileTypeSelection,
+      fileFolders: this.model.fileFolders,
+      folder: this.currentFolder(),
+      onSelectFolder: this.selectFolder.bind(this),
+      onDismissSelection: this.leaveSelectionMode.bind(this),
       selectionHandler: this.options.selectionHandler,
       selectionFileType: this.selectionFileType(),
       filterName: this.options.filterName
@@ -113,6 +118,29 @@ export const FilesView = Marionette.ItemView.extend({
     }
 
     return editor.fileTypes.findByCollectionName(this.options.fileTypeName);
+  },
+
+  // Folders which have been deleted in another editor session would
+  // otherwise render an empty list without a way back.
+  currentFolder: function() {
+    return this.model.fileFolders.byPermaId(this.options.folderPermaId);
+  },
+
+  // Dropping handler and payload ends the selection request. The
+  // current folder is kept, since ending it is not meant to undo the
+  // navigation that led there.
+  leaveSelectionMode: function() {
+    var folder = this.currentFolder();
+
+    editor.navigate(filesPath({folderPermaId: folder && folder.get('perma_id')}),
+                    {trigger: true});
+  },
+
+  selectFolder: function(folder) {
+    editor.navigate(filesPath({
+      ...this.options.pathParams,
+      folderPermaId: folder && folder.get('perma_id')
+    }), {trigger: true});
   },
 
   selectedCollectionNames: function(fileTypes) {
@@ -165,7 +193,15 @@ export const FilesView = Marionette.ItemView.extend({
     });
   },
 
+  // Entering a folder is a navigation step of its own, which the back
+  // button undoes before leaving the files list.
   goBack: function() {
+    var folder = this.currentFolder();
+
+    if (folder) {
+      return this.selectFolder(this.model.fileFolders.parentOf(folder));
+    }
+
     if (this.options.selectionHandler) {
       editor.navigate(this.options.selectionHandler.getReferer(), {trigger: true});
     }

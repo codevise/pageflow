@@ -1,9 +1,4 @@
 ul.files {
-  margin-top: space(2);
-  border: solid 1px var(--ui-on-surface-color-lighter);
-  border-radius: rounded(md);
-  padding: space(0.5);
-
   > li {
     display: flex;
     column-gap: space(2);
