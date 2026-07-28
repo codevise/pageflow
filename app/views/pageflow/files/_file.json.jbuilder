@@ -10,6 +10,8 @@ json.call(file,
 
 json.display_name(file.display_name.presence || file.file_name)
 
+json.created_at(file.created_at.try(:utc).try(:iso8601, 0))
+
 json.is_ready(file.ready?)
 
 json.partial!(object: file, partial: file_type.partial) if file_type.partial.present?
