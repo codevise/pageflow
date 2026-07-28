@@ -805,6 +805,104 @@ describe('FilesView', () => {
       });
     });
 
+    describe('filtering by file type', () => {
+      function entryWithFolderTree() {
+        editor.fileTypes = f.fileTypes(function() {
+          this.withImageFileType();
+          this.withVideoFileType();
+          this.withTextTrackFileType();
+        });
+
+        return f.entry({}, {
+          fileTypes: editor.fileTypes,
+          fileFoldersAttributes: [
+            {id: 10, perma_id: 1, name: 'Images only'},
+            {id: 11, perma_id: 2, name: 'Videos only'},
+            {id: 12, perma_id: 3, name: 'Nothing'},
+            {id: 13, perma_id: 4, name: 'Nested images'},
+            {id: 14, perma_id: 5, name: 'Inner', parent_folder_perma_id: 4}
+          ],
+          filesAttributes: {
+            image_files: [
+              {id: 1, display_name: 'direct.png', folder_perma_id: 1},
+              {id: 2, display_name: 'nested.png', folder_perma_id: 5}
+            ],
+            video_files: [
+              {id: 1, display_name: 'clip.mp4', folder_perma_id: 2}
+            ]
+          }
+        });
+      }
+
+      it('lists all folders without file type filter', () => {
+        const view = new FilesView({model: entryWithFolderTree()});
+
+        const queries = render(view);
+
+        expect(folderNames(queries))
+          .toEqual(['Images only', 'Nested images', 'Nothing', 'Videos only']);
+      });
+
+      it('hides folders without files of selected file type', async () => {
+        const view = new FilesView({model: entryWithFolderTree()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.click(queries.getByRole('button', {name: 'Images'}));
+
+        expect(folderNames(queries)).toEqual(['Images only', 'Nested images']);
+      });
+
+      it('keeps folders whose subfolders hold files of selected file type', async () => {
+        const view = new FilesView({model: entryWithFolderTree()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.click(queries.getByRole('button', {name: 'Videos'}));
+
+        expect(folderNames(queries)).toEqual(['Videos only']);
+      });
+
+      it('lists all folders again when file type filter is reset', async () => {
+        const view = new FilesView({model: entryWithFolderTree()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.click(queries.getByRole('button', {name: 'Images'}));
+        await user.click(queries.getByRole('button', {name: 'Images'}));
+
+        expect(folderNames(queries))
+          .toEqual(['Images only', 'Nested images', 'Nothing', 'Videos only']);
+      });
+
+      it('hides folder once its last file of selected file type is moved out', async () => {
+        const entry = entryWithFolderTree();
+        const view = new FilesView({model: entry});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.click(queries.getByRole('button', {name: 'Images'}));
+
+        expect(folderNames(queries)).toEqual(['Images only', 'Nested images']);
+
+        entry.getFileCollection('image_files').get(1).set('folder_perma_id', null);
+
+        expect(folderNames(queries)).toEqual(['Nested images']);
+      });
+
+      it('keeps folder which has not been created yet visible', async () => {
+        const view = new FilesView({model: entryWithFolderTree()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.click(queries.getByRole('button', {name: 'Videos'}));
+        await user.click(queries.getByRole('button', {name: 'Add file'}));
+        await user.click(queries.getByRole('link', {name: 'New folder'}));
+
+        expect(queries.getByLabelText('Folder name')).not.toBeNull();
+      });
+    });
+
     describe('searching', () => {
       it('finds files in all folders from root list', async () => {
         const view = new FilesView({model: entryWithFolders()});

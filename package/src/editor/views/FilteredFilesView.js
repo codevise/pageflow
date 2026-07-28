@@ -91,8 +91,18 @@ export const FilteredFilesView = Marionette.ItemView.extend({
 
       this.listenTo(this.search, 'change:term', function() {
         this.folderFiles.updateFilter(this.matchesFolder.bind(this));
-        this.visibleFolders.updateFilter(this.isVisibleFolder.bind(this));
+        this.updateVisibleFolders();
       });
+
+      this.listenTo(this.combinedFiles,
+                    'add remove change:folder_perma_id',
+                    this.updateVisibleFolders);
+
+      if (this.options.fileTypeSelection) {
+        this.listenTo(this.options.fileTypeSelection,
+                      'change:collectionNames',
+                      this.updateVisibleFolders);
+      }
     }
 
     this.searchFilteredCollection = this.search.applyTo(this.folderFiles ||
@@ -316,7 +326,29 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       return this.searchesAllFolders() && this.search.matchesValue(folder.get('name'));
     }
 
-    return folder.get('parent_folder_perma_id') === this.folderPermaId();
+    if (folder.get('parent_folder_perma_id') !== this.folderPermaId()) {
+      return false;
+    }
+
+    return folder.isNew() || this.containsSelectedFileTypes(folder);
+  },
+
+  // Filtering by file type would otherwise keep listing folders which
+  // turn out empty once entered.
+  containsSelectedFileTypes: function(folder) {
+    if (!this.selectedFiles || !this.options.fileTypeSelection.get('collectionNames').length) {
+      return true;
+    }
+
+    var permaIds = this.options.fileFolders.descendantPermaIdsOf(folder);
+
+    return this.selectedFiles.some(function(file) {
+      return permaIds.indexOf(file.get('folder_perma_id')) >= 0;
+    });
+  },
+
+  updateVisibleFolders: function() {
+    this.visibleFolders.updateFilter(this.isVisibleFolder.bind(this));
   },
 
   searchesAllFolders: function() {
