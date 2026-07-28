@@ -7,6 +7,13 @@ import {retryable} from './mixins/retryable';
 import {stageProvider} from './mixins/stageProvider';
 
 export const ReusableFile = Backbone.Model.extend({
+  // Files which are not in any folder have a blank folder perma id, which
+  // lets code comparing folders rely on the attribute being present even
+  // before the server has responded to an upload.
+  defaults: {
+    folder_perma_id: null
+  },
+
   mixins: [
     configurationContainer({
       autoSave: true,

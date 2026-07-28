@@ -31,9 +31,7 @@ module Pageflow
 
       def reuse
         entry = DraftEntry.find(params[:entry_id])
-        other_entry = DraftEntry.find(file_reuse_params[:other_entry_id])
-
-        file_reuse = FileReuse.new(entry, other_entry, file_type, file_reuse_params[:file_id])
+        file_reuse = build_file_reuse(entry)
 
         authorize!(:edit, entry.to_model)
         authorize!(:use, file_reuse.file.to_model)
@@ -76,6 +74,9 @@ module Pageflow
         file.update!(update_params)
 
         head(:no_content)
+      rescue ActiveRecord::RecordInvalid => e
+        debug_log_with_backtrace(e)
+        head :unprocessable_entity
       end
 
       def destroy
@@ -92,18 +93,26 @@ module Pageflow
       private
 
       def create_params
-        file_params.permit(:display_name, :content_type, :file_size)
+        file_params.permit(:display_name, :content_type, :file_size, :folder_perma_id)
                    .merge(file_configuration_params)
                    .merge(file_parent_file_params)
                    .merge(file_custom_params)
       end
 
+      def build_file_reuse(entry)
+        FileReuse.new(entry,
+                      DraftEntry.find(file_reuse_params[:other_entry_id]),
+                      file_type,
+                      file_reuse_params[:file_id],
+                      folder_perma_id: file_reuse_params[:folder_perma_id])
+      end
+
       def file_reuse_params
-        params.require(:file_reuse).permit(:other_entry_id, :file_id)
+        params.require(:file_reuse).permit(:other_entry_id, :file_id, :folder_perma_id)
       end
 
       def update_params
-        file_configuration_params.merge(file_params.permit(:display_name))
+        file_configuration_params.merge(file_params.permit(:display_name, :folder_perma_id))
       end
 
       def file_configuration_params

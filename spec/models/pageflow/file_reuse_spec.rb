@@ -42,6 +42,41 @@ module Pageflow
         expect(text_track_files_in_destination).to include(text_track_file)
       end
 
+      it 'puts reused file into passed folder' do
+        source_entry = DraftEntry.new(create(:entry))
+        video_file = create(:video_file, used_in: source_entry.draft)
+        destination_entry = DraftEntry.new(create(:entry))
+        folder = create(:file_folder, revision: destination_entry.draft)
+
+        FileReuse.new(destination_entry,
+                      source_entry,
+                      BuiltInFileType.video,
+                      video_file.id,
+                      folder_perma_id: folder.perma_id).save!
+
+        expect(destination_entry.find_file(VideoFile, video_file.id).folder_perma_id)
+          .to eq(folder.perma_id)
+      end
+
+      it 'does not put nested files of reused file into passed folder' do
+        source_entry = DraftEntry.new(create(:entry))
+        video_file = create(:video_file, used_in: source_entry.draft)
+        text_track_file = create(:text_track_file,
+                                 parent_file: video_file,
+                                 used_in: source_entry.draft)
+        destination_entry = DraftEntry.new(create(:entry))
+        folder = create(:file_folder, revision: destination_entry.draft)
+
+        FileReuse.new(destination_entry,
+                      source_entry,
+                      BuiltInFileType.video,
+                      video_file.id,
+                      folder_perma_id: folder.perma_id).save!
+
+        expect(destination_entry.find_file(TextTrackFile, text_track_file.id).folder_perma_id)
+          .to be_nil
+      end
+
       it 'creates does not add usages for nested files of other files in source revision' do
         source_entry = DraftEntry.new(create(:entry))
         video_file = create(:video_file,

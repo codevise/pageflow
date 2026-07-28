@@ -10,9 +10,11 @@ module Pageflow
       @usage.configuration
     end
 
+    USAGE_ATTRIBUTES = [:configuration, :display_name, :folder_perma_id].freeze
+
     def update!(attributes)
-      super(attributes.except(:configuration, :display_name))
-      @usage.update!(attributes.slice(:configuration, :display_name))
+      super(attributes.except(*USAGE_ATTRIBUTES))
+      @usage.update!(attributes.slice(*USAGE_ATTRIBUTES))
     end
 
     def usage_id
@@ -25,6 +27,10 @@ module Pageflow
 
     def display_name
       @usage.display_name
+    end
+
+    def folder_perma_id
+      @usage.folder_perma_id
     end
 
     def cache_key

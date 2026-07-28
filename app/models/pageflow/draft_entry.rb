@@ -31,7 +31,7 @@ module Pageflow
     def create_file!(file_type, attributes)
       check_foreign_key_custom_attributes(file_type.custom_attributes, attributes)
 
-      file_attributes = attributes.except(:configuration, :display_name)
+      file_attributes = attributes.except(:configuration, :display_name, :folder_perma_id)
 
       if file_name_attribute?(file_type)
         file_attributes[:file_name] = generate_file_name(attributes[:display_name])
@@ -41,7 +41,8 @@ module Pageflow
 
       usage = revision.file_usages.create!(file:,
                                            configuration: attributes[:configuration],
-                                           display_name: attributes[:display_name])
+                                           display_name: attributes[:display_name],
+                                           folder_perma_id: attributes[:folder_perma_id])
       UsedFile.new(file, usage)
     end
 
@@ -65,10 +66,11 @@ module Pageflow
       draft.file_folders.create!(attributes)
     end
 
-    def use_file(file)
+    def use_file(file, folder_perma_id: nil)
       draft.file_usages.create!(file: file.to_model,
                                 configuration: file.configuration,
-                                display_name: file.display_name)
+                                display_name: file.display_name,
+                                folder_perma_id:)
     end
 
     def save!

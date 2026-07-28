@@ -26,6 +26,12 @@ describe('ReusableFile', () => {
     }
   });
 
+  it('has a blank folder perma id by default', () => {
+    const file = new File({});
+
+    expect(file.get('folder_perma_id')).toBeNull();
+  });
+
   describe('#isReady', () => {
     it('returns true if state equals readyState', () => {
       var file = new File({state: 'ready'});
