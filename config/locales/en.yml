@@ -1544,6 +1544,8 @@ en:
           importer:
             heading: Import files from
           reuse: Reuse
+          tabs:
+            files: Files
           upload: Upload
         file_type_pills_view:
           group_label: 'Filter by file type'

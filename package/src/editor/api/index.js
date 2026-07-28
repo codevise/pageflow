@@ -265,9 +265,10 @@ export const EditorApi = Object.extend(
    * @param {string|{name: string, filter: string}|{defaultTab: string, filter: string}} fileType
    *   Either collection name of a file type or and object containing
    *   the collection name a file type and a the name of a file type
-   *   filter or an object containingn a defaultTab property that controls
-   *   which tab will visible initially, while allowing selecting files of
-   *   any type.
+   *   filter or an object containingn a defaultTab property that
+   *   preselects that file type, while allowing selecting files of any
+   *   type. Pass null to allow selecting files of any type without
+   *   preselecting one.
    *
    * @param {string} handlerName
    *   The name of a handler registered via {@link
@@ -293,7 +294,9 @@ export const EditorApi = Object.extend(
       };
     }
 
-    this.navigate('/files/' + (fileType.defaultTab ? `${fileType.defaultTab}:default` : fileType.name) +
+    fileType = fileType || {};
+
+    this.navigate('/files' + filesPathSuffix(fileType) +
                   '?handler=' + handlerName +
                   '&payload=' + encodeURIComponent(JSON.stringify(payload)) +
                   (fileType.filter ? '&filter=' + fileType.filter : ''),
@@ -350,3 +353,11 @@ export const EditorApi = Object.extend(
 
   }
 });
+
+function filesPathSuffix(fileType) {
+  if (fileType.defaultTab) {
+    return '/' + fileType.defaultTab + ':default';
+  }
+
+  return fileType.name ? '/' + fileType.name : '';
+}

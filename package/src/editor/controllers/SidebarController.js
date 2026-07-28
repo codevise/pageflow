@@ -29,13 +29,13 @@ export const SidebarController = Marionette.Controller.extend({
   },
 
   files: function(collectionName, handler, payload, filterName) {
-    const [tabName, suffix] = (collectionName || '').split(':');
+    const [fileTypeName, suffix] = (collectionName || '').split(':');
 
     this.region.show(new FilesView({
       model: this.entry,
       selectionHandler: handler && editor.createFileSelectionHandler(handler, payload),
-      tabName,
-      allowSelectingAny: suffix === 'default',
+      fileTypeName: fileTypeName || undefined,
+      allowSelectingAny: !fileTypeName || suffix === 'default',
       filterName: filterName
     }));
 

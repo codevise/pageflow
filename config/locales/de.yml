@@ -1552,6 +1552,8 @@ de:
           importer:
             heading: Dateien importieren von
           reuse: Wiederverwenden
+          tabs:
+            files: Dateien
           upload: Hochladen
         file_type_pills_view:
           group_label: 'Nach Dateityp filtern'
