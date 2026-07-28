@@ -19,6 +19,7 @@ module Pageflow
 
             create_widgets(revision, data['widgets'])
             create_revision_components(revision, data['components'])
+            create_file_folders(revision, data['file_folders'])
             create_files(revision, data['file_usages'])
 
             revision
@@ -31,6 +32,7 @@ module Pageflow
 
         def create_revision(data)
           revision_attributes = data.except('storylines',
+                                            'file_folders',
                                             'file_usages',
                                             'widgets',
                                             'components',
@@ -48,6 +50,14 @@ module Pageflow
         def create_widgets(revision, widgets_data)
           widgets_data.each do |widget_data|
             revision.widgets.create!(widget_data.except(*DEFAULT_REMOVAL_COLUMNS))
+          end
+        end
+
+        # File usages refer to their folder by perma id, so folders have to
+        # exist before the usages which point at them are created.
+        def create_file_folders(revision, file_folders_data)
+          file_folders_data.each do |file_folder_data|
+            revision.file_folders.create!(file_folder_data.except(*DEFAULT_REMOVAL_COLUMNS))
           end
         end
 

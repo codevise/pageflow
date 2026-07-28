@@ -10,6 +10,9 @@ module Pageflow
           widgets: {
             except: [:subject_id, :subject_type]
           },
+          file_folders: {
+            except: [:revision_id]
+          },
           file_usages: {
             except: [:revision_id],
             include: {

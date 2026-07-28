@@ -298,6 +298,41 @@ module Pageflow
                                                                     'updated_at'))
       end
 
+      it 'preserves file folders and their nesting' do
+        exported_revision = create(:revision)
+        parent = create(:file_folder, revision: exported_revision, name: 'Interviews')
+        create(:file_folder,
+               revision: exported_revision,
+               name: 'Raw',
+               parent_folder_perma_id: parent.perma_id)
+
+        data = RevisionSerialization.dump(exported_revision)
+        imported_revision = RevisionSerialization.import(data,
+                                                         entry: create(:entry),
+                                                         creator: create(:user))
+
+        imported_child = FileFolder.all_for_revision(imported_revision).find_by(name: 'Raw')
+        expect(imported_child.parent.name).to eq('Interviews')
+      end
+
+      it 'preserves folder of file usages' do
+        exported_revision = create(:revision)
+        folder = create(:file_folder, revision: exported_revision)
+        create(:file_usage,
+               file: create(:image_file, :uploaded),
+               revision: exported_revision,
+               folder_perma_id: folder.perma_id)
+
+        data = RevisionSerialization.dump(exported_revision)
+        imported_revision = RevisionSerialization.import(data,
+                                                         entry: create(:entry),
+                                                         creator: create(:user))
+
+        imported_folder = FileFolder.all_for_revision(imported_revision).first
+        expect(imported_revision.file_usages.first.folder_perma_id)
+          .to eq(imported_folder.perma_id)
+      end
+
       it 'sets confirmed_by and uploader of created file to passed user' do
         exported_revision = create(:revision)
         exported_file = create(:audio_file,

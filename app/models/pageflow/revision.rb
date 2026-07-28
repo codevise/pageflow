@@ -30,6 +30,7 @@ module Pageflow
     has_many :comment_threads, dependent: :destroy
 
     has_many :file_usages, dependent: :destroy
+    has_many :file_folders, dependent: :destroy
 
     has_many :image_files, -> { extending WithFileUsageExtension },
              through: :file_usages, source: :file, source_type: 'Pageflow::ImageFile'
@@ -185,7 +186,8 @@ module Pageflow
         from: self,
         to: revision
       ).perform_for(
-        revision_components: Pageflow.config.revision_components.to_a + [FileUsage]
+        revision_components: Pageflow.config.revision_components.to_a +
+                             [FileFolder, FileUsage]
       )
 
       revision

@@ -33,6 +33,7 @@ module Pageflow
              :share_url, :share_image_id, :share_image_x, :share_image_y,
              :share_providers, :active_share_providers,
              :find_files, :find_file, :find_file_by_perma_id,
+             :file_folders,
              :image_files, :video_files, :audio_files,
              :locale,
              :author, :publisher, :keywords,
