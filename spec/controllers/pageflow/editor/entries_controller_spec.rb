@@ -268,6 +268,36 @@ module Pageflow
         )
       end
 
+      it 'renders file folders' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        parent = create(:file_folder, revision: entry.draft, name: 'Interviews')
+        create(:file_folder,
+               revision: entry.draft,
+               name: 'Raw',
+               parent_folder_perma_id: parent.perma_id)
+
+        sign_in(user, scope: :user)
+        get(:seed, params: {id: entry}, format: 'json')
+
+        expect(response.body).to include_json(
+          file_folders: [
+            {perma_id: parent.perma_id, name: 'Interviews', parent_folder_perma_id: nil},
+            {name: 'Raw', parent_folder_perma_id: parent.perma_id}
+          ]
+        )
+      end
+
+      it 'renders empty list of file folders' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+
+        sign_in(user, scope: :user)
+        get(:seed, params: {id: entry}, format: 'json')
+
+        expect(JSON.parse(response.body)).to include('file_folders' => [])
+      end
+
       it 'renders site cutoff mode' do
         pageflow_configure do |config|
           config.cutoff_modes.register('subscription_header', proc { true })
