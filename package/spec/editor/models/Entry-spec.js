@@ -27,6 +27,17 @@ describe('Entry', () => {
     };
   });
 
+  describe('#fileFolders', () => {
+    it('exposes folders passed via options', () => {
+      const entry = testContext.buildEntry({}, {
+        filesAttributes: {image_files: []},
+        fileFoldersAttributes: [{perma_id: 1, name: 'Interviews'}]
+      });
+
+      expect(entry.fileFolders.pluck('name')).toEqual(['Interviews']);
+    });
+  });
+
   describe('#getFileCollection', () => {
     it('supports looking up via fileType object', () => {
       var imageFiles = FilesCollection.createForFileType(testContext.imageFileType, []);

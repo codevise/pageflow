@@ -4,6 +4,7 @@ import _ from 'underscore';
 import {
   EditorApi,
   Entry,
+  FileFoldersCollection,
   FilesCollection,
   ImageFile,
   SubsetCollection,
@@ -52,6 +53,7 @@ export const factories = {
 
     ensureFileTypes(options);
     ensureFilesCollections(options);
+    ensureFileFoldersCollection(options);
     ensureWidgetsCollections(options);
 
     const entry = new model({
@@ -376,6 +378,12 @@ function ensureFilesCollections(options) {
   if (!options.files) {
     options.files = FilesCollection.createForFileTypes(options.fileTypes,
                                                        options.filesAttributes);
+  }
+}
+
+function ensureFileFoldersCollection(options) {
+  if (!options.fileFolders) {
+    options.fileFolders = new FileFoldersCollection(options.fileFoldersAttributes);
   }
 }
 
