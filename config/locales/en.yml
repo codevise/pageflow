@@ -1401,7 +1401,7 @@ en:
         files:
           back: Back
         files_blank_slate:
-          no_files: There are no files of this type, yet. You can upload one to get started.
+          no_files: There are no files yet. You can upload one to get started.
         files_explorer:
           cancel: Cancel
           ok: Ok

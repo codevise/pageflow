@@ -31,7 +31,7 @@ describe('FilteredFilesView', () => {
     const entry = f.entry({}, {fileTypes, filesAttributes: {}});
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType,
+      fileTypes: [fileType],
       filterName: 'with_projection'
     });
 
@@ -49,7 +49,7 @@ describe('FilteredFilesView', () => {
     const entry = f.entry({}, {fileTypes, filesAttributes: {}});
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType,
+      fileTypes: [fileType],
       filterName: 'with_projection'
     });
 
@@ -78,7 +78,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -101,7 +101,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType,
+      fileTypes: [fileType],
       selectionHandler
     });
 
@@ -125,7 +125,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -152,7 +152,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -175,7 +175,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -202,7 +202,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -224,7 +224,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -255,7 +255,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType,
+      fileTypes: [fileType],
       selectionHandler
     });
 
@@ -277,7 +277,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const {getByLabelText} = render(view);
@@ -300,7 +300,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -341,7 +341,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType,
+      fileTypes: [fileType],
       filterName: 'with_custom_field'
     });
 
@@ -354,6 +354,92 @@ describe('FilteredFilesView', () => {
     const names = getAllByText(/\.png$/).map(el => el.textContent);
 
     expect(names).toEqual(['some-image.png']);
+  });
+
+  it('renders files of all given file types', () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'image.png'}],
+        video_files: [{id: 1, display_name: 'video.mp4'}]
+      }
+    });
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ]
+    });
+
+    const {getAllByText} = render(view);
+
+    const names = getAllByText(/\.(png|mp4)$/).map(el => el.textContent);
+
+    expect(names).toEqual(['image.png', 'video.mp4']);
+  });
+
+  it('sorts files of different types together', () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'b.png'}],
+        video_files: [{id: 2, display_name: 'a.mp4'}]
+      }
+    });
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ]
+    });
+
+    const {getAllByText} = render(view);
+
+    const names = getAllByText(/\.(png|mp4)$/).map(el => el.textContent);
+
+    expect(names).toEqual(['a.mp4', 'b.png']);
+  });
+
+  it('renders meta data attributes of the file type of each file', () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType({metaDataAttributes: ['dimension']});
+      this.withVideoFileType({metaDataAttributes: ['duration']});
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'image.png', dimension: '200x100px'}],
+        video_files: [{id: 1, display_name: 'video.mp4', duration: '2:30'}]
+      }
+    });
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ]
+    });
+
+    const {getByText} = render(view);
+
+    expect(getByText('200x100px')).not.toBeNull();
+    expect(getByText('2:30')).not.toBeNull();
   });
 
   it('changes sort order when selecting item from drop down', async () => {
@@ -371,7 +457,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -406,7 +492,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const {getAllByText} = render(view);

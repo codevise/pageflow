@@ -90,7 +90,7 @@ export const FilesView = Marionette.ItemView.extend({
     this.tabsView.tab(fileType.collectionName, _.bind(function() {
       return new FilteredFilesView({
         entry: state.entry,
-        fileType: fileType,
+        fileTypes: [fileType],
         selectionHandler: selectionMode && this.options.selectionHandler,
         filterName: selectionMode && this.options.filterName
       });

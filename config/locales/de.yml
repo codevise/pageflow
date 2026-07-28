@@ -1409,7 +1409,7 @@ de:
         files:
           back: Zurück
         files_blank_slate:
-          no_files: Es wurden noch keine Dateien dieses Typs hochgeladen.
+          no_files: Es wurden noch keine Dateien hochgeladen.
         files_explorer:
           cancel: Abbrechen
           ok: Ok

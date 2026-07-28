@@ -7,6 +7,7 @@ import {DropDownButtonView} from './DropDownButtonView';
 
 import {editor} from '../base';
 
+import {CombinedFilesCollection} from '../collections/CombinedFilesCollection';
 import {FileItemView} from './FileItemView';
 import {Search} from '../models/Search';
 import {ListHighlight} from '../models/ListHighlight';
@@ -29,7 +30,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
 
   events: {
     'click .filtered_files-reset_filter': function() {
-      editor.navigate('/files/' + this.options.fileType.collectionName, {trigger: true});
+      editor.navigate('/files/' + this.filteredFileType().collectionName, {trigger: true});
       return false;
     }
   },
@@ -40,13 +41,21 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       storageKey: 'pageflow.filtered_files.sort_order'
     });
 
-    var collection = this.options.entry.getFileCollection(this.options.fileType);
+    var collections = this.options.fileTypes.map(function(fileType) {
+      return this.options.entry.getFileCollection(fileType);
+    }, this);
 
     if (this.options.filterName) {
-      collection = this.filteredCollection = collection.withFilter(this.options.filterName);
+      this.filteredCollections = collections.map(function(collection) {
+        return collection.withFilter(this.options.filterName);
+      }, this);
     }
 
-    this.searchFilteredCollection = this.search.applyTo(collection);
+    this.combinedFiles = new CombinedFilesCollection({
+      collections: this.filteredCollections || collections
+    });
+
+    this.searchFilteredCollection = this.search.applyTo(this.combinedFiles);
 
     if (this.options.selectionHandler) {
       this.listHighlight = new ListHighlight({}, {collection: this.searchFilteredCollection});
@@ -100,11 +109,11 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       className: 'files expandable',
       collection: this.searchFilteredCollection,
       itemViewConstructor: FileItemView,
-      itemViewOptions: {
-        metaDataAttributes: this.options.fileType.metaDataAttributes,
+      itemViewOptions: file => ({
+        metaDataAttributes: file.fileType().metaDataAttributes,
         selectionHandler: this.options.selectionHandler,
         listHighlight: this.listHighlight
-      },
+      }),
       blankSlateViewConstructor: Marionette.ItemView.extend({
         template: blankSlateTemplate,
         serializeData: function(){
@@ -118,27 +127,34 @@ export const FilteredFilesView = Marionette.ItemView.extend({
 
   filterTranslation: function(keyName, options) {
     var filterName = this.options.filterName;
+    var collectionName = this.filteredFileType().collectionName;
 
     var entryTypeName = editor.entryType.name;
 
     return i18nUtils.findTranslation([
       'pageflow.entry_types.' + entryTypeName + '.editor.files.filters.' +
-        this.options.fileType.collectionName + '.' +
+        collectionName + '.' +
         filterName + '.' +
         keyName,
       'pageflow.entry_types.' + entryTypeName + '.editor.files.common_filters.' + keyName,
       'pageflow.editor.files.filters.' +
-        this.options.fileType.collectionName + '.' +
+        collectionName + '.' +
         filterName + '.' +
         keyName,
       'pageflow.editor.files.common_filters.' + keyName
     ], options);
   },
 
+  // Named filters are only ever requested for a single file type.
+  filteredFileType: function() {
+    return this.options.fileTypes[0];
+  },
+
   onClose: function() {
     Marionette.ItemView.prototype.onClose.call(this);
 
-    this.filteredCollection?.dispose();
+    this.filteredCollections?.forEach(collection => collection.dispose());
+    this.combinedFiles.dispose();
     this.searchFilteredCollection.dispose();
   }
 });
