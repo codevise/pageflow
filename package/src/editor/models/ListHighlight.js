@@ -18,10 +18,10 @@ export const ListHighlight = Backbone.Model.extend({
   },
 
   triggerSelect() {
-    const id = this.get('currentId');
+    const cid = this.get('currentCid');
 
-    if (id != null) {
-      this.trigger(`selected:${id}`);
+    if (cid != null) {
+      this.trigger(`selected:${cid}`);
     }
   },
 
@@ -33,9 +33,8 @@ export const ListHighlight = Backbone.Model.extend({
       return;
     }
 
-    const currentId = this.get('currentId');
-    const currentModel = currentId != null ? collection.get(currentId) : null;
-    let index = currentModel ? collection.indexOf(currentModel) : -1;
+    const currentCid = this.get('currentCid');
+    let index = collection.models.findIndex(model => model.cid === currentCid);
 
     if (index === -1) {
       index = delta > 0 ? 0 : length - 1;
@@ -44,6 +43,6 @@ export const ListHighlight = Backbone.Model.extend({
       index = (index + delta + length) % length;
     }
 
-    this.set('currentId', collection.at(index).id);
+    this.set('currentCid', collection.at(index).cid);
   }
 });

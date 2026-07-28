@@ -63,13 +63,13 @@ export const FileItemView = Marionette.ItemView.extend({
 
   initialize: function() {
     if (this.options.listHighlight) {
-      this.listenTo(this.options.listHighlight, 'change:currentId change:active', () => {
+      this.listenTo(this.options.listHighlight, 'change:currentCid change:active', () => {
         if (this.updateHighlight()) {
           this.el.scrollIntoView({block: 'nearest', behavior: 'smooth'});
         }
       });
 
-      this.listenTo(this.options.listHighlight, 'selected:' + this.model.id, this.select);
+      this.listenTo(this.options.listHighlight, 'selected:' + this.model.cid, this.select);
     }
   },
 
@@ -144,8 +144,7 @@ export const FileItemView = Marionette.ItemView.extend({
   },
 
   setupAriaAttributes: function() {
-    var uniqueId = this.model.get('id') || this.model.cid;
-    var detailsId = 'file-details-' + uniqueId;
+    var detailsId = 'file-details-' + this.model.cid;
 
     this.ui.thumbnailButton.attr('aria-controls', detailsId);
     this.ui.details.attr('id', detailsId);
@@ -195,7 +194,7 @@ export const FileItemView = Marionette.ItemView.extend({
       return false;
     }
 
-    var highlighted = this.options.listHighlight.get('currentId') === this.model.id &&
+    var highlighted = this.options.listHighlight.get('currentCid') === this.model.cid &&
                       this.options.listHighlight.get('active');
 
     this.$el.toggleClass('keyboard_highlight', highlighted);

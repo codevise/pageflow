@@ -12,14 +12,14 @@ describe('ListHighlight', () => {
     const highlight = new ListHighlight({}, {collection});
 
     highlight.next();
-    expect(highlight.get('currentId')).toBe(1);
+    expect(highlight.get('currentCid')).toBe(collection.at(0).cid);
 
     highlight.next();
-    expect(highlight.get('currentId')).toBe(2);
+    expect(highlight.get('currentCid')).toBe(collection.at(1).cid);
 
     highlight.next();
     highlight.next();
-    expect(highlight.get('currentId')).toBe(1);
+    expect(highlight.get('currentCid')).toBe(collection.at(0).cid);
   });
 
   it('moves highlight backwards and wraps around', () => {
@@ -31,13 +31,13 @@ describe('ListHighlight', () => {
     const highlight = new ListHighlight({}, {collection});
 
     highlight.previous();
-    expect(highlight.get('currentId')).toBe(3);
+    expect(highlight.get('currentCid')).toBe(collection.at(2).cid);
 
     highlight.previous();
-    expect(highlight.get('currentId')).toBe(2);
+    expect(highlight.get('currentCid')).toBe(collection.at(1).cid);
   });
 
-  it('triggers selected event with current id', () => {
+  it('triggers selected event with current cid', () => {
     const collection = new Backbone.Collection([
       {id: 1},
       {id: 2}
@@ -46,7 +46,7 @@ describe('ListHighlight', () => {
     const listener = jest.fn();
 
     highlight.next();
-    highlight.on('selected:1', listener);
+    highlight.on(`selected:${collection.at(0).cid}`, listener);
     highlight.triggerSelect();
 
     expect(listener).toHaveBeenCalled();

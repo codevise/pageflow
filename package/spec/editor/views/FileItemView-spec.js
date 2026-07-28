@@ -1,8 +1,12 @@
-import {FileItemView, FileMetaDataItemValueView} from 'pageflow/editor';
+import Backbone from 'backbone';
+
+import {FileItemView, FileMetaDataItemValueView, ListHighlight} from 'pageflow/editor';
 
 import * as support from '$support';
 import {FileMetaDataTable} from '$support/dominos/editor';
 import {renderBackboneView as render} from 'pageflow/testHelpers';
+
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 describe('FileItemView', () => {
   support.useFakeTranslations({
@@ -92,7 +96,54 @@ describe('FileItemView', () => {
     var detailsDiv = getByRole('table', {hidden: true}).closest('.details');
 
     expect(thumbnailButton.getAttribute('aria-expanded')).toBe('false');
-    expect(thumbnailButton.getAttribute('aria-controls')).toBe('file-details-123');
-    expect(detailsDiv.getAttribute('id')).toBe('file-details-123');
+    expect(thumbnailButton.getAttribute('aria-controls')).toBe(`file-details-${file.cid}`);
+    expect(detailsDiv.getAttribute('id')).toBe(`file-details-${file.cid}`);
+  });
+
+  describe('with list highlight', () => {
+    it('marks item as selected while it is highlighted', () => {
+      var file = support.factories.file({id: 123});
+      var listHighlight = new ListHighlight({active: true}, {
+        collection: new Backbone.Collection([file])
+      });
+      var fileItemView = new FileItemView({model: file, listHighlight});
+
+      render(fileItemView);
+      listHighlight.set('currentCid', file.cid);
+
+      expect(fileItemView.el.getAttribute('aria-selected')).toBe('true');
+    });
+
+    it('does not mark item as selected while another file is highlighted', () => {
+      var file = support.factories.file({id: 123});
+      var otherFile = support.factories.file({id: 456});
+      var listHighlight = new ListHighlight({active: true}, {
+        collection: new Backbone.Collection([file, otherFile])
+      });
+      var fileItemView = new FileItemView({model: file, listHighlight});
+
+      render(fileItemView);
+      listHighlight.set('currentCid', otherFile.cid);
+
+      expect(fileItemView.el.getAttribute('aria-selected')).toBeNull();
+    });
+
+    it('invokes selection handler when highlighted item is selected', () => {
+      var file = support.factories.file({id: 123});
+      var listHighlight = new ListHighlight({active: true}, {
+        collection: new Backbone.Collection([file])
+      });
+      var selectionHandler = {
+        call: jest.fn().mockReturnValue(false),
+        getReferer: jest.fn()
+      };
+      var fileItemView = new FileItemView({model: file, listHighlight, selectionHandler});
+
+      render(fileItemView);
+      listHighlight.next();
+      listHighlight.triggerSelect();
+
+      expect(selectionHandler.call).toHaveBeenCalledWith(file);
+    });
   });
 });
