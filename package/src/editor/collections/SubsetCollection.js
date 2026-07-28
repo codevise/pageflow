@@ -1,7 +1,11 @@
 import Backbone from 'backbone';
 import _ from 'underscore';
 
+import {cidBasedGet} from './cidBasedGet';
+
 export const SubsetCollection = Backbone.Collection.extend({
+  get: cidBasedGet,
+
   constructor: function(options) {
     var adding = false;
     var sorting = false;

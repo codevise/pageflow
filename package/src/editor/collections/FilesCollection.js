@@ -14,10 +14,7 @@ export const FilesCollection = Backbone.Collection.extend({
     this.name = options.fileType.collectionName;
   },
 
-  comparator: function(file) {
-    var fileName = file.get('file_name');
-    return (fileName && fileName.toLowerCase) ? fileName.toLowerCase() : fileName;
-  },
+  comparator: byFileName,
 
   url: function() {
     return '/editor/entries/' + this.getEntry().get('id') + '/files/' + this.name;
@@ -81,6 +78,11 @@ export const FilesCollection = Backbone.Collection.extend({
     });
   }
 });
+
+export function byFileName(file) {
+  var fileName = file.get('file_name');
+  return (fileName && fileName.toLowerCase) ? fileName.toLowerCase() : fileName;
+}
 
 FilesCollection.createForFileTypes = function(fileTypes, files, options) {
   return fileTypes.reduce(function(result, fileType) {
