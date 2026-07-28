@@ -44,6 +44,7 @@ export * from './models/UploadableFile';
 export * from './models/ReusableFile';
 export * from './models/Search';
 export * from './models/ListHighlight';
+export * from './models/FileTypeSelection';
 export * from './models/StorylineTransitiveChildPages';
 export * from './models/FileUploader';
 export * from './models/Chapter';

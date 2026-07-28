@@ -8,6 +8,7 @@ import {DropDownButtonView} from './DropDownButtonView';
 import {editor} from '../base';
 
 import {CombinedFilesCollection} from '../collections/CombinedFilesCollection';
+import {SubsetCollection} from '../collections/SubsetCollection';
 import {FileItemView} from './FileItemView';
 import {Search} from '../models/Search';
 import {ListHighlight} from '../models/ListHighlight';
@@ -55,7 +56,19 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       collections: this.filteredCollections || collections
     });
 
-    this.searchFilteredCollection = this.search.applyTo(this.combinedFiles);
+    if (this.options.fileTypeSelection) {
+      this.selectedFiles = new SubsetCollection({
+        parent: this.combinedFiles,
+        filter: this.matchesFileTypeSelection.bind(this)
+      });
+
+      this.listenTo(this.options.fileTypeSelection, 'change:collectionNames', function() {
+        this.selectedFiles.updateFilter(this.matchesFileTypeSelection.bind(this));
+      });
+    }
+
+    this.searchFilteredCollection = this.search.applyTo(this.selectedFiles ||
+                                                       this.combinedFiles);
 
     if (this.options.selectionHandler) {
       this.listHighlight = new ListHighlight({}, {collection: this.searchFilteredCollection});
@@ -150,10 +163,15 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     return this.options.fileTypes[0];
   },
 
+  matchesFileTypeSelection: function(file) {
+    return this.options.fileTypeSelection.matches(file);
+  },
+
   onClose: function() {
     Marionette.ItemView.prototype.onClose.call(this);
 
     this.filteredCollections?.forEach(collection => collection.dispose());
+    this.selectedFiles?.dispose();
     this.combinedFiles.dispose();
     this.searchFilteredCollection.dispose();
   }

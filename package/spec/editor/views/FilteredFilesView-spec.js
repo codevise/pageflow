@@ -1,4 +1,4 @@
-import {FilteredFilesView, editor} from 'pageflow/editor';
+import {FileTypeSelection, FilteredFilesView, editor} from 'pageflow/editor';
 import * as support from '$support';
 import {waitFor} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
@@ -440,6 +440,70 @@ describe('FilteredFilesView', () => {
 
     expect(getByText('200x100px')).not.toBeNull();
     expect(getByText('2:30')).not.toBeNull();
+  });
+
+  it('renders only files of selected file types', () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'image.png'}],
+        video_files: [{id: 1, display_name: 'video.mp4'}]
+      }
+    });
+    const fileTypeSelection = new FileTypeSelection();
+    fileTypeSelection.toggle('video_files');
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ],
+      fileTypeSelection: fileTypeSelection
+    });
+
+    const {getAllByText} = render(view);
+
+    const names = getAllByText(/\.(png|mp4)$/).map(el => el.textContent);
+
+    expect(names).toEqual(['video.mp4']);
+  });
+
+  it('updates list when file type selection changes', () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'image.png'}],
+        video_files: [{id: 1, display_name: 'video.mp4'}]
+      }
+    });
+    const fileTypeSelection = new FileTypeSelection();
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ],
+      fileTypeSelection: fileTypeSelection
+    });
+
+    const {getAllByText} = render(view);
+    fileTypeSelection.toggle('image_files');
+
+    const names = getAllByText(/\.(png|mp4)$/).map(el => el.textContent);
+
+    expect(names).toEqual(['image.png']);
   });
 
   it('changes sort order when selecting item from drop down', async () => {

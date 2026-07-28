@@ -1,6 +1,7 @@
 import Backbone from 'backbone';
 
 import {SubsetCollection} from '../collections/SubsetCollection';
+import {getLocalStorage} from '../utils/localStorage';
 
 export const Search = Backbone.Model.extend({
   defaults: {
@@ -30,28 +31,19 @@ export const Search = Backbone.Model.extend({
     };
 
     if (this.storageKey) {
-      const storage = this.getLocalStorage();
+      const storage = getLocalStorage();
 
       if (storage && storage[this.storageKey]) {
         this.set('order', storage[this.storageKey]);
       }
 
       this.on('change:order', function() {
-        const storage = this.getLocalStorage();
+        const storage = getLocalStorage();
 
         if (storage) {
           storage[this.storageKey] = this.get('order');
         }
       });
-    }
-  },
-
-  getLocalStorage: function() {
-    try {
-      return window.localStorage;
-    }
-    catch(e) {
-      return null;
     }
   },
 
