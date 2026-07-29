@@ -1,0 +1,27 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.container:fullscreen {
+  background-color: #000;
+}
+
+/* Show the whole frame in fullscreen, overriding the cover fit used
+   for aspect-ratio crops and the always-cover poster. object-position
+   is an inline style for cover crops, hence the !important. */
+.container:fullscreen video,
+.container:fullscreen img {
+  object-fit: contain;
+  object-position: center !important;
+}
+
+.button {
+  transition: opacity 0.2s ease;
+}
+
+.button.fadedOut {
+  opacity: 0;
+  pointer-events: none;
+}

@@ -45,6 +45,7 @@ editor.contentElementTypes.register('inlineVideo', {
     this.input('playbackMode', SelectInputView, {
       values: ['manual', 'autoplay', 'autoplayIfUnmuted', 'loop']
     });
+    this.input('enableFullscreen', CheckBoxInputView);
   },
 
   configurationEditor({entry}) {
@@ -137,6 +138,14 @@ editor.contentElementTypes.register('inlineVideo', {
       });
 
       this.view(SeparatorView);
+
+      this.input('enableFullscreen', CheckBoxInputView, {
+        disabledBinding: ['position', 'playbackMode'],
+        disabled: ([position, playbackMode]) =>
+          position === 'backdrop' ||
+          playbackMode === 'loop',
+        displayUncheckedIfDisabled: true
+      });
 
       this.group('ContentElementPosition', {entry});
 

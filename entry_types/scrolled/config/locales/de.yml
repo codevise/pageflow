@@ -717,6 +717,10 @@ de:
                 mute: Ausblenden
                 play: Weiterspielen
                 turnDown: Leiser weiterspielen
+            enableFullscreen:
+              inline_help: Button anzeigen, um das Video im Vollbildmodus zu öffnen.
+              inline_help_disabled: Steht nicht zur Verfügung bei Hintergrund-Position oder Endlosschleife.
+              label: Vollbildmodus erlauben
             hideControlBar:
               inline_help: Für kurze Videos, bei denen der Benutzer nicht an bestimmte Stellen springen will.
               inline_help_disabled: Für Videos mit Wiedergabe-Modus "Loop" oder kreisförmigem Zuschnitt sind die Controls immer ausgeblendet.

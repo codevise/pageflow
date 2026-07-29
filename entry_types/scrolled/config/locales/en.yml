@@ -702,6 +702,10 @@ en:
                 mute: Mute
                 play: Keep playing
                 turnDown: Keep playing at lower volume
+            enableFullscreen:
+              inline_help: Display a button to open the video in fullscreen mode.
+              inline_help_disabled: Not available for backdrop position or loop playback.
+              label: Enable Fullscreen
             hideControlBar:
               inline_help: For short videos where there is no need to seek.
               inline_help_disabled: Controls are always hidden for videos with playback mode "Loop" or circle crop.
