@@ -193,6 +193,77 @@ describe('ReviewSession', () => {
     });
   });
 
+  it('includes quote in the first comment of a createThread request', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: []
+      })
+      .mockResolvedValueOnce({
+        id: 1,
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        comments: [{id: 100, body: 'About this text', quote: 'quick brown', creatorId: 42}]
+      });
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    await session.createThread({
+      subjectType: 'ContentElement',
+      subjectId: 10,
+      body: 'About this text',
+      quote: 'quick brown'
+    });
+
+    expect(request).toHaveBeenLastCalledWith({
+      url: '/review/entries/5/comment_threads',
+      method: 'POST',
+      payload: {
+        comment_thread: {
+          subject_type: 'ContentElement',
+          subject_id: 10,
+          comment: {body: 'About this text', quote: 'quick brown'}
+        }
+      }
+    });
+  });
+
+  it('omits quote from createThread request when not given', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: []
+      })
+      .mockResolvedValueOnce({
+        id: 1,
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        comments: [{id: 100, body: 'Looks good!', creatorId: 42}]
+      });
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    await session.createThread({
+      subjectType: 'ContentElement',
+      subjectId: 10,
+      body: 'Looks good!'
+    });
+
+    expect(request).toHaveBeenLastCalledWith({
+      url: '/review/entries/5/comment_threads',
+      method: 'POST',
+      payload: {
+        comment_thread: {
+          subject_type: 'ContentElement',
+          subject_id: 10,
+          comment: {body: 'Looks good!'}
+        }
+      }
+    });
+  });
+
   it('omits section_perma_id from createThread request when not given', async () => {
     const request = jest.fn()
       .mockResolvedValueOnce({
@@ -334,6 +405,54 @@ describe('ReviewSession', () => {
     expect(listener).toHaveBeenCalledWith(
       expect.objectContaining({id: 1, resolvedAt: null})
     );
+  });
+
+  it('includes quote in createComment request', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'CE', subjectId: 10, comments: [
+            {id: 100, body: 'First', creatorId: 42}
+          ]}
+        ]
+      })
+      .mockResolvedValueOnce({id: 101, body: 'Reply', quote: 'lazy dog', creatorId: 42});
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    await session.createComment({threadId: 1, body: 'Reply', quote: 'lazy dog'});
+
+    expect(request).toHaveBeenLastCalledWith({
+      url: '/review/entries/5/comment_threads/1/comments',
+      method: 'POST',
+      payload: {comment: {body: 'Reply', quote: 'lazy dog'}}
+    });
+  });
+
+  it('omits quote from createComment request when not given', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'CE', subjectId: 10, comments: [
+            {id: 100, body: 'First', creatorId: 42}
+          ]}
+        ]
+      })
+      .mockResolvedValueOnce({id: 101, body: 'Reply', creatorId: 42});
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    await session.createComment({threadId: 1, body: 'Reply'});
+
+    expect(request).toHaveBeenLastCalledWith({
+      url: '/review/entries/5/comment_threads/1/comments',
+      method: 'POST',
+      payload: {comment: {body: 'Reply'}}
+    });
   });
 
   it('updates state after createComment', async () => {
