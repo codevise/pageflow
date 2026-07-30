@@ -1,11 +1,22 @@
-import React, {createContext, useContext, useEffect, useMemo, useReducer} from 'react';
+import React, {
+  createContext, useCallback, useContext, useEffect, useMemo, useReducer
+} from 'react';
+
+import {useSectionPermaIdOfSubject} from 'pageflow-scrolled/entryState';
+
+import {
+  postCreateCommentThreadMessage,
+  postSetCommentDraftMessage
+} from './postMessage';
+import {useSubjectQuote} from './subjectQuote';
 
 const ReviewStateContext = createContext(null);
+const CommentDraftsContext = createContext(null);
 
-export function ReviewStateProvider({initialState, children}) {
+export function ReviewStateProvider({initialState, initialDrafts, setDraft, children}) {
   const [state, dispatch] = useReducer(
     reducer,
-    initialState,
+    {initialState, initialDrafts},
     initState
   );
 
@@ -21,22 +32,75 @@ export function ReviewStateProvider({initialState, children}) {
       else if (type === 'REVIEW_STATE_THREAD_CHANGE') {
         dispatch({type: 'UPSERT_THREAD', payload});
       }
+      else if (type === 'REVIEW_STATE_DRAFTS_CHANGE') {
+        dispatch({type: 'SET_DRAFTS', payload});
+      }
     }
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
+  // Drafts live in their own context so that storing one does not
+  // invalidate the thread state consumers derive their lists from.
   const value = useMemo(() => ({
     currentUser: state.currentUser,
     commentThreads: Object.values(state.threads)
-  }), [state]);
+  }), [state.currentUser, state.threads]);
+
+  // Marking the draft pending rather than waiting for the session to
+  // report it back keeps the form in one state from the submit onwards:
+  // shown, disabled and holding the text.
+  const createThread = useCallback(payload => {
+    const {subjectType, subjectId, body} = payload;
+
+    dispatch({type: 'SET_DRAFT', payload: {
+      subjectType, subjectId, body, pending: true
+    }});
+
+    postCreateCommentThreadMessage(payload);
+  }, []);
+
+  // The editor sidebar passes a direct write instead of relying on the
+  // message: its ReviewMessageHandler is disposed together with the view,
+  // which would drop the draft stored while the view is going away.
+  const draftsValue = useMemo(() => ({
+    drafts: state.drafts,
+    setDraft: setDraft || postSetCommentDraftMessage,
+    createThread
+  }), [state.drafts, setDraft, createThread]);
 
   return (
     <ReviewStateContext.Provider value={value}>
-      {children}
+      <CommentDraftsContext.Provider value={draftsValue}>
+        {children}
+      </CommentDraftsContext.Provider>
     </ReviewStateContext.Provider>
   );
+}
+
+export function useCommentDraft({subjectType, subjectId}) {
+  const {drafts, setDraft} = useContext(CommentDraftsContext);
+
+  return [
+    drafts[`${subjectType}:${subjectId}`],
+    useCallback(body => setDraft({subjectType, subjectId, body}),
+                [setDraft, subjectType, subjectId])
+  ];
+}
+
+export function useCreateCommentThread({subjectType, subjectId, subjectRange}) {
+  const {createThread} = useContext(CommentDraftsContext);
+
+  const sectionPermaId = useSectionPermaIdOfSubject({subjectType, subjectId});
+
+  // Recorded now since the commented text can change afterwards, leaving the
+  // comment without the wording it referred to.
+  const quote = useSubjectQuote({subjectType, subjectId, subjectRange});
+
+  return useCallback(body => createThread({
+    subjectType, subjectId, subjectRange, sectionPermaId, body, quote
+  }), [createThread, subjectType, subjectId, subjectRange, sectionPermaId, quote]);
 }
 
 export function useCommentThread(threadId) {
@@ -69,13 +133,14 @@ export function matchesResolution(thread, resolution) {
          (resolution === 'resolved' && !!thread.resolvedAt);
 }
 
-function initState(initialState) {
+function initState({initialState, initialDrafts}) {
+  const empty = {currentUser: null, threads: {}, drafts: initialDrafts || {}};
+
   if (initialState) {
-    return reducer({currentUser: null, threads: {}},
-                   {type: 'RESET', payload: initialState});
+    return reducer(empty, {type: 'RESET', payload: initialState});
   }
 
-  return {currentUser: null, threads: {}};
+  return empty;
 }
 
 function reducer(state, action) {
@@ -86,9 +151,27 @@ function reducer(state, action) {
       threads[thread.id] = thread;
     });
 
+    // Refetching threads leaves unsent drafts untouched.
     return {
+      ...state,
       currentUser: action.payload.currentUser,
       threads
+    };
+  }
+  case 'SET_DRAFTS':
+    return {
+      ...state,
+      drafts: action.payload
+    };
+  case 'SET_DRAFT': {
+    const {subjectType, subjectId} = action.payload;
+
+    return {
+      ...state,
+      drafts: {
+        ...state.drafts,
+        [`${subjectType}:${subjectId}`]: action.payload
+      }
     };
   }
   case 'UPSERT_THREAD':

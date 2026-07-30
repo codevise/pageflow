@@ -2,6 +2,7 @@ import React, {useMemo, useState} from 'react';
 import classNames from 'classnames';
 
 import {useI18n} from '../frontend/i18n';
+import {useCommentDraft} from './ReviewStateProvider';
 import {useLocatedCommentThreadsForSubject} from './useLocatedCommentThreadsForSubject';
 import {Thread} from './Thread';
 import {NewThreadForm} from './NewThreadForm';
@@ -42,7 +43,15 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
   const showResolved = resolvedToggled !== null ? resolvedToggled : !!expandResolved;
 
   const noThreads = activeThreads.length === 0 && resolvedThreads.length === 0;
-  const showNewForm = formToggled !== null ? formToggled :
+
+  // Callers passing showNewForm={false} opt out of drafts reopening the
+  // form: the editor sidebar lists suppress it entirely, since new
+  // threads are composed in a view of their own there.
+  const [draft] = useCommentDraft({subjectType, subjectId});
+  const hasDraft = !!draft;
+  const showNewForm = showNewFormProp === false ? false :
+                      hasDraft ? true :
+                      formToggled !== null ? formToggled :
                       showNewFormProp !== undefined ? showNewFormProp :
                       expandResolved ? noThreads : activeThreads.length === 0;
 

@@ -5,15 +5,36 @@ export class ReviewSession {
     this._entryId = entryId;
     this._request = request;
     this._state = initialState;
+    this._drafts = {};
   }
 
   get state() {
     return this._state;
   }
 
+  // Unsent comment texts, not keyed by subject range: a draft written
+  // about one phrase of a text block is offered again when commenting on
+  // another phrase of the same block.
+  get drafts() {
+    return this._drafts;
+  }
+
+  setDraft({subjectType, subjectId, body}) {
+    if (body.trim().length) {
+      this._writeDraft({subjectType, subjectId, body});
+    }
+    else {
+      this._deleteDraft({subjectType, subjectId});
+    }
+  }
+
   async createThread({
     subjectType, subjectId, subjectRange, sectionPermaId, body, quote
   }) {
+    // Written even when the form never stored a draft, so that the text
+    // outlives a failed attempt.
+    this._writeDraft({subjectType, subjectId, body, pending: true});
+
     const thread = await this._request({
       url: `/review/entries/${this._entryId}/comment_threads`,
       method: 'POST',
@@ -26,11 +47,20 @@ export class ReviewSession {
           comment: {body, ...(quote && {quote})}
         }
       }
+    }).catch(error => {
+      this._writeDraft({subjectType, subjectId, body, pending: false});
+      // Rethrown so that a failure still shows up as an unhandled
+      // rejection rather than only as a form that became editable again.
+      throw error;
     });
 
     this._upsertThread(thread);
     this.trigger('change:thread', thread);
     this.trigger('create:thread', thread);
+
+    // Dropped last so that the form closing does not briefly reveal a
+    // list without the thread.
+    this._deleteDraft({subjectType, subjectId});
   }
 
   async updateThread({threadId, resolved}) {
@@ -127,6 +157,26 @@ export class ReviewSession {
     this.trigger('reset', this._state);
   }
 
+  _writeDraft({subjectType, subjectId, body, pending = false}) {
+    this._drafts = {
+      ...this._drafts,
+      [draftKey({subjectType, subjectId})]: {subjectType, subjectId, body, pending}
+    };
+
+    this.trigger('change:drafts', this._drafts);
+  }
+
+  _deleteDraft({subjectType, subjectId}) {
+    const key = draftKey({subjectType, subjectId});
+
+    if (!(key in this._drafts)) return;
+
+    this._drafts = {...this._drafts};
+    delete this._drafts[key];
+
+    this.trigger('change:drafts', this._drafts);
+  }
+
   _findThread(id) {
     return this._state?.commentThreads.find(t => t.id === id);
   }
@@ -157,6 +207,10 @@ export class ReviewSession {
 }
 
 Object.assign(ReviewSession.prototype, BackboneEvents);
+
+function draftKey({subjectType, subjectId}) {
+  return `${subjectType}:${subjectId}`;
+}
 
 function sameRange(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);

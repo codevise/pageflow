@@ -8,6 +8,7 @@ import {NewThreadView} from 'editor/views/NewThreadView';
 import {factories, useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
 import {fireEvent} from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 
 describe('NewThreadView', () => {
   const {createEntry} = useEditorGlobals();
@@ -57,6 +58,42 @@ describe('NewThreadView', () => {
     const {getByText} = renderBackboneView(buildView(entry));
 
     expect(getByText('Comments')).toBeInTheDocument();
+  });
+
+  // Submitting cannot reach the session here: jsdom leaves MessageEvent
+  // source unset for same-window posts, so the handler drops the create
+  // message. NewThreadForm-spec covers the form disabling itself.
+  it('stores the entered text as a draft when the view is closed', async () => {
+    const user = userEvent.setup();
+    const entry = createEntry({});
+    entry.reviewSession = factories.reviewSession();
+    const view = buildView(entry);
+
+    const {getByPlaceholderText} = renderBackboneView(view);
+
+    await user.type(getByPlaceholderText('Add a comment...'), 'Half a thought');
+    view.close();
+
+    expect(entry.reviewSession.drafts).toEqual({
+      'ContentElement:10': {
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        body: 'Half a thought',
+        pending: false
+      }
+    });
+  });
+
+  it('restores the draft stored for the subject', () => {
+    const entry = createEntry({});
+    entry.reviewSession = factories.reviewSession();
+    entry.reviewSession.setDraft({
+      subjectType: 'ContentElement', subjectId: 10, body: 'Half a thought'
+    });
+
+    const {getByPlaceholderText} = renderBackboneView(buildView(entry));
+
+    expect(getByPlaceholderText('Add a comment...')).toHaveValue('Half a thought');
   });
 
   it('navigates to the comments selection tab when the back link is clicked', () => {

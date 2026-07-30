@@ -806,4 +806,119 @@ describe('ReviewSession', () => {
       expect(listener).not.toHaveBeenCalled();
     });
   });
+
+  describe('drafts', () => {
+    function setupSession({request} = {}) {
+      return new ReviewSession({
+        entryId: 5,
+        request: request || jest.fn(),
+        initialState: {currentUser: {id: 42, name: 'Alice'}, commentThreads: []}
+      });
+    }
+
+    it('stores a draft per subject and emits change:drafts', () => {
+      const session = setupSession();
+      const listener = jest.fn();
+      session.on('change:drafts', listener);
+
+      session.setDraft({
+        subjectType: 'ContentElement', subjectId: 10, body: 'Half a thought'
+      });
+
+      expect(session.drafts).toEqual({
+        'ContentElement:10': {
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          body: 'Half a thought',
+          pending: false
+        }
+      });
+      expect(listener).toHaveBeenCalledWith(session.drafts);
+    });
+
+    it('shares one draft between the ranges of a subject', () => {
+      const session = setupSession();
+
+      session.setDraft({
+        subjectType: 'ContentElement', subjectId: 10, body: 'About one phrase'
+      });
+      session.setDraft({
+        subjectType: 'ContentElement', subjectId: 10, body: 'About another'
+      });
+
+      expect(Object.keys(session.drafts)).toEqual(['ContentElement:10']);
+      expect(session.drafts['ContentElement:10'].body).toEqual('About another');
+    });
+
+    it('discards the draft when the body is blank', () => {
+      const session = setupSession();
+      session.setDraft({
+        subjectType: 'ContentElement', subjectId: 10, body: 'Half a thought'
+      });
+
+      const listener = jest.fn();
+      session.on('change:drafts', listener);
+
+      session.setDraft({subjectType: 'ContentElement', subjectId: 10, body: '  '});
+
+      expect(session.drafts).toEqual({});
+      expect(listener).toHaveBeenCalledWith({});
+    });
+
+    it('marks the draft pending while the thread is being created', async () => {
+      let respond;
+      const request = jest.fn(() => new Promise(resolve => {respond = resolve}));
+      const session = setupSession({request});
+
+      const promise = session.createThread({
+        subjectType: 'ContentElement', subjectId: 10, body: 'Looks good!'
+      });
+
+      expect(session.drafts['ContentElement:10']).toEqual({
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        body: 'Looks good!',
+        pending: true
+      });
+
+      respond({id: 1, subjectType: 'ContentElement', subjectId: 10, comments: []});
+      await promise;
+
+      expect(session.drafts).toEqual({});
+    });
+
+    it('drops the draft only after announcing the created thread', async () => {
+      const request = jest.fn().mockResolvedValue({
+        id: 1, subjectType: 'ContentElement', subjectId: 10, comments: []
+      });
+      const session = setupSession({request});
+
+      const events = [];
+      session.on('create:thread', () => events.push('create:thread'));
+      session.on('change:drafts', () => events.push('change:drafts'));
+
+      await session.createThread({
+        subjectType: 'ContentElement', subjectId: 10, body: 'Looks good!'
+      });
+
+      expect(events).toEqual(['change:drafts', 'create:thread', 'change:drafts']);
+    });
+
+    it('keeps the draft and clears pending when creating fails', async () => {
+      const error = new Error('500 Internal Server Error');
+      const session = setupSession({request: jest.fn().mockRejectedValue(error)});
+
+      await expect(session.createThread({
+        subjectType: 'ContentElement', subjectId: 10, body: 'Looks good!'
+      })).rejects.toThrow(error);
+
+      expect(session.drafts['ContentElement:10']).toEqual({
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        body: 'Looks good!',
+        pending: false
+      });
+      expect(session.state.commentThreads).toEqual([]);
+    });
+  });
 });

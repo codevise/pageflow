@@ -1,6 +1,7 @@
 import {
   postReviewStateResetMessage,
-  postReviewStateThreadChangeMessage
+  postReviewStateThreadChangeMessage,
+  postReviewStateDraftsChangeMessage
 } from './postMessage';
 
 export const ReviewMessageHandler = {
@@ -20,6 +21,9 @@ export const ReviewMessageHandler = {
       else if (type === 'UPDATE_THREAD') {
         session.updateThread(payload);
       }
+      else if (type === 'SET_COMMENT_DRAFT') {
+        session.setDraft(payload);
+      }
     }
 
     function handleReset(state) {
@@ -30,15 +34,21 @@ export const ReviewMessageHandler = {
       postReviewStateThreadChangeMessage(targetWindow, thread);
     }
 
+    function handleDraftsChange(drafts) {
+      postReviewStateDraftsChangeMessage(targetWindow, drafts);
+    }
+
     window.addEventListener('message', handleMessage);
     session.on('reset', handleReset);
     session.on('change:thread', handleThreadChange);
+    session.on('change:drafts', handleDraftsChange);
 
     return {
       dispose() {
         window.removeEventListener('message', handleMessage);
         session.off('reset', handleReset);
         session.off('change:thread', handleThreadChange);
+        session.off('change:drafts', handleDraftsChange);
       }
     };
   }
