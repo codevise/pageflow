@@ -112,6 +112,57 @@ describe('ReviewSession', () => {
     );
   });
 
+  it('emits create:thread after createThread', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: []
+      })
+      .mockResolvedValueOnce({
+        id: 1,
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        comments: [{id: 100, body: 'Looks good!', creatorId: 42}]
+      });
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    const listener = jest.fn();
+    session.on('create:thread', listener);
+
+    await session.createThread({
+      subjectType: 'ContentElement',
+      subjectId: 10,
+      body: 'Looks good!'
+    });
+
+    expect(listener).toHaveBeenCalledWith(
+      expect.objectContaining({id: 1, subjectType: 'ContentElement'})
+    );
+  });
+
+  it('does not emit create:thread when updating a thread', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [{id: 1, subjectType: 'ContentElement', subjectId: 10, comments: []}]
+      })
+      .mockResolvedValueOnce({
+        id: 1, subjectType: 'ContentElement', subjectId: 10, resolved: true, comments: []
+      });
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    const listener = jest.fn();
+    session.on('create:thread', listener);
+
+    await session.updateThread({threadId: 1, resolved: true});
+
+    expect(listener).not.toHaveBeenCalled();
+  });
+
   it('includes subject_range in createThread request', async () => {
     const subjectRange = {
       anchor: {path: [0, 0], offset: 5},

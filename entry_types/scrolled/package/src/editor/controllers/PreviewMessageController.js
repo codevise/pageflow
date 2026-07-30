@@ -128,6 +128,28 @@ export const PreviewMessageController = Object.extend({
             })
           });
 
+          // Passing the thread id here rather than posting
+          // SELECT_COMMENT_THREAD avoids depending on the preview having
+          // processed the new thread already: that message is dropped for
+          // threads the iframe does not know yet.
+          if (this.entry.reviewSession) {
+            this.listenTo(this.entry.reviewSession, 'create:thread', thread => {
+              const model = modelForSubject(this.entry, thread);
+
+              if (!model) return;
+
+              postMessage({
+                type: 'SELECT',
+                payload: {
+                  id: model.id,
+                  type: thread.subjectType === 'Section' ? 'sectionComments' :
+                                                           'contentElementComments',
+                  highlightedThreadId: thread.id
+                }
+              })
+            });
+          }
+
           this.listenTo(this.entry, 'selectWidget', widget => {
             postMessage({
               type: 'SELECT',
@@ -312,9 +334,13 @@ function selectedCommentsSubjectFor(entry, payload) {
   }
 
   if (type === 'newThread') {
-    const collection = subjectType === 'Section' ? entry.sections : entry.contentElements;
-    return {subjectType, id: collection.findWhere({permaId: subjectId})?.id};
+    return {subjectType, id: modelForSubject(entry, {subjectType, subjectId})?.id};
   }
 
   return undefined;
+}
+
+function modelForSubject(entry, {subjectType, subjectId}) {
+  const collection = subjectType === 'Section' ? entry.sections : entry.contentElements;
+  return collection.findWhere({permaId: subjectId});
 }

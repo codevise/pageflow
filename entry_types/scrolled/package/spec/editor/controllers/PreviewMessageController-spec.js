@@ -364,6 +364,92 @@ describe('PreviewMessageController', () => {
     })).resolves.toMatchObject({contentElementId: 1, command: {some: 'COMMAND'}});
   });
 
+  it('selects and highlights a created content element thread in iframe', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1, permaId: 10}]
+      })
+    });
+    entry.reviewSession = factories.reviewSession();
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT') {
+          resolve(event.data);
+        }
+      });
+      entry.reviewSession.trigger('create:thread', {
+        id: 7, subjectType: 'ContentElement', subjectId: 10
+      });
+    })).resolves.toMatchObject({
+      type: 'SELECT',
+      payload: {id: 1, type: 'contentElementComments', highlightedThreadId: 7}
+    });
+  });
+
+  it('selects and highlights a created section thread in iframe', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        sections: [{id: 5, permaId: 50}]
+      })
+    });
+    entry.reviewSession = factories.reviewSession();
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT') {
+          resolve(event.data);
+        }
+      });
+      entry.reviewSession.trigger('create:thread', {
+        id: 3, subjectType: 'Section', subjectId: 50
+      });
+    })).resolves.toMatchObject({
+      type: 'SELECT',
+      payload: {id: 5, type: 'sectionComments', highlightedThreadId: 3}
+    });
+  });
+
+  it('ignores created threads of deleted subjects', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1, permaId: 10}]
+      })
+    });
+    entry.reviewSession = factories.reviewSession();
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    // Expecting the SELECT of the known subject to arrive first pins the
+    // absence of one for the deleted subject.
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT') {
+          resolve(event.data);
+        }
+      });
+      entry.reviewSession.trigger('create:thread', {
+        id: 7, subjectType: 'ContentElement', subjectId: 999
+      });
+      entry.reviewSession.trigger('create:thread', {
+        id: 8, subjectType: 'ContentElement', subjectId: 10
+      });
+    })).resolves.toMatchObject({
+      type: 'SELECT',
+      payload: {id: 1, type: 'contentElementComments', highlightedThreadId: 8}
+    });
+  });
+
   it('sends SELECT message to iframe on resetSelection event on model', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({

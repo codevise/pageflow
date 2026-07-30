@@ -30,6 +30,7 @@ export class ReviewSession {
 
     this._upsertThread(thread);
     this.trigger('change:thread', thread);
+    this.trigger('create:thread', thread);
   }
 
   async updateThread({threadId, resolved}) {
