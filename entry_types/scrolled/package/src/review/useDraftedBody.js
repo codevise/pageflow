@@ -17,6 +17,23 @@ export function useDraftedBody(draftOf) {
   const latest = useRef();
   latest.current = {body, pending, setDraft};
 
+  const wasPending = useRef(false);
+
+  useEffect(() => {
+    if (pending) {
+      wasPending.current = true;
+    }
+    else if (wasPending.current) {
+      wasPending.current = false;
+
+      // Forms that outlive their submit - the reply form stays around for
+      // the next reply - start over once the session has dropped the
+      // draft it created the comment from. A failed attempt keeps the
+      // draft, and with it the text.
+      if (!draft) setBody('');
+    }
+  }, [pending, draft]);
+
   useEffect(() => () => {
     const {body, pending, setDraft} = latest.current;
 

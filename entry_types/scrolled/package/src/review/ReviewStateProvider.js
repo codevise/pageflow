@@ -5,6 +5,7 @@ import React, {
 import {useSectionPermaIdOfSubject} from 'pageflow-scrolled/entryState';
 
 import {
+  postCreateCommentMessage,
   postCreateCommentThreadMessage,
   postSetCommentDraftMessage
 } from './postMessage';
@@ -61,14 +62,23 @@ export function ReviewStateProvider({initialState, initialDrafts, setDraft, chil
     postCreateCommentThreadMessage(payload);
   }, []);
 
+  const createComment = useCallback(payload => {
+    const {threadId, body} = payload;
+
+    dispatch({type: 'SET_DRAFT', payload: {threadId, body, pending: true}});
+
+    postCreateCommentMessage(payload);
+  }, []);
+
   // The editor sidebar passes a direct write instead of relying on the
   // message: its ReviewMessageHandler is disposed together with the view,
   // which would drop the draft stored while the view is going away.
   const draftsValue = useMemo(() => ({
     drafts: state.drafts,
     setDraft: setDraft || postSetCommentDraftMessage,
-    createThread
-  }), [state.drafts, setDraft, createThread]);
+    createThread,
+    createComment
+  }), [state.drafts, setDraft, createThread, createComment]);
 
   return (
     <ReviewStateContext.Provider value={value}>
@@ -103,6 +113,17 @@ export function useCreateCommentThread({subjectType, subjectId, subjectRange}) {
   return useCallback(body => createThread({
     subjectType, subjectId, subjectRange, sectionPermaId, body, quote
   }), [createThread, subjectType, subjectId, subjectRange, sectionPermaId, quote]);
+}
+
+export function useCreateComment({threadId, subjectType, subjectId, subjectRange}) {
+  const {createComment} = useContext(CommentDraftsContext);
+
+  // Each reply records the wording it responds to, so a thread spanning
+  // several edits keeps every comment next to its own version of the text.
+  const quote = useSubjectQuote({subjectType, subjectId, subjectRange});
+
+  return useCallback(body => createComment({threadId, body, quote}),
+                     [createComment, threadId, quote]);
 }
 
 export function useCommentThread(threadId) {

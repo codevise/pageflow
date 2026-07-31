@@ -75,10 +75,15 @@ export class ReviewSession {
   }
 
   async createComment({threadId, body, quote}) {
+    this._writeDraft({threadId, body, pending: true});
+
     const comment = await this._request({
       url: `/review/entries/${this._entryId}/comment_threads/${threadId}/comments`,
       method: 'POST',
       payload: {comment: {body, ...(quote && {quote})}}
+    }).catch(error => {
+      this._writeDraft({threadId, body, pending: false});
+      throw error;
     });
 
     const thread = this._findThread(threadId);
@@ -92,6 +97,8 @@ export class ReviewSession {
       this._upsertThread(updatedThread);
       this.trigger('change:thread', updatedThread);
     }
+
+    this._deleteDraft({threadId});
   }
 
   diffSubjectRangeUpdates(ranges) {

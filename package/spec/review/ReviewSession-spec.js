@@ -927,6 +927,44 @@ describe('ReviewSession', () => {
       expect(events).toEqual(['change:drafts', 'create:thread', 'change:drafts']);
     });
 
+    it('marks the draft of a reply pending while it is being created', async () => {
+      let respond;
+      const request = jest.fn(() => new Promise(resolve => {respond = resolve}));
+      const session = new ReviewSession({
+        entryId: 5,
+        request,
+        initialState: {
+          currentUser: {id: 42, name: 'Alice'},
+          commentThreads: [{
+            id: 7, subjectType: 'ContentElement', subjectId: 10, comments: []
+          }]
+        }
+      });
+
+      const promise = session.createComment({threadId: 7, body: 'A reply'});
+
+      expect(session.drafts['Thread:7']).toEqual({
+        threadId: 7, body: 'A reply', pending: true
+      });
+
+      respond({id: 100, body: 'A reply'});
+      await promise;
+
+      expect(session.drafts).toEqual({});
+    });
+
+    it('keeps the draft of a reply and clears pending when creating fails', async () => {
+      const error = new Error('500 Internal Server Error');
+      const session = setupSession({request: jest.fn().mockRejectedValue(error)});
+
+      await expect(session.createComment({threadId: 7, body: 'A reply'}))
+        .rejects.toThrow(error);
+
+      expect(session.drafts['Thread:7']).toEqual({
+        threadId: 7, body: 'A reply', pending: false
+      });
+    });
+
     it('keeps the draft and clears pending when creating fails', async () => {
       const error = new Error('500 Internal Server Error');
       const session = setupSession({request: jest.fn().mockRejectedValue(error)});

@@ -8,6 +8,7 @@ import {
   useCommentDraft,
   useCommentThread,
   useCommentThreads,
+  useCreateComment,
   useCreateCommentThread
 } from 'review/ReviewStateProvider';
 import {
@@ -368,6 +369,53 @@ describe('ReviewStateProvider', () => {
       result.current[1]('Half a reply');
 
       expect(setDraft).toHaveBeenCalledWith({threadId: 7, body: 'Half a reply'});
+    });
+  });
+
+  describe('useCreateComment', () => {
+    const seed = {
+      sections: [{id: 1, permaId: 7}],
+      contentElements: [{id: 1, permaId: 10, sectionId: 1, typeName: 'textBlock'}]
+    };
+
+    function renderCreateHook() {
+      return renderHookWithReviewState(
+        () => ({
+          createComment: useCreateComment({
+            threadId: 7, subjectType: 'ContentElement', subjectId: 10
+          }),
+          draft: useCommentDraft({threadId: 7})[0]
+        }),
+        {seed}
+      );
+    }
+
+    it('marks the draft of the thread pending right away', () => {
+      const {result} = renderCreateHook();
+
+      act(() => result.current.createComment('A reply'));
+
+      expect(result.current.draft).toEqual({
+        threadId: 7, body: 'A reply', pending: true
+      });
+    });
+
+    it('posts a create comment message', () => {
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+      const {result} = renderCreateHook();
+
+      act(() => result.current.createComment('A reply'));
+
+      expect(postMessage).toHaveBeenCalledWith(
+        {
+          type: 'CREATE_COMMENT',
+          payload: expect.objectContaining({threadId: 7, body: 'A reply'})
+        },
+        window.location.origin
+      );
+
+      postMessage.mockRestore();
     });
   });
 
