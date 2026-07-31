@@ -521,6 +521,27 @@ describe('ThreadList', () => {
       expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
     });
 
+    // Whether the list starts out with a form is decided when it mounts,
+    // so resolving the last thread does not invite a new one.
+    it('does not open the form when the last thread becomes resolved', async () => {
+      const thread = {
+        id: 1,
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        comments: [{id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}]
+      };
+
+      const {getByText, queryByPlaceholderText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {commentThreads: [thread]}
+      );
+
+      postThreadChange({...thread, resolvedAt: '2026-07-31'});
+
+      await waitFor(() => expect(getByText('1 resolved')).toBeInTheDocument());
+      expect(queryByPlaceholderText('Add a comment...')).toBeNull();
+    });
+
     it('shows new topic form when showNewForm is true', () => {
       const {getByPlaceholderText} = renderThreadList(
         <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={true} />,

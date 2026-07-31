@@ -36,24 +36,23 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
                                   highlightedThreadId.includes(thread.id) :
                                   thread.id === highlightedThreadId;
 
+  const noThreads = activeThreads.length === 0 && resolvedThreads.length === 0;
+
+  const [draft] = useCommentDraft({subjectType, subjectId});
   const [expandedThreadId, setExpandedThreadId] = useState(null);
-  const [formToggled, setFormToggled] = useState(null);
   const [resolvedToggled, setResolvedToggled] = useState(null);
+  const [formToggled, setFormToggled] = useState(
+    showNewFormProp !== undefined ? showNewFormProp :
+    expandResolved ? noThreads : activeThreads.length === 0
+  );
 
   const showResolved = resolvedToggled !== null ? resolvedToggled : !!expandResolved;
 
-  const noThreads = activeThreads.length === 0 && resolvedThreads.length === 0;
-
-  // Callers passing showNewForm={false} opt out of drafts reopening the
-  // form: the editor sidebar lists suppress it entirely, since new
-  // threads are composed in a view of their own there.
-  const [draft] = useCommentDraft({subjectType, subjectId});
-  const hasDraft = !!draft;
-  const showNewForm = showNewFormProp === false ? false :
-                      hasDraft ? true :
-                      formToggled !== null ? formToggled :
-                      showNewFormProp !== undefined ? showNewFormProp :
-                      expandResolved ? noThreads : activeThreads.length === 0;
+  // An unsent draft reopens the form and keeps it open while the thread is
+  // being created. Callers passing showNewForm={false} suppress the form
+  // entirely: the editor sidebar lists compose new threads in a view of
+  // their own.
+  const showNewForm = showNewFormProp !== false && (!!draft || formToggled);
 
   function toggleThread(threadId) {
     setExpandedThreadId(expandedThreadId === threadId ? null : threadId);
