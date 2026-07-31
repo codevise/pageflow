@@ -8,13 +8,40 @@ import {renderWithReviewState} from 'support/renderWithReviewState';
 
 describe('Thread', () => {
   useFakeTranslations({
-    'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element'
+    'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element',
+    'pageflow_scrolled.review.reply_placeholder': 'Reply...',
+    'pageflow_scrolled.review.reply_count.one': '1 reply',
+    'pageflow_scrolled.review.reply_count.other': '%{count} replies',
+    'pageflow_scrolled.review.toggle_replies': 'Toggle replies'
   });
 
   const thread = {
     id: 1,
     comments: [{id: 10, body: 'On the pull quote', creatorName: 'Bob', creatorId: 2}]
   };
+
+  // The reply form is hidden while a thread with replies is collapsed,
+  // which would leave a drafted reply out of reach.
+  it('expands a collapsed thread that has a drafted reply', () => {
+    const threadWithReply = {
+      ...thread,
+      comments: [
+        ...thread.comments,
+        {id: 11, body: 'A first reply', creatorName: 'Alice', creatorId: 1}
+      ]
+    };
+
+    const {getByPlaceholderText} = renderWithReviewState(
+      <Thread thread={threadWithReply} collapsed />,
+      {
+        drafts: {
+          'Thread:1': {threadId: 1, body: 'Half a reply', pending: false}
+        }
+      }
+    );
+
+    expect(getByPlaceholderText('Reply...')).toHaveValue('Half a reply');
+  });
 
   it('renders a deleted-element hint when the thread is orphaned', () => {
     const {getByText} = renderWithReviewState(

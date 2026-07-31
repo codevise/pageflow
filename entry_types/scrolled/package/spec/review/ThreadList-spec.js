@@ -1,9 +1,14 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
+import {act, waitFor} from '@testing-library/react';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {ThreadList} from 'review/ThreadList';
+import {
+  postReviewStateDraftsChangeMessage,
+  postReviewStateThreadChangeMessage
+} from 'review/postMessage';
 import {review} from 'review/api';
 import {ScrollHighlightedThreadIntoViewProvider} from 'review/scrollHighlightedThreadIntoView';
 import {renderWithReviewState} from 'support/renderWithReviewState';
@@ -15,8 +20,16 @@ const seed = {
   contentElements: [{id: 1, permaId: 10, sectionId: 1, typeName: 'textBlock'}]
 };
 
-function renderThreadList(ui, {commentThreads = []} = {}) {
-  return renderWithReviewState(ui, {seed, commentThreads});
+function renderThreadList(ui, options = {}) {
+  return renderWithReviewState(ui, {seed, ...options});
+}
+
+function postDraftsChange(drafts) {
+  act(() => postReviewStateDraftsChangeMessage(window, drafts));
+}
+
+function postThreadChange(thread) {
+  act(() => postReviewStateThreadChangeMessage(window, thread));
 }
 
 describe('ThreadList', () => {
@@ -508,6 +521,27 @@ describe('ThreadList', () => {
       expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
     });
 
+    // Whether the list starts out with a form is decided when it mounts,
+    // so resolving the last thread does not invite a new one.
+    it('does not open the form when the last thread becomes resolved', async () => {
+      const thread = {
+        id: 1,
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        comments: [{id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}]
+      };
+
+      const {getByText, queryByPlaceholderText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {commentThreads: [thread]}
+      );
+
+      postThreadChange({...thread, resolvedAt: '2026-07-31'});
+
+      await waitFor(() => expect(getByText('1 resolved')).toBeInTheDocument());
+      expect(queryByPlaceholderText('Add a comment...')).toBeNull();
+    });
+
     it('shows new topic form when showNewForm is true', () => {
       const {getByPlaceholderText} = renderThreadList(
         <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={true} />,
@@ -586,6 +620,116 @@ describe('ThreadList', () => {
       await user.click(getByRole('button', {name: 'New topic'}));
 
       expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
+    });
+
+    it('shows the form again when a draft exists for the subject', () => {
+      const {getByPlaceholderText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+              {id: 10, body: 'Existing', creatorName: 'Bob', creatorId: 2}
+            ]}
+          ],
+          drafts: {
+            'ContentElement:10': {
+              subjectType: 'ContentElement', subjectId: 10, body: 'Half a thought'
+            }
+          }
+        }
+      );
+
+      expect(getByPlaceholderText('Add a comment...')).toHaveValue('Half a thought');
+    });
+
+    it('keeps the form open while the thread is being created', () => {
+      const {getByPlaceholderText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {
+          drafts: {
+            'ContentElement:10': {
+              subjectType: 'ContentElement',
+              subjectId: 10,
+              body: 'Looks good',
+              pending: true
+            }
+          }
+        }
+      );
+
+      expect(getByPlaceholderText('Add a comment...')).toBeDisabled();
+    });
+
+    // The editor sidebar lists opt out of the form entirely, since new
+    // threads are composed in a view of their own there.
+    it('does not show the form for a draft when showNewForm is false', () => {
+      const {queryByPlaceholderText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />,
+        {
+          drafts: {
+            'ContentElement:10': {
+              subjectType: 'ContentElement', subjectId: 10, body: 'Half a thought'
+            }
+          }
+        }
+      );
+
+      expect(queryByPlaceholderText('Add a comment...')).toBeNull();
+    });
+
+    it('keeps the form open with the text on submit', async () => {
+      const user = userEvent.setup();
+
+      const {getByPlaceholderText, getByRole} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />
+      );
+
+      await user.type(getByPlaceholderText('Add a comment...'), 'New thread');
+      await user.click(getByRole('button', {name: 'Send'}));
+
+      expect(getByPlaceholderText('Add a comment...')).toBeDisabled();
+      expect(getByPlaceholderText('Add a comment...')).toHaveValue('New thread');
+    });
+
+    // Storing the text on the way out would bring back the draft the
+    // session has just dropped and reopen the form.
+    it('closes the form for good after the thread has been created', async () => {
+      const user = userEvent.setup();
+      const setDraft = jest.fn();
+
+      const {getByPlaceholderText, queryByPlaceholderText, getByRole} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {setDraft}
+      );
+
+      await user.type(getByPlaceholderText('Add a comment...'), 'New thread');
+      await user.click(getByRole('button', {name: 'Send'}));
+
+      postDraftsChange({
+        'ContentElement:10': {
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          body: 'New thread',
+          pending: true
+        }
+      });
+      await waitFor(() =>
+        expect(getByPlaceholderText('Add a comment...')).toBeDisabled()
+      );
+      setDraft.mockClear();
+
+      postThreadChange({
+        id: 1,
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        comments: [{id: 10, body: 'New thread', creatorName: 'Alice', creatorId: 1}]
+      });
+      postDraftsChange({});
+
+      await waitFor(() =>
+        expect(queryByPlaceholderText('Add a comment...')).toBeNull()
+      );
+      expect(setDraft).not.toHaveBeenCalled();
     });
   });
 

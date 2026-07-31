@@ -6,7 +6,8 @@ function fakeReviewSession() {
   const session = {
     createThread: jest.fn().mockResolvedValue(),
     createComment: jest.fn().mockResolvedValue(),
-    updateThread: jest.fn().mockResolvedValue()
+    updateThread: jest.fn().mockResolvedValue(),
+    setDraft: jest.fn()
   };
 
   Object.assign(session, BackboneEvents);
@@ -133,6 +134,47 @@ describe('ReviewMessageHandler', () => {
     expect(session.updateThread).toHaveBeenCalledWith({
       threadId: 1, resolved: true
     });
+  });
+
+  it('calls session.setDraft on SET_COMMENT_DRAFT message from targetWindow', async () => {
+    const session = fakeReviewSession();
+
+    ReviewMessageHandler.create({session, targetWindow: window});
+
+    window.dispatchEvent(new MessageEvent('message', {
+      data: {
+        type: 'SET_COMMENT_DRAFT',
+        payload: {subjectType: 'CE', subjectId: 10, body: 'Half a thought'}
+      },
+      origin: window.location.origin,
+      source: window
+    }));
+
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(session.setDraft).toHaveBeenCalledWith({
+      subjectType: 'CE', subjectId: 10, body: 'Half a thought'
+    });
+  });
+
+  it('posts REVIEW_STATE_DRAFTS_CHANGE on change:drafts event', () => {
+    const session = fakeReviewSession();
+    const postMessage = jest.fn();
+    jest.spyOn(window, 'postMessage').mockImplementation(postMessage);
+
+    ReviewMessageHandler.create({session, targetWindow: window});
+
+    const drafts = {
+      'CE:10': {subjectType: 'CE', subjectId: 10, body: 'Half a thought', pending: false}
+    };
+    session.trigger('change:drafts', drafts);
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {type: 'REVIEW_STATE_DRAFTS_CHANGE', payload: drafts},
+      window.location.origin
+    );
+
+    window.postMessage.mockRestore();
   });
 
   it('ignores messages not from targetWindow', async () => {

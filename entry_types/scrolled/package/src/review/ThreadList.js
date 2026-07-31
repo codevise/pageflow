@@ -2,6 +2,7 @@ import React, {useMemo, useState} from 'react';
 import classNames from 'classnames';
 
 import {useI18n} from '../frontend/i18n';
+import {useCommentDraft} from './ReviewStateProvider';
 import {useLocatedCommentThreadsForSubject} from './useLocatedCommentThreadsForSubject';
 import {Thread} from './Thread';
 import {NewThreadForm} from './NewThreadForm';
@@ -35,16 +36,23 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
                                   highlightedThreadId.includes(thread.id) :
                                   thread.id === highlightedThreadId;
 
+  const noThreads = activeThreads.length === 0 && resolvedThreads.length === 0;
+
+  const [draft] = useCommentDraft({subjectType, subjectId});
   const [expandedThreadId, setExpandedThreadId] = useState(null);
-  const [formToggled, setFormToggled] = useState(null);
   const [resolvedToggled, setResolvedToggled] = useState(null);
+  const [formToggled, setFormToggled] = useState(
+    showNewFormProp !== undefined ? showNewFormProp :
+    expandResolved ? noThreads : activeThreads.length === 0
+  );
 
   const showResolved = resolvedToggled !== null ? resolvedToggled : !!expandResolved;
 
-  const noThreads = activeThreads.length === 0 && resolvedThreads.length === 0;
-  const showNewForm = formToggled !== null ? formToggled :
-                      showNewFormProp !== undefined ? showNewFormProp :
-                      expandResolved ? noThreads : activeThreads.length === 0;
+  // An unsent draft reopens the form and keeps it open while the thread is
+  // being created. Callers passing showNewForm={false} suppress the form
+  // entirely: the editor sidebar lists compose new threads in a view of
+  // their own.
+  const showNewForm = showNewFormProp !== false && (!!draft || formToggled);
 
   function toggleThread(threadId) {
     setExpandedThreadId(expandedThreadId === threadId ? null : threadId);

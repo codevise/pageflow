@@ -5,6 +5,7 @@ import {useI18n} from '../frontend/i18n';
 import {AvatarStack} from './Avatar';
 import {Comment} from './Comment';
 import {ReplyForm} from './ReplyForm';
+import {useCommentDraft} from './ReviewStateProvider';
 import {useSubjectQuote} from './subjectQuote';
 import {commentsWithOutdatedQuote} from './outdatedQuotes';
 import {useScrollHighlightedThreadIntoView} from './scrollHighlightedThreadIntoView';
@@ -14,10 +15,16 @@ import ResolveIcon from './images/resolve.svg';
 import UnresolveIcon from './images/unresolve.svg';
 import styles from './Thread.module.css';
 
-export function Thread({thread, collapsed, onToggle, onResolve, onClick, highlighted, interactive = true}) {
+export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, onClick, highlighted, interactive = true}) {
   const {t} = useI18n({locale: 'ui'});
   const firstComment = thread.comments[0];
   const replies = thread.comments.slice(1);
+
+  // Collapsing hides the reply form, which would leave a drafted reply
+  // out of reach.
+  const [replyDraft] = useCommentDraft({threadId: thread.id});
+  const collapsed = collapsedProp && !replyDraft;
+
   const repliesCollapsed = collapsed && replies.length > 0;
 
   const currentQuote = useSubjectQuote(thread);

@@ -42,6 +42,10 @@
   font-size: space(3);
 }
 
+.input:disabled {
+  color: var(--ui-on-surface-color-light);
+}
+
 .submitButton {
   display: flex;
   align-items: center;
@@ -54,4 +58,24 @@
   border-radius: rounded();
   padding: space(1.5) space(3);
   cursor: pointer;
+}
+
+.submitButton:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

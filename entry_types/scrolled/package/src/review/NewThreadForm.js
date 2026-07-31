@@ -1,26 +1,24 @@
-import React, {useCallback, useState} from 'react';
-
-import {useSectionPermaIdOfSubject} from 'pageflow-scrolled/entryState';
+import React, {useCallback} from 'react';
 
 import {useI18n} from '../frontend/i18n';
-import {postCreateCommentThreadMessage} from './postMessage';
-import {useSubjectQuote} from './subjectQuote';
+import {useCreateCommentThread} from './ReviewStateProvider';
+import {useDraftedBody} from './useDraftedBody';
 import {autoGrow, autoResize} from './autoGrow';
 import {isSubmitShortcut} from './submitShortcut';
 
 import SendIcon from './images/send.svg';
+import SpinnerIcon from '../frontend/icons/spinner.svg';
 import styles from './NewThreadForm.module.css';
 
 export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit}) {
   const {t} = useI18n({locale: 'ui'});
-  const [body, setBody] = useState('');
+
+  const {body, setBody, submitting} = useDraftedBody({subjectType, subjectId});
   const hasText = body.trim().length > 0;
 
-  const sectionPermaId = useSectionPermaIdOfSubject({subjectType, subjectId});
-
-  // Recorded now since the commented text can change afterwards, leaving the
-  // comment without the wording it referred to.
-  const quote = useSubjectQuote({subjectType, subjectId, subjectRange});
+  const createCommentThread = useCreateCommentThread({
+    subjectType, subjectId, subjectRange
+  });
 
   // preventScroll keeps focus from yanking the page to the top before the
   // portaled popover has been positioned by floating-ui.
@@ -47,33 +45,33 @@ export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit}) 
   }
 
   function createThread() {
-    if (!hasText) return;
+    if (!hasText || submitting) return;
 
-    postCreateCommentThreadMessage({
-      subjectType, subjectId, subjectRange, sectionPermaId, body, quote
-    });
-    setBody('');
+    createCommentThread(body);
 
     if (onSubmit) onSubmit();
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit} aria-busy={submitting}>
       <textarea className={styles.input}
                 ref={setInputRef}
                 value={body}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
                 placeholder={t('pageflow_scrolled.review.add_comment_placeholder')}
+                disabled={submitting}
                 rows={3} />
       <div className={styles.actions}>
-        {hasText &&
+        {hasText && !submitting &&
           <span className={styles.hint}>
             {t('pageflow_scrolled.review.enter_for_new_line')}
           </span>}
         <button className={styles.submitButton}
-                type="submit">
-          <SendIcon /> {t('pageflow_scrolled.review.send')}
+                type="submit"
+                disabled={submitting}>
+          {submitting ? <SpinnerIcon className={styles.spinner} /> : <SendIcon />}
+          {t('pageflow_scrolled.review.send')}
         </button>
       </div>
     </form>

@@ -17,6 +17,13 @@ export function postCreateCommentMessage({threadId, body, quote}) {
   );
 }
 
+export function postSetCommentDraftMessage(draft) {
+  window.top.postMessage(
+    {type: 'SET_COMMENT_DRAFT', payload: draft},
+    window.location.origin
+  );
+}
+
 export function postUpdateThreadMessage({threadId, resolved}) {
   window.top.postMessage(
     {type: 'UPDATE_THREAD', payload: {threadId, resolved}},
@@ -34,6 +41,13 @@ export function postReviewStateResetMessage(targetWindow, state) {
 export function postReviewStateThreadChangeMessage(targetWindow, thread) {
   targetWindow.postMessage(
     {type: 'REVIEW_STATE_THREAD_CHANGE', payload: thread},
+    window.location.origin
+  );
+}
+
+export function postReviewStateDraftsChangeMessage(targetWindow, drafts) {
+  targetWindow.postMessage(
+    {type: 'REVIEW_STATE_DRAFTS_CHANGE', payload: drafts},
     window.location.origin
   );
 }

@@ -49,14 +49,12 @@ const NewThreadFormView = ReviewView.extend({
   className: styles.form,
 
   renderContent() {
-    const {entry, subjectType, subjectId, subjectRange} = this.options;
-    const leave = () => entry.trigger('resetSelection');
+    const {subjectType, subjectId, subjectRange} = this.options;
 
     return (
       <NewThreadForm subjectType={subjectType}
                      subjectId={subjectId}
-                     subjectRange={subjectRange}
-                     onSubmit={leave} />
+                     subjectRange={subjectRange} />
     );
   }
 });

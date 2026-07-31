@@ -5,13 +5,18 @@ import {renderHook} from '@testing-library/react-hooks';
 
 import {
   ReviewStateProvider,
+  useCommentDraft,
   useCommentThread,
-  useCommentThreads
+  useCommentThreads,
+  useCreateComment,
+  useCreateCommentThread
 } from 'review/ReviewStateProvider';
 import {
   postReviewStateResetMessage,
-  postReviewStateThreadChangeMessage
+  postReviewStateThreadChangeMessage,
+  postReviewStateDraftsChangeMessage
 } from 'review/postMessage';
+import {renderHookWithReviewState} from 'support/renderWithReviewState';
 
 function wrapper({children}) {
   return <ReviewStateProvider>{children}</ReviewStateProvider>;
@@ -237,6 +242,251 @@ describe('ReviewStateProvider', () => {
       );
 
       expect(result.current).toBeUndefined();
+    });
+  });
+
+  describe('useCommentDraft', () => {
+    const draft = {
+      subjectType: 'CE', subjectId: 10, body: 'Half a thought', pending: false
+    };
+
+    function renderDraftHook({initialDrafts, setDraft} = {}) {
+      return renderHook(
+        () => useCommentDraft({subjectType: 'CE', subjectId: 10}),
+        {
+          wrapper: ({children}) => (
+            <ReviewStateProvider initialDrafts={initialDrafts} setDraft={setDraft}>
+              {children}
+            </ReviewStateProvider>
+          )
+        }
+      );
+    }
+
+    it('returns undefined without a draft for the subject', () => {
+      const {result} = renderDraftHook();
+
+      expect(result.current[0]).toBeUndefined();
+    });
+
+    it('returns drafts passed as initial drafts', () => {
+      const {result} = renderDraftHook({initialDrafts: {'CE:10': draft}});
+
+      expect(result.current[0]).toEqual(draft);
+    });
+
+    it('updates on drafts change message', async () => {
+      const {result, waitForNextUpdate} = renderDraftHook();
+
+      act(() => {
+        postReviewStateDraftsChangeMessage(window, {'CE:10': draft});
+      });
+      await waitForNextUpdate();
+
+      expect(result.current[0]).toEqual(draft);
+    });
+
+    it('stores a draft for the subject by posting a message', () => {
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+      const {result} = renderDraftHook();
+
+      result.current[1]('Half a thought');
+
+      expect(postMessage).toHaveBeenCalledWith(
+        {
+          type: 'SET_COMMENT_DRAFT',
+          payload: {subjectType: 'CE', subjectId: 10, body: 'Half a thought'}
+        },
+        window.location.origin
+      );
+
+      postMessage.mockRestore();
+    });
+
+    it('stores a draft through the function passed to the provider instead', () => {
+      const setDraft = jest.fn();
+
+      const {result} = renderDraftHook({setDraft});
+
+      result.current[1]('Half a thought');
+
+      expect(setDraft).toHaveBeenCalledWith({
+        subjectType: 'CE', subjectId: 10, body: 'Half a thought'
+      });
+    });
+
+    it('keeps drafts on reset message', async () => {
+      const {result, waitForNextUpdate} = renderHook(
+        () => ({
+          draft: useCommentDraft({subjectType: 'CE', subjectId: 10})[0],
+          threads: useCommentThreads()
+        }),
+        {
+          wrapper: ({children}) => (
+            <ReviewStateProvider initialDrafts={{'CE:10': draft}}>
+              {children}
+            </ReviewStateProvider>
+          )
+        }
+      );
+
+      postReset({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [{id: 1, subjectType: 'CE', subjectId: 10, comments: []}]
+      });
+      await waitForNextUpdate();
+
+      expect(result.current.threads).toHaveLength(1);
+      expect(result.current.draft).toEqual(draft);
+    });
+  });
+
+  describe('useCommentDraft of a thread', () => {
+    const draft = {threadId: 7, body: 'Half a reply', pending: false};
+
+    it('returns the draft stored for the thread', () => {
+      const {result} = renderHook(() => useCommentDraft({threadId: 7}), {
+        wrapper: ({children}) => (
+          <ReviewStateProvider initialDrafts={{'Thread:7': draft}}>
+            {children}
+          </ReviewStateProvider>
+        )
+      });
+
+      expect(result.current[0]).toEqual(draft);
+    });
+
+    it('stores a draft for the thread', () => {
+      const setDraft = jest.fn();
+
+      const {result} = renderHook(() => useCommentDraft({threadId: 7}), {
+        wrapper: ({children}) => (
+          <ReviewStateProvider setDraft={setDraft}>{children}</ReviewStateProvider>
+        )
+      });
+
+      result.current[1]('Half a reply');
+
+      expect(setDraft).toHaveBeenCalledWith({threadId: 7, body: 'Half a reply'});
+    });
+  });
+
+  describe('useCreateComment', () => {
+    const seed = {
+      sections: [{id: 1, permaId: 7}],
+      contentElements: [{id: 1, permaId: 10, sectionId: 1, typeName: 'textBlock'}]
+    };
+
+    function renderCreateHook() {
+      return renderHookWithReviewState(
+        () => ({
+          createComment: useCreateComment({
+            threadId: 7, subjectType: 'ContentElement', subjectId: 10
+          }),
+          draft: useCommentDraft({threadId: 7})[0]
+        }),
+        {seed}
+      );
+    }
+
+    it('marks the draft of the thread pending right away', () => {
+      const {result} = renderCreateHook();
+
+      act(() => result.current.createComment('A reply'));
+
+      expect(result.current.draft).toEqual({
+        threadId: 7, body: 'A reply', pending: true
+      });
+    });
+
+    it('posts a create comment message', () => {
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+      const {result} = renderCreateHook();
+
+      act(() => result.current.createComment('A reply'));
+
+      expect(postMessage).toHaveBeenCalledWith(
+        {
+          type: 'CREATE_COMMENT',
+          payload: expect.objectContaining({threadId: 7, body: 'A reply'})
+        },
+        window.location.origin
+      );
+
+      postMessage.mockRestore();
+    });
+  });
+
+  // Assembling the payload needs the entry structure the subject lives in.
+  describe('useCreateCommentThread', () => {
+    const seed = {
+      sections: [{id: 1, permaId: 7}],
+      contentElements: [{id: 1, permaId: 10, sectionId: 1, typeName: 'textBlock'}]
+    };
+
+    function renderCreateHook({drafts} = {}) {
+      return renderHookWithReviewState(
+        () => ({
+          createThread: useCreateCommentThread({
+            subjectType: 'ContentElement', subjectId: 10
+          }),
+          draft: useCommentDraft({subjectType: 'ContentElement', subjectId: 10})[0],
+          other: useCommentDraft({subjectType: 'ContentElement', subjectId: 20})[0]
+        }),
+        {seed, drafts}
+      );
+    }
+
+    it('marks the draft of the subject pending right away', () => {
+      const {result} = renderCreateHook();
+
+      act(() => result.current.createThread('Looks good'));
+
+      expect(result.current.draft).toEqual({
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        body: 'Looks good',
+        pending: true
+      });
+    });
+
+    it('posts a create thread message with the section of the subject', () => {
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+      const {result} = renderCreateHook();
+
+      act(() => result.current.createThread('Looks good'));
+
+      expect(postMessage).toHaveBeenCalledWith(
+        {
+          type: 'CREATE_COMMENT_THREAD',
+          payload: expect.objectContaining({
+            subjectType: 'ContentElement',
+            subjectId: 10,
+            sectionPermaId: 7,
+            body: 'Looks good'
+          })
+        },
+        window.location.origin
+      );
+
+      postMessage.mockRestore();
+    });
+
+    it('keeps drafts of other subjects', () => {
+      const {result} = renderCreateHook({
+        drafts: {
+          'ContentElement:20': {
+            subjectType: 'ContentElement', subjectId: 20, body: 'Elsewhere', pending: false
+          }
+        }
+      });
+
+      act(() => result.current.createThread('Looks good'));
+
+      expect(result.current.other).toMatchObject({body: 'Elsewhere'});
     });
   });
 });
