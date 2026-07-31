@@ -17,9 +17,9 @@ export function postCreateCommentMessage({threadId, body, quote}) {
   );
 }
 
-export function postSetCommentDraftMessage({subjectType, subjectId, body}) {
+export function postSetCommentDraftMessage(draft) {
   window.top.postMessage(
-    {type: 'SET_COMMENT_DRAFT', payload: {subjectType, subjectId, body}},
+    {type: 'SET_COMMENT_DRAFT', payload: draft},
     window.location.origin
   );
 }

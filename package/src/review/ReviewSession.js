@@ -19,12 +19,12 @@ export class ReviewSession {
     return this._drafts;
   }
 
-  setDraft({subjectType, subjectId, body}) {
+  setDraft({body, ...of}) {
     if (body.trim().length) {
-      this._writeDraft({subjectType, subjectId, body});
+      this._writeDraft({...of, body});
     }
     else {
-      this._deleteDraft({subjectType, subjectId});
+      this._deleteDraft(of);
     }
   }
 
@@ -157,17 +157,17 @@ export class ReviewSession {
     this.trigger('reset', this._state);
   }
 
-  _writeDraft({subjectType, subjectId, body, pending = false}) {
+  _writeDraft({body, pending = false, ...of}) {
     this._drafts = {
       ...this._drafts,
-      [draftKey({subjectType, subjectId})]: {subjectType, subjectId, body, pending}
+      [draftKey(of)]: {...of, body, pending}
     };
 
     this.trigger('change:drafts', this._drafts);
   }
 
-  _deleteDraft({subjectType, subjectId}) {
-    const key = draftKey({subjectType, subjectId});
+  _deleteDraft(of) {
+    const key = draftKey(of);
 
     if (!(key in this._drafts)) return;
 
@@ -208,8 +208,9 @@ export class ReviewSession {
 
 Object.assign(ReviewSession.prototype, BackboneEvents);
 
-function draftKey({subjectType, subjectId}) {
-  return `${subjectType}:${subjectId}`;
+// Replies are drafted per thread, new threads per subject.
+function draftKey({threadId, subjectType, subjectId}) {
+  return threadId ? `Thread:${threadId}` : `${subjectType}:${subjectId}`;
 }
 
 function sameRange(a, b) {

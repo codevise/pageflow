@@ -79,13 +79,15 @@ export function ReviewStateProvider({initialState, initialDrafts, setDraft, chil
   );
 }
 
-export function useCommentDraft({subjectType, subjectId}) {
+export function useCommentDraft({threadId, subjectType, subjectId}) {
   const {drafts, setDraft} = useContext(CommentDraftsContext);
 
   return [
-    drafts[`${subjectType}:${subjectId}`],
-    useCallback(body => setDraft({subjectType, subjectId, body}),
-                [setDraft, subjectType, subjectId])
+    drafts[draftKey({threadId, subjectType, subjectId})],
+    useCallback(
+      body => setDraft(threadId ? {threadId, body} : {subjectType, subjectId, body}),
+      [setDraft, threadId, subjectType, subjectId]
+    )
   ];
 }
 
@@ -163,17 +165,14 @@ function reducer(state, action) {
       ...state,
       drafts: action.payload
     };
-  case 'SET_DRAFT': {
-    const {subjectType, subjectId} = action.payload;
-
+  case 'SET_DRAFT':
     return {
       ...state,
       drafts: {
         ...state.drafts,
-        [`${subjectType}:${subjectId}`]: action.payload
+        [draftKey(action.payload)]: action.payload
       }
     };
-  }
   case 'UPSERT_THREAD':
     return {
       ...state,
@@ -185,4 +184,9 @@ function reducer(state, action) {
   default:
     return state;
   }
+}
+
+// Replies are drafted per thread, new threads per subject.
+function draftKey({threadId, subjectType, subjectId}) {
+  return threadId ? `Thread:${threadId}` : `${subjectType}:${subjectId}`;
 }

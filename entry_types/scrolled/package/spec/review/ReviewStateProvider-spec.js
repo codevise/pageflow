@@ -341,6 +341,36 @@ describe('ReviewStateProvider', () => {
     });
   });
 
+  describe('useCommentDraft of a thread', () => {
+    const draft = {threadId: 7, body: 'Half a reply', pending: false};
+
+    it('returns the draft stored for the thread', () => {
+      const {result} = renderHook(() => useCommentDraft({threadId: 7}), {
+        wrapper: ({children}) => (
+          <ReviewStateProvider initialDrafts={{'Thread:7': draft}}>
+            {children}
+          </ReviewStateProvider>
+        )
+      });
+
+      expect(result.current[0]).toEqual(draft);
+    });
+
+    it('stores a draft for the thread', () => {
+      const setDraft = jest.fn();
+
+      const {result} = renderHook(() => useCommentDraft({threadId: 7}), {
+        wrapper: ({children}) => (
+          <ReviewStateProvider setDraft={setDraft}>{children}</ReviewStateProvider>
+        )
+      });
+
+      result.current[1]('Half a reply');
+
+      expect(setDraft).toHaveBeenCalledWith({threadId: 7, body: 'Half a reply'});
+    });
+  });
+
   // Assembling the payload needs the entry structure the subject lives in.
   describe('useCreateCommentThread', () => {
     const seed = {

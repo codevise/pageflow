@@ -836,6 +836,29 @@ describe('ReviewSession', () => {
       expect(listener).toHaveBeenCalledWith(session.drafts);
     });
 
+    it('keeps drafts of replies separate from those of new threads', () => {
+      const session = setupSession();
+
+      session.setDraft({
+        subjectType: 'ContentElement', subjectId: 10, body: 'A new topic'
+      });
+      session.setDraft({threadId: 10, body: 'A reply'});
+
+      expect(session.drafts).toEqual({
+        'ContentElement:10': expect.objectContaining({body: 'A new topic'}),
+        'Thread:10': {threadId: 10, body: 'A reply', pending: false}
+      });
+    });
+
+    it('discards the draft of a reply when the body is blank', () => {
+      const session = setupSession();
+      session.setDraft({threadId: 10, body: 'A reply'});
+
+      session.setDraft({threadId: 10, body: ''});
+
+      expect(session.drafts).toEqual({});
+    });
+
     it('shares one draft between the ranges of a subject', () => {
       const session = setupSession();
 

@@ -1,7 +1,8 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback} from 'react';
 
 import {useI18n} from '../frontend/i18n';
-import {useCommentDraft, useCreateCommentThread} from './ReviewStateProvider';
+import {useCreateCommentThread} from './ReviewStateProvider';
+import {useDraftedBody} from './useDraftedBody';
 import {autoGrow, autoResize} from './autoGrow';
 import {isSubmitShortcut} from './submitShortcut';
 
@@ -75,33 +76,4 @@ export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit}) 
       </div>
     </form>
   );
-}
-
-// Storing the draft only once the form goes away is deliberate: whether a
-// draft exists decides whether the thread list keeps the form open, which
-// would otherwise make the form disappear from under a reviewer clearing
-// the text to start over.
-function useDraftedBody({subjectType, subjectId}) {
-  const [draft, setDraft] = useCommentDraft({subjectType, subjectId});
-
-  // Read when mounting only: echoing the stored draft back into the
-  // textarea would make its value lag behind typing.
-  const [body, setBody] = useState(() => draft?.body || '');
-  const pending = !!draft?.pending;
-
-  const latest = useRef();
-  latest.current = {body, pending, setDraft};
-
-  useEffect(() => () => {
-    const {body, pending, setDraft} = latest.current;
-
-    // The session drops the draft it created the thread from, so storing
-    // the text of a pending draft here would resurrect it. A failed
-    // attempt leaves a draft that is no longer pending.
-    if (pending) return;
-
-    setDraft(body);
-  }, []);
-
-  return {body, setBody, submitting: pending};
 }
