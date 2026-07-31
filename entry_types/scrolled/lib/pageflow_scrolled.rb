@@ -17,6 +17,7 @@ module PageflowScrolled
                               theme_files: {
                                 logo_mobile: LOGO_OPTIONS,
                                 logo_desktop: LOGO_OPTIONS,
+                                font: FONT_OPTIONS,
                                 **FAVICONS
                               })
     end
@@ -38,6 +39,11 @@ module PageflowScrolled
         {resized: '350x100>'}
       end
     end
+  }.freeze
+
+  FONT_OPTIONS = {
+    content_type: %r{\A(font/woff2?|application/(x-)?font-woff2?)\z},
+    styles: {original: {}}
   }.freeze
 
   FAVICONS = {
