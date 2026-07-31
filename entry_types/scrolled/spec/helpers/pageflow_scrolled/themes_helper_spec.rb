@@ -27,6 +27,18 @@ module PageflowScrolled
         helper.scrolled_theme_asset_path(customized_theme, '../shared/icons/muted.svg')
       end
 
+      it 'does not modify passed path' do
+        entry = create(:entry)
+        theme = Pageflow::Theme.new(:test)
+        customized_theme = Pageflow::CustomizedTheme.find(entry:, theme:)
+        path = '../shared/icons/muted.svg'
+
+        allow(helper).to receive(:asset_pack_path)
+        helper.scrolled_theme_asset_path(customized_theme, path)
+
+        expect(path).to eq('../shared/icons/muted.svg')
+      end
+
       it 'raises helpful error for relative paths to other sibling or parent directory' do
         entry = create(:entry)
         theme = Pageflow::Theme.new(:test)
@@ -180,6 +192,14 @@ module PageflowScrolled
         css = helper.scrolled_theme_font_face_rules(theme)
 
         expect(css).to include('url("/packs/static/pageflow-scrolled/themes/shared/fonts/a.woff")')
+      end
+
+      it 'resolves src in shared theme directory on repeated renders' do
+        theme = customized_theme(font_faces: [{family: 'Avenir', src: '../shared/fonts/a.woff'}])
+
+        first = helper.scrolled_theme_font_face_rules(theme)
+
+        expect(helper.scrolled_theme_font_face_rules(theme)).to eq(first)
       end
 
       it 'passes absolute urls through' do

@@ -252,7 +252,7 @@ module PageflowScrolled
 
     def extract_theme_directory_from_scrolled_theme_asset_path(theme, path)
       if path.starts_with?('../shared/')
-        ['shared', path.gsub!('../shared/', '')]
+        ['shared', path.sub('../shared/', '')]
       elsif path.starts_with?('../')
         raise(ArgumentError,
               'Upward navigation to other directory than the shared ' \
