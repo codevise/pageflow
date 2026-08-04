@@ -851,6 +851,57 @@ module PageflowScrolled
                                        })
       end
 
+      it 'renders legal info from site' do
+        site = create(:site,
+                      imprint_link_label: 'Impressum',
+                      imprint_link_url: 'https://example.com/impressum',
+                      copyright_link_label: '&copy; Example',
+                      copyright_link_url: 'https://example.com/copyright')
+        entry = create(:published_entry, type_name: 'scrolled', site:)
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         legalInfo: {
+                                           imprint: {
+                                             label: 'Impressum',
+                                             url: 'https://example.com/impressum'
+                                           },
+                                           copyright: {
+                                             label: '&copy; Example',
+                                             url: 'https://example.com/copyright'
+                                           }
+                                         }
+                                       })
+      end
+
+      it 'renders legal info translated for locale of entry' do
+        site = create(:site,
+                      imprint_link_label: 'Impressum',
+                      imprint_link_url: 'https://example.com/impressum',
+                      attribute_translations: {
+                        'en' => {
+                          'imprint_link_label' => 'Legal notice',
+                          'imprint_link_url' => 'https://example.com/en/legal-notice'
+                        }
+                      })
+        entry = create(:published_entry,
+                       type_name: 'scrolled',
+                       site:,
+                       revision_attributes: {locale: 'en'})
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(config: {
+                                         legalInfo: {
+                                           imprint: {
+                                             label: 'Legal notice',
+                                             url: 'https://example.com/en/legal-notice'
+                                           }
+                                         }
+                                       })
+      end
+
       it 'renders theme assets' do
         entry = create(:published_entry, type_name: 'scrolled')
 
