@@ -280,5 +280,17 @@ module Pageflow
         expect(site.errors).to include(:attribute_translations)
       end
     end
+
+    describe '#legal_info' do
+      it 'returns legal info resolved for locale' do
+        site = build(:site,
+                     imprint_link_label: 'Impressum',
+                     attribute_translations: {
+                       'en' => {'imprint_link_label' => 'Legal notice'}
+                     })
+
+        expect(site.legal_info(locale: 'en').imprint.label).to eq('Legal notice')
+      end
+    end
   end
 end

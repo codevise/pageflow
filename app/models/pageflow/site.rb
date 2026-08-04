@@ -22,6 +22,10 @@ module Pageflow
 
     delegate :enabled_feature_names, to: :account
 
+    def legal_info(locale:)
+      LegalInfo.new(self, locale)
+    end
+
     def display_name
       name.presence || I18n.t('pageflow.admin.sites.default_name')
     end

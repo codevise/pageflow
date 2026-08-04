@@ -5,6 +5,30 @@ module Pageflow
   describe PublishedEntry do
     include UsedFileTestHelper
 
+    describe '#legal_info' do
+      let(:site) do
+        create(:site,
+               imprint_link_label: 'Impressum',
+               attribute_translations: {'en' => {'imprint_link_label' => 'Legal notice'}})
+      end
+
+      it 'resolves site legal info for locale of revision' do
+        entry = create(:entry, :published,
+                       site:,
+                       published_revision_attributes: {locale: 'en'})
+
+        expect(PublishedEntry.new(entry).legal_info.imprint.label).to eq('Legal notice')
+      end
+
+      it 'falls back to site attributes for other locales' do
+        entry = create(:entry, :published,
+                       site:,
+                       published_revision_attributes: {locale: 'de'})
+
+        expect(PublishedEntry.new(entry).legal_info.imprint.label).to eq('Impressum')
+      end
+    end
+
     describe '#title' do
       let(:entry) { create(:entry, title: 'Metropolis') }
       let(:published_entry) { PublishedEntry.new(entry) }
