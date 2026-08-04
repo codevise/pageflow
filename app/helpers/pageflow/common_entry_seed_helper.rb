@@ -10,7 +10,9 @@ module Pageflow
       config = Pageflow.config_for(entry)
 
       json.locale entry.locale
-      json.site entry.site.as_json(only: [:privacy_link_url])
+      json.site do
+        json.privacy_link_url entry.legal_info.privacy_url
+      end
       json.enabled_feature_names entry.enabled_feature_names
       json.page_types PageTypesSeed.new(config).as_json
 
