@@ -223,11 +223,8 @@ module Pageflow
 
         result = published_entry.translations
 
-        expect(result.length).to eq(2)
-        expect(result[0]).to be_kind_of(PublishedEntry)
-        expect(result[0].title).to eq(entry.title)
-        expect(result[1]).to be_kind_of(PublishedEntry)
-        expect(result[1].title).to eq(translation.title)
+        expect(result).to all(be_kind_of(PublishedEntry))
+        expect(result.map(&:title)).to contain_exactly(entry.title, translation.title)
       end
 
       it 'filters out non-published entries' do
@@ -262,9 +259,7 @@ module Pageflow
 
         result = published_entry.translations
 
-        expect(result.length).to eq(2)
-        expect(result[0].title).to eq(entry.title)
-        expect(result[1].title).to eq(translation.title)
+        expect(result.map(&:title)).to contain_exactly(entry.title, translation.title)
       end
 
       it 'filters out non-published entries if entry is published with password' do
@@ -312,9 +307,7 @@ module Pageflow
 
           result = published_entry.translations(include_noindex: true)
 
-          expect(result.length).to eq(2)
-          expect(result[0].title).to eq(entry.title)
-          expect(result[1].title).to eq(translation.title)
+          expect(result.map(&:title)).to contain_exactly(entry.title, translation.title)
         end
 
         it 'filters out non-published entries' do
@@ -349,9 +342,7 @@ module Pageflow
 
           result = published_entry.translations(include_noindex: true)
 
-          expect(result.length).to eq(2)
-          expect(result[0].title).to eq(entry.title)
-          expect(result[1].title).to eq(translation.title)
+          expect(result.map(&:title)).to contain_exactly(entry.title, translation.title)
         end
 
         it 'filters out non-published entries for password protected entry' do
@@ -377,13 +368,10 @@ module Pageflow
 
         result = published_entry.translations
 
-        expect(result.length).to eq(3)
-        expect(result[0]).to be_kind_of(PublishedEntry)
-        expect(result[0].title).to eq(entry.title)
-        expect(result[1]).to be_kind_of(PublishedEntry)
-        expect(result[1].title).to eq(published_translation.title)
-        expect(result[2]).to be_kind_of(PublishedEntry)
-        expect(result[2].title).to eq(draft_translation.title)
+        expect(result).to all(be_kind_of(PublishedEntry))
+        expect(result.map(&:title)).to contain_exactly(entry.title,
+                                                       published_translation.title,
+                                                       draft_translation.title)
       end
 
       it 'allows modifying the entries scope' do
