@@ -35,7 +35,17 @@ module Pageflow
     #
     # @param embed [Boolean] Whether the entry is being rendered as an
     #   embed.
-    def get_with_entry_env(action, entry:, mode: :published, embed: false, params: {})
+    #
+    # @param ui_locale [Symbol] Locale of the signed in user, i.e. the
+    #   locale to render user interface displayed on top of the entry
+    #   in. Not read from `I18n.locale` since entry type controllers
+    #   are free to change it while rendering.
+    def get_with_entry_env(action,
+                           entry:,
+                           mode: :published,
+                           embed: false,
+                           ui_locale: I18n.default_locale,
+                           params: {})
       revision =
         if mode == :published
           entry.published_revision
@@ -47,7 +57,8 @@ module Pageflow
       EntriesControllerEnvHelper.add_entry_info_to_env(request.env,
                                                        entry: published_entry,
                                                        mode:,
-                                                       embed:)
+                                                       embed:,
+                                                       ui_locale:)
       get(action, params: {**params})
     end
   end

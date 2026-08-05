@@ -39,7 +39,10 @@ module Pageflow
     end
 
     def delegate_to_entry_type_frontend_app!(entry)
-      EntriesControllerEnvHelper.add_entry_info_to_env(request.env, entry:, mode: :preview)
+      EntriesControllerEnvHelper.add_entry_info_to_env(request.env,
+                                                       entry:,
+                                                       mode: :preview,
+                                                       ui_locale: I18n.locale)
       delegate_to_rack_app!(entry.entry_type.frontend_app)
     end
   end

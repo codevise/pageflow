@@ -1228,6 +1228,39 @@ module PageflowScrolled
                                          })
         end
 
+        it 'uses ui_locale option as locale' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry, ui_locale: :de)
+
+          expect(result).to include_json(i18n: {locale: 'de'})
+        end
+
+        it 'includes review translations in ui locale next to public translations' do
+          translation(:fr, 'pageflow_scrolled.public.some', 'texte')
+          translation(:de, 'pageflow_scrolled.review.some', 'text')
+          entry = create(:published_entry,
+                         type_name: 'scrolled',
+                         revision_attributes: {locale: 'fr'})
+
+          result = render(helper, entry, ui_locale: :de, load_commenting: true)
+
+          expect(result).to include_json(i18n: {
+                                           translations: {
+                                             fr: {
+                                               pageflow_scrolled: {
+                                                 public: {some: 'texte'}
+                                               }
+                                             },
+                                             de: {
+                                               pageflow_scrolled: {
+                                                 review: {some: 'text'}
+                                               }
+                                             }
+                                           }
+                                         })
+        end
+
         it 'supports skipping i18n' do
           entry = create(:published_entry, type_name: 'scrolled')
 

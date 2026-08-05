@@ -120,6 +120,57 @@ module PageflowScrolled
                                        })
       end
 
+      it 'keeps public translations in entry locale when merging ui locale' do
+        translation(:fr, 'pageflow_scrolled.public.some', 'texte')
+        translation(:de, 'pageflow_scrolled.review.some', 'text')
+        entry = create(:published_entry, revision_attributes: {locale: 'fr'})
+
+        result = helper.scrolled_i18n_translations(entry,
+                                                   ui_locale: :de,
+                                                   include_review: true)
+
+        expect(result).to include_json(fr: {
+                                         pageflow_scrolled: {
+                                           public: {some: 'texte'}
+                                         }
+                                       },
+                                       de: {
+                                         pageflow_scrolled: {
+                                           review: {some: 'text'}
+                                         }
+                                       })
+      end
+
+      it 'supports including inline_editing translations in ui locale' do
+        translation(:de, 'pageflow_scrolled.inline_editing.some', 'text')
+        entry = create(:published_entry, revision_attributes: {locale: 'fr'})
+
+        result = helper.scrolled_i18n_translations(entry,
+                                                   ui_locale: :de,
+                                                   include_inline_editing: true)
+
+        expect(result).to include_json(de: {
+                                         pageflow_scrolled: {
+                                           inline_editing: {some: 'text'}
+                                         }
+                                       })
+      end
+
+      it 'supports including review translations in ui locale' do
+        translation(:de, 'pageflow_scrolled.review.some', 'text')
+        entry = create(:published_entry, revision_attributes: {locale: 'fr'})
+
+        result = helper.scrolled_i18n_translations(entry,
+                                                   ui_locale: :de,
+                                                   include_review: true)
+
+        expect(result).to include_json(de: {
+                                         pageflow_scrolled: {
+                                           review: {some: 'text'}
+                                         }
+                                       })
+      end
+
       it 'supports including inline_editing translations in current locale' do
         translation(I18n.locale, 'pageflow_scrolled.inline_editing.some', 'text')
         entry = create(:published_entry, revision_attributes: {locale: 'fr'})

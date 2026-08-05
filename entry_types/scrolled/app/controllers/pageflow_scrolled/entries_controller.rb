@@ -36,7 +36,12 @@ module PageflowScrolled
         origin_url: request.original_url
       }
 
-      options[:load_commenting] = true if mode == :preview && entry.feature_state('commenting')
+      if mode == :preview
+        # Published entries are cached without taking the requesting
+        # user into account. Only previews may depend on their locale.
+        options[:ui_locale] = get_ui_locale_from_env
+        options[:load_commenting] = true if entry.feature_state('commenting')
+      end
 
       options
     end
