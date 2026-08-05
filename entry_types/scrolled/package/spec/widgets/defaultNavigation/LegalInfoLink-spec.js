@@ -17,6 +17,16 @@ describe('LegalInfoLink', () => {
     expect(getByRole('link')).toHaveAttribute('rel', 'noreferrer noopener');
   });
 
+  // Passed as expression since JSX would decode entities in a string
+  // literal attribute.
+  it('renders html in label', () => {
+    const {getByRole} = render(
+      <LegalInfoLink label={'&copy; Example'} url="https://example.com" />
+    );
+
+    expect(getByRole('link')).toHaveTextContent('© Example');
+  });
+
   it('allows overriding link props', () => {
     const {getByRole} = render(
       <LegalInfoLink label="Privacy"
