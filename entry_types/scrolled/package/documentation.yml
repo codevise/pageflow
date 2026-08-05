@@ -44,6 +44,7 @@ toc:
       - useI18n
       - useIsStaticPreview
       - useLegalInfo
+      - useLocale
       - useMediaMuted
       - usePortraitOrientation
       - usePrivacyLink
