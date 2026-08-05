@@ -51,6 +51,10 @@ module Pageflow
       @theme ||= CustomizedTheme.find(entry: self, theme: revision.theme)
     end
 
+    def legal_info
+      @legal_info ||= site.legal_info(locale:)
+    end
+
     def home_button
       HomeButton.new(revision, site)
     end

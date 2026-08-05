@@ -10,9 +10,8 @@ export function LegalInfoLink({label, url, props}) {
       {label && url &&
        <a href={url}
           {...(props || defaultProps)}
-          className={styles.legalInfoLink}>
-         {label}
-       </a>}
+          className={styles.legalInfoLink}
+          dangerouslySetInnerHTML={{__html: label}} />}
     </div>
   );
 }

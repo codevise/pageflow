@@ -1,11 +1,17 @@
 module Pageflow
   class Site < ApplicationRecord # rubocop:todo Style/Documentation
+    include TranslatedAttributes
+
     belongs_to :account
     belongs_to :custom_404_entry, class_name: 'Entry', optional: true
 
     has_many :entry_templates, dependent: :destroy
     has_many :entries
     has_many :permalink_directories, -> { order('path ASC') }
+
+    translated_attributes :imprint_link_label, :imprint_link_url,
+                          :copyright_link_label, :copyright_link_url,
+                          :privacy_link_url
 
     scope :with_home_url, -> { where.not(home_url: '') }
     scope :for_request, ->(request) { Pageflow.config.site_request_scope.call(all, request) }
@@ -15,6 +21,10 @@ module Pageflow
     validate :custom_404_entry_belongs_to_same_site
 
     delegate :enabled_feature_names, to: :account
+
+    def legal_info(locale:)
+      LegalInfo.new(self, locale)
+    end
 
     def display_name
       name.presence || I18n.t('pageflow.admin.sites.default_name')

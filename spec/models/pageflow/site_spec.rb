@@ -242,5 +242,55 @@ module Pageflow
         expect(site).to be_valid
       end
     end
+
+    describe 'translated attributes' do
+      it 'resolves declared attributes for locale' do
+        site = build(:site,
+                     imprint_link_label: 'Impressum',
+                     copyright_link_label: '&copy; Example',
+                     privacy_link_url: 'https://example.com/datenschutz',
+                     attribute_translations: {
+                       'en' => {
+                         'imprint_link_label' => 'Legal notice',
+                         'copyright_link_label' => '&copy; Example Inc.',
+                         'privacy_link_url' => 'https://example.com/en/privacy'
+                       }
+                     })
+
+        expect(site.translated(:imprint_link_label, locale: 'en')).to eq('Legal notice')
+        expect(site.translated(:copyright_link_label, locale: 'en')).to eq('&copy; Example Inc.')
+        expect(site.translated(:privacy_link_url, locale: 'en'))
+          .to eq('https://example.com/en/privacy')
+      end
+
+      it 'exposes translations of urls of declared attributes' do
+        site = build(:site,
+                     attribute_translations: {
+                       'en' => {'imprint_link_url' => 'https://example.com/en/legal-notice'}
+                     })
+
+        expect(site.imprint_link_url_translations)
+          .to eq('en' => 'https://example.com/en/legal-notice')
+      end
+
+      it 'is invalid for attributes that are not declared' do
+        site = build(:site, attribute_translations: {'en' => {'cname' => 'other.example.com'}})
+
+        site.valid?
+        expect(site.errors).to include(:attribute_translations)
+      end
+    end
+
+    describe '#legal_info' do
+      it 'returns legal info resolved for locale' do
+        site = build(:site,
+                     imprint_link_label: 'Impressum',
+                     attribute_translations: {
+                       'en' => {'imprint_link_label' => 'Legal notice'}
+                     })
+
+        expect(site.legal_info(locale: 'en').imprint.label).to eq('Legal notice')
+      end
+    end
   end
 end

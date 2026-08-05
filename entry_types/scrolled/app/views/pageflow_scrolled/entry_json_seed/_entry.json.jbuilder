@@ -14,14 +14,14 @@ json.config do
   json.default_file_rights entry.account.default_file_rights
 
   json.legal_info do
-    site = entry.site
+    legal_info = entry.legal_info
     json.imprint do
-      json.label raw(site.imprint_link_label)
-      json.url site.imprint_link_url
+      json.label raw(legal_info.imprint.label)
+      json.url legal_info.imprint.url
     end
     json.copyright do
-      json.label raw(site.copyright_link_label)
-      json.url site.copyright_link_url
+      json.label raw(legal_info.copyright.label)
+      json.url legal_info.copyright.url
     end
     json.privacy do
       json.label I18n.t('pageflow.public.privacy_notice')

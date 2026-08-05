@@ -377,6 +377,11 @@ de:
           attributes:
             user:
               required: Benutzer muss ausgewählt sein
+        pageflow/site:
+          attributes:
+            attribute_translations:
+              not_translatable: enthält ein Attribut, das nicht übersetzt werden kann
+              unknown_locale: enthält eine unbekannte Sprache
     models:
       account:
         one: Konto

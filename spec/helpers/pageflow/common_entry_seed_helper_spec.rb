@@ -150,6 +150,24 @@ module Pageflow
                                privacy_link_url: 'https://example.com/privacy'
                              })
         end
+
+        it 'contains privacy link url translated for locale of entry' do
+          site = create(:site,
+                        privacy_link_url: 'https://example.com/datenschutz',
+                        attribute_translations: {
+                          'en' => {'privacy_link_url' => 'https://example.com/en/privacy'}
+                        })
+          entry = PublishedEntry.new(
+            create(:entry, :published, site:, published_revision_attributes: {locale: 'en'})
+          )
+
+          result = helper.render_json { |json| helper.common_entry_seed(json, entry) }
+
+          expect(result)
+            .to include_json(site: {
+                               privacy_link_url: 'https://example.com/en/privacy'
+                             })
+        end
       end
 
       describe '["enabled_feature_names"]' do

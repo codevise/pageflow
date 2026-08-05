@@ -72,10 +72,12 @@ module Pageflow
     end
 
     def entry_privacy_link_url(entry)
-      return unless entry.site.privacy_link_url.present?
-      return entry.site.privacy_link_url if entry.site.privacy_link_url.start_with?('javascript:')
+      url = entry.legal_info.privacy_url
 
-      "#{entry.site.privacy_link_url}?lang=#{entry.locale}"
+      return unless url.present?
+      return url if url.start_with?('javascript:')
+
+      "#{url}?lang=#{entry.locale}"
     end
 
     def entry_file_rights(entry)
@@ -94,50 +96,30 @@ module Pageflow
       end
     end
 
-    # rubocop:todo Metrics/PerceivedComplexity
-    # rubocop:todo Metrics/CyclomaticComplexity
     def entry_global_links(entry) # rubocop:todo Metrics/AbcSize
-      links = []
+      legal_info = entry.legal_info
 
-      if entry.site.imprint_link_label.present? && entry.site.imprint_link_url.present?
-        links << link_to(
-          raw(entry.site.imprint_link_label),
-          entry.site.imprint_link_url,
-          target: entry.site.imprint_link_url.start_with?('javascript:') ? nil : '_blank',
-          tabindex: 2,
-          class: 'legal'
-        )
+      candidates = [
+        [legal_info.imprint.label, legal_info.imprint.url, 'legal'],
+        [legal_info.copyright.label, legal_info.copyright.url, 'copy'],
+        [I18n.t('pageflow.public.privacy_notice'), entry_privacy_link_url(entry), 'privacy']
+      ]
+
+      links = candidates.filter_map do |label, url, css_class|
+        next if label.blank? || url.blank?
+
+        link_to(raw(label),
+                url,
+                target: url.start_with?('javascript:') ? nil : '_blank',
+                tabindex: 2,
+                class: css_class)
       end
 
-      if entry.site.copyright_link_label.present? && entry.site.copyright_link_url.present?
-        links << link_to(
-          raw(entry.site.copyright_link_label),
-          entry.site.copyright_link_url,
-          target: entry.site.copyright_link_url.start_with?('javascript:') ? nil : '_blank',
-          tabindex: 2,
-          class: 'copy'
-        )
-      end
+      return '' if links.empty?
 
-      if entry.site.privacy_link_url.present?
-        links << link_to(
-          I18n.t('pageflow.public.privacy_notice'),
-          entry_privacy_link_url(entry),
-          target: entry.site.privacy_link_url.start_with?('javascript:') ? nil : '_blank',
-          tabindex: 2,
-          class: 'privacy'
-        )
-      end
-
-      if links.any?
-        content_tag(:span, I18n.t('pageflow.helpers.entries.global_links'),
-                    class: 'hidden') + safe_join(links, ''.html_safe)
-      else
-        ''
-      end
+      content_tag(:span, I18n.t('pageflow.helpers.entries.global_links'),
+                  class: 'hidden') + safe_join(links, ''.html_safe)
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
-    # rubocop:enable Metrics/PerceivedComplexity
 
     def entry_theme_stylesheet_link_tag(entry)
       stylesheet_link_tag(entry.theme.stylesheet_path,

@@ -312,6 +312,24 @@ module Pageflow
 
         expect(result).to eq('javascript:triggerConsentLayer()')
       end
+
+      it 'uses url translated for locale of entry' do
+        site = create(:site,
+                      privacy_link_url: 'https://example.com/datenschutz',
+                      attribute_translations: {
+                        'en' => {'privacy_link_url' => 'https://example.com/en/privacy'}
+                      })
+        entry = PublishedEntry.new(create(:entry,
+                                          :published,
+                                          site:,
+                                          published_revision_attributes: {
+                                            locale: 'en'
+                                          }))
+
+        result = helper.entry_privacy_link_url(entry)
+
+        expect(result).to eq('https://example.com/en/privacy?lang=en')
+      end
     end
 
     describe '#entry_file_rights' do
@@ -446,7 +464,7 @@ module Pageflow
     describe '#entry_global_links' do
       it 'does not output links by default' do
         site = create(:site)
-        entry = PublishedEntry.new(create(:entry, site:))
+        entry = PublishedEntry.new(create(:entry, :published, site:))
 
         result = helper.entry_global_links(entry)
 
@@ -457,7 +475,7 @@ module Pageflow
         site = create(:site,
                       imprint_link_label: 'Imprint',
                       imprint_link_url: 'https://example.com/legal')
-        entry = PublishedEntry.new(create(:entry, site:))
+        entry = PublishedEntry.new(create(:entry, :published, site:))
 
         result = helper.entry_global_links(entry)
 
@@ -469,7 +487,7 @@ module Pageflow
         site = create(:site,
                       copyright_link_label: 'Copyright',
                       copyright_link_url: 'https://example.com/copyright')
-        entry = PublishedEntry.new(create(:entry, site:))
+        entry = PublishedEntry.new(create(:entry, :published, site:))
 
         result = helper.entry_global_links(entry)
 
@@ -502,6 +520,41 @@ module Pageflow
 
         expect(result)
           .to have_selector('a:not([target])[href="javascript:triggerConsentLayer()"]')
+      end
+
+      it 'uses imprint label and url translated for locale of entry' do
+        site = create(:site,
+                      imprint_link_label: 'Impressum',
+                      imprint_link_url: 'https://example.com/impressum',
+                      attribute_translations: {
+                        'en' => {
+                          'imprint_link_label' => 'Legal notice',
+                          'imprint_link_url' => 'https://example.com/en/legal-notice'
+                        }
+                      })
+        entry = PublishedEntry.new(create(:entry, :published,
+                                          site:,
+                                          published_revision_attributes: {locale: 'en'}))
+
+        result = helper.entry_global_links(entry)
+
+        expect(result).to have_selector('a[href="https://example.com/en/legal-notice"]',
+                                        text: 'Legal notice')
+      end
+
+      it 'uses copyright label translated for locale of entry' do
+        site = create(:site,
+                      copyright_link_label: 'Urheberrecht',
+                      copyright_link_url: 'https://example.com/copyright',
+                      attribute_translations: {'en' => {'copyright_link_label' => 'Copyright'}})
+        entry = PublishedEntry.new(create(:entry, :published,
+                                          site:,
+                                          published_revision_attributes: {locale: 'en'}))
+
+        result = helper.entry_global_links(entry)
+
+        expect(result).to have_selector('a[href="https://example.com/copyright"]',
+                                        text: 'Copyright')
       end
     end
   end
