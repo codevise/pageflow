@@ -58,11 +58,14 @@ json.config do
 end
 
 unless options[:skip_i18n]
+  ui_locale = options[:ui_locale] || I18n.locale
+
   json.i18n do
     json.default_locale I18n.default_locale
-    json.locale I18n.locale
+    json.locale ui_locale
     json.translations scrolled_i18n_translations(
       entry,
+      ui_locale:,
       include_inline_editing: !!options[:load_inline_editing],
       include_review: !!options[:load_commenting]
     )

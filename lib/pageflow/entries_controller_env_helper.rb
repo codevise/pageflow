@@ -38,9 +38,29 @@ module Pageflow
       EntriesControllerEnvHelper.get_pageflow_hash(env)['embed']
     end
 
+    # Returns the locale of the signed in user, i.e. the locale any
+    # user interface displayed on top of the entry shall use. Returns
+    # `nil` for published entries since those are not rendered for a
+    # specific user. Entry types are expected to render the entry
+    # itself in the locale of the entry, no matter which locale is
+    # returned here.
+    #
+    # Use {EntriesControllerTestHelper} to set up the request
+    # environment in controller tests.
+    #
+    # @since 17.2
+    def get_ui_locale_from_env(env = request.env)
+      EntriesControllerEnvHelper.get_pageflow_hash(env)['ui_locale']
+    end
+
     # @api private
-    def self.add_entry_info_to_env(env, entry:, mode: nil, embed: false)
-      env['pageflow'] = {'published_entry' => entry, 'entry_mode' => mode, 'embed' => embed}
+    def self.add_entry_info_to_env(env, entry:, mode: nil, embed: false, ui_locale: nil)
+      env['pageflow'] = {
+        'published_entry' => entry,
+        'entry_mode' => mode,
+        'embed' => embed,
+        'ui_locale' => ui_locale
+      }
     end
 
     # @api private

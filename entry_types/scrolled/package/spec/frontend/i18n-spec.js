@@ -1,7 +1,81 @@
-import {useI18n} from 'frontend/i18n';
+import I18n from 'i18n-js';
+
+import {useI18n, useLocale} from 'frontend/i18n';
 
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {renderHookInEntry} from 'support';
+
+describe('useLocale', () => {
+  const originalLocale = I18n.locale;
+
+  afterEach(() => {
+    I18n.locale = originalLocale;
+  });
+
+  it('returns entry locale by default', () => {
+    const {result} = renderHookInEntry(
+      () => useLocale(),
+      {
+        seed: {
+          entry: {
+            locale: 'de'
+          }
+        }
+      }
+    );
+
+    expect(result.current).toEqual('de');
+  });
+
+  it('returns locale of user interface if requested', () => {
+    I18n.locale = 'fr';
+
+    const {result} = renderHookInEntry(
+      () => useLocale({locale: 'ui'}),
+      {
+        seed: {
+          entry: {
+            locale: 'de'
+          }
+        }
+      }
+    );
+
+    expect(result.current).toEqual('fr');
+  });
+
+  it('returns entry locale if requested explicitly', () => {
+    I18n.locale = 'fr';
+
+    const {result} = renderHookInEntry(
+      () => useLocale({locale: 'entry'}),
+      {
+        seed: {
+          entry: {
+            locale: 'de'
+          }
+        }
+      }
+    );
+
+    expect(result.current).toEqual('de');
+  });
+
+  it('fails for unknown locale option', () => {
+    const {result} = renderHookInEntry(
+      () => useLocale({locale: 'en'}),
+      {
+        seed: {
+          entry: {
+            locale: 'de'
+          }
+        }
+      }
+    );
+
+    expect(result.error.message).toMatch(/Unknown locale option 'en'/);
+  });
+});
 
 describe('useI18n', () => {
   useFakeTranslations({

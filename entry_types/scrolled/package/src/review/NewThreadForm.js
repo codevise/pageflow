@@ -1,13 +1,13 @@
 import React, {useCallback} from 'react';
 
-import {useI18n} from '../frontend/i18n';
+import {useI18n} from 'pageflow-scrolled/frontend';
 import {useCreateCommentThread} from './ReviewStateProvider';
 import {useDraftedBody} from './useDraftedBody';
 import {autoGrow, autoResize} from './autoGrow';
 import {isSubmitShortcut} from './submitShortcut';
 
 import SendIcon from './images/send.svg';
-import SpinnerIcon from '../frontend/icons/spinner.svg';
+import SpinnerIcon from './images/spinner.svg';
 import styles from './NewThreadForm.module.css';
 
 export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit}) {

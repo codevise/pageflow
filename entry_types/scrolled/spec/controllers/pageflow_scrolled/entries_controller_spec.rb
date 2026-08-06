@@ -126,6 +126,39 @@ module PageflowScrolled
         expect(response.body).to have_selector('html[lang=de]')
       end
 
+      it 'renders entry locale in seed data' do
+        entry = create(:entry,
+                       :published,
+                       type_name: 'scrolled',
+                       published_revision_attributes: {locale: 'de'})
+
+        get_with_entry_env(:show, entry:, ui_locale: :en)
+
+        expect(scrolled_seed['i18n']['locale']).to eq('de')
+      end
+
+      it 'renders ui locale in seed data in preview mode' do
+        entry = create(:entry,
+                       :published,
+                       type_name: 'scrolled',
+                       draft_attributes: {locale: 'de'})
+
+        get_with_entry_env(:show, entry:, mode: :preview, ui_locale: :en)
+
+        expect(scrolled_seed['i18n']['locale']).to eq('en')
+      end
+
+      it 'still uses entry locale as document language in preview mode' do
+        entry = create(:entry,
+                       :published,
+                       type_name: 'scrolled',
+                       draft_attributes: {locale: 'de'})
+
+        get_with_entry_env(:show, entry:, mode: :preview, ui_locale: :en)
+
+        expect(response.body).to have_selector('html[lang=de]')
+      end
+
       it 'uses ltr text direction for de entry loclae' do
         entry = create(:entry,
                        :published,
@@ -270,6 +303,12 @@ module PageflowScrolled
 
         expect(response.body).not_to have_selector('meta[name="csrf-param"]', visible: false)
       end
+    end
+
+    def scrolled_seed
+      JSON.parse(
+        Nokogiri::HTML(response.body).at('script[data-pageflow-scrolled-seed]').text
+      )
     end
 
     def with_forgery_protection
