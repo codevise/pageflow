@@ -65,6 +65,69 @@ describe('Comment', () => {
     expect(getByText(/^Mar \d+$/)).toHaveAttribute('datetime', '2026-03-15T14:30:00Z');
   });
 
+  describe('edited hint', () => {
+    useFakeTranslations({
+      'en.pageflow_scrolled.review.edited': 'Edited %{date}',
+      'de.pageflow_scrolled.review.edited': 'Bearbeitet %{date}'
+    }, {multiLocale: true});
+
+    const editedComment = {...comment, editedAt: '2026-03-16T09:00:00Z'};
+
+    // Day and time depend on the timezone of the machine running the
+    // specs. Only assert on the conventions of the formatted date.
+    it('is rendered below the body of edited comments', () => {
+      I18n.locale = 'en';
+
+      const {getByText} = renderWithReviewState(<Comment comment={editedComment} />);
+
+      const hint = getByText(/^Edited Mar \d+, \d+:\d\d/);
+      const body = getByText('On the pull quote');
+
+      expect(body.compareDocumentPosition(hint) & Node.DOCUMENT_POSITION_FOLLOWING)
+        .toBeTruthy();
+    });
+
+    it('formats the edit date in the interface locale', () => {
+      I18n.locale = 'de';
+
+      const {getByText} = renderWithReviewState(<Comment comment={editedComment} />);
+
+      expect(getByText(/^Bearbeitet \d+\. März, \d+:\d\d/)).toBeInTheDocument();
+    });
+
+    it('includes the year for edits from previous years', () => {
+      I18n.locale = 'en';
+
+      const {getByText} = renderWithReviewState(
+        <Comment comment={{...comment, editedAt: '2025-03-16T09:00:00Z'}} />
+      );
+
+      expect(getByText(/^Edited Mar \d+, 2025, \d+:\d\d/)).toBeInTheDocument();
+    });
+
+    it('is not rendered for comments that were never edited', () => {
+      I18n.locale = 'en';
+
+      const {queryByText} = renderWithReviewState(<Comment comment={comment} />);
+
+      expect(queryByText(/^Edited/)).toBeNull();
+    });
+
+    it('is not rendered while the comment is being edited', () => {
+      I18n.locale = 'en';
+
+      const {queryByText} = renderWithReviewState(
+        <Comment comment={editedComment}
+                 threadId={1}
+                 editing
+                 onEditEnd={() => {}} />,
+        {currentUser: {id: 2, name: 'Bob'}}
+      );
+
+      expect(queryByText(/^Edited/)).toBeNull();
+    });
+  });
+
   describe('editing', () => {
     useFakeTranslations({
       'pageflow_scrolled.review.comment_actions': 'Comment actions',

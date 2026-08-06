@@ -10,6 +10,7 @@ import {isSubmitShortcut} from './submitShortcut';
 import styles from './Comment.module.css';
 
 export function Comment({comment, threadId, showQuote, editing, onEdit, onEditEnd}) {
+  const {t} = useI18n({locale: 'ui'});
   const locale = useLocale({locale: 'ui'});
   const currentUser = useCurrentUser();
 
@@ -34,7 +35,14 @@ export function Comment({comment, threadId, showQuote, editing, onEdit, onEditEn
         <blockquote className={styles.quote}>{comment.quote}</blockquote>}
       {editing
         ? <EditForm comment={comment} threadId={threadId} onDone={onEditEnd} />
-        : <p className={styles.body}>{comment.body}</p>}
+        : <>
+            <p className={styles.body}>{comment.body}</p>
+            {comment.editedAt &&
+              <p className={styles.editedHint}>
+                {t('pageflow_scrolled.review.edited',
+                   {date: formatDateTime(comment.editedAt, locale)})}
+              </p>}
+          </>}
     </div>
   );
 }
@@ -100,13 +108,18 @@ function EditForm({comment, threadId, onDone}) {
   );
 }
 
-function formatDate(isoString, locale) {
+function formatDate(isoString, locale, options) {
   const date = new Date(isoString);
   const fromCurrentYear = date.getFullYear() === new Date().getFullYear();
 
-  return date.toLocaleDateString(locale, {
+  return date.toLocaleString(locale, {
     month: 'short',
     day: 'numeric',
-    ...(!fromCurrentYear && {year: 'numeric'})
+    ...(!fromCurrentYear && {year: 'numeric'}),
+    ...options
   });
+}
+
+function formatDateTime(isoString, locale) {
+  return formatDate(isoString, locale, {hour: 'numeric', minute: '2-digit'});
 }

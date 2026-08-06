@@ -1974,6 +1974,7 @@ de:
       toggle_replies: Antworten umschalten
       comment_actions: Kommentaraktionen
       edit_comment: Bearbeiten
+      edited: Bearbeitet %{date}
       resolve: Als gelöst markieren
       unresolve: Als ungelöst markieren
       resolved_count:

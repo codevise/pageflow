@@ -53,6 +53,14 @@
   white-space: pre-wrap;
 }
 
+.editedHint {
+  margin: space(1) 0 0;
+  padding-left: space(8);
+  font-size: space(3);
+  font-style: italic;
+  color: var(--ui-on-surface-color-light);
+}
+
 .editForm {
   padding-left: space(8);
 }

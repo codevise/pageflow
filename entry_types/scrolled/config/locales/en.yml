@@ -1802,6 +1802,7 @@ en:
       toggle_replies: Toggle replies
       comment_actions: Comment actions
       edit_comment: Edit
+      edited: Edited %{date}
       resolve: Mark as resolved
       unresolve: Mark as unresolved
       resolved_count:
