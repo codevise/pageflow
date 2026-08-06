@@ -2,9 +2,113 @@
 
 ## Custom Fonts
 
-[Fontsource](https://github.com/fontsource/fontsource) is the
-recommended way to load custom fonts. Add the npm package for the
-font:
+Place the font files inside the theme's asset directory and declare
+one font face per weight/style combination:
+
+``` ruby
+entry_type_config.themes.register(:my_custom_theme,
+                                  # ...
+                                  font_faces: [
+                                    {family: 'Open Sans',
+                                     weight: '400',
+                                     style: 'normal',
+                                     src: 'fonts/open-sans-400-normal.woff2'},
+                                    {family: 'Open Sans',
+                                     weight: '700',
+                                     style: 'normal',
+                                     src: 'fonts/open-sans-700-normal.woff2'}
+                                  ],
+                                  properties: {
+                                    root: {
+                                      entry_font_family: '"Open Sans", sans-serif',
+                                      widget_font_family: '"Open Sans", sans-serif'
+                                    }
+                                  })
+```
+
+Different fonts can be used for the main content of the entry and
+widgets.
+
+The resulting `@font-face` rules are rendered into the same style tag
+as the theme's other custom properties - both in published entries and
+in the editor. Since no separate stylesheet needs to be requested, the
+browser can start loading font files earlier.
+
+The following keys are supported:
+
+| Key | Description |
+| --- | ----------- |
+| `family` | Font family name to reference in font family properties and typography rules. |
+| `src` | Path or url of the font file. See below. |
+| `format` | Format of the font file. Derived from the file extension by default. |
+| `weight` | Weight provided by the font file. Either a single value or a range like `'300 900'` for variable fonts. |
+| `style` | Either `normal` or `italic`. |
+| `unicode_range` | Code points provided by the font file. See below. |
+| `file_role` | Role of an uploaded theme customization file to use instead of `src`. |
+
+`font-display: swap` is always included so that text remains visible
+while font files are loading. Faces with invalid values are skipped.
+
+### Font File Paths
+
+Relative `src` paths are resolved inside the theme's asset directory,
+just like icons and logos. Paths starting with `../shared/` refer to
+the shared theme directory:
+
+``` ruby
+src: '../shared/fonts/open-sans-400-normal.woff2'
+```
+
+Absolute urls and paths are used as is.
+
+### Multiple Formats
+
+Pass an array to let the browser pick the first format it supports:
+
+``` ruby
+{family: 'Open Sans',
+ weight: '400',
+ src: ['fonts/open-sans-400-normal.woff2',
+       'fonts/open-sans-400-normal.woff']}
+```
+
+The `format` key applies to all sources of the face. Use hashes to
+specify formats per source:
+
+``` ruby
+{family: 'Open Sans Variable',
+ weight: '300 900',
+ src: [{url: 'fonts/open-sans-wght-normal.woff2', format: 'woff2-variations'},
+       'fonts/open-sans-400-normal.woff']}
+```
+
+### Reducing Font File Size
+
+Fonts that support many scripts can be split into subsets. Declare one
+face per subset and use `unicode_range` to let the browser download
+only those subsets that contain code points used in the entry:
+
+``` ruby
+font_faces: [
+  {family: 'Open Sans',
+   weight: '400',
+   src: 'fonts/open-sans-latin-400-normal.woff2',
+   unicode_range: 'U+0000-00FF, U+0131, U+0152-0153'},
+  {family: 'Open Sans',
+   weight: '400',
+   src: 'fonts/open-sans-latin-ext-400-normal.woff2',
+   unicode_range: 'U+0100-024F, U+0259, U+1E00-1EFF'}
+]
+```
+
+Packages published by
+[Fontsource](https://github.com/fontsource/fontsource) contain the
+ranges of their subsets in a `unicode.json` file.
+
+### Loading Fonts via Stylesheet Packs
+
+Alternatively, fonts can be loaded by referencing a stylesheet pack
+which contains `@font-face` rules. Add the npm package for the font:
 
     $ yarn add @fontsource/open-sans
 
@@ -16,13 +120,12 @@ Create a Webpacker entry point file for your font:
     @import "@fontsource/open-sans/700.css";
 ```
 
-Adjust theme options to load the font stylesheet pack and set the font
-family properties:
+Adjust theme options to load the font stylesheet pack:
 
 ``` ruby
 entry_type_config.themes.register(:my_custom_theme,
                                   # ...
-                                  stylesheet_packs: ['font/openSans'],
+                                  stylesheet_packs: ['fonts/openSans'],
                                   properties: {
                                     root: {
                                       entry_font_family: '"Open Sans", sans-serif',
@@ -30,9 +133,6 @@ entry_type_config.themes.register(:my_custom_theme,
                                     }
                                   })
 ```
-
-Different fonts can be used for the main content of the entry and
-widgets.
 
 ## Typography Rules
 
