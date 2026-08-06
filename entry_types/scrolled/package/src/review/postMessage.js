@@ -17,6 +17,13 @@ export function postCreateCommentMessage({threadId, body, quote}) {
   );
 }
 
+export function postUpdateCommentMessage({threadId, commentId, body}) {
+  window.top.postMessage(
+    {type: 'UPDATE_COMMENT', payload: {threadId, commentId, body}},
+    window.location.origin
+  );
+}
+
 export function postSetCommentDraftMessage(draft) {
   window.top.postMessage(
     {type: 'SET_COMMENT_DRAFT', payload: draft},
