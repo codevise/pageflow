@@ -1,0 +1,63 @@
+.menu {
+  display: inline-flex;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: space(6);
+  height: space(6);
+  padding: 0;
+  color: var(--ui-on-surface-color-light);
+  background: none;
+  border: none;
+  border-radius: rounded();
+  cursor: pointer;
+}
+
+.button:hover,
+.button[aria-expanded='true'] {
+  color: var(--ui-on-surface-color);
+  background: var(--ui-on-surface-color-lightest);
+}
+
+/* Portaled out of the review UI, which is where these would be inherited. */
+.list {
+  font-family: var(--ui-font-family);
+  font-size: var(--ui-font-size);
+
+  display: flex;
+  flex-direction: column;
+  padding: space(0.5);
+  background-color: var(--ui-surface-color);
+  border: solid 1px var(--ui-on-surface-color-lighter);
+  border-radius: rounded(sm);
+  box-shadow: var(--ui-box-shadow);
+}
+
+.list:focus {
+  outline: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  /* Matching the horizontal padding centers the icon beside the label. */
+  gap: space(3);
+  padding: space(1) space(3);
+  font: inherit;
+  line-height: 1.75;
+  text-align: left;
+  white-space: nowrap;
+  color: var(--ui-on-surface-color);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.item:hover,
+.item:focus {
+  background-color: var(--ui-selection-color-light);
+  outline: none;
+}

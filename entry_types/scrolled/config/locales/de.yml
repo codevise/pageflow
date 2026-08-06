@@ -1971,6 +1971,8 @@ de:
       send: Senden
       enter_for_new_line: Enter für neue Zeile
       toggle_replies: Antworten umschalten
+      comment_actions: Kommentaraktionen
+      edit_comment: Bearbeiten
       resolve: Als gelöst markieren
       unresolve: Als ungelöst markieren
       resolved_count:

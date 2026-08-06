@@ -1799,6 +1799,8 @@ en:
       send: Send
       enter_for_new_line: Enter for new line
       toggle_replies: Toggle replies
+      comment_actions: Comment actions
+      edit_comment: Edit
       resolve: Mark as resolved
       unresolve: Mark as unresolved
       resolved_count:

@@ -2,21 +2,27 @@ import React from 'react';
 
 import {useLocale} from 'pageflow-scrolled/frontend';
 import {Avatar} from './Avatar';
+import {CommentMenu} from './CommentMenu';
 
 import styles from './Comment.module.css';
 
-export function Comment({comment, showQuote}) {
+export function Comment({comment, showQuote, onEdit}) {
   const locale = useLocale({locale: 'ui'});
 
   return (
-    <div className={styles.comment}>
+    <div>
       <div className={styles.header}>
         <Avatar name={comment.creatorName} />
-        <span className={styles.author}>{comment.creatorName}</span>
-        {comment.createdAt &&
-          <time className={styles.timestamp} dateTime={comment.createdAt}>
-            {formatDate(comment.createdAt, locale)}
-          </time>}
+        <div className={styles.headerText}>
+          <span className={styles.author}>{comment.creatorName}</span>
+          <span className={styles.meta}>
+            {comment.createdAt &&
+              <time className={styles.timestamp} dateTime={comment.createdAt}>
+                {formatDate(comment.createdAt, locale)}
+              </time>}
+            <CommentMenu onEdit={onEdit} />
+          </span>
+        </div>
       </div>
       {showQuote &&
         <blockquote className={styles.quote}>{comment.quote}</blockquote>}
