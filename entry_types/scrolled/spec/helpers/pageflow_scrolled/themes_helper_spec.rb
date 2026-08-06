@@ -452,6 +452,138 @@ module PageflowScrolled
       end
     end
 
+    describe '#scrolled_theme_font_preload_link_tags' do
+      before do
+        allow(helper).to receive(:asset_pack_path) { |path| "/packs/#{path}" }
+      end
+
+      it 'renders link tag for face marked for preloading' do
+        theme = Pageflow::Theme.new(:test,
+                                    font_faces: [
+                                      {family: 'Avenir', src: '/fonts/a.woff2', preload: true}
+                                    ])
+
+        html = helper.scrolled_theme_font_preload_link_tags(theme)
+
+        expect(html).to have_css('link[data-theme][rel="preload"][as="font"]' \
+                                 '[href="/fonts/a.woff2"][type="font/woff2"]' \
+                                 '[crossorigin="anonymous"]',
+                                 visible: false)
+      end
+
+      it 'skips faces not marked for preloading' do
+        theme = Pageflow::Theme.new(:test,
+                                    font_faces: [
+                                      {family: 'Avenir', src: '/fonts/a.woff2'},
+                                      {family: 'Oswald', src: '/fonts/b.woff2', preload: false}
+                                    ])
+
+        html = helper.scrolled_theme_font_preload_link_tags(theme)
+
+        expect(html).to be_blank
+      end
+
+      it 'only preloads first source of face' do
+        theme = Pageflow::Theme.new(:test,
+                                    font_faces: [
+                                      {family: 'Avenir',
+                                       src: ['/fonts/a.woff2', '/fonts/a.woff'],
+                                       preload: true}
+                                    ])
+
+        html = helper.scrolled_theme_font_preload_link_tags(theme)
+
+        expect(html).to have_css('link[href="/fonts/a.woff2"]', visible: false)
+        expect(html).not_to have_css('link[href="/fonts/a.woff"]', visible: false)
+      end
+
+      it 'resolves relative src in theme directory' do
+        theme = Pageflow::CustomizedTheme.find(
+          entry: create(:entry),
+          theme: Pageflow::Theme.new(:test,
+                                     font_faces: [
+                                       {family: 'Avenir', src: 'fonts/a.woff2', preload: true}
+                                     ])
+        )
+
+        html = helper.scrolled_theme_font_preload_link_tags(theme)
+
+        expect(html).to have_css(
+          'link[href="/packs/static/pageflow-scrolled/themes/test/fonts/a.woff2"]',
+          visible: false
+        )
+      end
+
+      it 'derives type from format of source' do
+        theme = Pageflow::Theme.new(:test,
+                                    font_faces: [
+                                      {family: 'Avenir',
+                                       src: '/fonts/a.woff2',
+                                       format: 'woff2-variations',
+                                       preload: true}
+                                    ])
+
+        html = helper.scrolled_theme_font_preload_link_tags(theme)
+
+        expect(html).to have_css('link[type="font/woff2"]', visible: false)
+      end
+
+      it 'omits type for unknown format' do
+        theme = Pageflow::Theme.new(:test,
+                                    font_faces: [
+                                      {family: 'Avenir', src: '/fonts/a.bin', preload: true}
+                                    ])
+
+        html = helper.scrolled_theme_font_preload_link_tags(theme)
+
+        expect(html).to have_css('link[href="/fonts/a.bin"]:not([type])', visible: false)
+      end
+
+      it 'skips faces that do not result in a font face rule' do
+        theme = Pageflow::Theme.new(:test,
+                                    font_faces: [
+                                      {src: '/fonts/a.woff2', preload: true},
+                                      {family: 'Oswald', preload: true},
+                                      {family: 'Karla', src: '/fonts/a".woff2', preload: true}
+                                    ])
+
+        html = helper.scrolled_theme_font_preload_link_tags(theme)
+
+        expect(html).to be_blank
+      end
+
+      it 'resolves file role of uploaded theme customization file' do
+        entry = create(:published_entry, type_name: 'scrolled')
+        file = Pageflow.theme_customizations.upload_file(
+          site: entry.site,
+          entry_type_name: 'scrolled',
+          type_name: :font,
+          attachment: fixture_file_upload('font.woff2')
+        )
+        Pageflow.theme_customizations.update(
+          site: entry.site,
+          entry_type_name: 'scrolled',
+          overrides: {
+            font_faces: [{family: 'font1', file_role: 'font_font1_400_normal', preload: true}]
+          },
+          file_ids: {font_font1_400_normal: file.id}
+        )
+
+        html = helper.scrolled_theme_font_preload_link_tags(entry.theme)
+
+        expect(html).to have_css('link[type="font/woff2"][href*="original/font.woff2"]',
+                                 visible: false)
+      end
+
+      it 'handles missing theme option' do
+        theme = Pageflow::Theme.new(:test)
+
+        html = helper.scrolled_theme_font_preload_link_tags(theme)
+
+        expect(html).to be_blank
+      end
+    end
+
     describe '#scrolled_theme_typography_rules' do
       it 'returns rules for theme' do
         theme = Pageflow::Theme.new(:test,

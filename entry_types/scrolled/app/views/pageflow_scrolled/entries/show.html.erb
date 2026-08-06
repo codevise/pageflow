@@ -21,6 +21,7 @@
       <%= scrolled_sprockets_asset_tags(entry, entry_mode: entry_mode) %>
       <%= scrolled_frontend_stylesheet_packs_tag(entry, entry_mode: entry_mode, seed_options: seed_options) %>
 
+      <%= scrolled_theme_font_preload_link_tags(entry.theme) %>
       <%= scrolled_theme_properties_style_tag(entry.theme) %>
       <%= scrolled_theme_stylesheet_pack_tags(entry.theme) %>
 

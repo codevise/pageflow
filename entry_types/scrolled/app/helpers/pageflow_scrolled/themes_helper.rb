@@ -43,9 +43,20 @@ module PageflowScrolled
     end
 
     def scrolled_theme_font_face_rules(theme)
-      theme.options.fetch(:font_faces, []).filter_map { |face|
-        FontFaceRule.new(face, theme:) { |path| scrolled_theme_asset_path(theme, path) }.generate
-      }.join("\n")
+      scrolled_theme_font_faces(theme).filter_map(&:generate).join("\n")
+    end
+
+    def scrolled_theme_font_preload_link_tags(theme)
+      safe_join(
+        scrolled_theme_font_faces(theme).filter_map(&:preload_source).map do |source|
+          tag.link(rel: 'preload',
+                   as: 'font',
+                   type: source[:type],
+                   href: source[:url],
+                   crossorigin: 'anonymous',
+                   data: {theme: ''})
+        end
+      )
     end
 
     def scrolled_theme_typography_rules(theme)
@@ -59,6 +70,12 @@ module PageflowScrolled
 
     private
 
+    def scrolled_theme_font_faces(theme)
+      theme.options.fetch(:font_faces, []).map do |face|
+        FontFaceRule.new(face, theme:) { |path| scrolled_theme_asset_path(theme, path) }
+      end
+    end
+
     # @api private
     class FontFaceRule
       FORMATS = {
@@ -66,6 +83,13 @@ module PageflowScrolled
         '.woff' => 'woff',
         '.ttf' => 'truetype',
         '.otf' => 'opentype'
+      }.freeze
+
+      MIME_TYPES = {
+        'woff2' => 'font/woff2',
+        'woff' => 'font/woff',
+        'truetype' => 'font/ttf',
+        'opentype' => 'font/otf'
       }.freeze
 
       WEIGHT_PATTERN = /\A(normal|bold|\d{1,4}( \d{1,4})?)\z/
@@ -88,7 +112,7 @@ module PageflowScrolled
       end
 
       def generate
-        return if family.blank? || source_values.empty?
+        return unless valid?
 
         <<~CSS
           @font-face {
@@ -97,9 +121,23 @@ module PageflowScrolled
         CSS
       end
 
+      # Only the first source is preloaded since the browser downloads
+      # exactly one of the alternative formats.
+      def preload_source
+        return unless valid? && face[:preload]
+
+        source = sources_with_safe_urls.first
+
+        {url: source[:url], type: mime_type(source)}
+      end
+
       private
 
       attr_reader :face, :theme
+
+      def valid?
+        family.present? && sources_with_safe_urls.any?
+      end
 
       def declarations
         [
@@ -115,10 +153,11 @@ module PageflowScrolled
       end
 
       def source_values
-        @source_values ||=
-          sources
-          .reject { |source| source[:url].match?(UNSAFE_IN_URL) }
-          .map { |source| source_value(source[:url], source[:format]) }
+        sources_with_safe_urls.map { |source| source_value(source) }
+      end
+
+      def sources_with_safe_urls
+        @sources_with_safe_urls ||= sources.reject { |source| source[:url].match?(UNSAFE_IN_URL) }
       end
 
       def sources
@@ -151,14 +190,22 @@ module PageflowScrolled
         @resolve_path.call(url).to_s
       end
 
-      def source_value(url, format)
-        format = [format, FORMATS[extension(url)]].find do |candidate|
+      def source_value(source)
+        format = source_format(source)
+
+        return %(url("#{source[:url]}")) unless format
+
+        %(url("#{source[:url]}") format("#{format}"))
+      end
+
+      def mime_type(source)
+        MIME_TYPES[source_format(source).to_s.delete_suffix('-variations')]
+      end
+
+      def source_format(source)
+        [source[:format], FORMATS[extension(source[:url])]].find do |candidate|
           candidate.to_s.match?(FORMAT_PATTERN)
         end
-
-        return %(url("#{url}")) unless format
-
-        %(url("#{url}") format("#{format}"))
       end
 
       def extension(url)
