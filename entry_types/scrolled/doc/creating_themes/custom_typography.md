@@ -45,6 +45,7 @@ The following keys are supported:
 | `style` | Either `normal` or `italic`. |
 | `unicode_range` | Code points provided by the font file. See below. |
 | `file_role` | Role of an uploaded theme customization file to use instead of `src`. |
+| `preload` | Pass `true` to let the browser start downloading the font file right away. See below. |
 
 `font-display: swap` is always included so that text remains visible
 while font files are loading. Faces with invalid values are skipped.
@@ -81,6 +82,31 @@ specify formats per source:
  src: [{url: 'fonts/open-sans-wght-normal.woff2', format: 'woff2-variations'},
        'fonts/open-sans-400-normal.woff']}
 ```
+
+### Preloading Fonts
+
+Browsers only download a font file once they lay out text that uses
+the font face. Mark the few faces that are needed for the first
+screenful to have the file requested as early as possible:
+
+``` ruby
+{family: 'Open Sans',
+ weight: '400',
+ src: 'fonts/open-sans-400-normal.woff2',
+ preload: true}
+```
+
+Published entries then contain a link tag in the head:
+
+``` html
+<link rel="preload" as="font" type="font/woff2"
+      href="/assets/fonts/open-sans-400-normal.woff2" crossorigin="anonymous">
+```
+
+Only the first source of the face is preloaded since the browser
+downloads exactly one of the alternative formats. Preloading more
+fonts than the entry displays right away delays other resources - only
+mark faces that are used above the fold.
 
 ### Reducing Font File Size
 
