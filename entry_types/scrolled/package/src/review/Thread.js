@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import classNames from 'classnames';
 
 import {useI18n} from 'pageflow-scrolled/frontend';
@@ -26,6 +26,21 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
   const collapsed = collapsedProp && !replyDraft;
 
   const repliesCollapsed = collapsed && replies.length > 0;
+
+  // Kept here rather than per comment so that a thread never shows two
+  // textareas at once: neither two comments being edited, nor an edit next
+  // to the reply form.
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const editing = editingCommentId !== null;
+
+  function editProps(comment) {
+    return {
+      threadId: thread.id,
+      editing: editingCommentId === comment.id,
+      onEdit: interactive ? () => setEditingCommentId(comment.id) : undefined,
+      onEditEnd: () => setEditingCommentId(null)
+    };
+  }
 
   const currentQuote = useSubjectQuote(thread);
   const outdatedQuotes = useMemo(
@@ -65,7 +80,8 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
 
       {firstComment &&
         <Comment comment={firstComment}
-                 showQuote={outdatedQuotes.has(firstComment.id)} />}
+                 showQuote={outdatedQuotes.has(firstComment.id)}
+                 {...editProps(firstComment)} />}
 
       {repliesCollapsed &&
         <button className={styles.expandButton} onClick={onToggle}>
@@ -76,10 +92,11 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
       {!collapsed && replies.map(comment => (
         <Comment key={comment.id}
                  comment={comment}
-                 showQuote={outdatedQuotes.has(comment.id)} />
+                 showQuote={outdatedQuotes.has(comment.id)}
+                 {...editProps(comment)} />
       ))}
 
-      {interactive && !thread.resolvedAt && !repliesCollapsed &&
+      {interactive && !thread.resolvedAt && !repliesCollapsed && !editing &&
         <ReplyForm threadId={thread.id}
                    subjectType={thread.subjectType}
                    subjectId={thread.subjectId}

@@ -52,3 +52,66 @@
   color: var(--ui-on-surface-color);
   white-space: pre-wrap;
 }
+
+.editForm {
+  padding-left: space(8);
+}
+
+.editInput {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  line-height: 1.4;
+  color: var(--ui-on-surface-color);
+  background: var(--ui-surface-color);
+  border: 1px solid var(--ui-on-surface-color-lighter);
+  border-radius: rounded();
+  padding: space(2);
+  outline: none;
+  resize: none;
+  overflow: hidden;
+}
+
+.editInput:focus {
+  border-color: var(--ui-primary-color);
+  box-shadow: 0 0 0 2px var(--ui-primary-color-lightest);
+}
+
+.editActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: space(2);
+  margin-top: space(1.5);
+}
+
+.saveButton {
+  font: inherit;
+  font-weight: 500;
+  color: var(--ui-on-primary-color);
+  background: var(--ui-primary-color);
+  border: none;
+  border-radius: rounded();
+  padding: space(1.5) space(3);
+  cursor: pointer;
+}
+
+.saveButton:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+.cancelButton {
+  font: inherit;
+  font-weight: 500;
+  color: var(--ui-on-surface-color-light);
+  background: none;
+  border: none;
+  padding: space(1.5) space(2);
+  cursor: pointer;
+}
+
+.cancelButton:hover {
+  color: var(--ui-on-surface-color);
+}
