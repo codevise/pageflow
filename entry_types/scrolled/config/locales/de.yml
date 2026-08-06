@@ -1968,9 +1968,13 @@ de:
       add_comment_placeholder: Kommentar hinzufügen...
       reply_placeholder: Antworten...
       cancel: Abbrechen
+      save: Speichern
       send: Senden
       enter_for_new_line: Enter für neue Zeile
       toggle_replies: Antworten umschalten
+      comment_actions: Kommentaraktionen
+      edit_comment: Bearbeiten
+      edited: Bearbeitet %{date}
       resolve: Als gelöst markieren
       unresolve: Als ungelöst markieren
       resolved_count:

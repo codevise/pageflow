@@ -567,6 +567,105 @@ describe('ReviewSession', () => {
     );
   });
 
+  it('sends updateComment request', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'CE', subjectId: 10, comments: [
+            {id: 100, body: 'Typo', creatorId: 42}
+          ]}
+        ]
+      })
+      .mockResolvedValueOnce({id: 100, body: 'Fixed', creatorId: 42});
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+    await session.updateComment({threadId: 1, commentId: 100, body: 'Fixed'});
+
+    expect(request).toHaveBeenLastCalledWith({
+      url: '/review/entries/5/comment_threads/1/comments/100',
+      method: 'PATCH',
+      payload: {comment: {body: 'Fixed'}}
+    });
+  });
+
+  it('replaces comment in state after updateComment', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'CE', subjectId: 10, comments: [
+            {id: 100, body: 'Typo', creatorId: 42},
+            {id: 101, body: 'Reply', creatorId: 43}
+          ]}
+        ]
+      })
+      .mockResolvedValueOnce({id: 100, body: 'Fixed', creatorId: 42});
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+    await session.updateComment({threadId: 1, commentId: 100, body: 'Fixed'});
+
+    expect(session.state.commentThreads[0].comments).toEqual([
+      expect.objectContaining({id: 100, body: 'Fixed'}),
+      expect.objectContaining({id: 101, body: 'Reply'})
+    ]);
+  });
+
+  it('emits change:thread with updated comment after updateComment', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'CE', subjectId: 10, comments: [
+            {id: 100, body: 'Typo', creatorId: 42}
+          ]}
+        ]
+      })
+      .mockResolvedValueOnce({id: 100, body: 'Fixed', creatorId: 42});
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    const listener = jest.fn();
+    session.on('change:thread', listener);
+
+    await session.updateComment({threadId: 1, commentId: 100, body: 'Fixed'});
+
+    expect(listener).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: 1,
+        comments: [expect.objectContaining({id: 100, body: 'Fixed'})]
+      })
+    );
+  });
+
+  // Editing is not drafted, so a failed attempt has to surface rather than
+  // leave the form believing the new text was stored.
+  it('rethrows and leaves state untouched when updateComment fails', async () => {
+    const request = jest.fn()
+      .mockResolvedValueOnce({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [
+          {id: 1, subjectType: 'CE', subjectId: 10, comments: [
+            {id: 100, body: 'Typo', creatorId: 42}
+          ]}
+        ]
+      })
+      .mockRejectedValueOnce(new Error('Forbidden'));
+
+    const session = new ReviewSession({entryId: 5, request});
+    await session.fetch();
+
+    await expect(session.updateComment({threadId: 1, commentId: 100, body: 'Fixed'}))
+      .rejects.toThrow('Forbidden');
+
+    expect(session.state.commentThreads[0].comments).toEqual([
+      expect.objectContaining({id: 100, body: 'Typo'})
+    ]);
+  });
+
   describe('subject range updates', () => {
     const threadA = {
       id: 1, subjectType: 'ContentElement', subjectId: 10,

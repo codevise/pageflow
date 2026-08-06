@@ -1796,9 +1796,13 @@ en:
       add_comment_placeholder: Add a comment...
       reply_placeholder: Reply...
       cancel: Cancel
+      save: Save
       send: Send
       enter_for_new_line: Enter for new line
       toggle_replies: Toggle replies
+      comment_actions: Comment actions
+      edit_comment: Edit
+      edited: Edited %{date}
       resolve: Mark as resolved
       unresolve: Mark as unresolved
       resolved_count:

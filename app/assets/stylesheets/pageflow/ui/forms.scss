@@ -33,7 +33,10 @@ textarea,
 [type="time"],
 [type="week"],
 [multiple],
-button[aria-haspopup] {
+// Listbox inputs, which headless UI renders as a button announcing a
+// generic popup. Matching the value keeps buttons that open an actual
+// menu from being turned into select lookalikes.
+button[aria-haspopup="true"] {
   font-size: 13px;
   display: block;
   width: 100%;

@@ -18,6 +18,22 @@ describe('ListboxInputView', () => {
     'some_attributes.variant.values.large': 'Large'
   });
 
+  // The form styles in pageflow/ui/forms.scss make the button look like a
+  // select by matching on this exact value. Newer headless UI versions use
+  // "listbox" instead, which the selector would have to follow.
+  it('renders a button that the form styles recognize', () => {
+    const inputView = new ListboxInputView({
+      model: new Backbone.Model({variant: 'large'}),
+      propertyName: 'variant',
+      values: ['default', 'large'],
+      texts: ['Default', 'Large']
+    });
+
+    const {getByRole} = render(inputView);
+
+    expect(getByRole('button', {name: 'Large'})).toHaveAttribute('aria-haspopup', 'true');
+  });
+
   it('renders radio inputs for values', async () => {
     const model = new Backbone.Model({variant: 'large'});
     const inputView = new ListboxInputView({

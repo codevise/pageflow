@@ -93,6 +93,7 @@ function OpenThreadList({
       if (refs.floating.current?.contains(event.target)) return;
       if (event.target.closest('[data-comment-highlight]')) return;
       if (event.target.closest('[data-comment-toolbar]')) return;
+      if (event.target.closest('[data-comment-menu]')) return;
 
       onDismiss();
     }

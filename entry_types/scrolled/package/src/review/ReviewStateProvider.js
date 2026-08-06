@@ -7,7 +7,8 @@ import {useSectionPermaIdOfSubject} from 'pageflow-scrolled/entryState';
 import {
   postCreateCommentMessage,
   postCreateCommentThreadMessage,
-  postSetCommentDraftMessage
+  postSetCommentDraftMessage,
+  postUpdateCommentMessage
 } from './postMessage';
 import {useSubjectQuote} from './subjectQuote';
 
@@ -124,6 +125,20 @@ export function useCreateComment({threadId, subjectType, subjectId, subjectRange
 
   return useCallback(body => createComment({threadId, body, quote}),
                      [createComment, threadId, quote]);
+}
+
+// Edits are not drafted, so this posts straight through rather than going
+// through the draft context the create hooks share.
+export function useUpdateComment({threadId, commentId}) {
+  return useCallback(
+    body => postUpdateCommentMessage({threadId, commentId, body}),
+    [threadId, commentId]
+  );
+}
+
+export function useCurrentUser() {
+  const context = useContext(ReviewStateContext);
+  return context ? context.currentUser : null;
 }
 
 export function useCommentThread(threadId) {

@@ -3,11 +3,30 @@
   align-items: center;
   gap: space(2);
   margin-bottom: space(1);
+  /* Keep clear of the chevron button the thread places in its corner. */
+  padding-right: space(6);
+}
+
+/* Wraps as a block below the avatar, aligning with quote and body. */
+.headerText {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 space(2);
+  min-width: 0;
 }
 
 .author {
   font-weight: 600;
+  overflow-wrap: anywhere;
   color: var(--ui-on-surface-color);
+}
+
+/* Keeps the menu button from ever wrapping onto a line of its own. */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: space(1);
 }
 
 .timestamp {
@@ -32,4 +51,75 @@
   line-height: 1.4;
   color: var(--ui-on-surface-color);
   white-space: pre-wrap;
+}
+
+.editedHint {
+  margin: space(1) 0 0;
+  padding-left: space(8);
+  font-size: space(3);
+  font-style: italic;
+  color: var(--ui-on-surface-color-light);
+}
+
+.editForm {
+  padding-left: space(8);
+}
+
+.editInput {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  line-height: 1.4;
+  color: var(--ui-on-surface-color);
+  background: var(--ui-surface-color);
+  border: 1px solid var(--ui-on-surface-color-lighter);
+  border-radius: rounded();
+  padding: space(2);
+  outline: none;
+  resize: none;
+  overflow: hidden;
+}
+
+.editInput:focus {
+  border-color: var(--ui-primary-color);
+  box-shadow: 0 0 0 2px var(--ui-primary-color-lightest);
+}
+
+.editActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: space(2);
+  margin-top: space(1.5);
+}
+
+.saveButton {
+  font: inherit;
+  font-weight: 500;
+  color: var(--ui-on-primary-color);
+  background: var(--ui-primary-color);
+  border: none;
+  border-radius: rounded();
+  padding: space(1.5) space(3);
+  cursor: pointer;
+}
+
+.saveButton:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+.cancelButton {
+  font: inherit;
+  font-weight: 500;
+  color: var(--ui-on-surface-color-light);
+  background: none;
+  border: none;
+  padding: space(1.5) space(2);
+  cursor: pointer;
+}
+
+.cancelButton:hover {
+  color: var(--ui-on-surface-color);
 }

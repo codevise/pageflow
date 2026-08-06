@@ -7,6 +7,7 @@ function fakeReviewSession() {
     createThread: jest.fn().mockResolvedValue(),
     createComment: jest.fn().mockResolvedValue(),
     updateThread: jest.fn().mockResolvedValue(),
+    updateComment: jest.fn().mockResolvedValue(),
     setDraft: jest.fn()
   };
 
@@ -133,6 +134,27 @@ describe('ReviewMessageHandler', () => {
 
     expect(session.updateThread).toHaveBeenCalledWith({
       threadId: 1, resolved: true
+    });
+  });
+
+  it('calls session.updateComment on UPDATE_COMMENT message from targetWindow', async () => {
+    const session = fakeReviewSession();
+
+    ReviewMessageHandler.create({session, targetWindow: window});
+
+    window.dispatchEvent(new MessageEvent('message', {
+      data: {
+        type: 'UPDATE_COMMENT',
+        payload: {threadId: 1, commentId: 100, body: 'Fixed'}
+      },
+      origin: window.location.origin,
+      source: window
+    }));
+
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(session.updateComment).toHaveBeenCalledWith({
+      threadId: 1, commentId: 100, body: 'Fixed'
     });
   });
 

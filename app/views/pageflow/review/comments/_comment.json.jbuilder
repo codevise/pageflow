@@ -7,6 +7,7 @@ json.call(comment,
           :body,
           :quote,
           :created_at,
-          :updated_at)
+          :updated_at,
+          :edited_at)
 
 json.creator_name comment.creator.full_name

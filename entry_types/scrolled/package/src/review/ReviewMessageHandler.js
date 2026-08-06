@@ -21,6 +21,9 @@ export const ReviewMessageHandler = {
       else if (type === 'UPDATE_THREAD') {
         session.updateThread(payload);
       }
+      else if (type === 'UPDATE_COMMENT') {
+        session.updateComment(payload);
+      }
       else if (type === 'SET_COMMENT_DRAFT') {
         session.setDraft(payload);
       }

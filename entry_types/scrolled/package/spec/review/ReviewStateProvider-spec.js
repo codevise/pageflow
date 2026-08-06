@@ -9,7 +9,9 @@ import {
   useCommentThread,
   useCommentThreads,
   useCreateComment,
-  useCreateCommentThread
+  useCreateCommentThread,
+  useCurrentUser,
+  useUpdateComment
 } from 'review/ReviewStateProvider';
 import {
   postReviewStateResetMessage,
@@ -416,6 +418,64 @@ describe('ReviewStateProvider', () => {
       );
 
       postMessage.mockRestore();
+    });
+  });
+
+  describe('useUpdateComment', () => {
+    it('posts an update comment message', () => {
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+      const {result} = renderHookWithReviewState(
+        () => useUpdateComment({threadId: 7, commentId: 100})
+      );
+
+      act(() => result.current('Fixed'));
+
+      expect(postMessage).toHaveBeenCalledWith(
+        {
+          type: 'UPDATE_COMMENT',
+          payload: {threadId: 7, commentId: 100, body: 'Fixed'}
+        },
+        window.location.origin
+      );
+
+      postMessage.mockRestore();
+    });
+
+    // Edits are not drafted, so nothing may end up in the reply draft of
+    // the thread the edited comment belongs to.
+    it('leaves the draft of the thread untouched', () => {
+      jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+      const {result} = renderHookWithReviewState(
+        () => ({
+          updateComment: useUpdateComment({threadId: 7, commentId: 100}),
+          draft: useCommentDraft({threadId: 7})[0]
+        })
+      );
+
+      act(() => result.current.updateComment('Fixed'));
+
+      expect(result.current.draft).toBeUndefined();
+
+      window.top.postMessage.mockRestore();
+    });
+  });
+
+  describe('useCurrentUser', () => {
+    it('provides the user reported by the session', async () => {
+      const {result, waitForNextUpdate} = renderHook(() => useCurrentUser(), {wrapper});
+
+      postReset({currentUser: {id: 42, name: 'Alice'}, commentThreads: []});
+      await waitForNextUpdate();
+
+      expect(result.current).toEqual({id: 42, name: 'Alice'});
+    });
+
+    it('is null before the session has reported', () => {
+      const {result} = renderHook(() => useCurrentUser(), {wrapper});
+
+      expect(result.current).toBeNull();
     });
   });
 
