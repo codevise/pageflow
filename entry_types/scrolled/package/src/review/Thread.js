@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useRef} from 'react';
 import classNames from 'classnames';
 
-import {useI18n} from '../frontend/i18n';
+import {useI18n} from 'pageflow-scrolled/frontend';
 import {AvatarStack} from './Avatar';
 import {Comment} from './Comment';
 import {ReplyForm} from './ReplyForm';

@@ -1,13 +1,13 @@
 import React from 'react';
 
-import {useI18n} from '../frontend/i18n';
+import {useI18n} from 'pageflow-scrolled/frontend';
 import {useCreateComment} from './ReviewStateProvider';
 import {useDraftedBody} from './useDraftedBody';
 import {autoGrow, autoResize} from './autoGrow';
 import {isSubmitShortcut} from './submitShortcut';
 
 import SendIcon from './images/send.svg';
-import SpinnerIcon from '../frontend/icons/spinner.svg';
+import SpinnerIcon from './images/spinner.svg';
 import styles from './ReplyForm.module.css';
 
 export function ReplyForm({threadId, subjectType, subjectId, subjectRange}) {

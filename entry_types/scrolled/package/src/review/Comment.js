@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useLocale} from '../frontend/i18n';
+import {useLocale} from 'pageflow-scrolled/frontend';
 import {Avatar} from './Avatar';
 
 import styles from './Comment.module.css';

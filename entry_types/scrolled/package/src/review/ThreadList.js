@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import classNames from 'classnames';
 
-import {useI18n} from '../frontend/i18n';
+import {useI18n} from 'pageflow-scrolled/frontend';
 import {useCommentDraft} from './ReviewStateProvider';
 import {useLocatedCommentThreadsForSubject} from './useLocatedCommentThreadsForSubject';
 import {Thread} from './Thread';

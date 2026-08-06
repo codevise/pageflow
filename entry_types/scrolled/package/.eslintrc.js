@@ -28,17 +28,28 @@ module.exports = {
       "extends": ["plugin:jest/recommended"]
     },
     {
-      // Content elements, widgets and the editor are bundled
-      // separately and need to import from 'pageflow-scrolled/frontend'
-      // and 'pageflow-scrolled/entryState' to keep that code external.
+      // Content elements, widgets, the editor and the review interface
+      // are bundled separately and need to import from
+      // 'pageflow-scrolled/frontend' and 'pageflow-scrolled/entryState'
+      // to keep that code external. Importing relatively would inline a
+      // second copy of the module, giving the bundle its own React
+      // contexts.
       // Stories are excluded because they legitimately import the
       // content element's sibling './frontend' aggregator via
       // '../frontend'.
-      "files": ["src/contentElements/**/*.js", "src/widgets/**/*.js", "src/editor/**/*.js"],
+      "files": [
+        "src/contentElements/**/*.js",
+        "src/widgets/**/*.js",
+        "src/editor/**/*.js",
+        "src/review/**/*.js"
+      ],
       "excludedFiles": ["src/**/stories.js"],
       "rules": {
         "no-restricted-imports": ["error", {
-          "patterns": ["**/frontend/**", "../**/frontend", "**/entryState/**"]
+          "patterns": [
+            "**/frontend/**", "../**/frontend",
+            "**/entryState/**", "../**/entryState"
+          ]
         }]
       }
     },
