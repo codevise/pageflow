@@ -101,6 +101,29 @@ export class ReviewSession {
     this._deleteDraft({threadId});
   }
 
+  // Edits are not drafted: unlike a new comment, the text they would
+  // restore is still in the thread, so a failed attempt only has to leave
+  // the form showing what the reviewer typed.
+  async updateComment({threadId, commentId, body}) {
+    const comment = await this._request({
+      url: `/review/entries/${this._entryId}/comment_threads/${threadId}/comments/${commentId}`,
+      method: 'PATCH',
+      payload: {comment: {body}}
+    });
+
+    const thread = this._findThread(threadId);
+
+    if (!thread) return;
+
+    const updatedThread = {
+      ...thread,
+      comments: thread.comments.map(c => (c.id === commentId ? comment : c))
+    };
+
+    this._upsertThread(updatedThread);
+    this.trigger('change:thread', updatedThread);
+  }
+
   diffSubjectRangeUpdates(ranges) {
     const changed = {};
 
