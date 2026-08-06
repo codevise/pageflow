@@ -25,6 +25,22 @@ module Pageflow
         )
       end
 
+      it 'leaves the comment unmarked as edited' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft, creator: user)
+
+        sign_in(user, scope: :user)
+        post(:create, params: {
+               entry_id: entry.id,
+               comment_thread_id: thread.id,
+               comment: {body: 'A reply'}
+             }, format: 'json')
+
+        expect(JSON.parse(response.body)['editedAt']).to be_nil
+        expect(Pageflow::Comment.last.edited_at).to be_nil
+      end
+
       it 'creates comment with quote' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)
@@ -89,6 +105,24 @@ module Pageflow
         expect(response.status).to eq(200)
         expect(response.body).to include_json(body: 'Fixed')
         expect(comment.reload.body).to eq('Fixed')
+      end
+
+      it 'marks the comment as edited' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft, creator: user)
+        comment = create(:comment, comment_thread: thread, creator: user, body: 'Typo')
+
+        sign_in(user, scope: :user)
+        patch(:update, params: {
+                entry_id: entry.id,
+                comment_thread_id: thread.id,
+                id: comment.id,
+                comment: {body: 'Fixed'}
+              }, format: 'json')
+
+        expect(JSON.parse(response.body)['editedAt']).to be_present
+        expect(comment.reload.edited_at).to be_present
       end
 
       # The quote records the wording the comment referred to when it was
