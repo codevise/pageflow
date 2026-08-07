@@ -1,36 +1,49 @@
 .file_stage_items {
-  border-top: solid 1px var(--ui-on-surface-color-lighter);
   border-bottom: solid 1px var(--ui-on-surface-color-lighter);
-  padding-bottom: 5px;
-  margin-bottom: 5px;
+  padding-bottom: space(2);
+  margin-bottom: space(2);
 }
 
 .file_stage_item {
+  display: flex;
+  align-items: center;
+  gap: space(2);
+  padding-left: space(2);
+  position: relative;
   white-space: normal;
+  color: var(--ui-primary-color);
 
-  &.indented {
-    @include background-icon-center($left: 20px, $color: var(--ui-on-surface-color-lighter));
-    padding: 10px 0 5px 60px;
-    margin-left: -60px;
+  &.failed {
+    color: var(--ui-error-color);
   }
 
+  // Leaves room for the thumbnail the surrounding input view reserves
+  // space for.
   &.stand_alone {
-    @include background-icon-center($left: 31px, $color: var(--ui-on-surface-color-lighter));
     padding-left: 70px;
   }
 
-  &.action_required,
-  &.active {
-    @include background-icon-color(var(--ui-primary-color));
-    @include background-icon-animation(blink);
+  &-icon {
+    flex-shrink: 0;
+    width: space(4);
+    height: space(4);
+
+    .stand_alone & {
+      position: absolute;
+      left: 23px;
+    }
   }
 
-  &.finished {
-    @include background-icon-color(var(--ui-primary-color));
+  &-spinner {
+    @include animation(spin 1s linear infinite);
   }
 
-  &.failed {
-    @include background-icon-color(var(--ui-error-color));
+  &-spinner,
+  &-alert,
+  &-bell {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
   .percent {
@@ -38,20 +51,12 @@
     font-size: 12px;
   }
 
+  .description {
+    color: var(--ui-on-surface-color);
+  }
+
   .error_message {
-    margin-top: 5px;
-  }
-
-  &.uploading {
-    @include up-bold-icon;
-  }
-
-  &.fetching_meta_data {
-    @include clipboard-icon;
-  }
-
-  &.processing,
-  &.encoding {
-    @include cog-icon;
+    margin-top: space(1);
+    color: var(--ui-on-surface-color);
   }
 }

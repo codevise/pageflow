@@ -29,6 +29,19 @@ export const stageProvider = {
         return !stage.get('finished');
       }
     });
+
+    // Only the stage a file is waiting on says anything about what is
+    // going on. Stages which are done or still queued behind the
+    // current one only add noise.
+    this.currentStages = new Backbone.Collection();
+    this.listenTo(this.unfinishedStages, 'add remove', this.updateCurrentStages);
+    this.updateCurrentStages();
+  },
+
+  updateCurrentStages: function() {
+    var stage = this.unfinishedStages.first();
+
+    this.currentStages.set(stage ? [stage] : []);
   },
 
   currentStage: function() {

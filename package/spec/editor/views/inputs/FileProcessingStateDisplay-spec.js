@@ -27,6 +27,28 @@ describe('pageflow.FileProcessingStateDisplayView', () => {
     expect(view.$el).not.toHaveClass('file_processing_state_display-empty');
   });
 
+  it('displays only the stage the file is waiting on', () => {
+    var fixture = support.factories.imageFilesFixture({
+      imageFileAttributes: {
+        id: 1,
+        perma_id: 5,
+        state: 'uploading'
+      }
+    });
+    var model = new Configuration({
+      imageFileId: 5
+    });
+    var view = new FileProcessingStateDisplayView({
+      collection: fixture.imageFiles,
+      propertyName: 'imageFileId',
+      model: model
+    });
+
+    view.render();
+
+    expect(FileStageItem.findAll(view).length).toBe(1);
+  });
+
   it('does not display finished file stages', () => {
     var fixture = support.factories.imageFilesFixture({
       imageFileAttributes: {

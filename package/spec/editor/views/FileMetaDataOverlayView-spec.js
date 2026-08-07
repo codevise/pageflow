@@ -1,7 +1,7 @@
 import {FileMetaDataItemValueView, FileMetaDataOverlayView} from 'pageflow/editor';
 
 import * as support from '$support';
-import {FileMetaDataTable} from '$support/dominos/editor';
+import {FileMetaDataTable, FileStageItem} from '$support/dominos/editor';
 import {renderBackboneView as render} from 'pageflow/testHelpers';
 
 describe('FileMetaDataOverlayView', () => {
@@ -79,6 +79,27 @@ describe('FileMetaDataOverlayView', () => {
 
     expect(getByRole('link', {name: 'Download'}).getAttribute('href'))
       .toBe('/path/file.png?download=My%20File');
+  });
+
+  it('shows only the stage the file is waiting on', () => {
+    const file = support.factories.file({id: 123, state: 'uploading'});
+
+    const view = overlayView(file);
+
+    render(view);
+
+    expect(FileStageItem.findAll(view).length).toBe(1);
+  });
+
+  it('hides stages once the file is ready', () => {
+    const file = support.factories.file({id: 123, state: 'processed'});
+
+    const view = overlayView(file);
+
+    render(view);
+
+    expect(FileStageItem.findAll(view).length).toBe(0);
+    expect(view.$el.find('.file_stage_items')).not.toBeVisible();
   });
 
   it('is closed initially', () => {

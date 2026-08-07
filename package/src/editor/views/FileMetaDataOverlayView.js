@@ -52,9 +52,12 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
 
     this.subview(new CollectionView({
       el: this.ui.stageItems,
-      collection: this.model.stages,
+      collection: this.model.currentStages,
       itemViewConstructor: FileStageItemView
     }));
+
+    this.listenTo(this.model.currentStages, 'add remove', this.updateStages);
+    this.updateStages();
 
     _.each(this.metaDataViews(), function(view) {
       this.ui.metaData.append(this.subview(view).el);
@@ -69,6 +72,11 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
     this.ui.downloadLink.attr('href', this.model.get('download_url'));
     this.ui.downloads.toggle(this.model.isUploaded() &&
                              !_.isEmpty(this.model.get('download_url')));
+  },
+
+  // The separator would otherwise linger once the file is done.
+  updateStages: function() {
+    this.ui.stageItems.toggle(!!this.model.currentStages.length);
   },
 
   metaDataViews: function() {
