@@ -1,21 +1,19 @@
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import _ from 'underscore';
 import I18n from 'i18n-js';
-
-import {CollectionView} from 'pageflow/ui';
 
 import {editor} from '../base';
 
 import {DropDownButtonView} from './DropDownButtonView';
-import {FileMetaDataItemView} from './FileMetaDataItemView';
+import {FileMetaDataOverlayView} from './FileMetaDataOverlayView';
 import {FileSettingsDialogView} from './FileSettingsDialogView';
-import {FileStageItemView} from './FileStageItemView';
 import {FileThumbnailView} from './FileThumbnailView';
-import {TextFileMetaDataItemValueView} from './TextFileMetaDataItemValueView';
 import {loadable} from './mixins/loadable';
 
 import template from '../templates/fileItem.jst';
+
+// Long enough to sweep past a file without its overlay showing up.
+const OPEN_DELAY = 200;
 
 export const FileItemView = Marionette.ItemView.extend({
   tagName: 'li',
@@ -33,13 +31,7 @@ export const FileItemView = Marionette.ItemView.extend({
     retryButton: '.retry',
 
     thumbnail: '.file_thumbnail',
-    thumbnailButton: '.file_thumbnail_button',
-    stageItems: '.file_stage_items',
-    details: '.details',
-
-    metaData: 'tbody.attributes',
-    downloads: 'tbody.downloads',
-    downloadLink: 'a.original'
+    thumbnailButton: '.file_thumbnail_button'
   },
 
   events: {
@@ -55,7 +47,11 @@ export const FileItemView = Marionette.ItemView.extend({
 
     'click .retry': 'retry',
 
-    'click .file_thumbnail_button': 'toggleExpanded'
+    'mouseenter .file_thumbnail_button': 'openMetaData',
+
+    'mouseleave .file_thumbnail_button': 'dismissMetaData',
+
+    'click .file_thumbnail_button': 'toggleMetaDataLock'
   },
 
   initialize: function() {
@@ -114,18 +110,38 @@ export const FileItemView = Marionette.ItemView.extend({
       model: this.model
     }));
 
-    this.subview(new CollectionView({
-      el: this.ui.stageItems,
-      collection: this.model.stages,
-      itemViewConstructor: FileStageItemView
-    }));
-
-    _.each(this.metaDataViews(), function(view) {
-      this.ui.metaData.append(this.subview(view).el);
-    }, this);
-
     this.renderActionsDropDown();
     this.updateHighlight();
+  },
+
+  // Built on first use. Rendering an overlay for every row would make
+  // long file lists slow to display.
+  //
+  // Rendered next to the editor's menus so the overlay is not clipped
+  // by the scrolling files list. Stays inside the item if there is no
+  // container to portal into.
+  metaDataOverlay: function() {
+    if (!this.metaDataOverlayView) {
+      this.metaDataOverlayView = this.subview(new FileMetaDataOverlayView({
+        model: this.model,
+        metaDataAttributes: this.options.metaDataAttributes,
+        reference: this.ui.thumbnailButton[0]
+      }));
+
+      this.metaDataOverlayView.el.id = this.metaDataOverlayId();
+      this.ui.thumbnailButton.attr('aria-controls', this.metaDataOverlayId());
+
+      this.$el.append(this.metaDataOverlayView.el);
+      this.metaDataOverlayView.$el.appendTo('#editor_menu_container');
+
+      this.listenTo(this.metaDataOverlayView, 'toggle', this.updateExpanded);
+    }
+
+    return this.metaDataOverlayView;
+  },
+
+  metaDataOverlayId: function() {
+    return 'file-details-' + this.model.cid;
   },
 
   // Selecting a file is the only action offered in selection mode.
@@ -152,9 +168,6 @@ export const FileItemView = Marionette.ItemView.extend({
     this.$el.attr('data-id', this.model.id);
     this.ui.fileName.text(this.model.title());
 
-    this.ui.downloadLink.attr('href', this.model.get('download_url'));
-    this.ui.downloads.toggle(this.model.isUploaded() && !_.isEmpty(this.model.get('download_url')));
-
     this.ui.settingsButton.toggle(!this.model.isNew());
 
     this.menuItem('cancel').set('hidden', !this.model.isUploading());
@@ -163,38 +176,48 @@ export const FileItemView = Marionette.ItemView.extend({
     this.ui.confirmButton.toggle(this.model.isConfirmable());
     this.ui.retryButton.toggle(this.model.isRetryable());
 
-    this.updateToggleTitle();
+    this.updateToggleLabel();
   },
 
-  metaDataViews: function() {
-    var model = this.model;
+  // Moving the pointer across the list would otherwise flash the
+  // overlays of all files on the way. Once one of them is open, moving
+  // on to the next file is deliberate enough to skip the delay.
+  openMetaData: function() {
+    if (FileMetaDataOverlayView.currentlyOpen) {
+      return this.metaDataOverlay().openUnlessPinned();
+    }
 
-    return _.map(this.options.metaDataAttributes, function(options) {
-      if (typeof options === 'string') {
-        options = {
-          name: options,
-          valueView: TextFileMetaDataItemValueView
-        };
-      }
-
-      return new FileMetaDataItemView(_.extend({
-        model: model
-      }, options));
-    });
+    this.openMetaDataTimeout = setTimeout(() => {
+      this.metaDataOverlay().openUnlessPinned();
+    }, OPEN_DELAY);
   },
 
-  toggleExpanded: function() {
-    this.$el.toggleClass('expanded');
-    this.updateToggleTitle();
+  dismissMetaData: function() {
+    clearTimeout(this.openMetaDataTimeout);
+    this.metaDataOverlayView?.scheduleDismiss();
+  },
+
+  // Picking the file is the point of selection mode, so the thumbnail
+  // does the same as the rest of the row. Pinning the overlay would
+  // only get in the way of moving on to the next file.
+  toggleMetaDataLock: function() {
+    clearTimeout(this.openMetaDataTimeout);
+
+    if (this.options.selectionHandler) {
+      return this.select();
+    }
+
+    this.metaDataOverlay().toggleLock();
+  },
+
+  updateExpanded: function() {
+    this.$el.toggleClass('expanded', this.metaDataOverlayView.isOpen());
+    this.updateToggleLabel();
   },
 
   setupAriaAttributes: function() {
-    var detailsId = 'file-details-' + this.model.cid;
     var fileNameId = 'file-name-' + this.model.cid;
     var selectId = 'file-select-' + this.model.cid;
-
-    this.ui.thumbnailButton.attr('aria-controls', detailsId);
-    this.ui.details.attr('id', detailsId);
 
     // The select button covers the whole row, so its label has to name
     // the file it selects.
@@ -203,15 +226,17 @@ export const FileItemView = Marionette.ItemView.extend({
     this.ui.selectButton.attr('aria-labelledby', selectId + ' ' + fileNameId);
   },
 
-  updateToggleTitle: function() {
+  // No title attribute, since hovering the thumbnail is what opens the
+  // overlay in the first place. A tooltip about hiding details would
+  // appear on top of the details it talks about.
+  updateToggleLabel: function() {
     var isExpanded = this.$el.hasClass('expanded');
-    var titleText = I18n.t(isExpanded ?
-                           'pageflow.editor.templates.file_item.collapse_details' :
-                           'pageflow.editor.templates.file_item.expand_details');
+    var label = I18n.t(isExpanded ?
+                       'pageflow.editor.templates.file_item.collapse_details' :
+                       'pageflow.editor.templates.file_item.expand_details');
 
     this.ui.thumbnailButton.attr('aria-expanded', isExpanded.toString());
-    this.ui.thumbnailButton.attr('title', titleText);
-    this.ui.thumbnailButton.attr('aria-label', titleText);
+    this.ui.thumbnailButton.attr('aria-label', label);
   },
 
   destroy: function() {
@@ -254,5 +279,11 @@ export const FileItemView = Marionette.ItemView.extend({
     this.$el.attr('aria-selected', highlighted ? 'true' : null);
 
     return highlighted;
+  },
+
+  onClose: function() {
+    Marionette.ItemView.prototype.onClose.call(this);
+
+    clearTimeout(this.openMetaDataTimeout);
   }
 });

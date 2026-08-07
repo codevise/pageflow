@@ -134,7 +134,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     this.appendSubview(this.subview(new CollectionView({
       tagName: 'ul',
       id: 'filtered_files',
-      className: 'files expandable',
+      className: 'files',
       collection: this.searchFilteredCollection,
       itemViewConstructor: FileItemView,
       itemViewOptions: file => ({

@@ -417,7 +417,7 @@ describe('FilteredFilesView', () => {
     expect(names).toEqual(['a.mp4', 'b.png']);
   });
 
-  it('renders meta data attributes of the file type of each file', () => {
+  it('renders meta data attributes of the file type of each file', async () => {
     const fileTypes = f.fileTypes(function() {
       this.withImageFileType({metaDataAttributes: ['dimension']});
       this.withVideoFileType({metaDataAttributes: ['duration']});
@@ -439,7 +439,19 @@ describe('FilteredFilesView', () => {
       ]
     });
 
+    jest.useFakeTimers();
+    const user = userEvent.setup({advanceTimers: jest.advanceTimersByTime});
+
     const {getByText} = render(view);
+
+    // The overlay holding the meta data is only built on demand, after
+    // the pointer has rested on the thumbnail for a moment.
+    for (const thumbnail of view.$el.find('.file_thumbnail_button').toArray()) {
+      await user.hover(thumbnail);
+      jest.runOnlyPendingTimers();
+    }
+
+    jest.useRealTimers();
 
     expect(getByText('200x100px')).not.toBeNull();
     expect(getByText('2:30')).not.toBeNull();

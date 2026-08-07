@@ -1,0 +1,28 @@
+.file_meta_data_overlay {
+  display: none;
+  position: absolute;
+  z-index: 6;
+  width: space(64);
+  padding: space(2);
+  border: solid 1px var(--ui-on-surface-color-lighter);
+  border-radius: rounded(md);
+  background-color: var(--ui-surface-color);
+  box-shadow: var(--ui-box-shadow);
+
+  &.is_open {
+    display: block;
+  }
+
+  // Rotating a square leaves the two edges facing the thumbnail
+  // visible, so the arrow continues the border of the overlay.
+  &-arrow {
+    @include transform(rotate(45deg));
+
+    position: absolute;
+    width: space(2);
+    height: space(2);
+    border-top: solid 1px var(--ui-on-surface-color-lighter);
+    border-right: solid 1px var(--ui-on-surface-color-lighter);
+    background-color: var(--ui-surface-color);
+  }
+}

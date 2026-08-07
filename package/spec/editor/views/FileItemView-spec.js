@@ -1,9 +1,9 @@
 import Backbone from 'backbone';
 
-import {FileItemView, FileMetaDataItemValueView, ListHighlight} from 'pageflow/editor';
+import {FileItemView, FileMetaDataOverlayView, ListHighlight} from 'pageflow/editor';
 
 import * as support from '$support';
-import {FileMetaDataTable} from '$support/dominos/editor';
+import userEvent from '@testing-library/user-event';
 import {renderBackboneView as render} from 'pageflow/testHelpers';
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
@@ -30,79 +30,228 @@ describe('FileItemView', () => {
     expect(getByText('original.png')).not.toBeNull();
   });
 
-  it('links to download_url', () => {
-    const file = support.factories.file({
-      original_url: '/path/file.png',
-      display_name: 'My File',
-      state: 'processed'
+  describe('meta data overlay', () => {
+    // Which overlay is open is tracked across instances, so a pinned
+    // overlay would otherwise leak into the next example.
+    beforeEach(() => {
+      FileMetaDataOverlayView.currentlyOpen = null;
+      jest.useFakeTimers();
     });
 
-    const view = new FileItemView({model: file});
-
-    const {getByRole} = render(view);
-    const link = getByRole('link', {name: 'Download'});
-
-    expect(link.getAttribute('href'))
-      .toBe('/path/file.png?download=My%20File');
-  });
-
-  it('renders meta data items given as string', () => {
-    var file = support.factories.file(
-      {dimension: '200x100px'}
-    );
-    var fileItemView = new FileItemView({
-      model: file,
-      metaDataAttributes: ['dimension']
+    afterEach(() => {
+      jest.useRealTimers();
     });
 
-    fileItemView.render();
-    var fileMetaDataTable = FileMetaDataTable.find(fileItemView);
+    function thumbnailButton(queries) {
+      return queries.getByRole('button', {name: /details$/});
+    }
 
-    expect(fileMetaDataTable.values()).toEqual(expect.arrayContaining(['200x100px']));
-  });
+    // Hovering only opens the overlay after a delay.
+    async function hoverThumbnail(queries) {
+      const user = userEvent.setup({advanceTimers: jest.advanceTimersByTime});
 
-  it('renders meta data items with custom view and options', () => {
-    var file = support.factories.file(
-      {dimension: '200x100px'}
-    );
-    var fileItemView = new FileItemView({
-      model: file,
-      metaDataAttributes: [
-        {
-          name: 'dimension',
-          valueView: FileMetaDataItemValueView.extend({
-            getText: function() {
-              return this.model.get(this.options.name) + this.options.suffix;
-            }
-          }),
-          valueViewOptions: {
-            suffix: '!!'
-          }
-        }
-      ]
+      await user.hover(thumbnailButton(queries));
+      jest.runOnlyPendingTimers();
+
+      return user;
+    }
+
+    it('is not built before the file is hovered', () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        metaDataAttributes: ['dimension']
+      });
+
+      const queries = render(view);
+
+      expect(queries.queryByRole('table', {hidden: true})).toBeNull();
+      expect(thumbnailButton(queries).getAttribute('aria-expanded')).toBe('false');
+      expect(thumbnailButton(queries).getAttribute('aria-controls')).toBeNull();
     });
 
-    fileItemView.render();
-    var fileMetaDataTable = FileMetaDataTable.find(fileItemView);
+    it('describes the overlay once it has been built', async () => {
+      const file = support.factories.file({id: 123});
+      const view = new FileItemView({model: file, metaDataAttributes: []});
 
-    expect(fileMetaDataTable.values()).toEqual(expect.arrayContaining(['200x100px!!']));
-  });
+      const queries = render(view);
+      await hoverThumbnail(queries);
 
-  it('sets up proper ARIA attributes for expand/collapse', () => {
-    var file = support.factories.file({id: 123});
-    var fileItemView = new FileItemView({
-      model: file,
-      metaDataAttributes: []
+      expect(thumbnailButton(queries).getAttribute('aria-controls'))
+        .toBe(`file-details-${file.cid}`);
+      expect(view.metaDataOverlay().el.id).toBe(`file-details-${file.cid}`);
     });
 
-    const {getByRole} = render(fileItemView);
+    it('renders overlay into the editor menu container', async () => {
+      const container = document.createElement('div');
+      container.id = 'editor_menu_container';
+      document.body.appendChild(container);
 
-    var thumbnailButton = getByRole('button', {name: 'Show details'});
-    var detailsDiv = getByRole('table', {hidden: true}).closest('.details');
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        metaDataAttributes: []
+      });
 
-    expect(thumbnailButton.getAttribute('aria-expanded')).toBe('false');
-    expect(thumbnailButton.getAttribute('aria-controls')).toBe(`file-details-${file.cid}`);
-    expect(detailsDiv.getAttribute('id')).toBe(`file-details-${file.cid}`);
+      const queries = render(view);
+      await hoverThumbnail(queries);
+
+      expect(container.contains(view.metaDataOverlay().el)).toBe(true);
+
+      container.remove();
+    });
+
+    it('opens when thumbnail is hovered', async () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        metaDataAttributes: []
+      });
+
+      const queries = render(view);
+      await hoverThumbnail(queries);
+
+      expect(view.metaDataOverlay().isOpen()).toBe(true);
+      expect(view.el).toHaveClass('expanded');
+      expect(thumbnailButton(queries).getAttribute('aria-expanded')).toBe('true');
+    });
+
+    it('stays closed while the pointer only passes the thumbnail', async () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        metaDataAttributes: []
+      });
+      const user = userEvent.setup({advanceTimers: jest.advanceTimersByTime});
+
+      const queries = render(view);
+      await user.hover(thumbnailButton(queries));
+      await user.unhover(thumbnailButton(queries));
+      jest.runAllTimers();
+
+      expect(view.metaDataOverlayView).toBeUndefined();
+      expect(view.el).not.toHaveClass('expanded');
+    });
+
+    it('opens without delay while an overlay is already open', async () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        metaDataAttributes: []
+      });
+      const otherView = new FileItemView({
+        model: support.factories.file({id: 456}),
+        metaDataAttributes: []
+      });
+      const user = userEvent.setup({advanceTimers: jest.advanceTimersByTime});
+
+      const queries = render(view);
+      const otherQueries = render(otherView);
+      await hoverThumbnail(queries);
+      await user.hover(thumbnailButton(otherQueries));
+
+      expect(otherView.metaDataOverlay().isOpen()).toBe(true);
+    });
+
+    it('dismisses when pointer leaves thumbnail', async () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        metaDataAttributes: []
+      });
+      const queries = render(view);
+      const user = await hoverThumbnail(queries);
+      await user.unhover(thumbnailButton(queries));
+      jest.runAllTimers();
+
+      expect(view.metaDataOverlay().isOpen()).toBe(false);
+      expect(view.el).not.toHaveClass('expanded');
+    });
+
+    it('locks when thumbnail is clicked', () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        metaDataAttributes: []
+      });
+
+      const queries = render(view);
+      thumbnailButton(queries).click();
+
+      expect(view.metaDataOverlay().isOpen()).toBe(true);
+      expect(view.metaDataOverlay().isLocked()).toBe(true);
+    });
+
+    it('unlocks when thumbnail is clicked again', () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        metaDataAttributes: []
+      });
+
+      const queries = render(view);
+      thumbnailButton(queries).click();
+      thumbnailButton(queries).click();
+
+      expect(view.metaDataOverlay().isLocked()).toBe(false);
+    });
+
+    it('stays locked when other thumbnail is hovered', async () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        metaDataAttributes: []
+      });
+      const otherView = new FileItemView({
+        model: support.factories.file({id: 456}),
+        metaDataAttributes: []
+      });
+      const queries = render(view);
+      const otherQueries = render(otherView);
+      thumbnailButton(queries).click();
+      await hoverThumbnail(otherQueries);
+
+      expect(view.metaDataOverlay().isOpen()).toBe(true);
+      expect(otherView.metaDataOverlay().isOpen()).toBe(false);
+    });
+
+    it('selects file when thumbnail is clicked in selection mode', async () => {
+      const file = support.factories.file({id: 123});
+      // Returning false keeps the view from navigating to the referer.
+      const selectionHandler = {call: jest.fn().mockReturnValue(false), getReferer: jest.fn()};
+      const view = new FileItemView({model: file, metaDataAttributes: [], selectionHandler});
+
+      const queries = render(view);
+      await hoverThumbnail(queries);
+      thumbnailButton(queries).click();
+
+      expect(selectionHandler.call).toHaveBeenCalledWith(file);
+      expect(view.metaDataOverlay().isLocked()).toBe(false);
+    });
+
+    it('opens in selection mode', async () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        metaDataAttributes: [],
+        selectionHandler: {call: jest.fn(), getReferer: jest.fn()}
+      });
+
+      const queries = render(view);
+      await hoverThumbnail(queries);
+
+      expect(view.metaDataOverlay().isOpen()).toBe(true);
+    });
+
+    it('closes when overlay of other file is opened', () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123}),
+        metaDataAttributes: []
+      });
+      const otherView = new FileItemView({
+        model: support.factories.file({id: 456}),
+        metaDataAttributes: []
+      });
+
+      const queries = render(view);
+      const otherQueries = render(otherView);
+      thumbnailButton(queries).click();
+      thumbnailButton(otherQueries).click();
+
+      expect(view.metaDataOverlay().isOpen()).toBe(false);
+      expect(view.el).not.toHaveClass('expanded');
+      expect(otherView.metaDataOverlay().isOpen()).toBe(true);
+    });
   });
 
   describe('actions', () => {
@@ -124,7 +273,7 @@ describe('FileItemView', () => {
       const {getAllByRole} = render(view);
 
       expect(getAllByRole('button').map(button => button.getAttribute('title')))
-        .toEqual(['Show details', 'Settings', 'Actions']);
+        .toEqual([null, 'Settings', 'Actions']);
     });
 
     it('hides settings button for file that has not been created yet', () => {

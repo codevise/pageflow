@@ -60,24 +60,3 @@
     }
   }
 }
-
-.expandable {
-  .file_thumbnail {
-    @include background-icon-left($color: var(--ui-on-primary-color), $left: 70%, $top: 85%);
-    @include down-open-icon;
-
-    &:before {
-      z-index: 1;
-      opacity: 0.4;
-      text-shadow: var(--ui-on-surface-color) 1px 0 4px;
-    }
-
-    &:hover:before {
-      opacity: 1;
-    }
-  }
-
-  .expanded .file_thumbnail {
-    @include up-open-icon;
-  }
-}

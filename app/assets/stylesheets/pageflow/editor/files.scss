@@ -6,7 +6,6 @@ ul.files {
 
   > li {
     display: flex;
-    flex-wrap: wrap;
     column-gap: space(2);
     background-color: var(--ui-surface-color);
     border-bottom: solid 1px var(--ui-on-surface-color-lightest);
@@ -34,9 +33,11 @@ ul.files {
         left: 0;
       }
 
-      // Expanding details is not reachable while the row selects.
-      .file_thumbnail:before {
-        content: none;
+      // The thumbnail keeps opening the meta data overlay, so it needs
+      // to stay above the stretched select button.
+      .file_thumbnail_button {
+        position: relative;
+        z-index: 1;
       }
     }
   }
@@ -52,10 +53,6 @@ ul.files {
     &:hover .select {
       opacity: 1;
     }
-  }
-
-  > li:not(.expanded) .details {
-    display: none;
   }
 
   li.blank_slate {
@@ -103,11 +100,6 @@ ul.files {
     align-self: flex-end;
     align-items: center;
     padding: space(0.5) space(0.5) 0 0;
-  }
-
-  .details {
-    position: relative;
-    width: 100%;
   }
 
   button.settings,
