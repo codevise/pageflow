@@ -2,15 +2,18 @@
   <span class="file_thumbnail"></span>
 </button>
 
-<span class="file_name"></span>
-<button class="select" type="button"><%= I18n.t('pageflow.editor.templates.file_item.select') %></button>
+<div class="file_item-info">
+  <div class="actions">
+    <% if (data.selectable) { %>
+      <button class="select" type="button"><%= I18n.t('pageflow.editor.templates.file_item.select') %></button>
+    <% } else { %>
+      <button class="confirm" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.confirm') %>"></button>
+      <button class="retry" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.retry') %>"></button>
+      <button class="settings" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.settings') %>"></button>
+    <% } %>
+  </div>
 
-<div class="actions">
-  <button class="settings" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.settings') %>"></button>
-  <button class="confirm" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.confirm') %>"></button>
-  <button class="retry" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.retry') %>"></button>
-  <button class="remove" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.destroy') %>"></button>
-  <button class="cancel" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.cancel') %>"></button>
+  <span class="file_name"></span>
 </div>
 
 <div class="details">

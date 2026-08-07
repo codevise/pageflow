@@ -12,7 +12,12 @@ describe('FileItemView', () => {
   support.useFakeTranslations({
     'pageflow.editor.templates.file_item.expand_details': 'Show details',
     'pageflow.editor.templates.file_item.collapse_details': 'Hide details',
-    'pageflow.editor.templates.file_item.download': 'Download'
+    'pageflow.editor.templates.file_item.download': 'Download',
+    'pageflow.editor.templates.file_item.actions': 'Actions',
+    'pageflow.editor.templates.file_item.cancel_upload': 'Cancel upload',
+    'pageflow.editor.templates.file_item.destroy': 'Delete',
+    'pageflow.editor.templates.file_item.settings': 'Settings',
+    'pageflow.editor.templates.file_item.select': 'Select'
   });
 
   it('displays file title', () => {
@@ -98,6 +103,169 @@ describe('FileItemView', () => {
     expect(thumbnailButton.getAttribute('aria-expanded')).toBe('false');
     expect(thumbnailButton.getAttribute('aria-controls')).toBe(`file-details-${file.cid}`);
     expect(detailsDiv.getAttribute('id')).toBe(`file-details-${file.cid}`);
+  });
+
+  describe('actions', () => {
+    it('renders settings button', () => {
+      const file = support.factories.file({id: 123});
+
+      const view = new FileItemView({model: file});
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('button', {name: 'Settings'})).not.toBeNull();
+    });
+
+    it('renders settings button next to drop down', () => {
+      const file = support.factories.file({id: 123});
+
+      const view = new FileItemView({model: file});
+
+      const {getAllByRole} = render(view);
+
+      expect(getAllByRole('button').map(button => button.getAttribute('title')))
+        .toEqual(['Show details', 'Settings', 'Actions']);
+    });
+
+    it('hides settings button for file that has not been created yet', () => {
+      const file = support.factories.file({});
+
+      const view = new FileItemView({model: file});
+
+      const {queryByRole} = render(view);
+
+      expect(queryByRole('button', {name: 'Settings'})).toBeNull();
+    });
+
+    it('offers delete and cancel upload in drop down', () => {
+      const file = support.factories.file({id: 123});
+
+      const view = new FileItemView({model: file});
+
+      const {getAllByRole} = render(view);
+
+      expect(getAllByRole('link').map(link => link.textContent))
+        .toEqual(['Cancel upload', 'Delete']);
+    });
+
+    it('destroys file when delete is selected', () => {
+      window.confirm = jest.fn(() => true);
+      const file = support.factories.file({id: 123});
+      jest.spyOn(file, 'destroy').mockImplementation(() => {});
+
+      const view = new FileItemView({model: file});
+
+      const {getByRole} = render(view);
+      getByRole('link', {name: 'Delete'}).click();
+
+      expect(file.destroy).toHaveBeenCalled();
+    });
+
+    it('cancels upload when cancel upload is selected', () => {
+      const file = support.factories.file({id: 123, state: 'uploading'});
+      jest.spyOn(file, 'cancelUpload').mockImplementation(() => {});
+
+      const view = new FileItemView({model: file});
+
+      const {getByRole} = render(view);
+      getByRole('link', {name: 'Cancel upload'}).click();
+
+      expect(file.cancelUpload).toHaveBeenCalled();
+    });
+
+    it('hides cancel upload unless file is uploading', () => {
+      const file = support.factories.file({id: 123});
+
+      const view = new FileItemView({model: file});
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('link', {name: 'Cancel upload'}).closest('li'))
+        .toHaveClass('is_hidden');
+      expect(getByRole('link', {name: 'Delete'}).closest('li'))
+        .not.toHaveClass('is_hidden');
+    });
+
+    it('offers cancel upload instead of delete while file is uploading', () => {
+      const file = support.factories.file({id: 123, state: 'uploading'});
+
+      const view = new FileItemView({model: file});
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('link', {name: 'Cancel upload'}).closest('li'))
+        .not.toHaveClass('is_hidden');
+      expect(getByRole('link', {name: 'Delete'}).closest('li'))
+        .toHaveClass('is_hidden');
+    });
+  });
+
+  describe('in selection mode', () => {
+    const selectionHandler = () => ({
+      call: jest.fn(),
+      getReferer: jest.fn()
+    });
+
+    it('renders select button', () => {
+      const file = support.factories.file({id: 123});
+
+      const view = new FileItemView({model: file, selectionHandler: selectionHandler()});
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('button', {name: 'Select'})).not.toBeNull();
+    });
+
+    it('names select button after file', () => {
+      const file = support.factories.file({id: 123, file_name: 'original.png'});
+
+      const view = new FileItemView({model: file, selectionHandler: selectionHandler()});
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('button', {name: 'Select original.png'})).not.toBeNull();
+    });
+
+    it('marks item as selectable', () => {
+      const file = support.factories.file({id: 123});
+
+      const view = new FileItemView({model: file, selectionHandler: selectionHandler()});
+
+      render(view);
+
+      expect(view.el).toHaveClass('selectable');
+    });
+
+    it('does not offer actions', () => {
+      const file = support.factories.file({id: 123});
+
+      const view = new FileItemView({model: file, selectionHandler: selectionHandler()});
+
+      const {queryByRole} = render(view);
+
+      expect(queryByRole('link', {name: 'Delete'})).toBeNull();
+      expect(queryByRole('button', {name: 'Settings'})).toBeNull();
+    });
+
+    it('does not offer actions of uploading file', () => {
+      const file = support.factories.file({id: 123, state: 'uploading'});
+
+      const view = new FileItemView({model: file, selectionHandler: selectionHandler()});
+
+      const {queryByRole} = render(view);
+
+      expect(queryByRole('link', {name: 'Cancel upload'})).toBeNull();
+    });
+  });
+
+  it('does not render select button without selection handler', () => {
+    const file = support.factories.file({id: 123});
+
+    const view = new FileItemView({model: file});
+
+    const {queryByRole} = render(view);
+
+    expect(queryByRole('button', {name: 'Select'})).toBeNull();
   });
 
   describe('with list highlight', () => {

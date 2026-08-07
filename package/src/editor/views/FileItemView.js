@@ -1,3 +1,4 @@
+import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 import I18n from 'i18n-js';
@@ -6,6 +7,7 @@ import {CollectionView} from 'pageflow/ui';
 
 import {editor} from '../base';
 
+import {DropDownButtonView} from './DropDownButtonView';
 import {FileMetaDataItemView} from './FileMetaDataItemView';
 import {FileSettingsDialogView} from './FileSettingsDialogView';
 import {FileStageItemView} from './FileStageItemView';
@@ -24,11 +26,10 @@ export const FileItemView = Marionette.ItemView.extend({
   ui: {
     fileName: '.file_name',
 
+    actions: '.actions',
     selectButton: '.select',
     settingsButton: '.settings',
-    removeButton: '.remove',
     confirmButton: '.confirm',
-    cancelButton: '.cancel',
     retryButton: '.retry',
 
     thumbnail: '.file_thumbnail',
@@ -50,11 +51,7 @@ export const FileItemView = Marionette.ItemView.extend({
       });
     },
 
-    'click .cancel': 'cancel',
-
     'click .confirm': 'confirm',
-
-    'click .remove': 'destroy',
 
     'click .retry': 'retry',
 
@@ -62,6 +59,8 @@ export const FileItemView = Marionette.ItemView.extend({
   },
 
   initialize: function() {
+    this.menuItems = this.createMenuItems();
+
     if (this.options.listHighlight) {
       this.listenTo(this.options.listHighlight, 'change:currentCid change:active', () => {
         if (this.updateHighlight()) {
@@ -73,11 +72,40 @@ export const FileItemView = Marionette.ItemView.extend({
     }
   },
 
+  createMenuItems: function() {
+    var items = new Backbone.Collection([
+      {
+        name: 'cancel',
+        label: I18n.t('pageflow.editor.templates.file_item.cancel_upload')
+      },
+      {
+        name: 'destroy',
+        label: I18n.t('pageflow.editor.templates.file_item.destroy'),
+        destructive: true
+      }
+    ]);
+
+    items.findWhere({name: 'cancel'}).selected = () => this.cancel();
+    items.findWhere({name: 'destroy'}).selected = () => this.destroy();
+
+    return items;
+  },
+
+  menuItem: function(name) {
+    return this.menuItems.findWhere({name: name});
+  },
+
   modelEvents: {
     'change': 'update'
   },
 
+  serializeData: function() {
+    return {selectable: !!this.options.selectionHandler};
+  },
+
   onRender: function() {
+    this.$el.toggleClass('selectable', !!this.options.selectionHandler);
+
     this.update();
     this.setupAriaAttributes();
 
@@ -96,7 +124,24 @@ export const FileItemView = Marionette.ItemView.extend({
       this.ui.metaData.append(this.subview(view).el);
     }, this);
 
+    this.renderActionsDropDown();
     this.updateHighlight();
+  },
+
+  // Selecting a file is the only action offered in selection mode.
+  renderActionsDropDown: function() {
+    if (this.options.selectionHandler) {
+      return;
+    }
+
+    this.ui.actions.append(this.subview(new DropDownButtonView({
+      items: this.menuItems,
+      title: I18n.t('pageflow.editor.templates.file_item.actions'),
+      alignMenu: 'right',
+      ellipsisIcon: true,
+      borderless: true,
+      openOnClick: true
+    })).el);
   },
 
   update: function() {
@@ -110,12 +155,12 @@ export const FileItemView = Marionette.ItemView.extend({
     this.ui.downloadLink.attr('href', this.model.get('download_url'));
     this.ui.downloads.toggle(this.model.isUploaded() && !_.isEmpty(this.model.get('download_url')));
 
-    this.ui.selectButton.toggle(!!this.options.selectionHandler);
     this.ui.settingsButton.toggle(!this.model.isNew());
 
-    this.ui.cancelButton.toggle(this.model.isUploading());
+    this.menuItem('cancel').set('hidden', !this.model.isUploading());
+    this.menuItem('destroy').set('hidden', this.model.isUploading());
+
     this.ui.confirmButton.toggle(this.model.isConfirmable());
-    this.ui.removeButton.toggle(!this.model.isUploading());
     this.ui.retryButton.toggle(this.model.isRetryable());
 
     this.updateToggleTitle();
@@ -145,9 +190,17 @@ export const FileItemView = Marionette.ItemView.extend({
 
   setupAriaAttributes: function() {
     var detailsId = 'file-details-' + this.model.cid;
+    var fileNameId = 'file-name-' + this.model.cid;
+    var selectId = 'file-select-' + this.model.cid;
 
     this.ui.thumbnailButton.attr('aria-controls', detailsId);
     this.ui.details.attr('id', detailsId);
+
+    // The select button covers the whole row, so its label has to name
+    // the file it selects.
+    this.ui.fileName.attr('id', fileNameId);
+    this.ui.selectButton.attr('id', selectId);
+    this.ui.selectButton.attr('aria-labelledby', selectId + ' ' + fileNameId);
   },
 
   updateToggleTitle: function() {

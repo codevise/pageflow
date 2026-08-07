@@ -1391,7 +1391,8 @@ de:
         entry_preview:
           navigation_disabled_hint: Seitenwechsel sind innerhalb der Phone Vorschau nicht möglich.
         file_item:
-          cancel: Abbrechen
+          actions: Aktionen
+          cancel_upload: Upload abbrechen
           confirm: Überprüfen und bestätigen
           credits: Rechte
           destroy: Löschen

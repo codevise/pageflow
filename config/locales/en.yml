@@ -1383,7 +1383,8 @@ en:
         entry_preview:
           navigation_disabled_hint: Page changes not possible in phone preview.
         file_item:
-          cancel: Cancel
+          actions: Actions
+          cancel_upload: Cancel upload
           confirm: Confirm
           credits: Credits
           destroy: Delete
