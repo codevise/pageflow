@@ -56,6 +56,29 @@ describe('comment visibility', () => {
     expect(entry.queryShowCommentsButton()).toBeNull();
   });
 
+  it('stays collapsed when the entry is rendered again', () => {
+    const entry = renderEntryWithComments();
+    fireEvent.click(entry.getHideCommentsButton());
+    entry.unmount();
+
+    const reopenedEntry = renderEntryWithComments();
+
+    expect(reopenedEntry.queryCommentToolbar()).toBeNull();
+    expect(reopenedEntry.getShowCommentsButton()).toBeInTheDocument();
+  });
+
+  it('stays expanded after being restored when the entry is rendered again', () => {
+    const entry = renderEntryWithComments();
+    fireEvent.click(entry.getHideCommentsButton());
+    fireEvent.click(entry.getShowCommentsButton());
+    entry.unmount();
+
+    const reopenedEntry = renderEntryWithComments();
+
+    expect(reopenedEntry.getCommentToolbar()).toBeInTheDocument();
+    expect(reopenedEntry.queryShowCommentsButton()).toBeNull();
+  });
+
   it('hides comment badges while hidden and restores them when shown', () => {
     const entry = renderEntry({
       seed: {
