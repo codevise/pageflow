@@ -3,7 +3,6 @@
   position: absolute;
   z-index: 6;
   width: space(64);
-  padding: space(2);
   border: solid 1px var(--ui-on-surface-color-lighter);
   border-radius: rounded(md);
   background-color: var(--ui-surface-color);
@@ -11,6 +10,21 @@
 
   &.is_open {
     display: block;
+  }
+
+  // Never taller than the space floating-ui found next to the row.
+  &-content {
+    max-height: var(--available-height, 100vh);
+    overflow-y: auto;
+    padding: space(2);
+  }
+
+  &-preview {
+    display: block;
+    margin-bottom: space(2);
+    border-radius: rounded();
+    overflow: hidden;
+    background-color: var(--ui-on-surface-color-lightest);
   }
 
   // Rotating a square leaves the two edges facing the thumbnail

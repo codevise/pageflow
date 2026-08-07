@@ -1503,6 +1503,9 @@ en:
       title_loading_spinner:
         widget_type_info_box_text: This is a preview of the 'Title and Image' loading view. The animation runs while the page is loading.
       views:
+        audio_file_preview_view:
+          pause: Pause
+          play: Play
         chapter_item_view:
           chapter: Chapter
           unnamed: "(New chapter)"
@@ -1538,6 +1541,8 @@ en:
           scroll_hint: Scroll down to continue
         file_meta_data_item_value_view:
           blank: "-"
+        file_preview_progress_bar_view:
+          position: Playback position
         files_view:
           add: Add
           authenticating: Authenticating
@@ -1587,6 +1592,9 @@ en:
         storylines_picker_view:
           label: Storyline
           without_parent_page: Without parent page
+        video_file_preview_view:
+          mute: Mute
+          unmute: Unmute
       widgets:
         attributes:
           media_loading_spinner:

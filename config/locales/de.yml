@@ -1511,6 +1511,9 @@ de:
       title_loading_spinner:
         widget_type_info_box_text: Dies ist eine Vorschau der 'Titel und Bild'-Lade-Ansicht. Die Animation läuft ab, während der Beitrag lädt.
       views:
+        audio_file_preview_view:
+          pause: Pause
+          play: Abspielen
         chapter_item_view:
           chapter: Kapitel
           unnamed: "(Unbenannt)"
@@ -1546,6 +1549,8 @@ de:
           scroll_hint: Scrollen, um weiterzulesen
         file_meta_data_item_value_view:
           blank: "-"
+        file_preview_progress_bar_view:
+          position: Wiedergabeposition
         files_view:
           add: Hinzufügen
           authenticating: Authentifizieren
@@ -1595,6 +1600,9 @@ de:
         storylines_picker_view:
           label: Erzählstrang
           without_parent_page: Ohne übergeordnete Seite
+        video_file_preview_view:
+          mute: Ton ausschalten
+          unmute: Ton einschalten
       widgets:
         attributes:
           media_loading_spinner:

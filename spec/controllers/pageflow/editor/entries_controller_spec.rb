@@ -126,6 +126,33 @@ module Pageflow
           )
         end
 
+        it 'includes url of smallest encoding of video files for preview' do
+          user = create(:user)
+          entry = create(:entry, with_editor: user)
+          video_file = create(:video_file)
+          create(:file_usage, file: video_file, revision: entry.draft)
+
+          sign_in(user, scope: :user)
+          get(:show, params: {id: entry}, format: 'json')
+
+          expect(response.body).to include_json(
+            video_files: [{preview_url: video_file.mp4_low.url}]
+          )
+        end
+
+        it 'does not include preview url of video files which are not encoded' do
+          user = create(:user)
+          entry = create(:entry, with_editor: user)
+          video_file = create(:video_file, state: 'encoding')
+          create(:file_usage, file: video_file, revision: entry.draft)
+
+          sign_in(user, scope: :user)
+          get(:show, params: {id: entry}, format: 'json')
+
+          expect(JSON.parse(response.body)['video_files'].first)
+            .not_to have_key('preview_url')
+        end
+
         it 'does not cache files across entries', :use_clean_rails_memory_store_fragment_caching do
           user = create(:user)
           entry = create(:entry, with_editor: user)

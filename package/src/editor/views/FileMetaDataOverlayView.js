@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
-import {arrow, autoUpdate, computePosition, offset, shift} from '@floating-ui/dom';
+import {arrow, autoUpdate, computePosition, offset, shift, size} from '@floating-ui/dom';
 
 import {CollectionView} from 'pageflow/ui';
 
@@ -24,6 +24,8 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
 
   ui: {
     arrow: '.file_meta_data_overlay-arrow',
+    content: '.file_meta_data_overlay-content',
+    preview: '.file_meta_data_overlay-preview',
     stageItems: '.file_stage_items',
     metaData: 'tbody.attributes',
     downloads: 'tbody.downloads',
@@ -40,7 +42,8 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
   },
 
   modelEvents: {
-    'change': 'update'
+    'change': 'update',
+    'change:state': 'renderPreview'
   },
 
   initialize: function() {
@@ -62,6 +65,37 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
     _.each(this.metaDataViews(), function(view) {
       this.ui.metaData.append(this.subview(view).el);
     }, this);
+  },
+
+  // Only exists while the overlay is open, so that videos of other
+  // files do not keep loading and playing in the background. Rerendered
+  // on state changes since files only get a preview once they have
+  // finished processing.
+  renderPreview: function() {
+    this.closePreview();
+
+    if (this.isClosed || !this.isOpen()) {
+      return;
+    }
+
+    this.previewView = this.model.createPreviewView();
+
+    if (this.previewView) {
+      this.ui.preview.append(this.previewView.render().el);
+    }
+
+    this.ui.preview.toggle(!!this.previewView);
+  },
+
+  closePreview: function() {
+    if (this.previewView) {
+      this.previewView.close();
+      this.previewView = null;
+    }
+
+    if (!this.isClosed) {
+      this.ui.preview.hide();
+    }
   },
 
   update: function() {
@@ -131,6 +165,7 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
                                      this.el,
                                      this.position.bind(this));
 
+    this.renderPreview();
     this.trigger('toggle');
   },
 
@@ -199,6 +234,7 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
       FileMetaDataOverlayView.currentlyOpen = null;
     }
 
+    this.closePreview();
     this.$el.removeClass('is_open');
     this.trigger('toggle');
   },
@@ -209,9 +245,33 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
       middleware: [
         offset(DISTANCE_FROM_THUMBNAIL),
         shift({padding: DISTANCE_FROM_VIEWPORT_EDGE}),
+        size({
+          padding: DISTANCE_FROM_VIEWPORT_EDGE,
+          apply: this.applyAvailableHeight.bind(this)
+        }),
         arrow({element: this.ui.arrow[0]})
       ]
     }).then(this.applyPosition.bind(this));
+  },
+
+  // Keeps the overlay inside the viewport next to short rows and on
+  // short screens. Whatever the rest of the overlay does not need is
+  // left for the preview to scale itself down into.
+  applyAvailableHeight: function({availableHeight}) {
+    if (this.isClosed) {
+      return;
+    }
+
+    var content = this.ui.content[0];
+    var borders = this.el.offsetHeight - content.offsetHeight;
+    var available = Math.max(0, availableHeight - borders);
+    var previewHeight = this.ui.preview.outerHeight(true) || 0;
+
+    this.el.style.setProperty('--available-height', `${available}px`);
+    this.el.style.setProperty(
+      '--preview-max-height',
+      `${Math.max(0, available - (content.scrollHeight - previewHeight))}px`
+    );
   },
 
   // Positioning is async, so the view can already be gone by the time
@@ -238,6 +298,7 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
   onClose: function() {
     Marionette.ItemView.prototype.onClose.call(this);
 
+    this.closePreview();
     this.dismiss();
   }
 });

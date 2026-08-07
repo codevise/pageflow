@@ -1,3 +1,5 @@
+import Marionette from 'backbone.marionette';
+
 import {FileMetaDataItemValueView, FileMetaDataOverlayView} from 'pageflow/editor';
 
 import * as support from '$support';
@@ -79,6 +81,74 @@ describe('FileMetaDataOverlayView', () => {
 
     expect(getByRole('link', {name: 'Download'}).getAttribute('href'))
       .toBe('/path/file.png?download=My%20File');
+  });
+
+  const PreviewView = Marionette.ItemView.extend({
+    template: () => '<span class="preview_stand_in"></span>'
+  });
+
+  function fileWithPreview(attributes) {
+    return support.factories.file({id: 123, state: 'processed', ...attributes}, {
+      fileType: support.factories.fileType({previewView: PreviewView})
+    });
+  }
+
+  it('renders the preview view of the file type when opened', () => {
+    const view = overlayView(fileWithPreview());
+
+    render(view);
+    view.open();
+
+    expect(view.$el.find('.preview_stand_in').length).toBe(1);
+  });
+
+  it('drops the preview again when dismissed', () => {
+    const view = overlayView(fileWithPreview());
+
+    render(view);
+    view.open();
+    view.dismiss();
+
+    expect(view.$el.find('.preview_stand_in').length).toBe(0);
+  });
+
+  it('does not render a preview before it is opened', () => {
+    const view = overlayView(fileWithPreview());
+
+    render(view);
+
+    expect(view.$el.find('.preview_stand_in').length).toBe(0);
+    expect(view.$el.find('.file_meta_data_overlay-preview')).not.toBeVisible();
+  });
+
+  it('hides the preview for file types without preview view', () => {
+    const view = overlayView(support.factories.file({id: 123, state: 'processed'}));
+
+    render(view);
+    view.open();
+
+    expect(view.$el.find('.file_meta_data_overlay-preview')).not.toBeVisible();
+  });
+
+  it('hides the preview while the file is still processing', () => {
+    const view = overlayView(fileWithPreview({state: 'processing'}));
+
+    render(view);
+    view.open();
+
+    expect(view.$el.find('.preview_stand_in').length).toBe(0);
+    expect(view.$el.find('.file_meta_data_overlay-preview')).not.toBeVisible();
+  });
+
+  it('renders the preview once the file has been processed', () => {
+    const file = fileWithPreview({state: 'processing'});
+    const view = overlayView(file);
+
+    render(view);
+    view.open();
+    file.set('state', 'processed');
+
+    expect(view.$el.find('.preview_stand_in').length).toBe(1);
   });
 
   it('shows only the stage the file is waiting on', () => {
