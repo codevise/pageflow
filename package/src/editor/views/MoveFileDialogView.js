@@ -15,6 +15,7 @@ export const MoveFileDialogView = Marionette.ItemView.extend({
   mixins: [dialogView],
 
   ui: {
+    header: '.dialog-header',
     hint: '.move_file_dialog-hint',
     targets: '.move_file_dialog-targets'
   },
@@ -27,7 +28,11 @@ export const MoveFileDialogView = Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.ui.hint.text(this.translation('hint', {file: this.model.title()}));
+    var files = this.options.models;
+
+    this.ui.header.text(this.translation('header', {count: files.length}));
+    this.ui.hint.text(this.translation('hint', {count: files.length,
+                                                file: files[0].title()}));
 
     // Nesting the folders inside the target which stands for the root
     // matches the tree they form and takes care of indenting them.
@@ -58,7 +63,7 @@ export const MoveFileDialogView = Marionette.ItemView.extend({
   },
 
   targetButton: function(folder) {
-    var current = this.permaIdOf(folder) === this.model.get('folder_perma_id');
+    var current = this.permaIdOf(folder) === this.currentFolderPermaId();
 
     var button = $('<button />', {
       'class': 'move_file_dialog-target',
@@ -83,9 +88,35 @@ export const MoveFileDialogView = Marionette.ItemView.extend({
     return button;
   },
 
+  // Setting the folder a file is already in is a no op, so moving a
+  // selection does not save the files which do not actually move.
+  //
+  // Iterating a copy since moving a file can drop it from the selection
+  // which the list passed in, which would skip the files behind it.
   move: function(folder) {
-    this.model.set('folder_perma_id', this.permaIdOf(folder));
+    var permaId = this.permaIdOf(folder);
+
+    this.options.models.slice().forEach(function(file) {
+      file.set('folder_perma_id', permaId);
+    });
+
+    if (this.options.onMove) {
+      this.options.onMove();
+    }
+
     this.close();
+  },
+
+  // With files from more than one folder, none of the targets is the
+  // folder they are all in.
+  currentFolderPermaId: function() {
+    var permaIds = this.options.models.map(function(file) {
+      return file.get('folder_perma_id');
+    });
+
+    return permaIds.every(function(permaId) {
+      return permaId === permaIds[0];
+    }) ? permaIds[0] : undefined;
   },
 
   permaIdOf: function(folder) {

@@ -18,14 +18,20 @@ describe('MoveFileDialogView', () => {
   support.useFakeXhr(() => testContext);
 
   support.useFakeTranslations({
-    'pageflow.editor.views.move_file_dialog_view.header': 'Move file',
-    'pageflow.editor.views.move_file_dialog_view.hint': 'Select the folder to move %{file} to.',
+    'pageflow.editor.views.move_file_dialog_view.header': {
+      one: 'Move file',
+      other: 'Move files'
+    },
+    'pageflow.editor.views.move_file_dialog_view.hint': {
+      one: 'Select the folder to move %{file} to.',
+      other: 'Select the folder to move %{count} files to.'
+    },
     'pageflow.editor.views.move_file_dialog_view.root': 'No folder',
     'pageflow.editor.views.move_file_dialog_view.current': 'Current folder',
     'pageflow.editor.views.move_file_dialog_view.cancel': 'Cancel'
   });
 
-  function entryWithFolders(fileAttributes) {
+  function entryWithFolders(...filesAttributes) {
     return f.entry({}, {
       fileTypes: f.fileTypesWithImageFileType(),
       fileFoldersAttributes: [
@@ -34,17 +40,26 @@ describe('MoveFileDialogView', () => {
         {id: 12, perma_id: 3, name: 'Landscapes'}
       ],
       filesAttributes: {
-        image_files: [{id: 5, display_name: 'image.png', ...fileAttributes}]
+        image_files: filesAttributes.length ?
+                     filesAttributes.map((attributes, index) => ({
+                       id: 5 + index,
+                       display_name: `image${index}.png`,
+                       ...attributes
+                     })) :
+                     [{id: 5, display_name: 'image.png'}]
       }
     });
   }
 
-  function dialog(entry) {
-    const file = entry.getFileCollection('image_files').first();
+  function dialog(entry, options) {
+    const files = entry.getFileCollection('image_files').models;
 
     return {
-      file,
-      view: new MoveFileDialogView({model: file, fileFolders: entry.fileFolders})
+      files,
+      file: files[0],
+      view: new MoveFileDialogView({models: files,
+                                    fileFolders: entry.fileFolders,
+                                    ...options})
     };
   }
 
@@ -56,6 +71,14 @@ describe('MoveFileDialogView', () => {
   function itemOf(queries, name) {
     return queries.getByRole('button', {name}).closest('li');
   }
+
+  it('names the file in the header', () => {
+    const {view} = dialog(entryWithFolders());
+
+    const {getByRole} = render(view);
+
+    expect(getByRole('heading')).toHaveTextContent('Move file');
+  });
 
   it('names the file in the hint', () => {
     const {view} = dialog(entryWithFolders());
@@ -129,6 +152,45 @@ describe('MoveFileDialogView', () => {
     expect(queries.getByRole('button', {name: /^Raw/})).toBeEnabled();
   });
 
+  describe('with several files', () => {
+    it('states how many files are moved', () => {
+      const {view} = dialog(entryWithFolders({}, {}, {}));
+
+      const {getByRole, getByText} = render(view);
+
+      expect(getByRole('heading')).toHaveTextContent('Move files');
+      expect(getByText('Select the folder to move 3 files to.')).not.toBeNull();
+    });
+
+    it('marks the folder all files are in', () => {
+      const {view} = dialog(entryWithFolders({folder_perma_id: 2}, {folder_perma_id: 2}));
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('button', {name: 'Raw Current folder'}))
+        .toHaveAttribute('aria-current', 'true');
+    });
+
+    it('marks no folder for files from different folders', () => {
+      const {view} = dialog(entryWithFolders({folder_perma_id: 2}, {folder_perma_id: 3}));
+
+      render(view);
+
+      expect(view.el.querySelector('[aria-current]')).toBeNull();
+    });
+
+    it('moves all files when a folder is clicked', async () => {
+      const {view, files} = dialog(entryWithFolders({}, {folder_perma_id: 2}));
+      const user = userEvent.setup();
+
+      const {getByRole} = render(view);
+      await user.click(getByRole('button', {name: /^Landscapes/}));
+
+      expect(files.map(file => file.get('folder_perma_id'))).toEqual([3, 3]);
+      expect(testContext.requests.length).toEqual(2);
+    });
+  });
+
   it('moves the file when a folder is clicked', async () => {
     const {view, file} = dialog(entryWithFolders());
     const user = userEvent.setup();
@@ -148,6 +210,20 @@ describe('MoveFileDialogView', () => {
     await user.click(queries.getByRole('button', {name: /^No folder/}));
 
     expect(file.get('folder_perma_id')).toBeNull();
+  });
+
+  it('invokes callback once the files have been moved', async () => {
+    const onMove = jest.fn();
+    const {view} = dialog(entryWithFolders(), {onMove});
+    const user = userEvent.setup();
+
+    const queries = render(view);
+
+    expect(onMove).not.toHaveBeenCalled();
+
+    await user.click(queries.getByRole('button', {name: /^Landscapes/}));
+
+    expect(onMove).toHaveBeenCalled();
   });
 
   it('closes once a target has been clicked', async () => {

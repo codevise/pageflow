@@ -1573,6 +1573,7 @@ en:
           any_file_type: 'a file'
           cancel_selection: 'Cancel selection'
           end_selection: 'End selection'
+          move_selection: 'Move...'
           reset_filter: 'Reset filter'
           search: 'Filter files and folders'
           search_in_folder: 'Filter files in %{folder}'
@@ -1623,8 +1624,12 @@ en:
         move_file_dialog_view:
           cancel: 'Cancel'
           current: 'Current folder'
-          header: 'Move file'
-          hint: 'Select the folder to move %{file} to.'
+          header:
+            one: 'Move file'
+            other: 'Move files'
+          hint:
+            one: 'Select the folder to move %{file} to.'
+            other: 'Select the folder to move %{count} files to.'
           root: 'No folder'
         page_item_view:
           unnamed: "(New page)"

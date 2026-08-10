@@ -19,6 +19,7 @@ import {FolderBreadcrumbView} from './FolderBreadcrumbView';
 import {Search} from '../models/Search';
 import {ListHighlight} from '../models/ListHighlight';
 import {ListSearchFieldView} from './ListSearchFieldView';
+import {MoveFileDialogView} from './MoveFileDialogView';
 
 import template from '../templates/filteredFiles.jst';
 
@@ -35,6 +36,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     filterBar: '.filtered_files-filter_bar',
     selectionBar: '.filtered_files-selection_bar',
     selectionBarText: '.filtered_files-selection_bar_text',
+    selectionBarAction: '.filtered_files-selection_bar_action',
     selectionBarDismiss: '.filtered_files-selection_bar_dismiss',
     list: '.filtered_files-list',
     sort: '.filtered_files-sort',
@@ -46,6 +48,18 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     // selection was requested from is what the back button is for.
     'click .filtered_files-banner_dismiss': function() {
       this.options.onDismissSelection();
+      return false;
+    },
+
+    // Moving is all a selection is good for so far, so the check boxes
+    // go away again once the files have been moved.
+    'click .filtered_files-selection_bar_action': function() {
+      MoveFileDialogView.open({
+        models: this.fileSelection.models,
+        fileFolders: this.options.fileFolders,
+        onMove: () => this.stopSelecting()
+      });
+
       return false;
     },
 
@@ -302,6 +316,11 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     var dismissLabel = this.translation('end_selection');
 
     this.ui.selectionBarDismiss.attr({title: dismissLabel, 'aria-label': dismissLabel});
+    this.ui.selectionBarAction.text(this.translation('move_selection'));
+
+    // Files can only be moved into folders, so entries which have none
+    // offer nothing to do with a selection yet.
+    this.ui.selectionBarAction.toggle(!!this.options.fileFolders);
 
     this.updateSelectionBar();
   },
@@ -322,6 +341,8 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   updateSelectionBar: function() {
     this.ui.selectionBarText.text(this.translation('selected_files',
                                                    {count: this.fileSelection.length}));
+
+    this.ui.selectionBarAction.prop('disabled', !this.fileSelection.length);
   },
 
   translation: function(keyName, options) {

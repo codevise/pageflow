@@ -291,7 +291,7 @@ export const FileItemView = Marionette.ItemView.extend({
 
   move: function() {
     MoveFileDialogView.open({
-      model: this.model,
+      models: [this.model],
       fileFolders: this.options.fileFolders
     });
   },

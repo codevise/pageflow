@@ -53,8 +53,23 @@ describe('FilesView', () => {
     'pageflow.editor.templates.files_blank_slate.no_files': 'No files',
     'pageflow.editor.templates.file_item.actions': 'File actions',
     'pageflow.editor.templates.file_item.move': 'Move...',
-    'pageflow.editor.views.move_file_dialog_view.header': 'Move file',
-    'pageflow.editor.views.move_file_dialog_view.hint': 'Select the folder to move %{file} to.',
+    'pageflow.editor.views.move_file_dialog_view.header': {
+      one: 'Move file',
+      other: 'Move files'
+    },
+    'pageflow.editor.views.move_file_dialog_view.hint': {
+      one: 'Select the folder to move %{file} to.',
+      other: 'Select the folder to move %{count} files to.'
+    },
+    'pageflow.editor.views.filtered_files_view.move_selection': 'Move...',
+    'pageflow.editor.views.filtered_files_view.actions': 'File list actions',
+    'pageflow.editor.views.filtered_files_view.select_files': 'Select files',
+    'pageflow.editor.views.filtered_files_view.end_selection': 'End selection',
+    'pageflow.editor.views.filtered_files_view.selected_files': {
+      zero: 'No files selected',
+      one: '1 file selected',
+      other: '%{count} files selected'
+    },
     'pageflow.editor.views.move_file_dialog_view.root': 'No folder',
     'pageflow.editor.views.move_file_dialog_view.current': 'Current folder',
     'pageflow.editor.views.move_file_dialog_view.cancel': 'Cancel'
@@ -1050,6 +1065,111 @@ describe('FilesView', () => {
         const {queryByRole} = render(view);
 
         expect(queryByRole('link', {name: 'Move...'})).toBeNull();
+      });
+    });
+
+
+    describe('moving several files from the list', () => {
+      let testContext;
+
+      beforeEach(() => {
+        testContext = {};
+      });
+
+      support.useFakeXhr(() => testContext);
+
+      afterEach(() => app.dialogRegion.reset());
+
+      async function startSelecting(user, queries) {
+        await user.click(queries.getByRole('link', {name: 'Select files'}));
+      }
+
+      async function check(user, queries, fileName) {
+        await user.click(queries.getByRole('checkbox', {name: fileName}));
+      }
+
+      async function moveSelection(user, view) {
+        await user.click(view.el.querySelector('.filtered_files-selection_bar_action'));
+
+        return within(app.dialogRegion.currentView.el);
+      }
+
+      it('moves all checked files into the chosen folder', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry, folderPermaId: '1'});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await check(user, queries, 'interview.png');
+        await check(user, queries, 'interview.mp4');
+        const dialog = await moveSelection(user, view);
+        await user.click(dialog.getByRole('button', {name: /^Landscapes/}));
+
+        expect(entry.getFileCollection('image_files').get(2).get('folder_perma_id')).toEqual(3);
+        expect(entry.getFileCollection('video_files').get(1).get('folder_perma_id')).toEqual(3);
+        expect(fileNames(queries)).toEqual([]);
+      });
+
+      // Moving is all a selection is good for so far, so keeping the
+      // check boxes around would only ask for another click to get rid
+      // of them.
+      it('stops checking files once they have been moved', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await check(user, queries, 'unfiled.png');
+        const dialog = await moveSelection(user, view);
+        await user.click(dialog.getByRole('button', {name: /^Landscapes/}));
+
+        expect(view.el.querySelector('ul.files')).not.toHaveClass('is_selecting');
+        expect(view.el.querySelector('.filtered_files-selection_bar'))
+          .toHaveTextContent('No files selected');
+        expect(fileNames(queries)).toEqual([]);
+      });
+
+      it('keeps checking files when the dialog is dismissed', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await check(user, queries, 'unfiled.png');
+        const dialog = await moveSelection(user, view);
+        await user.click(dialog.getByRole('button', {name: 'Cancel'}));
+
+        expect(view.el.querySelector('ul.files')).toHaveClass('is_selecting');
+        expect(view.el.querySelector('.filtered_files-selection_bar'))
+          .toHaveTextContent('1 file selected');
+      });
+
+      it('states how many files are moved', async () => {
+        const view = new FilesView({model: entryWithFolders(), folderPermaId: '1'});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await check(user, queries, 'interview.png');
+        await check(user, queries, 'interview.mp4');
+        const dialog = await moveSelection(user, view);
+
+        expect(dialog.getByText('Select the folder to move 2 files to.')).not.toBeNull();
+      });
+
+      it('does not offer to move while nothing is checked', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+
+        expect(view.el.querySelector('.filtered_files-selection_bar_action')).toBeDisabled();
+
+        await check(user, queries, 'unfiled.png');
+
+        expect(view.el.querySelector('.filtered_files-selection_bar_action')).toBeEnabled();
       });
     });
 

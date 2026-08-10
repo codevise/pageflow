@@ -112,6 +112,20 @@
     flex: 1;
   }
 
+  // On a line of its own, so that the number of checked files is not
+  // squeezed next to it in languages with longer words than English.
+  &-selection_bar_action {
+    @include simple-button;
+
+    align-self: flex-end;
+    padding: space(1) space(4);
+
+    &[disabled] {
+      opacity: 0.5;
+      cursor: default;
+    }
+  }
+
   &-selection_bar_dismiss {
     @include cancel-icon;
 

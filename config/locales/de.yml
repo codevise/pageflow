@@ -1581,6 +1581,7 @@ de:
           any_file_type: 'Datei'
           cancel_selection: 'Auswahl abbrechen'
           end_selection: 'Auswahl beenden'
+          move_selection: 'Verschieben...'
           reset_filter: 'Filter zurücksetzen'
           search: 'Dateien und Ordner filtern'
           search_in_folder: 'Dateien in %{folder} filtern'
@@ -1631,8 +1632,12 @@ de:
         move_file_dialog_view:
           cancel: 'Abbrechen'
           current: 'Aktueller Ordner'
-          header: 'Datei verschieben'
-          hint: 'Wähle den Ordner aus, in den %{file} verschoben werden soll.'
+          header:
+            one: 'Datei verschieben'
+            other: 'Dateien verschieben'
+          hint:
+            one: 'Wähle den Ordner aus, in den %{file} verschoben werden soll.'
+            other: 'Wähle den Ordner aus, in den %{count} Dateien verschoben werden sollen.'
           root: 'Kein Ordner'
         page_item_view:
           unnamed: "(Unbenannt)"

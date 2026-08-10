@@ -436,7 +436,7 @@ describe('FileItemView', () => {
       getByRole('link', {name: 'Move...'}).click();
 
       expect(app.dialogRegion.currentView).toBeInstanceOf(MoveFileDialogView);
-      expect(app.dialogRegion.currentView.model).toBe(file);
+      expect(app.dialogRegion.currentView.options.models).toEqual([file]);
     });
   });
 
