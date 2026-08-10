@@ -23,6 +23,14 @@ module Pageflow
     end
 
     describe '#translated' do
+      let(:model_with_reader_override) do
+        Class.new(model) do
+          def imprint_link_label
+            super.presence || 'Computed'
+          end
+        end
+      end
+
       it 'returns attribute value if there are no translations' do
         record = model.new(imprint_link_label: 'Impressum')
 
@@ -91,6 +99,22 @@ module Pageflow
                            })
 
         expect(record.translated(:imprint_link_label, locale: :en)).to eq('Legal notice')
+      end
+
+      it 'falls back to overridden attribute reader' do
+        record = model_with_reader_override.new
+
+        expect(record.translated(:imprint_link_label, locale: 'en')).to eq('Computed')
+      end
+
+      it 'prefers translation over overridden attribute reader' do
+        record = model_with_reader_override.new(attribute_translations: {
+                                                  'en' => {
+                                                    'imprint_link_label' => 'Legal notice'
+                                                  }
+                                                })
+
+        expect(record.translated(:imprint_link_label, locale: 'en')).to eq('Legal notice')
       end
     end
 

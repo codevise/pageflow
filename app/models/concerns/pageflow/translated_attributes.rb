@@ -1,7 +1,9 @@
 module Pageflow
   # Store per locale overrides for a set of attributes in an
   # `attribute_translations` column. The attribute itself keeps holding
-  # the value used for locales without translation.
+  # the value used for locales without translation. Since that value is
+  # read via the attribute's reader, overriding the reader also changes
+  # the value locales without translation fall back to.
   #
   # Not to be confused with {Translatable}, which groups entries that
   # are translations of each other.
@@ -39,11 +41,16 @@ module Pageflow
       self[:attribute_translations] || {}
     end
 
+    # Returns the translation for the given locale, or the value of the
+    # attribute itself if there is none. The fallback goes through the
+    # attribute's reader, so models can override it to compute a
+    # default. Such an override must not call `translated` itself, since
+    # that would recurse.
     def translated(attribute, locale:)
       locale_chain(locale)
         .lazy
         .map { |candidate| attribute_translations.dig(candidate, attribute.to_s) }
-        .find(&:present?) || self[attribute]
+        .find(&:present?) || public_send(attribute)
     end
 
     private
