@@ -86,6 +86,7 @@ export * from './collections/mixins/orderedCollection';
 export * from './collections/mixins/addAndReturnModel';
 export * from './collections/FilesCollection';
 export * from './collections/CombinedFilesCollection';
+export * from './collections/ConcatenatedCollection';
 export * from './collections/FileFoldersCollection';
 
 export * from './routers/SidebarRouter';
