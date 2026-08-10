@@ -755,6 +755,20 @@ en:
           name: Video
           tabs:
             general: Video
+        lottieAnimation:
+          attributes:
+            id:
+              label: Animation
+            playbackMode:
+              inline_help_html: Determines how the animation is played once it becomes visible:<ul><li><strong>Loop:</strong> Again and again as long as it is visible.</li><li><strong>Play once:</strong> Once from start to end.</li></ul>
+              label: Playback Mode
+              values:
+                loop: Loop
+                playOnce: Play once
+          description: Embed an animation exported as dotLottie file
+          name: Lottie animation
+          tabs:
+            general: Lottie animation
         question:
           attributes:
             expandByDefault:

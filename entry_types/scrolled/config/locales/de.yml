@@ -770,6 +770,20 @@ de:
           name: Video
           tabs:
             general: Video
+        lottieAnimation:
+          attributes:
+            id:
+              label: Animation
+            playbackMode:
+              inline_help_html: Bestimmt, wie die Animation abgespielt wird, sobald sie sichtbar wird:<ul><li><strong>Endlosschleife:</strong> Immer wieder, solange sie sichtbar ist.</li><li><strong>Einmal abspielen:</strong> Einmal von Anfang bis Ende.</li></ul>
+              label: Wiedergabe-Modus
+              values:
+                loop: Endlosschleife
+                playOnce: Einmal abspielen
+          description: Eine als dotLottie-Datei exportierte Animation einbinden
+          name: Lottie-Animation
+          tabs:
+            general: Lottie-Animation
         question:
           attributes:
             expandByDefault:
