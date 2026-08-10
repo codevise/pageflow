@@ -51,13 +51,27 @@
     overflow: clip;
   }
 
-  // Keeps search field, sort menu and file type pills in reach while
+  // Keeps search field, menu and file type pills in reach while
   // scrolling through a long list of files.
+  //
+  // Browse controls and selection bar share one cell and take turns
+  // being visible, so that the header keeps the height of the taller of
+  // the two and checking files never pushes the list down.
   &-header {
+    display: grid;
     position: sticky;
     top: -10px;
     z-index: 2;
     background-color: var(--ui-surface-color);
+  }
+
+  &-browse_controls,
+  &-selection_bar {
+    grid-area: 1 / 1;
+
+    &.is_hidden {
+      visibility: hidden;
+    }
   }
 
   &-filter_bar {
@@ -67,8 +81,58 @@
     margin-top: space(1);
 
     .drop_down_button button {
-      @include fa-sort-amount-desc-icon;
       --drop-down-button-width: 31px;
+    }
+  }
+
+  &-selection_bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: space(2);
+    margin: space(3) 0 space(2);
+    padding: space(2);
+    border-radius: rounded();
+    background-color: var(--ui-selection-color-lighter);
+
+    // Files cannot be checked in an entry which has none, so the bar does
+    // not have to keep its space above the list free either.
+    &.is_unavailable {
+      display: none;
+    }
+  }
+
+  &-selection_bar_status {
+    display: flex;
+    align-items: center;
+    gap: space(2);
+  }
+
+  &-selection_bar_text {
+    flex: 1;
+  }
+
+  &-selection_bar_dismiss {
+    @include cancel-icon;
+
+    flex: none;
+    width: space(6);
+    padding: space(1) 0;
+    border: none;
+    border-radius: rounded();
+    background-color: transparent;
+    color: var(--ui-primary-color-light);
+    line-height: 16px;
+    cursor: pointer;
+
+    &:before {
+      font-size: 16px;
+      vertical-align: top;
+    }
+
+    &:hover {
+      background-color: var(--ui-on-surface-color-lightest);
+      color: var(--ui-primary-color);
     }
   }
 

@@ -10,6 +10,7 @@ import {editor} from '../base';
 
 import {CombinedFilesCollection} from '../collections/CombinedFilesCollection';
 import {ConcatenatedCollection} from '../collections/ConcatenatedCollection';
+import {FileSelection} from '../collections/FileSelection';
 import {SubsetCollection} from '../collections/SubsetCollection';
 import {FilesBlankSlateView} from './FilesBlankSlateView';
 import {FilesListItemView} from './FilesListItemView';
@@ -30,7 +31,11 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     bannerText: '.filtered_files-banner_text',
     bannerDismiss: '.filtered_files-banner_dismiss',
     header: '.filtered_files-header',
+    browseControls: '.filtered_files-browse_controls',
     filterBar: '.filtered_files-filter_bar',
+    selectionBar: '.filtered_files-selection_bar',
+    selectionBarText: '.filtered_files-selection_bar_text',
+    selectionBarDismiss: '.filtered_files-selection_bar_dismiss',
     list: '.filtered_files-list',
     sort: '.filtered_files-sort',
   },
@@ -41,6 +46,11 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     // selection was requested from is what the back button is for.
     'click .filtered_files-banner_dismiss': function() {
       this.options.onDismissSelection();
+      return false;
+    },
+
+    'click .filtered_files-selection_bar_dismiss': function() {
+      this.stopSelecting();
       return false;
     }
   },
@@ -119,15 +129,41 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     if (this.options.selectionHandler) {
       this.listHighlight = new ListHighlight({}, {collection: this.listItems});
     }
+    else {
+      this.setupFileSelection();
+    }
+
+    this.menuItems = this.createMenuItems();
+  },
+
+  setupFileSelection: function() {
+    this.fileSelection = new FileSelection();
+
+    // A file which has been moved, deleted or filtered out has no row
+    // left to uncheck, so the number in the bar would stop matching the
+    // list.
+    this.listenTo(this.searchFilteredCollection, 'remove', function(file) {
+      this.fileSelection.remove(file);
+    });
+
+    this.listenTo(this.fileSelection, 'add remove reset', this.updateSelectionBar);
+    this.listenTo(this.fileSelection, 'change:selecting', this.updateSelecting);
+
+    this.listenTo(this.combinedFiles, 'add remove', this.updateSelectable);
   },
 
   onRender: function() {
     this.renderBanner();
     this.renderSearchField();
-    this.renderSortMenu();
+    this.renderMenu();
     this.renderFileTypePills();
     this.renderBreadcrumb();
     this.renderCollectionView();
+    this.updateSelecting();
+
+    if (this.fileSelection) {
+      this.updateSelectable();
+    }
   },
 
   // Being in selection mode is easy to overlook once the list fills the
@@ -185,7 +221,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   },
 
   bannerTranslation: function(keyName, options) {
-    return I18n.t('pageflow.editor.views.filtered_files_view.' + keyName, options);
+    return this.translation(keyName, options);
   },
 
   renderSearchField() {
@@ -214,16 +250,82 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     return I18n.t('pageflow.editor.views.filtered_files_view.search');
   },
 
-  renderSortMenu: function() {
+  renderMenu: function() {
     this.appendSubview(new DropDownButtonView({
-      title: I18n.t('pageflow.editor.views.filtered_files_view.sort_button_label'),
+      title: this.translation('actions'),
       alignMenu: 'right',
+      ellipsisIcon: true,
       openOnClick: true,
-      items: new SortMenuItemsCollection([
-        {name: 'alphabetical'},
-        {name: 'most_recent'}
-      ], {search: this.search})
+      items: this.menuItems
     }), {to: this.ui.filterBar});
+  },
+
+  createMenuItems: function() {
+    var items = new Backbone.Collection([
+      {
+        name: 'sort',
+        label: this.translation('sort_button_label'),
+        items: new SortMenuItemsCollection([
+          {name: 'alphabetical'},
+          {name: 'most_recent'}
+        ], {search: this.search})
+      }
+    ]);
+
+    if (this.fileSelection) {
+      items.add({name: 'select', label: this.translation('select_files')});
+      items.findWhere({name: 'select'}).selected = () => this.startSelecting();
+    }
+
+    return items;
+  },
+
+  startSelecting: function() {
+    this.fileSelection.start();
+  },
+
+  stopSelecting: function() {
+    this.fileSelection.stop();
+  },
+
+  updateSelecting: function() {
+    if (!this.fileSelection) {
+      return this.ui.selectionBar.remove();
+    }
+
+    var selecting = this.fileSelection.isSelecting();
+
+    this.ui.browseControls.toggleClass('is_hidden', selecting);
+    this.ui.selectionBar.toggleClass('is_hidden', !selecting);
+    this.collectionView.$el.toggleClass('is_selecting', selecting);
+
+    var dismissLabel = this.translation('end_selection');
+
+    this.ui.selectionBarDismiss.attr({title: dismissLabel, 'aria-label': dismissLabel});
+
+    this.updateSelectionBar();
+  },
+
+  // An entry without files has nothing to check, so the bar neither
+  // reserves space above the list nor can be opened from the menu.
+  updateSelectable: function() {
+    var selectable = !!this.combinedFiles.length;
+
+    if (!selectable) {
+      this.fileSelection.stop();
+    }
+
+    this.menuItems.findWhere({name: 'select'}).set('disabled', !selectable);
+    this.ui.selectionBar.toggleClass('is_unavailable', !selectable);
+  },
+
+  updateSelectionBar: function() {
+    this.ui.selectionBarText.text(this.translation('selected_files',
+                                                   {count: this.fileSelection.length}));
+  },
+
+  translation: function(keyName, options) {
+    return I18n.t('pageflow.editor.views.filtered_files_view.' + keyName, options);
   },
 
   renderFileTypePills: function() {
@@ -235,7 +337,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       entry: this.options.entry,
       fileTypes: this.options.fileTypes,
       fileTypeSelection: this.options.fileTypeSelection
-    }), {to: this.ui.header});
+    }), {to: this.ui.browseControls});
   },
 
   renderBreadcrumb: function() {
@@ -257,7 +359,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
                          this.filterTranslation('blank_slate') :
                          I18n.t('pageflow.editor.templates.files_blank_slate.no_files');
 
-    this.appendSubview(this.subview(new CollectionView({
+    this.collectionView = this.subview(new CollectionView({
       tagName: 'ul',
       id: 'filtered_files',
       className: 'files',
@@ -267,6 +369,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
         onSelect: this.options.onSelectFolder,
         fileFolders: this.options.fileFolders,
         files: this.selectedFiles || this.combinedFiles,
+        fileSelection: this.fileSelection,
         selectionHandler: this.options.selectionHandler,
         listHighlight: this.listHighlight
       },
@@ -277,7 +380,9 @@ export const FilteredFilesView = Marionette.ItemView.extend({
         fileFolders: this.options.fileFolders,
         files: this.combinedFiles
       }
-    })), {to: this.ui.list});
+    }));
+
+    this.appendSubview(this.collectionView, {to: this.ui.list});
   },
 
   filterTranslation: function(keyName, options) {

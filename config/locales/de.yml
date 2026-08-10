@@ -1577,12 +1577,19 @@ de:
           group_label: 'Nach Dateityp filtern'
           hint: 'Dateityp anklicken, um nur dessen Dateien anzuzeigen. Mit Strg/Cmd Dateitypen kombinieren.'
         filtered_files_view:
+          actions: 'Aktionen für die Dateiliste'
           any_file_type: 'Datei'
           cancel_selection: 'Auswahl abbrechen'
+          end_selection: 'Auswahl beenden'
           reset_filter: 'Filter zurücksetzen'
           search: 'Dateien und Ordner filtern'
           search_in_folder: 'Dateien in %{folder} filtern'
           select: '%{name} auswählen'
+          select_files: 'Dateien auswählen'
+          selected_files:
+            zero: 'Keine Dateien ausgewählt'
+            one: '1 Datei ausgewählt'
+            other: '%{count} Dateien ausgewählt'
           sort_button_label: 'Sortieren'
           sort:
             alphabetical: 'Alphabetisch'

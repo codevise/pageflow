@@ -1,11 +1,12 @@
 import Backbone from 'backbone';
 
 import {
-  FileItemView, FileMetaDataOverlayView, ListHighlight, MoveFileDialogView, app
+  FileItemView, FileMetaDataOverlayView, FileSelection, ListHighlight, MoveFileDialogView, app
 } from 'pageflow/editor';
 
 import * as support from '$support';
 import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom/extend-expect';
 import {renderBackboneView as render} from 'pageflow/testHelpers';
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
@@ -436,6 +437,137 @@ describe('FileItemView', () => {
 
       expect(app.dialogRegion.currentView).toBeInstanceOf(MoveFileDialogView);
       expect(app.dialogRegion.currentView.model).toBe(file);
+    });
+  });
+
+  describe('check box', () => {
+    function view(attributes, fileSelection) {
+      return new FileItemView({
+        model: support.factories.file({id: 123, file_name: 'original.png', ...attributes}),
+        fileSelection: fileSelection || selecting()
+      });
+    }
+
+    function selecting(files) {
+      const fileSelection = new FileSelection(files);
+      fileSelection.start();
+
+      return fileSelection;
+    }
+
+    it('is not rendered without file selection', () => {
+      const {queryByRole} = render(new FileItemView({
+        model: support.factories.file({id: 123})
+      }));
+
+      expect(queryByRole('checkbox')).toBeNull();
+    });
+
+    it('is labelled by the file name', () => {
+      const {getByRole} = render(view());
+
+      expect(getByRole('checkbox', {name: 'original.png'})).not.toBeNull();
+    });
+
+    it('follows the file name', () => {
+      const file = support.factories.file({id: 123, file_name: 'original.png'});
+      const itemView = new FileItemView({model: file, fileSelection: selecting()});
+
+      const {getByRole} = render(itemView);
+      file.set('file_name', 'renamed.png');
+
+      expect(getByRole('checkbox', {name: 'renamed.png'})).not.toBeNull();
+    });
+
+    it('checks the file when the file name is clicked', async () => {
+      const fileSelection = selecting();
+      const itemView = view({}, fileSelection);
+      const user = userEvent.setup();
+
+      const {getByText} = render(itemView);
+      await user.click(getByText('original.png'));
+
+      expect(fileSelection.includes(itemView.model)).toBe(true);
+    });
+
+    it('is disabled while files are not being checked', () => {
+      const itemView = view({}, new FileSelection());
+
+      const {getByRole} = render(itemView);
+
+      expect(getByRole('checkbox')).toBeDisabled();
+    });
+
+    it('is enabled once files are being checked', () => {
+      const fileSelection = new FileSelection();
+      const itemView = view({}, fileSelection);
+
+      const {getByRole} = render(itemView);
+      fileSelection.start();
+
+      expect(getByRole('checkbox')).toBeEnabled();
+    });
+
+    it('checks the file when clicked', async () => {
+      const fileSelection = selecting();
+      const itemView = view({}, fileSelection);
+      const user = userEvent.setup();
+
+      const {getByRole} = render(itemView);
+      await user.click(getByRole('checkbox'));
+
+      expect(fileSelection.includes(itemView.model)).toBe(true);
+      expect(itemView.el).toHaveClass('is_selected');
+    });
+
+    it('unchecks the file when clicked again', async () => {
+      const fileSelection = selecting();
+      const itemView = view({}, fileSelection);
+      const user = userEvent.setup();
+
+      const {getByRole} = render(itemView);
+      await user.click(getByRole('checkbox'));
+      await user.click(getByRole('checkbox'));
+
+      expect(fileSelection.includes(itemView.model)).toBe(false);
+      expect(itemView.el).not.toHaveClass('is_selected');
+    });
+
+    it('is checked for file which is already selected', () => {
+      const file = support.factories.file({id: 123});
+      const itemView = new FileItemView({
+        model: file,
+        fileSelection: selecting([file])
+      });
+
+      const {getByRole} = render(itemView);
+
+      expect(getByRole('checkbox')).toBeChecked();
+      expect(itemView.el).toHaveClass('is_selected');
+    });
+
+    // The selection is also cleared from the bar above the list.
+    it('follows the selection', async () => {
+      const fileSelection = selecting();
+      const itemView = view({}, fileSelection);
+      const user = userEvent.setup();
+
+      const {getByRole} = render(itemView);
+      await user.click(getByRole('checkbox'));
+      fileSelection.reset();
+
+      expect(getByRole('checkbox')).not.toBeChecked();
+      expect(itemView.el).not.toHaveClass('is_selected');
+    });
+
+    it('is not rendered in selection mode', () => {
+      const {queryByRole} = render(new FileItemView({
+        model: support.factories.file({id: 123}),
+        fileSelection: selecting(),
+        selectionHandler: {call: jest.fn(), getReferer: jest.fn()}
+      }));
+
+      expect(queryByRole('checkbox')).toBeNull();
     });
   });
 

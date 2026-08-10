@@ -1569,12 +1569,19 @@ en:
           group_label: 'Filter by file type'
           hint: 'Click a file type to show only its files. Hold Ctrl/Cmd to combine file types.'
         filtered_files_view:
+          actions: 'File list actions'
           any_file_type: 'a file'
           cancel_selection: 'Cancel selection'
+          end_selection: 'End selection'
           reset_filter: 'Reset filter'
           search: 'Filter files and folders'
           search_in_folder: 'Filter files in %{folder}'
           select: 'Select %{name}'
+          select_files: 'Select files'
+          selected_files:
+            zero: 'No files selected'
+            one: '1 file selected'
+            other: '%{count} files selected'
           sort_button_label: 'Sort'
           sort:
             alphabetical: 'Alphabetical'

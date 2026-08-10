@@ -13,5 +13,11 @@
     <% } %>
   </div>
 
-  <span class="file_name"></span>
+  <label class="file_item-name_row">
+    <% if (data.multiSelectable) { %>
+      <input class="file_item-check_box" type="checkbox" disabled />
+    <% } %>
+
+    <span class="file_name"></span>
+  </label>
 </div>

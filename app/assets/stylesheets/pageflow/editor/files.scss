@@ -11,6 +11,10 @@ ul.files {
       border-bottom: none;
     }
 
+    &.is_selected {
+      background-color: var(--ui-selection-color-lighter);
+    }
+
     // Selecting is the only action offered in selection mode, so the
     // whole row becomes the target of the select button.
     &.selectable {
@@ -80,6 +84,57 @@ ul.files {
     justify-content: space-between;
     min-width: 0;
     padding: 0 0 space(2) 0;
+  }
+
+  // The file name labels the check box, so clicking it checks the file
+  // while files are being checked. Undoes the weight, spacing and
+  // positioning which labels of form fields have. Staying static keeps
+  // the row the containing block of the stretched hit area below.
+  .file_item-name_row {
+    display: flex;
+    position: static;
+    align-items: center;
+    gap: space(2);
+    min-width: 0;
+    margin-bottom: 0;
+    font-weight: normal;
+  }
+
+  &.is_selecting {
+    .file_item-name_row {
+      cursor: pointer;
+
+      // The line the file name sits on is a small target, so the label
+      // stretches over the whole row.
+      &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    }
+
+    .file_item-check_box {
+      display: inline-block;
+    }
+
+    .file_item-check_box,
+    .file_thumbnail_button,
+    .actions {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  // Only shown while files are being checked, which indents the names of
+  // the whole list at once instead of nudging single rows while the
+  // pointer passes them.
+  .file_item-check_box {
+    display: none;
+    flex-shrink: 0;
+    cursor: pointer;
   }
 
   .file_name {

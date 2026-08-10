@@ -25,6 +25,7 @@ export const FileItemView = Marionette.ItemView.extend({
 
   ui: {
     fileName: '.file_name',
+    checkBox: '.file_item-check_box',
 
     actions: '.actions',
     selectButton: '.select',
@@ -38,6 +39,10 @@ export const FileItemView = Marionette.ItemView.extend({
 
   events: {
     'click .select': 'select',
+
+    'change .file_item-check_box': function() {
+      this.options.fileSelection.toggle(this.model);
+    },
 
     'click .settings': function() {
       FileSettingsDialogView.open({
@@ -61,6 +66,12 @@ export const FileItemView = Marionette.ItemView.extend({
 
     if (this.options.fileFolders) {
       this.listenTo(this.options.fileFolders, 'add remove change:id', this.updateMoveItem);
+    }
+
+    if (this.multiSelectable()) {
+      this.listenTo(this.options.fileSelection,
+                    'add remove reset change:selecting',
+                    this.updateSelected);
     }
   },
 
@@ -97,13 +108,23 @@ export const FileItemView = Marionette.ItemView.extend({
   },
 
   serializeData: function() {
-    return {selectable: !!this.options.selectionHandler};
+    return {
+      selectable: !!this.options.selectionHandler,
+      multiSelectable: this.multiSelectable()
+    };
+  },
+
+  // Picking a single file is the point of selection mode, so checking
+  // files for a bulk action would only get in the way.
+  multiSelectable: function() {
+    return !this.options.selectionHandler && !!this.options.fileSelection;
   },
 
   onRender: function() {
     this.$el.toggleClass('selectable', !!this.options.selectionHandler);
 
     this.update();
+    this.updateSelected();
     this.setupAriaAttributes();
 
     this.subview(new FileThumbnailView({
@@ -179,6 +200,21 @@ export const FileItemView = Marionette.ItemView.extend({
     this.ui.retryButton.toggle(this.model.isRetryable());
 
     this.updateToggleLabel();
+  },
+
+  // The file name is the label of the check box, so the check box has to
+  // be disabled while files are not being checked. Clicking a name would
+  // otherwise check the file even though no check box is displayed.
+  updateSelected: function() {
+    if (!this.multiSelectable() || this.isClosed) {
+      return;
+    }
+
+    var selected = this.options.fileSelection.includes(this.model);
+
+    this.ui.checkBox.prop('checked', selected);
+    this.ui.checkBox.prop('disabled', !this.options.fileSelection.isSelecting());
+    this.$el.toggleClass('is_selected', selected);
   },
 
   // Only folders which have been created can hold a file, so an entry
