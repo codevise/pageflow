@@ -7,6 +7,13 @@ module PageflowScrolled
       PageflowScrolled::Plugin.new
     end
 
+    def lottie_file_type
+      Pageflow::FileType.new(model: 'PageflowScrolled::LottieFile',
+                             collection_name: 'lottie_files',
+                             url_templates: LottieFileUrlTemplates.new,
+                             top_level_type: true)
+    end
+
     def entry_type
       Pageflow::EntryType.new(name: 'scrolled',
                               frontend_app: PageflowScrolled::EntriesController.action(:show),
