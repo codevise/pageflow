@@ -7,7 +7,9 @@ import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
 import {LottieAnimation} from 'contentElements/lottieAnimation/LottieAnimation';
 import {DotLottie} from '@lottiefiles/dotlottie-web';
 
-jest.mock('@lottiefiles/dotlottie-web', () => ({DotLottie: jest.fn()}));
+jest.mock('@lottiefiles/dotlottie-web', () => ({
+  DotLottie: Object.assign(jest.fn(), {setWasmUrl: jest.fn()})
+}));
 
 describe('LottieAnimation', () => {
   let players;
@@ -62,6 +64,10 @@ describe('LottieAnimation', () => {
 
     return result;
   }
+
+  it('loads WebAssembly module from own bundle instead of a CDN', () => {
+    expect(DotLottie.setWasmUrl).toHaveBeenCalledWith('wasm-url-stub');
+  });
 
   it('renders animation of selected file', () => {
     renderLottieAnimation();

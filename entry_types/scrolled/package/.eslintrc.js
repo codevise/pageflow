@@ -7,6 +7,10 @@ module.exports = {
   ],
   "rules": {
     "no-trailing-spaces": "error",
+    // The import resolver predates package exports maps and thus
+    // cannot resolve subpaths like
+    // '@lottiefiles/dotlottie-web/dotlottie-player.wasm'.
+    "import/no-unresolved": ["error", {"ignore": ["\\.wasm$"]}],
     // react-app enables no-unused-expressions, but ESLint 6 predates
     // ChainExpression and flags optional-chaining call statements like
     // `node?.focus()` as unused. The other packages do not enable the rule.

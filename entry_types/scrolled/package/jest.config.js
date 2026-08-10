@@ -23,6 +23,8 @@ module.exports = {
   testURL: 'https://story.example.com',
 
   moduleNameMapper: {
+    '\\.wasm$': '<rootDir>/spec/support/jest/wasm-url-stub',
+
     '^pageflow-scrolled/contentElements-frontend$': '<rootDir>/src/contentElements/frontend',
     "^pageflow-scrolled/editor\\.css$": "<rootDir>/spec/support/jest/editor-css-stub",
     "^pageflow-scrolled/review\\.css$": "<rootDir>/spec/support/jest/review-css-stub",
