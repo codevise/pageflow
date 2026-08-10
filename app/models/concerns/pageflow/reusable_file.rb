@@ -4,7 +4,7 @@ module Pageflow
 
     included do
       belongs_to :uploader, class_name: 'User', optional: true
-      belongs_to :entry, optional: true
+      belongs_to :entry, class_name: 'Pageflow::Entry', optional: true
       belongs_to :parent_file, polymorphic: true, foreign_type: :parent_file_model_type,
                                optional: true
 
