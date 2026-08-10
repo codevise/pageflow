@@ -50,6 +50,10 @@ export function useCommentingPageObjects() {
     act(() => clearExtensions());
   });
 
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
+
   useFakeTranslations({
     'pageflow_scrolled.review.add_comment': 'Add comment',
     'pageflow_scrolled.review.cancel_add_comment': 'Cancel add comment',
