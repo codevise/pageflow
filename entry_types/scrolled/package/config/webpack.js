@@ -49,6 +49,12 @@ module.exports = {
         'pageflow-scrolled/contentElements/inlineBeforeAfter-frontend.css'
       ]
     },
+    'pageflow-scrolled/contentElements/lottieAnimation-frontend': {
+      import: [
+        'pageflow-scrolled/contentElements/lottieAnimation-frontend',
+        'pageflow-scrolled/contentElements/lottieAnimation-frontend.css'
+      ]
+    },
     'pageflow-scrolled/widgets/defaultNavigation': {
       import: [
         'pageflow-scrolled/widgets/defaultNavigation',

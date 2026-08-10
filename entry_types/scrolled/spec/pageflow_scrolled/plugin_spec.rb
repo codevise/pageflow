@@ -2,6 +2,30 @@ require 'spec_helper'
 
 module PageflowScrolled
   RSpec.describe Plugin do
+    describe 'lottie_animation_content_element feature', type: :helper do
+      before { helper.extend(PacksHelper) }
+
+      it 'registers frontend pack for entries using lottie animations' do
+        entry = create(:published_entry,
+                       type_name: 'scrolled',
+                       with_feature: 'lottie_animation_content_element')
+        create(:content_element, revision: entry.revision, type_name: 'lottieAnimation')
+
+        result = helper.scrolled_frontend_packs(entry, entry_mode: :published)
+
+        expect(result).to include('pageflow-scrolled/contentElements/lottieAnimation-frontend')
+      end
+
+      it 'does not register frontend pack for entries without the feature' do
+        entry = create(:published_entry, type_name: 'scrolled')
+        create(:content_element, revision: entry.revision, type_name: 'lottieAnimation')
+
+        result = helper.scrolled_frontend_packs(entry, entry_mode: :published)
+
+        expect(result).not_to include('pageflow-scrolled/contentElements/lottieAnimation-frontend')
+      end
+    end
+
     describe 'IFRAME_EMBED_CONSENT_VENDOR' do
       it 'returns nil if consent not required' do
         pageflow_configure do |config|
