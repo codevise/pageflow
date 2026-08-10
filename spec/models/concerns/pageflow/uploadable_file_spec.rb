@@ -16,6 +16,18 @@ module Pageflow
       expect(uploadable_file).to be_valid
     end
 
+    it 'is valid if file name has extension longer than four characters' do
+      uploadable_file = build(:uploadable_file, attachment: nil, file_name: 'animation.lottie')
+
+      expect(uploadable_file).to be_valid
+    end
+
+    it 'is invalid if file name does not have an extension' do
+      uploadable_file = build(:uploadable_file, attachment: nil, file_name: 'animation')
+
+      expect(uploadable_file).not_to be_valid
+    end
+
     describe '#publish' do
       it 'transitions to uploaded state' do
         uploadable_file = create(:uploadable_file, :uploading)
