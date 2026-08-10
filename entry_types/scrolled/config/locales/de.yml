@@ -1376,6 +1376,7 @@ de:
         select_file: Biete eine Datei zum Download an
         select_file_description: Lasse Leser eine Datei herunterladen, wenn sie auf den Link klicken.
         select_in_sidebar: Datei auswählen
+        selection_label: Datei zum Herunterladen
       select_move_destination:
         cancel: Abbrechen
         header_insertPosition: Abschnitt verschieben

@@ -18,6 +18,11 @@ describe('FilteredFilesView', () => {
     'pageflow.editor.templates.list_search_field.placeholder': 'Filter files',
     'pageflow.editor.templates.list_search_field.hint': 'Type / to search',
     'pageflow.editor.templates.list_search_field.reset': 'Clear name filter',
+    'pageflow.editor.files.singular.image_files': 'an image',
+    'pageflow.editor.views.filtered_files_view.any_file_type': 'a file',
+    'pageflow.editor.views.filtered_files_view.cancel_selection': 'Cancel selection',
+    'pageflow.editor.views.filtered_files_view.reset_filter': 'Reset filter',
+    'pageflow.editor.views.filtered_files_view.select': 'Select %{name}',
     'pageflow.editor.views.filtered_files_view.sort_button_label': 'Sort',
     'pageflow.editor.views.filtered_files_view.sort.alphabetical': 'Alphabetical',
     'pageflow.editor.views.filtered_files_view.sort.most_recent': 'Most recent',
@@ -40,7 +45,8 @@ describe('FilteredFilesView', () => {
 
     const {getByText} = render(view);
 
-    expect(getByText('Entry Type Filter')).not.toBeNull();
+    expect(view.el.querySelector('.filtered_files-banner'))
+      .toHaveTextContent('Select Entry Type Filter');
     expect(getByText('Entry Type Blank')).not.toBeNull();
   });
 
@@ -58,7 +64,8 @@ describe('FilteredFilesView', () => {
 
     const {getByText} = render(view);
 
-    expect(getByText('Fallback Filter')).not.toBeNull();
+    expect(view.el.querySelector('.filtered_files-banner'))
+      .toHaveTextContent('Select Fallback Filter');
     expect(getByText('Fallback Blank')).not.toBeNull();
   });
 
@@ -550,6 +557,103 @@ describe('FilteredFilesView', () => {
 
     expect(searchField.compareDocumentPosition(pills) & Node.DOCUMENT_POSITION_FOLLOWING)
       .toBeTruthy();
+  });
+
+  describe('banner', () => {
+    const selectionHandler = {
+      call: jest.fn(),
+      getReferer: () => '/'
+    };
+
+    function setup(options) {
+      editor.registerEntryType('other');
+
+      const fileTypes = f.fileTypes(function() {
+        this.withImageFileType({filters: [{name: 'with_projection', matches: () => true}]});
+      });
+      const entry = f.entry({}, {fileTypes, filesAttributes: {}});
+
+      const view = new FilteredFilesView({
+        entry: entry,
+        fileTypes: [fileTypes.first()],
+        ...options
+      });
+
+      render(view);
+
+      return view.el.querySelector('.filtered_files-banner');
+    }
+
+    function dismissButton(banner) {
+      return banner.querySelector('.filtered_files-banner_dismiss');
+    }
+
+    it('is not rendered while just browsing files', () => {
+      expect(setup()).toBeNull();
+    });
+
+    it('names the file type being selected', () => {
+      const banner = setup({
+        selectionHandler,
+        selectionFileType: {collectionName: 'image_files'}
+      });
+
+      expect(banner).toHaveTextContent('Select an image');
+    });
+
+    it('prefers the label passed by the view requesting the selection', () => {
+      const banner = setup({
+        selectionHandler: {...selectionHandler, selectionLabel: 'a background image'},
+        selectionFileType: {collectionName: 'image_files'}
+      });
+
+      expect(banner).toHaveTextContent('Select a background image');
+    });
+
+    it('falls back to naming no file type in particular', () => {
+      const banner = setup({selectionHandler});
+
+      expect(banner).toHaveTextContent('Select a file');
+    });
+
+    it('names the active filter', () => {
+      const banner = setup({
+        selectionHandler,
+        selectionFileType: {collectionName: 'image_files'},
+        filterName: 'with_projection'
+      });
+
+      expect(banner).toHaveTextContent('Select Fallback Filter');
+    });
+
+    it('emphasizes the name inside the sentence', () => {
+      const banner = setup({
+        selectionHandler,
+        selectionFileType: {collectionName: 'image_files'}
+      });
+
+      expect(banner.querySelector('.filtered_files-banner_name')).toHaveTextContent('an image');
+    });
+
+    it('stays in the files list when dismissed', () => {
+      const banner = setup({
+        selectionHandler: {...selectionHandler, getReferer: () => '/some/referer'}
+      });
+
+      dismissButton(banner).click();
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/files', {trigger: true});
+      expect(dismissButton(banner)).toHaveAttribute('title', 'Cancel selection');
+    });
+
+    it('drops the filter when dismissed while not selecting', () => {
+      const banner = setup({filterName: 'with_projection'});
+
+      dismissButton(banner).click();
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/files', {trigger: true});
+      expect(dismissButton(banner)).toHaveAttribute('title', 'Reset filter');
+    });
   });
 
   it('keeps file type pills in the header which sticks while scrolling', () => {

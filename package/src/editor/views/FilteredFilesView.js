@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import Backbone from 'backbone';
@@ -25,15 +26,19 @@ export const FilteredFilesView = Marionette.ItemView.extend({
 
   ui: {
     banner: '.filtered_files-banner',
-    filterName: '.filtered_files-filter_name',
+    bannerText: '.filtered_files-banner_text',
+    bannerDismiss: '.filtered_files-banner_dismiss',
     header: '.filtered_files-header',
     filterBar: '.filtered_files-filter_bar',
     sort: '.filtered_files-sort',
   },
 
   events: {
-    'click .filtered_files-reset_filter': function() {
-      editor.navigate('/files/' + this.filteredFileType().collectionName, {trigger: true});
+    // Leaves selection mode and any named filter behind, but stays in
+    // the files list. Returning to where the selection was requested
+    // from is what the back button is for.
+    'click .filtered_files-banner_dismiss': function() {
+      editor.navigate('/files', {trigger: true});
       return false;
     }
   },
@@ -78,19 +83,69 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.renderNamedFilter();
+    this.renderBanner();
     this.renderSearchField();
     this.renderSortMenu();
     this.renderFileTypePills();
     this.renderCollectionView();
   },
 
-  renderNamedFilter: function() {
-    this.ui.banner.toggle(!!this.options.filterName);
-
-    if (this.options.filterName) {
-      this.ui.filterName.text(this.filterTranslation('name'));
+  // Being in selection mode is easy to overlook once the list fills the
+  // sidebar, so the banner spells out what is being looked for.
+  renderBanner: function() {
+    // Rendering it hidden is not an option, since jQuery would set an
+    // inline display of block on the still detached element, which the
+    // flex layout of the banner would not survive.
+    if (!this.options.filterName && !this.options.selectionHandler) {
+      return this.ui.banner.remove();
     }
+
+    var dismissLabel = this.bannerTranslation(this.options.selectionHandler ?
+                                              'cancel_selection' :
+                                              'reset_filter');
+
+    this.renderBannerText();
+    this.ui.bannerDismiss.attr({title: dismissLabel, 'aria-label': dismissLabel});
+  },
+
+  // Emphasizes the name inside the sentence without requiring markup in
+  // the translation.
+  renderBannerText: function() {
+    var placeholder = '\u0000';
+    var parts = this.bannerTranslation('select', {name: placeholder}).split(placeholder);
+
+    this.ui.bannerText.empty()
+        .append(document.createTextNode(parts[0]))
+        .append($('<span />', {class: 'filtered_files-banner_name',
+                               text: this.selectionName()}))
+        .append(document.createTextNode(parts[1] || ''));
+  },
+
+  // The view which requested the selection knows best what the file
+  // will be used for. A named filter is only ever requested for a
+  // single file type and its name already says which.
+  selectionName: function() {
+    return this.options.selectionHandler?.selectionLabel ||
+           (this.options.filterName && this.filterTranslation('name')) ||
+           this.fileTypeName() ||
+           this.bannerTranslation('any_file_type');
+  },
+
+  fileTypeName: function() {
+    if (!this.options.selectionFileType) {
+      return;
+    }
+
+    var collectionName = this.options.selectionFileType.collectionName;
+
+    return i18nUtils.findTranslation([
+      'pageflow.editor.files.singular.' + collectionName,
+      'pageflow.editor.files.tabs.' + collectionName
+    ]);
+  },
+
+  bannerTranslation: function(keyName, options) {
+    return I18n.t('pageflow.editor.views.filtered_files_view.' + keyName, options);
   },
 
   renderSearchField() {

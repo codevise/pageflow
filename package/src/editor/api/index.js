@@ -275,7 +275,8 @@ export const EditorApi = Object.extend(
    *   #editorregisterfileselectionhandler registerFileSelectionHandler}.
    *
    * @param {Object} payload
-   *   Options passed to the file selection handler.
+   *   Options passed to the file selection handler. A `label` property
+   *   is used by the files list to say what the file will be used for.
    *
    * @example
    *
@@ -321,7 +322,14 @@ export const EditorApi = Object.extend(
     }
 
     var payloadJson = JSON.parse(decodeURIComponent(encodedPayload));
-    return new this.fileSelectionHandlers[handlerName]({...payloadJson, entry: state.entry});
+    var handler = new this.fileSelectionHandlers[handlerName]({...payloadJson,
+                                                               entry: state.entry});
+
+    // Lets the files list name what is being selected. Handlers are
+    // free to provide a label of their own.
+    handler.selectionLabel = handler.selectionLabel || payloadJson.label;
+
+    return handler;
   },
 
   createPageConfigurationEditorView: function(page, options) {

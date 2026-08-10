@@ -98,10 +98,21 @@ export const FilesView = Marionette.ItemView.extend({
       fileTypes: fileTypes,
       fileTypeSelection: this.fileTypeSelection,
       selectionHandler: this.options.selectionHandler,
+      selectionFileType: this.selectionFileType(),
       filterName: this.options.filterName
     }));
 
     this.$el.append(this.subview(tabsView).el);
+  },
+
+  // Only a selection which is restricted to a single file type can be
+  // named. Otherwise the requested type is merely a preselection.
+  selectionFileType: function() {
+    if (!this.options.selectionHandler || this.options.allowSelectingAny) {
+      return;
+    }
+
+    return editor.fileTypes.findByCollectionName(this.options.fileTypeName);
   },
 
   selectedCollectionNames: function(fileTypes) {

@@ -1266,6 +1266,11 @@ en:
             failed: Transfer to S3 failed.
             finished: Successfully transferred to S3.
             pending: Transfer to S3 pending.
+        singular:
+          audio_files: an audio file
+          image_files: an image
+          other_files: a file
+          video_files: a video
         tabs:
           audio_files: Audios
           image_files: Images
@@ -1557,7 +1562,10 @@ en:
           group_label: 'Filter by file type'
           hint: 'Click a file type to show only its files. Hold Ctrl/Cmd to combine file types.'
         filtered_files_view:
-          banner_prefix: 'Active filter:'
+          any_file_type: 'a file'
+          cancel_selection: 'Cancel selection'
+          reset_filter: 'Reset filter'
+          select: 'Select %{name}'
           sort_button_label: 'Sort'
           sort:
             alphabetical: 'Alphabetical'

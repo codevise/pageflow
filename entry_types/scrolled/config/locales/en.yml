@@ -1360,6 +1360,7 @@ en:
         select_file: Provide file download
         select_file_description: Let readers download a file when they click the link.
         select_in_sidebar: Select file
+        selection_label: a file to download
       select_move_destination:
         cancel: Cancel
         header_insertPosition: Move section

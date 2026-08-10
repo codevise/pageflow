@@ -1274,6 +1274,11 @@ de:
             failed: Fehler beim übertragen zu S3.
             finished: Erfolgreich zu S3 übertragen.
             pending: Noch nicht zu S3 übertragen.
+        singular:
+          audio_files: Audio-Datei
+          image_files: Bild
+          other_files: Datei
+          video_files: Video
         tabs:
           audio_files: Audios
           image_files: Bilder
@@ -1565,7 +1570,10 @@ de:
           group_label: 'Nach Dateityp filtern'
           hint: 'Dateityp anklicken, um nur dessen Dateien anzuzeigen. Mit Strg/Cmd Dateitypen kombinieren.'
         filtered_files_view:
-          banner_prefix: 'Aktiver Filter:'
+          any_file_type: 'Datei'
+          cancel_selection: 'Auswahl abbrechen'
+          reset_filter: 'Filter zurücksetzen'
+          select: '%{name} auswählen'
           sort_button_label: 'Sortieren'
           sort:
             alphabetical: 'Alphabetisch'

@@ -18,7 +18,10 @@ describe('FilesView', () => {
     'pageflow.editor.files.tabs.video_files': 'Videos',
     'pageflow.editor.views.file_type_pills_view.group_label': 'Filter by file type',
     'pageflow.editor.views.files_view.add': 'Add file',
-    'pageflow.editor.views.files_view.tabs.files': 'Files'
+    'pageflow.editor.views.files_view.tabs.files': 'Files',
+    'pageflow.editor.files.singular.image_files': 'an image',
+    'pageflow.editor.views.filtered_files_view.any_file_type': 'a file',
+    'pageflow.editor.views.filtered_files_view.select': 'Select %{name}'
   });
 
   function entryWithFiles({imageFileTypeOptions} = {}) {
@@ -40,6 +43,10 @@ describe('FilesView', () => {
 
   function fileNames(queries) {
     return queries.queryAllByText(/\.(png|mp4)$/).map(el => el.textContent);
+  }
+
+  function banner(view) {
+    return view.el.querySelector('.filtered_files-banner');
   }
 
   it('renders files tab', () => {
@@ -153,6 +160,43 @@ describe('FilesView', () => {
       const {getByRole} = render(view);
 
       expect(getByRole('button', {name: 'Videos'})).not.toBeNull();
+    });
+
+    it('names the requested file type in the banner', () => {
+      const view = new FilesView({
+        model: entryWithFiles(),
+        fileTypeName: 'image_files',
+        selectionHandler
+      });
+
+      render(view);
+
+      expect(banner(view)).toHaveTextContent('Select an image');
+    });
+
+    it('states that any file type may be selected in the banner', () => {
+      const view = new FilesView({
+        model: entryWithFiles(),
+        allowSelectingAny: true,
+        selectionHandler
+      });
+
+      render(view);
+
+      expect(banner(view)).toHaveTextContent('Select a file');
+    });
+
+    it('states that any file type may be selected even if one is preselected', () => {
+      const view = new FilesView({
+        model: entryWithFiles(),
+        fileTypeName: 'image_files',
+        allowSelectingAny: true,
+        selectionHandler
+      });
+
+      render(view);
+
+      expect(banner(view)).toHaveTextContent('Select a file');
     });
 
     it('leaves selection mode when another file type is selected', async () => {

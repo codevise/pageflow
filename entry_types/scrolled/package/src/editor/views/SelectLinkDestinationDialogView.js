@@ -104,7 +104,9 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
       });
     };
 
-    editor.selectFile(null, 'linkDestination', {});
+    editor.selectFile(null, 'linkDestination', {
+      label: I18n.t('pageflow_scrolled.editor.select_link_destination.selection_label')
+    });
     this.close();
   },
 
