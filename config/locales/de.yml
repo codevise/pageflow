@@ -1415,6 +1415,7 @@ de:
           close: Schließen
         files:
           back: Zurück
+          in_folder: 'Im Ordner:'
         files_blank_slate:
           no_files: Es wurden noch keine Dateien hochgeladen.
         files_explorer:

@@ -5,6 +5,7 @@ import Marionette from 'backbone.marionette';
 import {DropDownButtonView} from './DropDownButtonView';
 import {MoveToFolderDialogView} from './MoveToFolderDialogView';
 import {listHighlighting} from './mixins/listHighlighting';
+import {parentFolderLabel} from './mixins/parentFolderLabel';
 
 import template from '../templates/folderItem.jst';
 
@@ -13,7 +14,7 @@ export const FolderItemView = Marionette.ItemView.extend({
   tagName: 'li',
   className: 'file_folders-item',
 
-  mixins: [listHighlighting],
+  mixins: [listHighlighting, parentFolderLabel],
 
   ui: {
     name: '.file_folders-name',
@@ -38,7 +39,12 @@ export const FolderItemView = Marionette.ItemView.extend({
     // Rerender to replace the name input with the row of the created
     // folder.
     'change:id': 'render',
-    'change:name': 'update'
+    'change:name': 'update',
+    'change:parent_folder_perma_id': 'updateParentFolder'
+  },
+
+  parentFolderPermaId: function() {
+    return this.model.get('parent_folder_perma_id');
   },
 
   initialize: function() {

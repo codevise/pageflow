@@ -400,6 +400,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       itemViewConstructor: FilesListItemView,
       itemViewOptions: {
         onSelect: this.options.onSelectFolder,
+        folder: this.options.folder,
         fileFolders: this.options.fileFolders,
         files: this.selectedFiles || this.combinedFiles,
         listSelection: this.listSelection,

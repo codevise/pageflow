@@ -21,7 +21,8 @@ describe('FileItemView', () => {
     'pageflow.editor.templates.file_item.destroy': 'Delete',
     'pageflow.editor.templates.file_item.move': 'Move...',
     'pageflow.editor.templates.file_item.settings': 'Settings',
-    'pageflow.editor.templates.file_item.select': 'Select'
+    'pageflow.editor.templates.file_item.select': 'Select',
+    'pageflow.editor.templates.files.in_folder': 'In folder:'
   });
 
   it('displays file title', () => {
@@ -32,6 +33,100 @@ describe('FileItemView', () => {
     const {getByText} = render(view);
 
     expect(getByText('original.png')).not.toBeNull();
+  });
+
+  describe('parent folder', () => {
+    function fileFolders(attributes) {
+      return support.factories.entry({}, {fileFoldersAttributes: attributes}).fileFolders;
+    }
+
+    function line(view) {
+      return view.el.querySelector('.files-parent_folder');
+    }
+
+    it('is displayed for file from another folder', () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123, folder_perma_id: 1}),
+        fileFolders: fileFolders([{id: 10, perma_id: 1, name: 'Interviews'}])
+      });
+
+      const {getByText} = render(view);
+
+      expect(getByText('In folder:')).toBeVisible();
+      expect(getByText('Interviews')).toBeVisible();
+      expect(line(view)).not.toHaveClass('is_hidden');
+    });
+
+    it('is not displayed for file at the top level', () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123, folder_perma_id: null}),
+        fileFolders: fileFolders([{id: 10, perma_id: 1, name: 'Interviews'}])
+      });
+
+      const {queryByText} = render(view);
+
+      expect(queryByText('Interviews')).toBeNull();
+      expect(line(view)).toHaveClass('is_hidden');
+    });
+
+    it('is not displayed while that folder is being displayed', () => {
+      const folders = fileFolders([{id: 10, perma_id: 1, name: 'Interviews'}]);
+      const view = new FileItemView({
+        model: support.factories.file({id: 123, folder_perma_id: 1}),
+        folder: folders.first(),
+        fileFolders: folders
+      });
+
+      const {queryByText} = render(view);
+
+      expect(queryByText('Interviews')).toBeNull();
+    });
+
+    it('does not display parent folders of the folder', () => {
+      const view = new FileItemView({
+        model: support.factories.file({id: 123, folder_perma_id: 2}),
+        fileFolders: fileFolders([
+          {id: 10, perma_id: 1, name: 'Interviews'},
+          {id: 11, perma_id: 2, parent_folder_perma_id: 1, name: 'Portraits'}
+        ])
+      });
+
+      const {getByText, queryByText} = render(view);
+
+      expect(getByText('Portraits')).toBeVisible();
+      expect(queryByText('Interviews')).toBeNull();
+    });
+
+    // A persisted file would save itself on the way.
+    it('follows the file being moved', () => {
+      const file = support.factories.file({folder_perma_id: 1});
+      const view = new FileItemView({
+        model: file,
+        fileFolders: fileFolders([
+          {id: 10, perma_id: 1, name: 'Interviews'},
+          {id: 11, perma_id: 2, name: 'Portraits'}
+        ])
+      });
+
+      const {getByText, queryByText} = render(view);
+      file.set('folder_perma_id', 2);
+
+      expect(getByText('Portraits')).toBeVisible();
+      expect(queryByText('Interviews')).toBeNull();
+    });
+
+    it('follows the folder being renamed', () => {
+      const folders = fileFolders([{id: 10, perma_id: 1, name: 'Interviews'}]);
+      const view = new FileItemView({
+        model: support.factories.file({id: 123, folder_perma_id: 1}),
+        fileFolders: folders
+      });
+
+      const {getByText} = render(view);
+      folders.first().set('name', 'Portraits');
+
+      expect(getByText('Portraits')).toBeVisible();
+    });
   });
 
   describe('meta data overlay', () => {

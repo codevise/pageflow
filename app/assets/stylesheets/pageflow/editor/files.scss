@@ -60,6 +60,38 @@ ul.files {
     color: var(--ui-on-surface-color-light);
   }
 
+  // Only displayed while searching across folders, where the row is the
+  // only clue as to where the item was found. The auto margin leaves the
+  // name of a file at the bottom of the row, where rows without a folder
+  // have it as well.
+  .files-parent_folder {
+    @include folder-icon;
+
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    margin-top: auto;
+    margin-bottom: space(1);
+    color: var(--ui-on-surface-color-light);
+
+    &.is_hidden {
+      display: none;
+    }
+
+    // Same width as the check box below.
+    &:before {
+      flex-shrink: 0;
+      width: 13px;
+      margin-right: space(1);
+      color: var(--ui-primary-color-light);
+      text-align: center;
+    }
+  }
+
+  .files-parent_folder_name {
+    @include label;
+  }
+
   .file_thumbnail_button {
     display: block;
     flex-shrink: 0;

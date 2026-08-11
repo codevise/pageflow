@@ -216,6 +216,11 @@ describe('FilesView', () => {
                     .map(el => el.textContent);
     }
 
+    function parentFolderNames(view) {
+      return Array.from(view.el.querySelectorAll('#filtered_files .files-parent_folder_name'))
+                  .map(el => el.textContent);
+    }
+
     function listedNames(view) {
       return Array.from(view.el.querySelectorAll('#filtered_files > li'))
                   .map(el => el.querySelector('.file_folders-name, .file_name').textContent);
@@ -1583,6 +1588,60 @@ describe('FilesView', () => {
         await user.type(queries.getByLabelText('Filter files in Interviews'), 'png');
 
         expect(fileNames(queries)).toEqual(['interview.png']);
+      });
+
+      it('names the folder of files found in other folders', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.type(queries.getByLabelText('Filter files and folders'), 'raw.png');
+
+        expect(parentFolderNames(view)).toEqual(['Raw']);
+      });
+
+      it('names the parent folder of folders found in other folders', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.type(queries.getByLabelText('Filter files and folders'), 'raw');
+
+        expect(listedNames(view)).toEqual(['Raw', 'raw.png']);
+        expect(parentFolderNames(view)).toEqual(['Interviews', 'Raw']);
+      });
+
+      it('does not name a parent folder for folders at the top level', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.type(queries.getByLabelText('Filter files and folders'), 'landscapes');
+
+        expect(listedNames(view)).toEqual(['Landscapes']);
+        expect(parentFolderNames(view)).toEqual(['']);
+      });
+
+      it('follows a folder being moved', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.type(queries.getByLabelText('Filter files and folders'), 'raw');
+        entry.fileFolders.byPermaId(2).set('parent_folder_perma_id', 3);
+
+        expect(parentFolderNames(view)).toEqual(['Landscapes', 'Raw']);
+      });
+
+      it('does not name the folder of files found inside it', async () => {
+        const view = new FilesView({model: entryWithFolders(), folderPermaId: '1'});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.type(queries.getByLabelText('Filter files in Interviews'), 'png');
+
+        expect(parentFolderNames(view)).toEqual(['']);
       });
 
       it('does not render folders while searching inside folder', async () => {

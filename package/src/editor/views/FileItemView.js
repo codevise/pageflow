@@ -11,6 +11,7 @@ import {FileThumbnailView} from './FileThumbnailView';
 import {MoveToFolderDialogView} from './MoveToFolderDialogView';
 import {listHighlighting} from './mixins/listHighlighting';
 import {loadable} from './mixins/loadable';
+import {parentFolderLabel} from './mixins/parentFolderLabel';
 
 import template from '../templates/fileItem.jst';
 
@@ -21,7 +22,7 @@ export const FileItemView = Marionette.ItemView.extend({
   tagName: 'li',
   template,
 
-  mixins: [loadable, listHighlighting],
+  mixins: [loadable, listHighlighting, parentFolderLabel],
 
   ui: {
     fileName: '.file_name',
@@ -104,7 +105,12 @@ export const FileItemView = Marionette.ItemView.extend({
   },
 
   modelEvents: {
-    'change': 'update'
+    'change': 'update',
+    'change:folder_perma_id': 'updateParentFolder'
+  },
+
+  parentFolderPermaId: function() {
+    return this.model.get('folder_perma_id');
   },
 
   serializeData: function() {
