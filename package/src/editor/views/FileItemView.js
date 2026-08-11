@@ -41,7 +41,7 @@ export const FileItemView = Marionette.ItemView.extend({
     'click .select': 'select',
 
     'change .file_item-check_box': function() {
-      this.options.fileSelection.toggle(this.model);
+      this.options.listSelection.toggle(this.model);
     },
 
     'click .settings': function() {
@@ -69,7 +69,7 @@ export const FileItemView = Marionette.ItemView.extend({
     }
 
     if (this.multiSelectable()) {
-      this.listenTo(this.options.fileSelection,
+      this.listenTo(this.options.listSelection,
                     'add remove reset change:selecting',
                     this.updateSelected);
     }
@@ -117,7 +117,7 @@ export const FileItemView = Marionette.ItemView.extend({
   // Picking a single file is the point of selection mode, so checking
   // files for a bulk action would only get in the way.
   multiSelectable: function() {
-    return !this.options.selectionHandler && !!this.options.fileSelection;
+    return !this.options.selectionHandler && !!this.options.listSelection;
   },
 
   onRender: function() {
@@ -210,10 +210,10 @@ export const FileItemView = Marionette.ItemView.extend({
       return;
     }
 
-    var selected = this.options.fileSelection.includes(this.model);
+    var selected = this.options.listSelection.includes(this.model);
 
     this.ui.checkBox.prop('checked', selected);
-    this.ui.checkBox.prop('disabled', !this.options.fileSelection.isSelecting());
+    this.ui.checkBox.prop('disabled', !this.options.listSelection.isSelecting());
     this.$el.toggleClass('is_selected', selected);
   },
 

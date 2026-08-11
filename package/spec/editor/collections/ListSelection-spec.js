@@ -1,13 +1,13 @@
-import {FileSelection} from 'pageflow/editor';
+import {ListSelection} from 'pageflow/editor';
 
 import * as support from '$support';
 
-describe('FileSelection', () => {
+describe('ListSelection', () => {
   const f = support.factories;
 
   it('adds file which is not selected yet', () => {
     const file = f.file({id: 1});
-    const selection = new FileSelection();
+    const selection = new ListSelection();
 
     selection.toggle(file);
 
@@ -16,7 +16,7 @@ describe('FileSelection', () => {
 
   it('removes file which is selected', () => {
     const file = f.file({id: 1});
-    const selection = new FileSelection([file]);
+    const selection = new ListSelection([file]);
 
     selection.toggle(file);
 
@@ -27,7 +27,7 @@ describe('FileSelection', () => {
   it('tells files with the same id apart', () => {
     const file = f.file({id: 1});
     const otherFile = f.file({id: 1});
-    const selection = new FileSelection();
+    const selection = new ListSelection();
 
     selection.toggle(file);
     selection.toggle(otherFile);
@@ -40,7 +40,7 @@ describe('FileSelection', () => {
   it('removes the file it is passed rather than one with the same id', () => {
     const file = f.file({id: 1});
     const otherFile = f.file({id: 1});
-    const selection = new FileSelection([file, otherFile]);
+    const selection = new ListSelection([file, otherFile]);
 
     selection.toggle(otherFile);
 

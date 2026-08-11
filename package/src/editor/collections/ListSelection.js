@@ -2,11 +2,11 @@ import Backbone from 'backbone';
 
 import {cidBasedGet} from './cidBasedGet';
 
-export const FileSelection = Backbone.Collection.extend({
+export const ListSelection = Backbone.Collection.extend({
   get: cidBasedGet,
 
-  // Checking files stays switched on until it is switched off again,
-  // even while nothing is checked. Unchecking the last file would
+  // Checking items stays switched on until it is switched off again,
+  // even while nothing is checked. Unchecking the last item would
   // otherwise pull the check boxes away from under the pointer.
   start: function() {
     this.selecting = true;
@@ -23,16 +23,16 @@ export const FileSelection = Backbone.Collection.extend({
     return !!this.selecting;
   },
 
-  toggle: function(file) {
-    if (this.includes(file)) {
-      this.remove(file);
+  toggle: function(item) {
+    if (this.includes(item)) {
+      this.remove(item);
     }
     else {
-      this.add(file);
+      this.add(item);
     }
   },
 
-  includes: function(file) {
-    return !!this.get(file);
+  includes: function(item) {
+    return !!this.get(item);
   }
 });

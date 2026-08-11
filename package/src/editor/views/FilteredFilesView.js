@@ -10,7 +10,7 @@ import {editor} from '../base';
 
 import {CombinedFilesCollection} from '../collections/CombinedFilesCollection';
 import {ConcatenatedCollection} from '../collections/ConcatenatedCollection';
-import {FileSelection} from '../collections/FileSelection';
+import {ListSelection} from '../collections/ListSelection';
 import {SubsetCollection} from '../collections/SubsetCollection';
 import {FilesBlankSlateView} from './FilesBlankSlateView';
 import {FilesListItemView} from './FilesListItemView';
@@ -55,7 +55,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     // go away again once the files have been moved.
     'click .filtered_files-selection_bar_action': function() {
       MoveToFolderDialogView.open({
-        models: this.fileSelection.models,
+        models: this.listSelection.models,
         fileFolders: this.options.fileFolders,
         onMove: () => this.stopSelecting()
       });
@@ -144,24 +144,24 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       this.listHighlight = new ListHighlight({}, {collection: this.listItems});
     }
     else {
-      this.setupFileSelection();
+      this.setupListSelection();
     }
 
     this.menuItems = this.createMenuItems();
   },
 
-  setupFileSelection: function() {
-    this.fileSelection = new FileSelection();
+  setupListSelection: function() {
+    this.listSelection = new ListSelection();
 
     // A file which has been moved, deleted or filtered out has no row
     // left to uncheck, so the number in the bar would stop matching the
     // list.
     this.listenTo(this.searchFilteredCollection, 'remove', function(file) {
-      this.fileSelection.remove(file);
+      this.listSelection.remove(file);
     });
 
-    this.listenTo(this.fileSelection, 'add remove reset', this.updateSelectionBar);
-    this.listenTo(this.fileSelection, 'change:selecting', this.updateSelecting);
+    this.listenTo(this.listSelection, 'add remove reset', this.updateSelectionBar);
+    this.listenTo(this.listSelection, 'change:selecting', this.updateSelecting);
 
     this.listenTo(this.combinedFiles, 'add remove', this.updateSelectable);
   },
@@ -175,7 +175,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     this.renderCollectionView();
     this.updateSelecting();
 
-    if (this.fileSelection) {
+    if (this.listSelection) {
       this.updateSelectable();
     }
   },
@@ -286,7 +286,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       }
     ]);
 
-    if (this.fileSelection) {
+    if (this.listSelection) {
       items.add({name: 'select', label: this.translation('select_files')});
       items.findWhere({name: 'select'}).selected = () => this.startSelecting();
     }
@@ -295,19 +295,19 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   },
 
   startSelecting: function() {
-    this.fileSelection.start();
+    this.listSelection.start();
   },
 
   stopSelecting: function() {
-    this.fileSelection.stop();
+    this.listSelection.stop();
   },
 
   updateSelecting: function() {
-    if (!this.fileSelection) {
+    if (!this.listSelection) {
       return this.ui.selectionBar.remove();
     }
 
-    var selecting = this.fileSelection.isSelecting();
+    var selecting = this.listSelection.isSelecting();
 
     this.ui.browseControls.toggleClass('is_hidden', selecting);
     this.ui.selectionBar.toggleClass('is_hidden', !selecting);
@@ -331,7 +331,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     var selectable = !!this.combinedFiles.length;
 
     if (!selectable) {
-      this.fileSelection.stop();
+      this.listSelection.stop();
     }
 
     this.menuItems.findWhere({name: 'select'}).set('disabled', !selectable);
@@ -340,9 +340,9 @@ export const FilteredFilesView = Marionette.ItemView.extend({
 
   updateSelectionBar: function() {
     this.ui.selectionBarText.text(this.translation('selected_files',
-                                                   {count: this.fileSelection.length}));
+                                                   {count: this.listSelection.length}));
 
-    this.ui.selectionBarAction.prop('disabled', !this.fileSelection.length);
+    this.ui.selectionBarAction.prop('disabled', !this.listSelection.length);
   },
 
   translation: function(keyName, options) {
@@ -390,7 +390,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
         onSelect: this.options.onSelectFolder,
         fileFolders: this.options.fileFolders,
         files: this.selectedFiles || this.combinedFiles,
-        fileSelection: this.fileSelection,
+        listSelection: this.listSelection,
         selectionHandler: this.options.selectionHandler,
         listHighlight: this.listHighlight
       },
