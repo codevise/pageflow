@@ -1627,7 +1627,7 @@ de:
               invalid_provider: "Ungültiger Anbieter"
               not_found: "URL nicht gefunden"
               error: "Fehler beim Auflösen der URL"
-        move_file_dialog_view:
+        move_to_folder_dialog_view:
           cancel: 'Abbrechen'
           current: 'Aktueller Ordner'
           header:

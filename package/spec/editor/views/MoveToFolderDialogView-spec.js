@@ -1,4 +1,4 @@
-import {MoveFileDialogView} from 'pageflow/editor';
+import {MoveToFolderDialogView} from 'pageflow/editor';
 
 import * as support from '$support';
 import {within} from '@testing-library/dom';
@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import {renderBackboneView as render} from 'pageflow/testHelpers';
 
-describe('MoveFileDialogView', () => {
+describe('MoveToFolderDialogView', () => {
   const f = support.factories;
 
   let testContext;
@@ -18,17 +18,17 @@ describe('MoveFileDialogView', () => {
   support.useFakeXhr(() => testContext);
 
   support.useFakeTranslations({
-    'pageflow.editor.views.move_file_dialog_view.header': {
+    'pageflow.editor.views.move_to_folder_dialog_view.header': {
       one: 'Move file',
       other: 'Move files'
     },
-    'pageflow.editor.views.move_file_dialog_view.hint': {
+    'pageflow.editor.views.move_to_folder_dialog_view.hint': {
       one: 'Select the folder to move %{file} to.',
       other: 'Select the folder to move %{count} files to.'
     },
-    'pageflow.editor.views.move_file_dialog_view.root': 'No folder',
-    'pageflow.editor.views.move_file_dialog_view.current': 'Current folder',
-    'pageflow.editor.views.move_file_dialog_view.cancel': 'Cancel'
+    'pageflow.editor.views.move_to_folder_dialog_view.root': 'No folder',
+    'pageflow.editor.views.move_to_folder_dialog_view.current': 'Current folder',
+    'pageflow.editor.views.move_to_folder_dialog_view.cancel': 'Cancel'
   });
 
   function entryWithFolders(...filesAttributes) {
@@ -57,14 +57,14 @@ describe('MoveFileDialogView', () => {
     return {
       files,
       file: files[0],
-      view: new MoveFileDialogView({models: files,
-                                    fileFolders: entry.fileFolders,
-                                    ...options})
+      view: new MoveToFolderDialogView({models: files,
+                                        fileFolders: entry.fileFolders,
+                                        ...options})
     };
   }
 
   function targetNames(view) {
-    return Array.from(view.el.querySelectorAll('.move_file_dialog-name'))
+    return Array.from(view.el.querySelectorAll('.move_to_folder_dialog-name'))
                 .map(element => element.textContent);
   }
 

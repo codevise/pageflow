@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 
 import {
-  FileItemView, FileMetaDataOverlayView, FileSelection, ListHighlight, MoveFileDialogView, app
+  FileItemView, FileMetaDataOverlayView, FileSelection, ListHighlight, MoveToFolderDialogView, app
 } from 'pageflow/editor';
 
 import * as support from '$support';
@@ -435,7 +435,7 @@ describe('FileItemView', () => {
       const {getByRole} = render(view);
       getByRole('link', {name: 'Move...'}).click();
 
-      expect(app.dialogRegion.currentView).toBeInstanceOf(MoveFileDialogView);
+      expect(app.dialogRegion.currentView).toBeInstanceOf(MoveToFolderDialogView);
       expect(app.dialogRegion.currentView.options.models).toEqual([file]);
     });
   });

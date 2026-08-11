@@ -19,7 +19,7 @@ import {FolderBreadcrumbView} from './FolderBreadcrumbView';
 import {Search} from '../models/Search';
 import {ListHighlight} from '../models/ListHighlight';
 import {ListSearchFieldView} from './ListSearchFieldView';
-import {MoveFileDialogView} from './MoveFileDialogView';
+import {MoveToFolderDialogView} from './MoveToFolderDialogView';
 
 import template from '../templates/filteredFiles.jst';
 
@@ -54,7 +54,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     // Moving is all a selection is good for so far, so the check boxes
     // go away again once the files have been moved.
     'click .filtered_files-selection_bar_action': function() {
-      MoveFileDialogView.open({
+      MoveToFolderDialogView.open({
         models: this.fileSelection.models,
         fileFolders: this.options.fileFolders,
         onMove: () => this.stopSelecting()

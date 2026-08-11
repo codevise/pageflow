@@ -6,22 +6,22 @@ import {app} from '../app';
 
 import {dialogView} from './mixins/dialogView';
 
-import template from '../templates/moveFileDialog.jst';
+import template from '../templates/moveToFolderDialog.jst';
 
-export const MoveFileDialogView = Marionette.ItemView.extend({
+export const MoveToFolderDialogView = Marionette.ItemView.extend({
   template,
-  className: 'move_file_dialog editor dialog',
+  className: 'move_to_folder_dialog editor dialog',
 
   mixins: [dialogView],
 
   ui: {
     header: '.dialog-header',
-    hint: '.move_file_dialog-hint',
-    targets: '.move_file_dialog-targets'
+    hint: '.move_to_folder_dialog-hint',
+    targets: '.move_to_folder_dialog-targets'
   },
 
   events: {
-    'click .move_file_dialog-target': function(event) {
+    'click .move_to_folder_dialog-target': function(event) {
       this.move($(event.currentTarget).data('folder'));
       return false;
     }
@@ -40,7 +40,7 @@ export const MoveFileDialogView = Marionette.ItemView.extend({
   },
 
   targetItem: function(folder) {
-    var item = $('<li />', {'class': 'move_file_dialog-target_item'})
+    var item = $('<li />', {'class': 'move_to_folder_dialog-target_item'})
                .append(this.targetButton(folder));
 
     // Folders which are still being named have no perma id to move a
@@ -66,22 +66,22 @@ export const MoveFileDialogView = Marionette.ItemView.extend({
     var current = this.permaIdOf(folder) === this.currentFolderPermaId();
 
     var button = $('<button />', {
-      'class': 'move_file_dialog-target',
+      'class': 'move_to_folder_dialog-target',
       type: 'button',
       disabled: current,
       'aria-current': current ? 'true' : null
     }).data('folder', folder);
 
-    button.append($('<span />', {'class': 'move_file_dialog-pictogram',
+    button.append($('<span />', {'class': 'move_to_folder_dialog-pictogram',
                                  'aria-hidden': 'true'}));
 
     button.append($('<span />', {
-      'class': 'move_file_dialog-name',
+      'class': 'move_to_folder_dialog-name',
       text: folder ? folder.get('name') : this.translation('root')
     }));
 
     if (current) {
-      button.append($('<span />', {'class': 'move_file_dialog-current',
+      button.append($('<span />', {'class': 'move_to_folder_dialog-current',
                                    text: this.translation('current')}));
     }
 
@@ -124,10 +124,10 @@ export const MoveFileDialogView = Marionette.ItemView.extend({
   },
 
   translation: function(keyName, options) {
-    return I18n.t('pageflow.editor.views.move_file_dialog_view.' + keyName, options);
+    return I18n.t('pageflow.editor.views.move_to_folder_dialog_view.' + keyName, options);
   }
 });
 
-MoveFileDialogView.open = function(options) {
-  app.dialogRegion.show(new MoveFileDialogView(options));
+MoveToFolderDialogView.open = function(options) {
+  app.dialogRegion.show(new MoveToFolderDialogView(options));
 };

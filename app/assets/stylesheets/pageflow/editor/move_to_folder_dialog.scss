@@ -1,4 +1,4 @@
-&.move_file_dialog {
+&.move_to_folder_dialog {
   // A short list of folders would otherwise leave most of the dialog
   // empty, since dialog boxes stretch to the viewport by default. Long
   // lists still have to stop short of the viewport and scroll.
@@ -13,13 +13,18 @@
   // have. Sits on the scrolling container, so that the border of a long
   // list stays put while it is scrolled.
   .content {
+    // Safari resolves the percentage flex basis of the default `flex: 1`
+    // against the indefinite height of the box to zero instead of falling
+    // back to the height of the list.
+    flex: 0 1 auto;
+
     margin-left: 0;
     padding: space(1);
     border: solid 1px var(--ui-on-surface-color-lighter);
     border-radius: rounded();
   }
 
-  .move_file_dialog {
+  .move_to_folder_dialog {
     // The root target holds the top level folders, so its own list does
     // not get indented.
     &-targets ul {

@@ -1619,7 +1619,7 @@ en:
               invalid_provider: "Invalid provider"
               not_found: "URL not found"
               error: "Error resolving URL"
-        move_file_dialog_view:
+        move_to_folder_dialog_view:
           cancel: 'Cancel'
           current: 'Current folder'
           header:

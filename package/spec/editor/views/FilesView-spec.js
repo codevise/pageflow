@@ -53,11 +53,11 @@ describe('FilesView', () => {
     'pageflow.editor.templates.files_blank_slate.no_files': 'No files',
     'pageflow.editor.templates.file_item.actions': 'File actions',
     'pageflow.editor.templates.file_item.move': 'Move...',
-    'pageflow.editor.views.move_file_dialog_view.header': {
+    'pageflow.editor.views.move_to_folder_dialog_view.header': {
       one: 'Move file',
       other: 'Move files'
     },
-    'pageflow.editor.views.move_file_dialog_view.hint': {
+    'pageflow.editor.views.move_to_folder_dialog_view.hint': {
       one: 'Select the folder to move %{file} to.',
       other: 'Select the folder to move %{count} files to.'
     },
@@ -70,9 +70,9 @@ describe('FilesView', () => {
       one: '1 file selected',
       other: '%{count} files selected'
     },
-    'pageflow.editor.views.move_file_dialog_view.root': 'No folder',
-    'pageflow.editor.views.move_file_dialog_view.current': 'Current folder',
-    'pageflow.editor.views.move_file_dialog_view.cancel': 'Cancel'
+    'pageflow.editor.views.move_to_folder_dialog_view.root': 'No folder',
+    'pageflow.editor.views.move_to_folder_dialog_view.current': 'Current folder',
+    'pageflow.editor.views.move_to_folder_dialog_view.cancel': 'Cancel'
   });
 
   function entryWithFiles({imageFileTypeOptions} = {}) {

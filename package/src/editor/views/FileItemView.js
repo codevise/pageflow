@@ -8,7 +8,7 @@ import {DropDownButtonView} from './DropDownButtonView';
 import {FileMetaDataOverlayView} from './FileMetaDataOverlayView';
 import {FileSettingsDialogView} from './FileSettingsDialogView';
 import {FileThumbnailView} from './FileThumbnailView';
-import {MoveFileDialogView} from './MoveFileDialogView';
+import {MoveToFolderDialogView} from './MoveToFolderDialogView';
 import {listHighlighting} from './mixins/listHighlighting';
 import {loadable} from './mixins/loadable';
 
@@ -290,7 +290,7 @@ export const FileItemView = Marionette.ItemView.extend({
   },
 
   move: function() {
-    MoveFileDialogView.open({
+    MoveToFolderDialogView.open({
       models: [this.model],
       fileFolders: this.options.fileFolders
     });
