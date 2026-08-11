@@ -47,19 +47,28 @@ describe('FilesView', () => {
     'pageflow.editor.views.folder_item_view.name': 'Name of new folder',
     'pageflow.editor.views.folder_item_view.new_name': 'New name of folder',
     'pageflow.editor.views.folder_item_view.rename': 'Rename',
+    'pageflow.editor.views.folder_item_view.move': 'Move...',
     'pageflow.editor.views.folder_item_view.destroy': 'Delete',
     'pageflow.editor.views.files_blank_slate_view.empty_folder': 'This folder is empty',
     'pageflow.editor.views.files_blank_slate_view.no_matches': 'Nothing matches',
     'pageflow.editor.templates.files_blank_slate.no_files': 'No files',
     'pageflow.editor.templates.file_item.actions': 'File actions',
     'pageflow.editor.templates.file_item.move': 'Move...',
-    'pageflow.editor.views.move_to_folder_dialog_view.header': {
+    'pageflow.editor.views.move_to_folder_dialog_view.header.files': {
       one: 'Move file',
       other: 'Move files'
     },
-    'pageflow.editor.views.move_to_folder_dialog_view.hint': {
-      one: 'Select the folder to move %{file} to.',
+    'pageflow.editor.views.move_to_folder_dialog_view.header.folders': {
+      one: 'Move folder',
+      other: 'Move folders'
+    },
+    'pageflow.editor.views.move_to_folder_dialog_view.hint.files': {
+      one: 'Select the folder to move %{name} to.',
       other: 'Select the folder to move %{count} files to.'
+    },
+    'pageflow.editor.views.move_to_folder_dialog_view.hint.folders': {
+      one: 'Select the folder to move %{name} to.',
+      other: 'Select the folder to move %{count} folders to.'
     },
     'pageflow.editor.views.filtered_files_view.move_selection': 'Move...',
     'pageflow.editor.views.filtered_files_view.actions': 'File list actions',
@@ -1068,6 +1077,109 @@ describe('FilesView', () => {
       });
     });
 
+
+    describe('moving a folder from the list', () => {
+      let testContext;
+
+      beforeEach(() => {
+        testContext = {};
+      });
+
+      support.useFakeXhr(() => testContext);
+
+      afterEach(() => app.dialogRegion.reset());
+
+      function moveLink(queries, name) {
+        const row = queries.getByRole('button', {name}).closest('li');
+
+        return within(row).getByRole('link', {name: 'Move...'});
+      }
+
+      // The item stays in the menu and is only hidden, so that it can
+      // appear once another folder has been added.
+      function isOffered(queries, name) {
+        return !moveLink(queries, name).closest('li').classList.contains('is_hidden');
+      }
+
+      async function openMoveDialog(user, queries, name) {
+        await user.click(moveLink(queries, name));
+
+        return within(app.dialogRegion.currentView.el);
+      }
+
+      it('moves folder into the chosen folder', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const dialog = await openMoveDialog(user, queries, /^Landscapes/);
+        await user.click(dialog.getByRole('button', {name: /^Interviews/}));
+
+        expect(entry.fileFolders.byPermaId(3).get('parent_folder_perma_id')).toEqual(1);
+        expect(testContext.requests[0].url).toEqual('/editor/entries/1/file_folders/12');
+      });
+
+      it('removes folder from the list it has been moved out of', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const dialog = await openMoveDialog(user, queries, /^Landscapes/);
+        await user.click(dialog.getByRole('button', {name: /^Interviews/}));
+
+        expect(folderNames(queries)).toEqual(['Interviews']);
+      });
+
+      it('moves folder out of its folder when no folder is chosen', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry, folderPermaId: '1'});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const dialog = await openMoveDialog(user, queries, /^Raw/);
+        await user.click(dialog.getByRole('button', {name: /^No folder/}));
+
+        expect(entry.fileFolders.byPermaId(2).get('parent_folder_perma_id')).toBeNull();
+        expect(folderNames(queries)).toEqual([]);
+      });
+
+      it('names the folder in the dialog', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        const dialog = await openMoveDialog(user, queries, /^Landscapes/);
+
+        expect(dialog.getByText('Select the folder to move Landscapes to.')).not.toBeNull();
+      });
+
+      // A folder at the top level can only be moved into a folder which
+      // is not one of its own subfolders.
+      it('is not offered for the only folder at the top level', () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry});
+
+        const queries = render(view);
+
+        expect(isOffered(queries, /^Interviews/)).toBe(true);
+
+        entry.fileFolders.remove(entry.fileFolders.byPermaId(3));
+
+        expect(isOffered(queries, /^Interviews/)).toBe(false);
+      });
+
+      // Moving a folder out to the top level is always an option.
+      it('is offered for a nested folder without other folders', () => {
+        const entry = entryWithFolders();
+        entry.fileFolders.remove(entry.fileFolders.byPermaId(3));
+        const view = new FilesView({model: entry, folderPermaId: '1'});
+
+        const queries = render(view);
+
+        expect(isOffered(queries, /^Raw/)).toBe(true);
+      });
+    });
 
     describe('moving several files from the list', () => {
       let testContext;

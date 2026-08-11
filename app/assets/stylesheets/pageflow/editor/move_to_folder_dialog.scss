@@ -51,9 +51,16 @@
         background-color: var(--ui-selection-color-light);
       }
 
-      // The folder the files are in is not a target they could move to.
+      // The folder the items are in is not a target they could move to.
       &[disabled] {
         color: var(--ui-on-surface-color-light);
+      }
+
+      // Folders which are being moved and their subfolders are no targets
+      // either. Dimming the whole row fades the folder icon along with
+      // the name, since no hint next to them says why they are inactive.
+      &.is_blocked {
+        opacity: 0.5;
       }
     }
 

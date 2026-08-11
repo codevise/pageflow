@@ -1594,6 +1594,7 @@ en:
           file_count:
             one: '1 file'
             other: '%{count} files'
+          move: 'Move...'
           name: 'Name of new folder'
           new_name: 'New name of folder'
           rename: 'Rename'
@@ -1623,11 +1624,21 @@ en:
           cancel: 'Cancel'
           current: 'Current folder'
           header:
-            one: 'Move file'
-            other: 'Move files'
+            files:
+              one: 'Move file'
+              other: 'Move files'
+            folders:
+              one: 'Move folder'
+              other: 'Move folders'
+            items: 'Move items'
           hint:
-            one: 'Select the folder to move %{file} to.'
-            other: 'Select the folder to move %{count} files to.'
+            files:
+              one: 'Select the folder to move %{name} to.'
+              other: 'Select the folder to move %{count} files to.'
+            folders:
+              one: 'Select the folder to move %{name} to.'
+              other: 'Select the folder to move %{count} folders to.'
+            items: 'Select the folder to move %{count} items to.'
           root: 'No folder'
         page_item_view:
           unnamed: "(New page)"

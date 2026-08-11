@@ -18,14 +18,25 @@ describe('MoveToFolderDialogView', () => {
   support.useFakeXhr(() => testContext);
 
   support.useFakeTranslations({
-    'pageflow.editor.views.move_to_folder_dialog_view.header': {
+    'pageflow.editor.views.move_to_folder_dialog_view.header.files': {
       one: 'Move file',
       other: 'Move files'
     },
-    'pageflow.editor.views.move_to_folder_dialog_view.hint': {
-      one: 'Select the folder to move %{file} to.',
+    'pageflow.editor.views.move_to_folder_dialog_view.header.folders': {
+      one: 'Move folder',
+      other: 'Move folders'
+    },
+    'pageflow.editor.views.move_to_folder_dialog_view.header.items': 'Move items',
+    'pageflow.editor.views.move_to_folder_dialog_view.hint.files': {
+      one: 'Select the folder to move %{name} to.',
       other: 'Select the folder to move %{count} files to.'
     },
+    'pageflow.editor.views.move_to_folder_dialog_view.hint.folders': {
+      one: 'Select the folder to move %{name} to.',
+      other: 'Select the folder to move %{count} folders to.'
+    },
+    'pageflow.editor.views.move_to_folder_dialog_view.hint.items':
+      'Select the folder to move %{count} items to.',
     'pageflow.editor.views.move_to_folder_dialog_view.root': 'No folder',
     'pageflow.editor.views.move_to_folder_dialog_view.current': 'Current folder',
     'pageflow.editor.views.move_to_folder_dialog_view.cancel': 'Cancel'
@@ -188,6 +199,145 @@ describe('MoveToFolderDialogView', () => {
 
       expect(files.map(file => file.get('folder_perma_id'))).toEqual([3, 3]);
       expect(testContext.requests.length).toEqual(2);
+    });
+  });
+
+  describe('with folders', () => {
+    function folderDialog(entry, ...names) {
+      const folders = names.map(name => entry.fileFolders.findWhere({name}));
+
+      return {
+        folders,
+        folder: folders[0],
+        view: new MoveToFolderDialogView({models: folders, fileFolders: entry.fileFolders})
+      };
+    }
+
+    it('names the folder in header and hint', () => {
+      const {view} = folderDialog(entryWithFolders(), 'Landscapes');
+
+      const {getByRole, getByText} = render(view);
+
+      expect(getByRole('heading')).toHaveTextContent('Move folder');
+      expect(getByText('Select the folder to move Landscapes to.')).not.toBeNull();
+    });
+
+    it('states how many folders are moved', () => {
+      const {view} = folderDialog(entryWithFolders(), 'Landscapes', 'Raw');
+
+      const {getByRole, getByText} = render(view);
+
+      expect(getByRole('heading')).toHaveTextContent('Move folders');
+      expect(getByText('Select the folder to move 2 folders to.')).not.toBeNull();
+    });
+
+    it('marks and disables the folder the folder is nested in', () => {
+      const {view} = folderDialog(entryWithFolders(), 'Raw');
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('button', {name: 'Interviews Current folder'}))
+        .toHaveAttribute('aria-current', 'true');
+      expect(getByRole('button', {name: 'Interviews Current folder'})).toBeDisabled();
+    });
+
+    it('marks and disables the root for a folder at the top level', () => {
+      const {view} = folderDialog(entryWithFolders(), 'Landscapes');
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('button', {name: 'No folder Current folder'})).toBeDisabled();
+    });
+
+    it('disables the folders which are moved', () => {
+      const {view} = folderDialog(entryWithFolders(), 'Interviews');
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('button', {name: /^Interviews/})).toBeDisabled();
+    });
+
+    it('disables subfolders of the folders which are moved', () => {
+      const {view} = folderDialog(entryWithFolders(), 'Interviews');
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('button', {name: /^Raw/})).toBeDisabled();
+    });
+
+    it('dims the folders which cannot be a target', () => {
+      const {view} = folderDialog(entryWithFolders(), 'Interviews');
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('button', {name: /^Interviews/})).toHaveClass('is_blocked');
+      expect(getByRole('button', {name: /^Raw/})).toHaveClass('is_blocked');
+      expect(getByRole('button', {name: 'No folder Current folder'}))
+        .not.toHaveClass('is_blocked');
+      expect(getByRole('button', {name: /^Landscapes/})).not.toHaveClass('is_blocked');
+    });
+
+    it('keeps offering folders outside of the folders which are moved', () => {
+      const {view} = folderDialog(entryWithFolders(), 'Interviews');
+
+      const {getByRole} = render(view);
+
+      expect(getByRole('button', {name: /^Landscapes/})).toBeEnabled();
+    });
+
+    it('moves the folder when another folder is clicked', async () => {
+      const {view, folder} = folderDialog(entryWithFolders(), 'Landscapes');
+      const user = userEvent.setup();
+
+      const {getByRole} = render(view);
+      await user.click(getByRole('button', {name: /^Interviews/}));
+
+      expect(folder.get('parent_folder_perma_id')).toEqual(1);
+      expect(testContext.requests[0].url).toEqual('/editor/entries/1/file_folders/12');
+    });
+
+    it('moves the folder to the top level when the root is clicked', async () => {
+      const {view, folder} = folderDialog(entryWithFolders(), 'Raw');
+      const user = userEvent.setup();
+
+      const {getByRole} = render(view);
+      await user.click(getByRole('button', {name: /^No folder/}));
+
+      expect(folder.get('parent_folder_perma_id')).toBeNull();
+    });
+
+    describe('together with files', () => {
+      function mixedDialog(entry) {
+        const file = entry.getFileCollection('image_files').first();
+        const folder = entry.fileFolders.findWhere({name: 'Landscapes'});
+
+        return {
+          file,
+          folder,
+          view: new MoveToFolderDialogView({models: [file, folder],
+                                            fileFolders: entry.fileFolders})
+        };
+      }
+
+      it('names neither files nor folders in header and hint', () => {
+        const {view} = mixedDialog(entryWithFolders());
+
+        const {getByRole, getByText} = render(view);
+
+        expect(getByRole('heading')).toHaveTextContent('Move items');
+        expect(getByText('Select the folder to move 2 items to.')).not.toBeNull();
+      });
+
+      it('moves files and folders at once', async () => {
+        const {view, file, folder} = mixedDialog(entryWithFolders());
+        const user = userEvent.setup();
+
+        const {getByRole} = render(view);
+        await user.click(getByRole('button', {name: /^Interviews/}));
+
+        expect(file.get('folder_perma_id')).toEqual(1);
+        expect(folder.get('parent_folder_perma_id')).toEqual(1);
+      });
     });
   });
 

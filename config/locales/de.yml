@@ -1602,6 +1602,7 @@ de:
           file_count:
             one: '1 Datei'
             other: '%{count} Dateien'
+          move: 'Verschieben...'
           name: 'Name des neuen Ordners'
           new_name: 'Neuer Name des Ordners'
           rename: 'Umbenennen'
@@ -1631,11 +1632,21 @@ de:
           cancel: 'Abbrechen'
           current: 'Aktueller Ordner'
           header:
-            one: 'Datei verschieben'
-            other: 'Dateien verschieben'
+            files:
+              one: 'Datei verschieben'
+              other: 'Dateien verschieben'
+            folders:
+              one: 'Ordner verschieben'
+              other: 'Ordner verschieben'
+            items: 'Elemente verschieben'
           hint:
-            one: 'Wähle den Ordner aus, in den %{file} verschoben werden soll.'
-            other: 'Wähle den Ordner aus, in den %{count} Dateien verschoben werden sollen.'
+            files:
+              one: 'Wähle den Ordner aus, in den %{name} verschoben werden soll.'
+              other: 'Wähle den Ordner aus, in den %{count} Dateien verschoben werden sollen.'
+            folders:
+              one: 'Wähle den Ordner aus, in den %{name} verschoben werden soll.'
+              other: 'Wähle den Ordner aus, in den %{count} Ordner verschoben werden sollen.'
+            items: 'Wähle den Ordner aus, in den %{count} Elemente verschoben werden sollen.'
           root: 'Kein Ordner'
         page_item_view:
           unnamed: "(Unbenannt)"

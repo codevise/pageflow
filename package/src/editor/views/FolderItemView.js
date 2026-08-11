@@ -3,6 +3,7 @@ import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
 import {DropDownButtonView} from './DropDownButtonView';
+import {MoveToFolderDialogView} from './MoveToFolderDialogView';
 import {listHighlighting} from './mixins/listHighlighting';
 
 import template from '../templates/folderItem.jst';
@@ -53,6 +54,10 @@ export const FolderItemView = Marionette.ItemView.extend({
     this.listenTo(this.options.fileFolders,
                   'add remove change:parent_folder_perma_id',
                   this.updateDestroyItem);
+
+    this.listenTo(this.options.fileFolders,
+                  'add remove change:id change:parent_folder_perma_id',
+                  this.updateMoveItem);
   },
 
   createMenuItems: function() {
@@ -60,6 +65,10 @@ export const FolderItemView = Marionette.ItemView.extend({
       {
         name: 'rename',
         label: I18n.t('pageflow.editor.views.folder_item_view.rename')
+      },
+      {
+        name: 'move',
+        label: I18n.t('pageflow.editor.views.folder_item_view.move')
       },
       {
         name: 'destroy',
@@ -73,9 +82,35 @@ export const FolderItemView = Marionette.ItemView.extend({
       this.render();
     };
 
+    items.findWhere({name: 'move'}).selected = () => this.move();
+
     items.findWhere({name: 'destroy'}).selected = () => this.model.destroy();
 
     return items;
+  },
+
+  move: function() {
+    MoveToFolderDialogView.open({
+      models: [this.model],
+      fileFolders: this.options.fileFolders
+    });
+  },
+
+  // Moving a folder out to the top level is always an option, while a
+  // folder which already is at the top level needs some other folder
+  // outside its own subtree to move into.
+  updateMoveItem: function() {
+    var folders = this.options.fileFolders;
+    var ownPermaIds = folders.descendantPermaIdsOf(this.model);
+
+    var movable = !this.model.isNew() &&
+                  (this.model.get('parent_folder_perma_id') !== null ||
+                   folders.some(function(folder) {
+                     return !folder.isNew() &&
+                            ownPermaIds.indexOf(folder.get('perma_id')) < 0;
+                   }));
+
+    this.menuItems.findWhere({name: 'move'}).set('hidden', !movable);
   },
 
   // The server refuses to delete a folder which still holds files or
@@ -108,6 +143,7 @@ export const FolderItemView = Marionette.ItemView.extend({
     this.update();
     this.updateFileCount();
     this.updateDestroyItem();
+    this.updateMoveItem();
     this.renderActionsDropDown();
 
     if (this.isEditingName()) {

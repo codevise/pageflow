@@ -4,6 +4,8 @@ import Marionette from 'backbone.marionette';
 
 import {app} from '../app';
 
+import {FileFolder} from '../models/FileFolder';
+
 import {dialogView} from './mixins/dialogView';
 
 import template from '../templates/moveToFolderDialog.jst';
@@ -27,16 +29,38 @@ export const MoveToFolderDialogView = Marionette.ItemView.extend({
     }
   },
 
-  onRender: function() {
-    var files = this.options.models;
+  initialize: function() {
+    this.movedFolders = this.options.models.filter(isFolder);
 
-    this.ui.header.text(this.translation('header', {count: files.length}));
-    this.ui.hint.text(this.translation('hint', {count: files.length,
-                                                file: files[0].title()}));
+    // Nesting a folder inside itself or inside one of its own subfolders
+    // would detach it from the folder tree.
+    this.blockedPermaIds = this.movedFolders.reduce(function(permaIds, folder) {
+      return permaIds.concat(this.options.fileFolders.descendantPermaIdsOf(folder));
+    }.bind(this), []);
+  },
+
+  onRender: function() {
+    var models = this.options.models;
+    var kind = this.kind();
+
+    this.ui.header.text(this.translation('header.' + kind, {count: models.length}));
+    this.ui.hint.text(this.translation('hint.' + kind, {count: models.length,
+                                                       name: models[0].title()}));
 
     // Nesting the folders inside the target which stands for the root
     // matches the tree they form and takes care of indenting them.
     this.ui.targets.append(this.targetItem());
+  },
+
+  // Moving files and folders at once is about neither of them in
+  // particular. Such a mixed selection always holds at least two items,
+  // so its translations need no singular.
+  kind: function() {
+    if (!this.movedFolders.length) {
+      return 'files';
+    }
+
+    return this.movedFolders.length === this.options.models.length ? 'folders' : 'items';
   },
 
   targetItem: function(folder) {
@@ -65,12 +89,17 @@ export const MoveToFolderDialogView = Marionette.ItemView.extend({
   targetButton: function(folder) {
     var current = this.permaIdOf(folder) === this.currentFolderPermaId();
 
+    var blocked = !current && !!folder &&
+                  this.blockedPermaIds.indexOf(folder.get('perma_id')) >= 0;
+
     var button = $('<button />', {
       'class': 'move_to_folder_dialog-target',
       type: 'button',
-      disabled: current,
+      disabled: current || blocked,
       'aria-current': current ? 'true' : null
     }).data('folder', folder);
+
+    button.toggleClass('is_blocked', blocked);
 
     button.append($('<span />', {'class': 'move_to_folder_dialog-pictogram',
                                  'aria-hidden': 'true'}));
@@ -88,16 +117,16 @@ export const MoveToFolderDialogView = Marionette.ItemView.extend({
     return button;
   },
 
-  // Setting the folder a file is already in is a no op, so moving a
-  // selection does not save the files which do not actually move.
+  // Setting the folder an item is already in is a no op, so moving a
+  // selection does not save the items which do not actually move.
   //
-  // Iterating a copy since moving a file can drop it from the selection
-  // which the list passed in, which would skip the files behind it.
+  // Iterating a copy since moving an item can drop it from the selection
+  // which the list passed in, which would skip the items behind it.
   move: function(folder) {
     var permaId = this.permaIdOf(folder);
 
-    this.options.models.slice().forEach(function(file) {
-      file.set('folder_perma_id', permaId);
+    this.options.models.slice().forEach(function(model) {
+      model.set(folderAttribute(model), permaId);
     });
 
     if (this.options.onMove) {
@@ -107,11 +136,11 @@ export const MoveToFolderDialogView = Marionette.ItemView.extend({
     this.close();
   },
 
-  // With files from more than one folder, none of the targets is the
+  // With items from more than one folder, none of the targets is the
   // folder they are all in.
   currentFolderPermaId: function() {
-    var permaIds = this.options.models.map(function(file) {
-      return file.get('folder_perma_id');
+    var permaIds = this.options.models.map(function(model) {
+      return model.get(folderAttribute(model));
     });
 
     return permaIds.every(function(permaId) {
@@ -131,3 +160,11 @@ export const MoveToFolderDialogView = Marionette.ItemView.extend({
 MoveToFolderDialogView.open = function(options) {
   app.dialogRegion.show(new MoveToFolderDialogView(options));
 };
+
+function folderAttribute(model) {
+  return isFolder(model) ? 'parent_folder_perma_id' : 'folder_perma_id';
+}
+
+function isFolder(model) {
+  return model instanceof FileFolder;
+}
