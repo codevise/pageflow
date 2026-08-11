@@ -153,17 +153,23 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   setupListSelection: function() {
     this.listSelection = new ListSelection();
 
-    // A file which has been moved, deleted or filtered out has no row
+    // An item which has been moved, deleted or filtered out has no row
     // left to uncheck, so the number in the bar would stop matching the
     // list.
-    this.listenTo(this.searchFilteredCollection, 'remove', function(file) {
-      this.listSelection.remove(file);
+    this.listenTo(this.listItems, 'remove', function(model) {
+      this.listSelection.remove(model);
     });
 
     this.listenTo(this.listSelection, 'add remove reset', this.updateSelectionBar);
     this.listenTo(this.listSelection, 'change:selecting', this.updateSelecting);
 
     this.listenTo(this.combinedFiles, 'add remove', this.updateSelectable);
+
+    if (this.options.fileFolders) {
+      this.listenTo(this.options.fileFolders,
+                    'add remove change:id',
+                    this.updateSelectable);
+    }
   },
 
   onRender: function() {
@@ -287,7 +293,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     ]);
 
     if (this.listSelection) {
-      items.add({name: 'select', label: this.translation('select_files')});
+      items.add({name: 'select', label: this.translation('select_items')});
       items.findWhere({name: 'select'}).selected = () => this.startSelecting();
     }
 
@@ -325,10 +331,16 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     this.updateSelectionBar();
   },
 
-  // An entry without files has nothing to check, so the bar neither
-  // reserves space above the list nor can be opened from the menu.
+  // An entry without files and folders has nothing to check, so the bar
+  // neither reserves space above the list nor can be opened from the
+  // menu. Folders which are still being named have no row to check yet.
   updateSelectable: function() {
-    var selectable = !!this.combinedFiles.length;
+    var folders = this.options.fileFolders;
+
+    var selectable = !!this.combinedFiles.length ||
+                     !!folders && folders.some(function(folder) {
+                       return !folder.isNew();
+                     });
 
     if (!selectable) {
       this.listSelection.stop();
@@ -339,7 +351,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   },
 
   updateSelectionBar: function() {
-    this.ui.selectionBarText.text(this.translation('selected_files',
+    this.ui.selectionBarText.text(this.translation('selected_items',
                                                    {count: this.listSelection.length}));
 
     this.ui.selectionBarAction.prop('disabled', !this.listSelection.length);

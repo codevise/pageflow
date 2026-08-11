@@ -17,6 +17,7 @@ export const FolderItemView = Marionette.ItemView.extend({
 
   ui: {
     name: '.file_folders-name',
+    checkBox: '.file_folders-check_box',
     fileCount: '.file_folders-file_count',
     actions: '.file_folders-actions',
     input: '.file_folders-input'
@@ -24,6 +25,10 @@ export const FolderItemView = Marionette.ItemView.extend({
 
   events: {
     'click .file_folders-button': 'select',
+
+    'change .file_folders-check_box': function() {
+      this.options.listSelection.toggle(this.model);
+    },
 
     'keydown .file_folders-input': 'handleInputKeyDown',
     'blur .file_folders-input': 'commit'
@@ -58,6 +63,14 @@ export const FolderItemView = Marionette.ItemView.extend({
     this.listenTo(this.options.fileFolders,
                   'add remove change:id change:parent_folder_perma_id',
                   this.updateMoveItem);
+
+    if (this.multiSelectable()) {
+      this.listenTo(this.options.listSelection, 'add remove reset', this.updateSelected);
+
+      // The button which navigates into the folder gives way to the check
+      // box, so the row has to be built again.
+      this.listenTo(this.options.listSelection, 'change:selecting', this.render);
+    }
   },
 
   createMenuItems: function() {
@@ -130,6 +143,7 @@ export const FolderItemView = Marionette.ItemView.extend({
   serializeData: function() {
     return {
       naming: this.isEditingName(),
+      selecting: this.isSelecting(),
       nameLabel: I18n.t(this.renaming ?
                         'pageflow.editor.views.folder_item_view.new_name' :
                         'pageflow.editor.views.folder_item_view.name')
@@ -141,6 +155,7 @@ export const FolderItemView = Marionette.ItemView.extend({
 
     this.$el.toggleClass('naming', this.isEditingName());
     this.update();
+    this.updateSelected();
     this.updateFileCount();
     this.updateDestroyItem();
     this.updateMoveItem();
@@ -171,6 +186,25 @@ export const FolderItemView = Marionette.ItemView.extend({
 
   isEditingName: function() {
     return this.model.isNew() || !!this.renaming;
+  },
+
+  isSelecting: function() {
+    return this.multiSelectable() && this.options.listSelection.isSelecting();
+  },
+
+  multiSelectable: function() {
+    return !this.options.selectionHandler && !!this.options.listSelection;
+  },
+
+  updateSelected: function() {
+    if (this.isClosed) {
+      return;
+    }
+
+    var selected = this.isSelecting() && this.options.listSelection.includes(this.model);
+
+    this.ui.checkBox.prop('checked', selected);
+    this.$el.toggleClass('is_selected', selected);
   },
 
   // Navigating into the folder is the only action of the row, so it is

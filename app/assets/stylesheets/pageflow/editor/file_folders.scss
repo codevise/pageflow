@@ -44,6 +44,44 @@
     }
   }
 
+  // Takes the place of the button while items are being checked, so that
+  // clicking the row checks the folder just like it checks a file.
+  // Undoes the weight, spacing and positioning which labels of form
+  // fields have. Staying static keeps the row the containing block of the
+  // stretched hit area below.
+  &-label {
+    display: block;
+    position: static;
+    flex: 1;
+    align-self: center;
+    min-width: 0;
+    margin-bottom: 0;
+    font-weight: normal;
+    cursor: pointer;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .file_folders-title {
+      gap: space(2);
+    }
+  }
+
+  // Stays above the stretched hit area of the label, so that clicking the
+  // box itself still toggles it.
+  &-check_box {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
   &-title {
     display: flex;
     align-items: center;

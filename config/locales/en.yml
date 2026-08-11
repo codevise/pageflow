@@ -1576,11 +1576,11 @@ en:
           search: 'Filter files and folders'
           search_in_folder: 'Filter files in %{folder}'
           select: 'Select %{name}'
-          select_files: 'Select files'
-          selected_files:
-            zero: 'No files selected'
-            one: '1 file selected'
-            other: '%{count} files selected'
+          select_items: 'Select files and folders'
+          selected_items:
+            zero: 'No items selected'
+            one: '1 item selected'
+            other: '%{count} items selected'
           sort_button_label: 'Sort'
           sort:
             alphabetical: 'Alphabetical'

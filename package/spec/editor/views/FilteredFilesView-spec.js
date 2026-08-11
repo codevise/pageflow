@@ -22,12 +22,12 @@ describe('FilteredFilesView', () => {
     'pageflow.editor.views.filtered_files_view.cancel_selection': 'Cancel selection',
     'pageflow.editor.views.filtered_files_view.reset_filter': 'Reset filter',
     'pageflow.editor.views.filtered_files_view.actions': 'File list actions',
-    'pageflow.editor.views.filtered_files_view.select_files': 'Select files',
+    'pageflow.editor.views.filtered_files_view.select_items': 'Select files and folders',
     'pageflow.editor.views.filtered_files_view.end_selection': 'End selection',
-    'pageflow.editor.views.filtered_files_view.selected_files': {
-      zero: 'No files selected',
-      one: '1 file selected',
-      other: '%{count} files selected'
+    'pageflow.editor.views.filtered_files_view.selected_items': {
+      zero: 'No items selected',
+      one: '1 item selected',
+      other: '%{count} items selected'
     },
     'pageflow.editor.templates.file_item.select_file': 'Select %{file}',
     'pageflow.editor.views.filtered_files_view.select': 'Select %{name}',
@@ -594,7 +594,7 @@ describe('FilteredFilesView', () => {
     }
 
     async function startSelecting(user, queries) {
-      await user.click(queries.getByRole('link', {name: 'Select files'}));
+      await user.click(queries.getByRole('link', {name: 'Select files and folders'}));
     }
 
     function checkBoxFor(queries, fileName) {
@@ -616,7 +616,7 @@ describe('FilteredFilesView', () => {
     it('is not offered without files', () => {
       const {view, queries} = setup({filesAttributes: {image_files: []}});
 
-      expect(queries.getByRole('link', {name: 'Select files'}).closest('li'))
+      expect(queries.getByRole('link', {name: 'Select files and folders'}).closest('li'))
         .toHaveClass('is_disabled');
       expect(selectionBar(view)).toHaveClass('is_unavailable');
     });
@@ -627,7 +627,7 @@ describe('FilteredFilesView', () => {
       entry.getFileCollection('image_files').add({id: 1, display_name: 'image.png'},
                                                  {fileType: fileTypes.first()});
 
-      expect(queries.getByRole('link', {name: 'Select files'}).closest('li'))
+      expect(queries.getByRole('link', {name: 'Select files and folders'}).closest('li'))
         .not.toHaveClass('is_disabled');
       expect(selectionBar(view)).not.toHaveClass('is_unavailable');
     });
@@ -650,7 +650,7 @@ describe('FilteredFilesView', () => {
         selectionHandler: {call: jest.fn(), getReferer: () => '/'}
       });
 
-      expect(queries.queryByRole('link', {name: 'Select files'})).toBeNull();
+      expect(queries.queryByRole('link', {name: 'Select files and folders'})).toBeNull();
     });
 
     it('does not show check boxes before selecting has started', () => {
@@ -673,7 +673,7 @@ describe('FilteredFilesView', () => {
       expect(browseControls(view)).toHaveClass('is_hidden');
       expect(browseControls(view).querySelector('.file_type_pills')).not.toBeNull();
       expect(selectionBar(view)).not.toHaveClass('is_hidden');
-      expect(selectionBar(view)).toHaveTextContent('No files selected');
+      expect(selectionBar(view)).toHaveTextContent('No items selected');
     });
 
     it('states how many files are checked', async () => {
@@ -683,11 +683,11 @@ describe('FilteredFilesView', () => {
       await startSelecting(user, queries);
       await user.click(checkBoxFor(queries, 'image.png'));
 
-      expect(selectionBar(view)).toHaveTextContent('1 file selected');
+      expect(selectionBar(view)).toHaveTextContent('1 item selected');
 
       await user.click(checkBoxFor(queries, 'photo.png'));
 
-      expect(selectionBar(view)).toHaveTextContent('2 files selected');
+      expect(selectionBar(view)).toHaveTextContent('2 items selected');
     });
 
     it('keeps selecting until the bar is dismissed', async () => {
@@ -699,7 +699,7 @@ describe('FilteredFilesView', () => {
       await user.click(checkBoxFor(queries, 'image.png'));
 
       expect(list(view)).toHaveClass('is_selecting');
-      expect(selectionBar(view)).toHaveTextContent('No files selected');
+      expect(selectionBar(view)).toHaveTextContent('No items selected');
     });
 
     it('clears the selection when the bar is dismissed', async () => {
@@ -728,7 +728,7 @@ describe('FilteredFilesView', () => {
       const files = entry.getFileCollection('image_files');
       files.remove(files.get(1));
 
-      expect(selectionBar(view)).toHaveTextContent('1 file selected');
+      expect(selectionBar(view)).toHaveTextContent('1 item selected');
     });
 
     it('offers sorting in the same menu', () => {

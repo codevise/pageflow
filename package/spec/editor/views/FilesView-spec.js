@@ -62,6 +62,7 @@ describe('FilesView', () => {
       one: 'Move folder',
       other: 'Move folders'
     },
+    'pageflow.editor.views.move_to_folder_dialog_view.header.items': 'Move items',
     'pageflow.editor.views.move_to_folder_dialog_view.hint.files': {
       one: 'Select the folder to move %{name} to.',
       other: 'Select the folder to move %{count} files to.'
@@ -70,14 +71,16 @@ describe('FilesView', () => {
       one: 'Select the folder to move %{name} to.',
       other: 'Select the folder to move %{count} folders to.'
     },
+    'pageflow.editor.views.move_to_folder_dialog_view.hint.items':
+      'Select the folder to move %{count} items to.',
     'pageflow.editor.views.filtered_files_view.move_selection': 'Move...',
     'pageflow.editor.views.filtered_files_view.actions': 'File list actions',
-    'pageflow.editor.views.filtered_files_view.select_files': 'Select files',
+    'pageflow.editor.views.filtered_files_view.select_items': 'Select files and folders',
     'pageflow.editor.views.filtered_files_view.end_selection': 'End selection',
-    'pageflow.editor.views.filtered_files_view.selected_files': {
-      zero: 'No files selected',
-      one: '1 file selected',
-      other: '%{count} files selected'
+    'pageflow.editor.views.filtered_files_view.selected_items': {
+      zero: 'No items selected',
+      one: '1 item selected',
+      other: '%{count} items selected'
     },
     'pageflow.editor.views.move_to_folder_dialog_view.root': 'No folder',
     'pageflow.editor.views.move_to_folder_dialog_view.current': 'Current folder',
@@ -1193,7 +1196,7 @@ describe('FilesView', () => {
       afterEach(() => app.dialogRegion.reset());
 
       async function startSelecting(user, queries) {
-        await user.click(queries.getByRole('link', {name: 'Select files'}));
+        await user.click(queries.getByRole('link', {name: 'Select files and folders'}));
       }
 
       async function check(user, queries, fileName) {
@@ -1238,7 +1241,7 @@ describe('FilesView', () => {
 
         expect(view.el.querySelector('ul.files')).not.toHaveClass('is_selecting');
         expect(view.el.querySelector('.filtered_files-selection_bar'))
-          .toHaveTextContent('No files selected');
+          .toHaveTextContent('No items selected');
         expect(fileNames(queries)).toEqual([]);
       });
 
@@ -1254,7 +1257,7 @@ describe('FilesView', () => {
 
         expect(view.el.querySelector('ul.files')).toHaveClass('is_selecting');
         expect(view.el.querySelector('.filtered_files-selection_bar'))
-          .toHaveTextContent('1 file selected');
+          .toHaveTextContent('1 item selected');
       });
 
       it('states how many files are moved', async () => {
@@ -1282,6 +1285,162 @@ describe('FilesView', () => {
         await check(user, queries, 'unfiled.png');
 
         expect(view.el.querySelector('.filtered_files-selection_bar_action')).toBeEnabled();
+      });
+    });
+
+    describe('checking folders', () => {
+      let testContext;
+
+      beforeEach(() => {
+        testContext = {};
+      });
+
+      support.useFakeXhr(() => testContext);
+
+      afterEach(() => app.dialogRegion.reset());
+
+      async function startSelecting(user, queries) {
+        await user.click(queries.getByRole('link', {name: 'Select files and folders'}));
+      }
+
+      async function check(user, queries, name) {
+        await user.click(queries.getByRole('checkbox', {name}));
+      }
+
+      async function moveSelection(user, view) {
+        await user.click(view.el.querySelector('.filtered_files-selection_bar_action'));
+
+        return within(app.dialogRegion.currentView.el);
+      }
+
+      function selectionBar(view) {
+        return view.el.querySelector('.filtered_files-selection_bar');
+      }
+
+      it('does not show check boxes before selecting has started', () => {
+        const view = new FilesView({model: entryWithFolders()});
+
+        const {queryByRole} = render(view);
+
+        expect(queryByRole('checkbox', {name: /^Interviews/})).toBeNull();
+      });
+
+      it('checks the folder when its check box is clicked', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await check(user, queries, /^Interviews/);
+
+        expect(queries.getByRole('checkbox', {name: /^Interviews/})).toBeChecked();
+        expect(selectionBar(view)).toHaveTextContent('1 item selected');
+      });
+
+      // Navigating into a folder rebuilds the list and would leave the
+      // selection behind, so the row checks the folder instead.
+      it('checks the folder when its name is clicked', async () => {
+        const view = new FilesView({model: entryWithFolders(), pathParams: {}});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await user.click(queries.getByText('Interviews'));
+
+        expect(queries.getByRole('checkbox', {name: /^Interviews/})).toBeChecked();
+        expect(editor.router.navigate).not.toHaveBeenCalled();
+      });
+
+      it('navigates into the folder again once selecting has ended', async () => {
+        const view = new FilesView({model: entryWithFolders(), pathParams: {}});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await user.click(view.el.querySelector('.filtered_files-selection_bar_dismiss'));
+        await user.click(queries.getByRole('button', {name: /^Interviews/}));
+
+        expect(editor.router.navigate).toHaveBeenCalledWith(
+          '/files/folders/1', {trigger: true}
+        );
+      });
+
+      it('unchecks folders when the selection is cleared', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await check(user, queries, /^Interviews/);
+        await user.click(view.el.querySelector('.filtered_files-selection_bar_dismiss'));
+        await startSelecting(user, queries);
+
+        expect(queries.getByRole('checkbox', {name: /^Interviews/})).not.toBeChecked();
+        expect(selectionBar(view)).toHaveTextContent('No items selected');
+      });
+
+      // An entry which has folders but no files still has something to
+      // check.
+      it('is offered without files', () => {
+        const entry = entryWithFolders();
+        const files = entry.getFileCollection('image_files');
+        files.remove(files.models);
+        const videoFiles = entry.getFileCollection('video_files');
+        videoFiles.remove(videoFiles.models);
+        const view = new FilesView({model: entry});
+
+        const queries = render(view);
+
+        expect(queries.getByRole('link', {name: 'Select files and folders'}).closest('li'))
+          .not.toHaveClass('is_disabled');
+      });
+
+      it('moves checked folders and files at once', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await check(user, queries, /^Landscapes/);
+        await check(user, queries, 'unfiled.png');
+        const dialog = await moveSelection(user, view);
+
+        expect(dialog.getByText('Select the folder to move 2 items to.')).not.toBeNull();
+
+        await user.click(dialog.getByRole('button', {name: /^Interviews/}));
+
+        expect(entry.fileFolders.byPermaId(3).get('parent_folder_perma_id')).toEqual(1);
+        expect(entry.getFileCollection('image_files').get(1).get('folder_perma_id'))
+          .toEqual(1);
+      });
+
+      it('unchecks a folder which has left the list', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await check(user, queries, /^Landscapes/);
+
+        entry.fileFolders.remove(entry.fileFolders.byPermaId(3));
+
+        expect(selectionBar(view)).toHaveTextContent('No items selected');
+      });
+
+      it('is not offered while a file is being requested', () => {
+        const view = new FilesView({
+          model: entryWithFolders(),
+          fileTypeName: 'image_files',
+          allowSelectingAny: true,
+          selectionHandler: {call: jest.fn(), getReferer: () => '/'},
+          pathParams: {}
+        });
+
+        const {queryByRole} = render(view);
+
+        expect(queryByRole('checkbox', {name: /^Interviews/})).toBeNull();
       });
     });
 

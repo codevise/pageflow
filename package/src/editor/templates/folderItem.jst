@@ -6,13 +6,23 @@
            type="text"
            aria-label="<%= data.nameLabel %>" />
   <% } else { %>
-    <button class="file_folders-button" type="button">
-      <span class="file_folders-title">
-        <span class="file_folders-name"></span>
-        <span class="file_folders-chevron" aria-hidden="true"></span>
-      </span>
-      <span class="file_folders-file_count"></span>
-    </button>
+    <% if (data.selecting) { %>
+      <label class="file_folders-label">
+        <span class="file_folders-title">
+          <input class="file_folders-check_box" type="checkbox" />
+          <span class="file_folders-name"></span>
+        </span>
+        <span class="file_folders-file_count"></span>
+      </label>
+    <% } else { %>
+      <button class="file_folders-button" type="button">
+        <span class="file_folders-title">
+          <span class="file_folders-name"></span>
+          <span class="file_folders-chevron" aria-hidden="true"></span>
+        </span>
+        <span class="file_folders-file_count"></span>
+      </button>
+    <% } %>
 
     <div class="file_folders-actions"></div>
   <% } %>

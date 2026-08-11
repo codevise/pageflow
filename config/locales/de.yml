@@ -1584,11 +1584,11 @@ de:
           search: 'Dateien und Ordner filtern'
           search_in_folder: 'Dateien in %{folder} filtern'
           select: '%{name} auswählen'
-          select_files: 'Dateien auswählen'
-          selected_files:
-            zero: 'Keine Dateien ausgewählt'
-            one: '1 Datei ausgewählt'
-            other: '%{count} Dateien ausgewählt'
+          select_items: 'Dateien und Ordner auswählen'
+          selected_items:
+            zero: 'Keine Elemente ausgewählt'
+            one: '1 Element ausgewählt'
+            other: '%{count} Elemente ausgewählt'
           sort_button_label: 'Sortieren'
           sort:
             alphabetical: 'Alphabetisch'
