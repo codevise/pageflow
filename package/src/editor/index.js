@@ -130,7 +130,6 @@ export * from './views/PageLinkConfigurationEditorView';
 export * from './views/BackButtonDecoratorView';
 export * from './views/FileSettingsDialogView';
 export * from './views/OtherEntryItemView';
-export * from './views/SelectButtonView';
 export * from './views/ListItemView';
 export * from './views/WidgetItemView';
 export * from './views/EditorView';

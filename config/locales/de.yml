@@ -1496,8 +1496,6 @@ de:
           until_including: Bis einschließlich
           user_name: Benutzername
           view_revisions: Revisionen ansehen
-        select_button:
-          select: Auswählen
         storyline_outline:
           header: Gliederung
           new_chapter: Neues Kapitel

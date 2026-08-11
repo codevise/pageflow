@@ -1488,8 +1488,6 @@ en:
           until_including: Until including
           user_name: User name
           view_revisions: View versions
-        select_button:
-          select: Select
         storyline_outline:
           header: Outline
           new_chapter: New chapter
