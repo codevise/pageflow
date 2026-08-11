@@ -187,6 +187,21 @@ describe('FileFoldersCollection', () => {
                                 parent_folder_perma_id: null}});
     });
 
+    it('updates folder via editor api when parent changes', () => {
+      const fileFolders = collection([{id: 5, perma_id: 1, name: 'Interviews'},
+                                      {id: 6, perma_id: 2, name: 'Portraits'}]);
+
+      fileFolders.byPermaId(1).set('parent_folder_perma_id', 2);
+
+      expect(testContext.requests[0].method).toEqual('PUT');
+      expect(testContext.requests[0].url).toEqual('/editor/entries/1/file_folders/5');
+      expect(JSON.parse(testContext.requests[0].requestBody))
+        .toEqual({file_folder: {id: 5,
+                                perma_id: 1,
+                                name: 'Interviews',
+                                parent_folder_perma_id: 2}});
+    });
+
     it('does not update folder which has not been created yet', () => {
       const fileFolders = collection([]);
       const folder = fileFolders.addAndReturnModel({name: 'Interviews'});

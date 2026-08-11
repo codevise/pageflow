@@ -69,7 +69,7 @@ module Pageflow
       end
 
       def update_params
-        file_folder_params.permit(:name)
+        file_folder_params.permit(:name, :parent_folder_perma_id)
       end
 
       def file_folder_params

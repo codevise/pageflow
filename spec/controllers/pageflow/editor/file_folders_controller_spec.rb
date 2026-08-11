@@ -181,6 +181,109 @@ module Pageflow
         expect(folder.reload.name).to eq('Interviews')
       end
 
+      it 'moves folder into other folder of same revision' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        folder = create(:file_folder, revision: entry.draft)
+        parent = create(:file_folder, revision: entry.draft)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              params: {
+                entry_id: entry.id,
+                id: folder.id,
+                file_folder: {parent_folder_perma_id: parent.perma_id}
+              },
+              format: 'json')
+
+        expect(response.status).to eq(204)
+        expect(folder.reload.parent).to eq(parent)
+      end
+
+      it 'moves folder to top level' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        parent = create(:file_folder, revision: entry.draft)
+        folder = create(:file_folder, revision: entry.draft,
+                                      parent_folder_perma_id: parent.perma_id)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              params: {
+                entry_id: entry.id,
+                id: folder.id,
+                file_folder: {parent_folder_perma_id: ''}
+              },
+              format: 'json')
+
+        expect(response.status).to eq(204)
+        expect(folder.reload.parent).to be_nil
+      end
+
+      it 'does not allow to move folder into folder of other revision' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        folder = create(:file_folder, revision: entry.draft)
+        other_folder = create(:file_folder)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              params: {
+                entry_id: entry.id,
+                id: folder.id,
+                file_folder: {parent_folder_perma_id: other_folder.perma_id}
+              },
+              format: 'json')
+
+        expect(response.status).to eq(422)
+        expect(folder.reload.parent).to be_nil
+      end
+
+      it 'does not allow to move folder into itself' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        folder = create(:file_folder, revision: entry.draft)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              params: {
+                entry_id: entry.id,
+                id: folder.id,
+                file_folder: {parent_folder_perma_id: folder.perma_id}
+              },
+              format: 'json')
+
+        expect(response.status).to eq(422)
+        expect(folder.reload.parent).to be_nil
+      end
+
+      it 'does not allow to move folder into one of its own subfolders' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        folder = create(:file_folder, revision: entry.draft)
+        child = create(:file_folder, revision: entry.draft,
+                                     parent_folder_perma_id: folder.perma_id)
+        grand_child = create(:file_folder, revision: entry.draft,
+                                           parent_folder_perma_id: child.perma_id)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              params: {
+                entry_id: entry.id,
+                id: folder.id,
+                file_folder: {parent_folder_perma_id: grand_child.perma_id}
+              },
+              format: 'json')
+
+        expect(response.status).to eq(422)
+        expect(folder.reload.parent).to be_nil
+      end
+
       it 'does not allow to update folder of other entry' do
         user = create(:user)
         entry = create(:entry, with_editor: user)

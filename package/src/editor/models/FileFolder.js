@@ -17,7 +17,7 @@ export const FileFolder = Backbone.Model.extend({
   mixins: [failureTracking, delayedDestroying],
 
   initialize: function() {
-    this.listenTo(this, 'change:name', function() {
+    this.listenTo(this, 'change:name change:parent_folder_perma_id', function() {
       if (!this.isNew()) {
         this.save();
       }
