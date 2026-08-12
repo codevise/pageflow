@@ -60,6 +60,23 @@ describe('lottieAnimation/editor', () => {
 
       expect(input.values()).toEqual(['loop', 'playOnce']);
     });
+
+    it('displays image modifiers input if animation is present', () => {
+      const configurationEditor = renderConfigurationEditor({
+        lottieFiles: [{perma_id: 100}],
+        configuration: {id: 100}
+      });
+
+      expect(configurationEditor.visibleInputPropertyNames())
+        .toContain('imageModifiers');
+    });
+
+    it('does not display image modifiers input by default', () => {
+      const configurationEditor = renderConfigurationEditor({configuration: {}});
+
+      expect(configurationEditor.visibleInputPropertyNames())
+        .not.toContain('imageModifiers');
+    });
   });
 
   it('registers lottie file type for lottie_files collection', () => {

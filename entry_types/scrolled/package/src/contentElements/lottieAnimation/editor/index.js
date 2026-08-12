@@ -1,4 +1,4 @@
-import {editor, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
+import {editor, ImageModifierListInputView, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import {FileInputView} from 'pageflow/editor';
 import {SelectInputView, SeparatorView} from 'pageflow/ui';
 
@@ -43,6 +43,11 @@ editor.contentElementTypes.register('lottieAnimation', {
         fileSelectionHandler: 'contentElementConfiguration',
         positioning: false,
         dropDownMenuItems: [InlineFileRightsMenuItem]
+      });
+      this.input('imageModifiers', ImageModifierListInputView, {
+        entry,
+        visibleBinding: 'id',
+        visible: () => this.model.getReference('id', 'lottie_files')
       });
       this.input('playbackMode', SelectInputView, {values: playbackModes});
 
