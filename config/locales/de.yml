@@ -1404,6 +1404,7 @@ de:
           download: Herunterladen
           expand_details: Details einblenden
           collapse_details: Details ausblenden
+          move: Verschieben...
           retry: Erneut versuchen
           select: Auswählen
           settings: Einstellungen
@@ -1414,6 +1415,7 @@ de:
           close: Schließen
         files:
           back: Zurück
+          in_folder: 'Im Ordner:'
         files_blank_slate:
           no_files: Es wurden noch keine Dateien hochgeladen.
         files_explorer:
@@ -1437,6 +1439,8 @@ de:
         list_search_field:
           placeholder: 'Dateien filtern'
           hint: 'Mit %{hotkey} suchen'
+          hint_in_all_folders: 'Mit %{hotkey} in allen Ordnern suchen'
+          hint_in_folder: 'Mit %{hotkey} in diesem Ordner suchen'
           reset: 'Filter zurücksetzen'
         loading:
           loading: Daten werden geladen.
@@ -1493,8 +1497,6 @@ de:
           until_including: Bis einschließlich
           user_name: Benutzername
           view_revisions: Revisionen ansehen
-        select_button:
-          select: Auswählen
         storyline_outline:
           header: Gliederung
           new_chapter: Neues Kapitel
@@ -1556,28 +1558,55 @@ de:
           blank: "-"
         file_preview_progress_bar_view:
           position: Wiedergabeposition
+        files_blank_slate_view:
+          empty_folder: 'Dieser Ordner enthält noch keine Dateien.'
+          no_matches: 'Keine Datei entspricht dem aktuellen Filter.'
         files_view:
           add: Hinzufügen
           authenticating: Authentifizieren
-          import: Importieren
+          folder: Neuer Ordner
+          import: Datei importieren...
           importer:
             heading: Dateien importieren von
-          reuse: Wiederverwenden
+          reuse: Datei wiederverwenden...
           tabs:
             files: Dateien
-          upload: Hochladen
+          upload: Datei hochladen...
         file_type_pills_view:
           group_label: 'Nach Dateityp filtern'
           hint: 'Dateityp anklicken, um nur dessen Dateien anzuzeigen. Mit Strg/Cmd Dateitypen kombinieren.'
         filtered_files_view:
+          actions: 'Aktionen für die Dateiliste'
           any_file_type: 'Datei'
           cancel_selection: 'Auswahl abbrechen'
+          end_selection: 'Auswahl beenden'
+          move_selection: 'Verschieben...'
           reset_filter: 'Filter zurücksetzen'
+          search: 'Dateien und Ordner filtern'
+          search_in_folder: 'Dateien in %{folder} filtern'
           select: '%{name} auswählen'
+          select_items: 'Dateien und Ordner auswählen'
+          selected_items:
+            zero: 'Keine Elemente ausgewählt'
+            one: '1 Element ausgewählt'
+            other: '%{count} Elemente ausgewählt'
           sort_button_label: 'Sortieren'
           sort:
             alphabetical: 'Alphabetisch'
             most_recent: 'Zuletzt hochgeladen'
+        folder_breadcrumb_view:
+          label: 'Ordnerpfad'
+          reset: 'Ordner verlassen'
+        folder_item_view:
+          actions: 'Ordner-Aktionen'
+          destroy: 'Löschen'
+          file_count:
+            one: '1 Datei'
+            other: '%{count} Dateien'
+          move: 'Verschieben...'
+          name: 'Name des neuen Ordners'
+          new_name: 'Neuer Name des Ordners'
+          rename: 'Umbenennen'
         inputs:
           file_input:
             auto_default_text_track: "(Automatisch)"
@@ -1600,6 +1629,26 @@ de:
               invalid_provider: "Ungültiger Anbieter"
               not_found: "URL nicht gefunden"
               error: "Fehler beim Auflösen der URL"
+        move_to_folder_dialog_view:
+          cancel: 'Abbrechen'
+          current: 'Aktueller Ordner'
+          header:
+            files:
+              one: 'Datei verschieben'
+              other: 'Dateien verschieben'
+            folders:
+              one: 'Ordner verschieben'
+              other: 'Ordner verschieben'
+            items: 'Elemente verschieben'
+          hint:
+            files:
+              one: 'Wähle den Ordner aus, in den %{name} verschoben werden soll.'
+              other: 'Wähle den Ordner aus, in den %{count} Dateien verschoben werden sollen.'
+            folders:
+              one: 'Wähle den Ordner aus, in den %{name} verschoben werden soll.'
+              other: 'Wähle den Ordner aus, in den %{count} Ordner verschoben werden sollen.'
+            items: 'Wähle den Ordner aus, in den %{count} Elemente verschoben werden sollen.'
+          root: 'Kein Ordner'
         page_item_view:
           unnamed: "(Unbenannt)"
         page_link_item_view:

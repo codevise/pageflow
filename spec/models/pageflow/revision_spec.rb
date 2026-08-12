@@ -155,6 +155,40 @@ module Pageflow
         expect(copied_revision).to have(1).file_usages
       end
 
+      it 'copies file folders to new revision' do
+        revision = create(:revision)
+        folder = create(:file_folder, revision:, name: 'Interviews')
+
+        copied_revision = revision.copy
+
+        copied_folders = FileFolder.all_for_revision(copied_revision)
+        expect(copied_folders.map(&:name)).to eq(['Interviews'])
+        expect(copied_folders.first).not_to eq(folder)
+      end
+
+      it 'keeps nesting of copied file folders intact' do
+        revision = create(:revision)
+        parent = create(:file_folder, revision:, name: 'Interviews')
+        create(:file_folder, revision:, name: 'Raw', parent_folder_perma_id: parent.perma_id)
+
+        copied_revision = revision.copy
+
+        copied_child = FileFolder.all_for_revision(copied_revision).find_by(name: 'Raw')
+        expect(copied_child.parent.name).to eq('Interviews')
+        expect(copied_child.parent.revision).to eq(copied_revision)
+      end
+
+      it 'keeps folder of copied file usages intact' do
+        revision = create(:revision)
+        folder = create(:file_folder, revision:, name: 'Interviews')
+        revision.file_usages.create!(file: create(:image_file), folder_perma_id: folder.perma_id)
+
+        copied_revision = revision.copy
+
+        copied_folder = FileFolder.all_for_revision(copied_revision).first
+        expect(copied_revision.file_usages.first.folder_perma_id).to eq(copied_folder.perma_id)
+      end
+
       it 'passes copied revision to block before saving' do
         revision = create(:revision)
 

@@ -10,6 +10,7 @@
   "widgets": <%= widgets_json_seeds(@entry) %>,
 
   "files": <%= editor_files_json_seed(@entry) %>,
+  "file_folders": <%= render_json_seed(@entry.file_folders) %>,
 
   "account": <%= render_json_seed(@entry.account) %>,
   "site": <%= render_json_seed(@entry.site) %>,

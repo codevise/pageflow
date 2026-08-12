@@ -2,15 +2,16 @@ module Pageflow
   class FileReuse # rubocop:todo Style/Documentation
     attr_accessor :source_entry, :destination_entry, :file_type, :file
 
-    def initialize(destination_entry, source_entry, file_type, file_id)
+    def initialize(destination_entry, source_entry, file_type, file_id, folder_perma_id: nil)
       @source_entry = source_entry
       @destination_entry = destination_entry
       @file_type = file_type
       @file = source_entry.find_file(file_type.model, file_id)
+      @folder_perma_id = folder_perma_id
     end
 
     def save! # rubocop:todo Metrics/AbcSize
-      destination_entry.use_file(file)
+      destination_entry.use_file(file, folder_perma_id: @folder_perma_id)
 
       file_type.nested_file_types.each do |nested_file_type|
         source_entry.find_files(nested_file_type.model).each do |nested_file|

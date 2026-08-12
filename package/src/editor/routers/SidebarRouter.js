@@ -4,10 +4,9 @@ export const SidebarRouter = Marionette.AppRouter.extend({
   appRoutes: {
     'widgets/:id': 'widget',
 
-    'files/:collectionName?handler=:handler&payload=:payload&filter=:filter': 'files',
-    'files(/:collectionName)?handler=:handler&payload=:payload': 'files',
-    'files/:collectionName': 'files',
-    'files': 'files',
+    'files/:collectionName(/folders/:folderPermaId)?handler=:handler&payload=:payload&filter=:filter': 'files',
+    'files(/:collectionName)(/folders/:folderPermaId)?handler=:handler&payload=:payload': 'files',
+    'files(/:collectionName)(/folders/:folderPermaId)': 'files',
 
     'confirmable_files?type=:type&id=:id': 'confirmableFiles',
     'confirmable_files': 'confirmableFiles',

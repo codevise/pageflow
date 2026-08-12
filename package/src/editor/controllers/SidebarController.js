@@ -28,7 +28,7 @@ export const SidebarController = Marionette.Controller.extend({
     }));
   },
 
-  files: function(collectionName, handler, payload, filterName) {
+  files: function(collectionName, folderPermaId, handler, payload, filterName) {
     const [fileTypeName, suffix] = (collectionName || '').split(':');
 
     this.region.show(new FilesView({
@@ -36,7 +36,15 @@ export const SidebarController = Marionette.Controller.extend({
       selectionHandler: handler && editor.createFileSelectionHandler(handler, payload),
       fileTypeName: fileTypeName || undefined,
       allowSelectingAny: !fileTypeName || suffix === 'default',
-      filterName: filterName
+
+      // Perma ids are numbers everywhere else, so the route param is
+      // converted right where it enters the editor.
+      folderPermaId: folderPermaId && Number(folderPermaId),
+      filterName: filterName,
+
+      // Navigating between folders needs to preserve the rest of the
+      // route.
+      pathParams: {collectionName, handler, payload, filterName}
     }));
 
     editor.setDefaultHelpEntry('pageflow.help_entries.files');

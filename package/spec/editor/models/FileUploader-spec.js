@@ -1,5 +1,7 @@
 import {EditorApi, FileUploader, FilesCollection, ImageFile, InvalidNestedTypeError, NestedTypeError, TextTrackFile} from 'pageflow/editor';
 
+import Backbone from 'backbone';
+
 import * as support from '$support';
 import sinon from 'sinon';
 
@@ -141,6 +143,39 @@ describe('FileUploader', () => {
         expect(function() {
           fileUploader.add(nonNestedUpload, {editor: editor});
         }).toThrowError(InvalidNestedTypeError);
+      });
+
+      it('places file in upload folder', () => {
+        const editor = new EditorApi();
+        editor.setUploadFolder(new Backbone.Model({perma_id: 5}));
+        const fileUploader = new FileUploader({
+          entry: testContext.entry,
+          fileTypes: testContext.fileTypes
+        });
+        let result;
+
+        fileUploader.add({name: 'image.png', type: 'image/png'}, {editor}).then(function(file) {
+          result = file;
+        });
+        fileUploader.submit();
+
+        expect(result.get('folder_perma_id')).toBe(5);
+      });
+
+      it('leaves the folder blank without upload folder', () => {
+        const editor = new EditorApi();
+        const fileUploader = new FileUploader({
+          entry: testContext.entry,
+          fileTypes: testContext.fileTypes
+        });
+        let result;
+
+        fileUploader.add({name: 'image.png', type: 'image/png'}, {editor}).then(function(file) {
+          result = file;
+        });
+        fileUploader.submit();
+
+        expect(result.get('folder_perma_id')).toBeNull();
       });
 
       it('seeds rights_display from defaultFileRightsDisplay entry metadata', () => {

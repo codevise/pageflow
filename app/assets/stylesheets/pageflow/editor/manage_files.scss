@@ -2,4 +2,13 @@
   .tabs_view {
     margin-top: 10px;
   }
+
+  > .drop_down_button {
+    float: right;
+  }
+
+  .drop_down_button > button.manage_files-add {
+    @include icon-button("primary");
+    @include up-icon;
+  }
 }

@@ -1,0 +1,39 @@
+<span class="file_folders-pictogram" aria-hidden="true"></span>
+
+<div class="file_folders-info">
+  <% if (data.naming) { %>
+    <input class="file_folders-input"
+           type="text"
+           aria-label="<%= data.nameLabel %>" />
+  <% } else { %>
+    <% if (data.selecting) { %>
+      <label class="file_folders-label">
+        <span class="files-parent_folder">
+          <span class="files-parent_folder_label visually_hidden"></span>
+          <span class="files-parent_folder_name"></span>
+        </span>
+
+        <span class="file_folders-title">
+          <input class="file_folders-check_box" type="checkbox" />
+          <span class="file_folders-name"></span>
+        </span>
+        <span class="file_folders-file_count"></span>
+      </label>
+    <% } else { %>
+      <button class="file_folders-button" type="button">
+        <span class="files-parent_folder">
+          <span class="files-parent_folder_label visually_hidden"></span>
+          <span class="files-parent_folder_name"></span>
+        </span>
+
+        <span class="file_folders-title">
+          <span class="file_folders-name"></span>
+          <span class="file_folders-chevron" aria-hidden="true"></span>
+        </span>
+        <span class="file_folders-file_count"></span>
+      </button>
+    <% } %>
+
+    <div class="file_folders-actions"></div>
+  <% } %>
+</div>

@@ -12,7 +12,8 @@ import {FilesExplorerView} from './FilesExplorerView';
 import {FilteredFilesView} from './FilteredFilesView';
 import {ChooseImporterView} from './ChooseImporterView';
 import {FilesImporterView} from './FilesImporterView';
-import {SelectButtonView} from './SelectButtonView';
+import {DropDownButtonView} from './DropDownButtonView';
+import {filesPath} from '../utils/filesPath';
 
 import {state} from '$state';
 
@@ -37,10 +38,12 @@ export const FilesView = Marionette.ItemView.extend({
       },
       {
         label: I18n.t('pageflow.editor.views.files_view.reuse'),
-        handler: function() {
+        handler: () => {
           FilesExplorerView.open({
-            callback: function(otherEntry, file) {
-              state.entry.reuseFile(otherEntry, file);
+            callback: (otherEntry, file) => {
+              state.entry.reuseFile(otherEntry, file, {
+                folderPermaId: this.currentFolderPermaId()
+              });
             }
           });
         }
@@ -49,11 +52,12 @@ export const FilesView = Marionette.ItemView.extend({
     if(editor.fileImporters.keys().length > 0){
       menuOptions.push({
         label: I18n.t('pageflow.editor.views.files_view.import'),
-        handler: function () {
+        handler: () => {
           ChooseImporterView.open({
-            callback: function (importer) {
+            callback: (importer) => {
               FilesImporterView.open({
-                importer: importer
+                importer: importer,
+                folderPermaId: this.currentFolderPermaId()
               });
             }
           });
@@ -61,12 +65,18 @@ export const FilesView = Marionette.ItemView.extend({
       });
     }
 
-    this.addFileModel = new Backbone.Model({
-      label: I18n.t('pageflow.editor.views.files_view.add'),
-      options: menuOptions
+    menuOptions.push({
+      label: I18n.t('pageflow.editor.views.files_view.folder'),
+      handler: this.addFolder.bind(this),
+      separated: true
     });
 
-    this.$el.append(this.subview(new SelectButtonView({model: this.addFileModel })).el);
+    this.$el.append(this.subview(new DropDownButtonView({
+      label: I18n.t('pageflow.editor.views.files_view.add'),
+      items: this.addMenuItems(menuOptions),
+      alignMenu: 'right',
+      buttonClassName: 'manage_files-add'
+    })).el);
 
     var fileTypes = this.fileTypes();
 
@@ -80,7 +90,7 @@ export const FilesView = Marionette.ItemView.extend({
       if (this.options.selectionHandler) {
         this.listenTo(this.fileTypeSelection, 'change:collectionNames', function() {
           if (this.displaysUnselectableFileTypes()) {
-            editor.navigate('/files', {trigger: true});
+            this.leaveSelectionMode();
           }
         });
       }
@@ -93,16 +103,32 @@ export const FilesView = Marionette.ItemView.extend({
       i18n: 'pageflow.editor.views.files_view.tabs'
     });
 
+    editor.setUploadFolder(this.currentFolder());
+
     tabsView.tab('files', () => new FilteredFilesView({
       entry: this.model,
       fileTypes: fileTypes,
       fileTypeSelection: this.fileTypeSelection,
+      fileFolders: this.model.fileFolders,
+      folder: this.currentFolder(),
+      onSelectFolder: this.selectFolder.bind(this),
+      onDismissSelection: this.leaveSelectionMode.bind(this),
       selectionHandler: this.options.selectionHandler,
       selectionFileType: this.selectionFileType(),
       filterName: this.options.filterName
     }));
 
     this.$el.append(this.subview(tabsView).el);
+  },
+
+  addMenuItems: function(menuOptions) {
+    return new Backbone.Collection(menuOptions.map(function(option) {
+      var item = new Backbone.Model({label: option.label, separated: option.separated});
+
+      item.selected = option.handler;
+
+      return item;
+    }));
   },
 
   // Only a selection which is restricted to a single file type can be
@@ -113,6 +139,52 @@ export const FilesView = Marionette.ItemView.extend({
     }
 
     return editor.fileTypes.findByCollectionName(this.options.fileTypeName);
+  },
+
+  // Folders which have been deleted in another editor session would
+  // otherwise render an empty list without a way back.
+  currentFolder: function() {
+    return this.model.fileFolders.byPermaId(this.options.folderPermaId);
+  },
+
+  // Dropping handler and payload ends the selection request. The
+  // current folder is kept, since ending it is not meant to undo the
+  // navigation that led there.
+  leaveSelectionMode: function() {
+    var folder = this.currentFolder();
+
+    editor.navigate(filesPath({folderPermaId: folder && folder.get('perma_id')}),
+                    {trigger: true});
+  },
+
+  currentFolderPermaId: function() {
+    var folder = this.currentFolder();
+
+    return folder && folder.get('perma_id');
+  },
+
+  onClose: function() {
+    Marionette.ItemView.prototype.onClose.call(this);
+
+    editor.setUploadFolder(undefined);
+  },
+
+  // The folder is only persisted once the user has entered a name in the
+  // row which appears for folders that have not been created yet.
+  addFolder: function() {
+    var folder = this.currentFolder();
+
+    this.model.fileFolders.add({
+      name: '',
+      parent_folder_perma_id: folder ? folder.get('perma_id') : null
+    });
+  },
+
+  selectFolder: function(folder) {
+    editor.navigate(filesPath({
+      ...this.options.pathParams,
+      folderPermaId: folder && folder.get('perma_id')
+    }), {trigger: true});
   },
 
   selectedCollectionNames: function(fileTypes) {
@@ -165,7 +237,15 @@ export const FilesView = Marionette.ItemView.extend({
     });
   },
 
+  // Entering a folder is a navigation step of its own, which the back
+  // button undoes before leaving the files list.
   goBack: function() {
+    var folder = this.currentFolder();
+
+    if (folder) {
+      return this.selectFolder(this.model.fileFolders.parentOf(folder));
+    }
+
     if (this.options.selectionHandler) {
       editor.navigate(this.options.selectionHandler.getReferer(), {trigger: true});
     }

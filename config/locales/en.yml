@@ -1396,6 +1396,7 @@ en:
           download: Download
           expand_details: Show details
           collapse_details: Hide details
+          move: Move...
           retry: Retry
           select: Select
           settings: Settings
@@ -1406,6 +1407,7 @@ en:
           close: Close
         files:
           back: Back
+          in_folder: 'In folder:'
         files_blank_slate:
           no_files: There are no files yet. You can upload one to get started.
         files_explorer:
@@ -1429,6 +1431,8 @@ en:
         list_search_field:
           placeholder: 'Filter files'
           hint: 'Type %{hotkey} to search'
+          hint_in_all_folders: 'Type %{hotkey} to search all folders'
+          hint_in_folder: 'Type %{hotkey} to search this folder'
           reset: 'Clear filter'
         loading:
           loading: Loading...
@@ -1485,8 +1489,6 @@ en:
           until_including: Until including
           user_name: User name
           view_revisions: View versions
-        select_button:
-          select: Select
         storyline_outline:
           header: Outline
           new_chapter: New chapter
@@ -1548,28 +1550,55 @@ en:
           blank: "-"
         file_preview_progress_bar_view:
           position: Playback position
+        files_blank_slate_view:
+          empty_folder: 'This folder does not contain any files, yet.'
+          no_matches: 'No file matches the current filter.'
         files_view:
           add: Add
           authenticating: Authenticating
-          import: Import
+          folder: New folder
+          import: Import file...
           importer:
             heading: Import files from
-          reuse: Reuse
+          reuse: Reuse file...
           tabs:
             files: Files
-          upload: Upload
+          upload: Upload file...
         file_type_pills_view:
           group_label: 'Filter by file type'
           hint: 'Click a file type to show only its files. Hold Ctrl/Cmd to combine file types.'
         filtered_files_view:
+          actions: 'File list actions'
           any_file_type: 'a file'
           cancel_selection: 'Cancel selection'
+          end_selection: 'End selection'
+          move_selection: 'Move...'
           reset_filter: 'Reset filter'
+          search: 'Filter files and folders'
+          search_in_folder: 'Filter files in %{folder}'
           select: 'Select %{name}'
+          select_items: 'Select files and folders'
+          selected_items:
+            zero: 'No items selected'
+            one: '1 item selected'
+            other: '%{count} items selected'
           sort_button_label: 'Sort'
           sort:
             alphabetical: 'Alphabetical'
             most_recent: 'Most recent'
+        folder_breadcrumb_view:
+          label: 'Folder path'
+          reset: 'Leave folder'
+        folder_item_view:
+          actions: 'Folder actions'
+          destroy: 'Delete'
+          file_count:
+            one: '1 file'
+            other: '%{count} files'
+          move: 'Move...'
+          name: 'Name of new folder'
+          new_name: 'New name of folder'
+          rename: 'Rename'
         inputs:
           file_input:
             auto_default_text_track: "(Auto)"
@@ -1592,6 +1621,26 @@ en:
               invalid_provider: "Invalid provider"
               not_found: "URL not found"
               error: "Error resolving URL"
+        move_to_folder_dialog_view:
+          cancel: 'Cancel'
+          current: 'Current folder'
+          header:
+            files:
+              one: 'Move file'
+              other: 'Move files'
+            folders:
+              one: 'Move folder'
+              other: 'Move folders'
+            items: 'Move items'
+          hint:
+            files:
+              one: 'Select the folder to move %{name} to.'
+              other: 'Select the folder to move %{count} files to.'
+            folders:
+              one: 'Select the folder to move %{name} to.'
+              other: 'Select the folder to move %{count} folders to.'
+            items: 'Select the folder to move %{count} items to.'
+          root: 'No folder'
         page_item_view:
           unnamed: "(New page)"
         page_link_item_view:

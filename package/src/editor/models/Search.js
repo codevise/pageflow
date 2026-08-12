@@ -48,9 +48,12 @@ export const Search = Backbone.Model.extend({
   },
 
   matches: function(model) {
+    return this.matchesValue(model.get(this.attribute));
+  },
+
+  matchesValue: function(value) {
     var term = (this.get('term') || '').toLowerCase();
-    var value = (model.get(this.attribute) || '').toLowerCase();
-    return value.indexOf(term) >= 0;
+    return (value || '').toLowerCase().indexOf(term) >= 0;
   },
 
   applyTo: function(collection) {

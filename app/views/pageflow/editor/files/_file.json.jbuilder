@@ -5,7 +5,8 @@ json.partial!(partial: 'pageflow/files/file',
 json.call(file,
           :state,
           :rights,
-          :usage_id)
+          :usage_id,
+          :folder_perma_id)
 
 json.direct_upload_config(file.direct_upload_config) if file.can_upload?
 

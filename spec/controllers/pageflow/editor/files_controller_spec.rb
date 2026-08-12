@@ -357,6 +357,44 @@ module Pageflow
         expect(entry.image_files).to have(1).item
       end
 
+      it 'allows to put created file into folder' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        folder = create(:file_folder, revision: entry.draft)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+
+        post(:create,
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {display_name: 'image.jpg', folder_perma_id: folder.perma_id}
+             },
+             format: 'json')
+
+        expect(response.body).to include_json(folder_perma_id: folder.perma_id)
+      end
+
+      it 'does not allow to put created file into folder of other revision' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        other_folder = create(:file_folder)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+
+        post(:create,
+             params: {
+               entry_id: entry,
+               collection_name: 'image_files',
+               image_file: {display_name: 'image.jpg', folder_perma_id: other_folder.perma_id}
+             },
+             format: 'json')
+
+        expect(response.status).to eq(422)
+      end
+
       it 'includes usage_id in response' do
         user = create(:user)
         entry = create(:entry, with_editor: user)
@@ -549,6 +587,32 @@ module Pageflow
         expect(entry.draft.image_files).to include(file)
       end
 
+      it 'puts reused file into requested folder' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        other_entry = create(:entry, with_previewer: user)
+        file = create(:image_file, used_in: other_entry.draft)
+        folder = create(:file_folder, revision: entry.draft)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+
+        post(:reuse,
+             params: {
+               entry_id: entry.id,
+               collection_name: 'image_files',
+               file_reuse: {
+                 other_entry_id: other_entry.id,
+                 file_id: file.id,
+                 folder_perma_id: folder.perma_id
+               }
+             },
+             format: 'json')
+
+        expect(entry.draft.find_file(file.class, file.id).folder_perma_id)
+          .to eq(folder.perma_id)
+      end
+
       it 'cannot add file of unaccessible entry' do
         user = create(:user)
         entry = create(:entry, with_manager: user)
@@ -736,6 +800,70 @@ module Pageflow
 
         expect(response.status).to eq(204)
         expect(used_file.display_name).to eq('new_name.jpg')
+      end
+
+      it 'allows moving file into folder' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        file = create(:image_file, used_in: entry.draft)
+        folder = create(:file_folder, revision: entry.draft)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              params: {
+                entry_id: entry.id,
+                collection_name: 'image_files',
+                id: file,
+                image_file: {folder_perma_id: folder.perma_id}
+              },
+              format: 'json')
+
+        expect(response.status).to eq(204)
+        expect(entry.draft.find_file(file.class, file.id).folder_perma_id)
+          .to eq(folder.perma_id)
+      end
+
+      it 'allows moving file out of folder' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        folder = create(:file_folder, revision: entry.draft)
+        file = create(:image_file)
+        create(:file_usage, revision: entry.draft, file:, folder_perma_id: folder.perma_id)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              params: {
+                entry_id: entry.id,
+                collection_name: 'image_files',
+                id: file,
+                image_file: {folder_perma_id: ''}
+              },
+              format: 'json')
+
+        expect(response.status).to eq(204)
+        expect(entry.draft.find_file(file.class, file.id).folder_perma_id).to be_nil
+      end
+
+      it 'does not allow moving file into folder of other revision' do
+        user = create(:user)
+        entry = create(:entry, with_editor: user)
+        file = create(:image_file, used_in: entry.draft)
+        other_folder = create(:file_folder)
+
+        sign_in(user, scope: :user)
+        acquire_edit_lock(user, entry)
+        patch(:update,
+              params: {
+                entry_id: entry.id,
+                collection_name: 'image_files',
+                id: file,
+                image_file: {folder_perma_id: other_folder.perma_id}
+              },
+              format: 'json')
+
+        expect(response.status).to eq(422)
       end
 
       it 'does not allow updating custom attribute defined by file type' do

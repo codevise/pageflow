@@ -13,5 +13,16 @@
     <% } %>
   </div>
 
-  <span class="file_name"></span>
+  <span class="files-parent_folder">
+    <span class="files-parent_folder_label visually_hidden"></span>
+    <span class="files-parent_folder_name"></span>
+  </span>
+
+  <label class="file_item-name_row">
+    <% if (data.multiSelectable) { %>
+      <input class="file_item-check_box" type="checkbox" disabled />
+    <% } %>
+
+    <span class="file_name"></span>
+  </label>
 </div>

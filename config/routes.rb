@@ -63,6 +63,8 @@ Pageflow::Engine.routes.draw do
           put :publish, on: :member
         end
 
+        resources :file_folders, only: [:index, :create, :update, :destroy]
+
         get '/file_import/:file_import_name/search' => 'file_import#search'
         post '/file_import/:file_import_name/files_meta_data' => 'file_import#files_meta_data'
         post '/file_import/:file_import_name/start_import_job' => 'file_import#start_import_job'

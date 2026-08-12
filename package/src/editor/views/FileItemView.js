@@ -8,7 +8,10 @@ import {DropDownButtonView} from './DropDownButtonView';
 import {FileMetaDataOverlayView} from './FileMetaDataOverlayView';
 import {FileSettingsDialogView} from './FileSettingsDialogView';
 import {FileThumbnailView} from './FileThumbnailView';
+import {MoveToFolderDialogView} from './MoveToFolderDialogView';
+import {listHighlighting} from './mixins/listHighlighting';
 import {loadable} from './mixins/loadable';
+import {parentFolderLabel} from './mixins/parentFolderLabel';
 
 import template from '../templates/fileItem.jst';
 
@@ -19,10 +22,11 @@ export const FileItemView = Marionette.ItemView.extend({
   tagName: 'li',
   template,
 
-  mixins: [loadable],
+  mixins: [loadable, listHighlighting, parentFolderLabel],
 
   ui: {
     fileName: '.file_name',
+    checkBox: '.file_item-check_box',
 
     actions: '.actions',
     selectButton: '.select',
@@ -36,6 +40,10 @@ export const FileItemView = Marionette.ItemView.extend({
 
   events: {
     'click .select': 'select',
+
+    'change .file_item-check_box': function() {
+      this.options.listSelection.toggle(this.model);
+    },
 
     'click .settings': function() {
       FileSettingsDialogView.open({
@@ -57,19 +65,23 @@ export const FileItemView = Marionette.ItemView.extend({
   initialize: function() {
     this.menuItems = this.createMenuItems();
 
-    if (this.options.listHighlight) {
-      this.listenTo(this.options.listHighlight, 'change:currentCid change:active', () => {
-        if (this.updateHighlight()) {
-          this.el.scrollIntoView({block: 'nearest', behavior: 'smooth'});
-        }
-      });
+    if (this.options.fileFolders) {
+      this.listenTo(this.options.fileFolders, 'add remove change:id', this.updateMoveItem);
+    }
 
-      this.listenTo(this.options.listHighlight, 'selected:' + this.model.cid, this.select);
+    if (this.multiSelectable()) {
+      this.listenTo(this.options.listSelection,
+                    'add remove reset change:selecting',
+                    this.updateSelected);
     }
   },
 
   createMenuItems: function() {
     var items = new Backbone.Collection([
+      {
+        name: 'move',
+        label: I18n.t('pageflow.editor.templates.file_item.move')
+      },
       {
         name: 'cancel',
         label: I18n.t('pageflow.editor.templates.file_item.cancel_upload')
@@ -81,6 +93,7 @@ export const FileItemView = Marionette.ItemView.extend({
       }
     ]);
 
+    items.findWhere({name: 'move'}).selected = () => this.move();
     items.findWhere({name: 'cancel'}).selected = () => this.cancel();
     items.findWhere({name: 'destroy'}).selected = () => this.destroy();
 
@@ -92,17 +105,32 @@ export const FileItemView = Marionette.ItemView.extend({
   },
 
   modelEvents: {
-    'change': 'update'
+    'change': 'update',
+    'change:folder_perma_id': 'updateParentFolder'
+  },
+
+  parentFolderPermaId: function() {
+    return this.model.get('folder_perma_id');
   },
 
   serializeData: function() {
-    return {selectable: !!this.options.selectionHandler};
+    return {
+      selectable: !!this.options.selectionHandler,
+      multiSelectable: this.multiSelectable()
+    };
+  },
+
+  // Picking a single file is the point of selection mode, so checking
+  // files for a bulk action would only get in the way.
+  multiSelectable: function() {
+    return !this.options.selectionHandler && !!this.options.listSelection;
   },
 
   onRender: function() {
     this.$el.toggleClass('selectable', !!this.options.selectionHandler);
 
     this.update();
+    this.updateSelected();
     this.setupAriaAttributes();
 
     this.subview(new FileThumbnailView({
@@ -111,7 +139,6 @@ export const FileItemView = Marionette.ItemView.extend({
     }));
 
     this.renderActionsDropDown();
-    this.updateHighlight();
   },
 
   // Built on first use. Rendering an overlay for every row would make
@@ -173,10 +200,39 @@ export const FileItemView = Marionette.ItemView.extend({
     this.menuItem('cancel').set('hidden', !this.model.isUploading());
     this.menuItem('destroy').set('hidden', this.model.isUploading());
 
+    this.updateMoveItem();
+
     this.ui.confirmButton.toggle(this.model.isConfirmable());
     this.ui.retryButton.toggle(this.model.isRetryable());
 
     this.updateToggleLabel();
+  },
+
+  // The file name is the label of the check box, so the check box has to
+  // be disabled while files are not being checked. Clicking a name would
+  // otherwise check the file even though no check box is displayed.
+  updateSelected: function() {
+    if (!this.multiSelectable() || this.isClosed) {
+      return;
+    }
+
+    var selected = this.options.listSelection.includes(this.model);
+
+    this.ui.checkBox.prop('checked', selected);
+    this.ui.checkBox.prop('disabled', !this.options.listSelection.isSelecting());
+    this.$el.toggleClass('is_selected', selected);
+  },
+
+  // Only folders which have been created can hold a file, so an entry
+  // whose only folder is still being named has nothing to move into.
+  updateMoveItem: function() {
+    var folders = this.options.fileFolders;
+
+    var movable = !this.model.isNew() && !!folders && folders.some(function(folder) {
+      return !folder.isNew();
+    });
+
+    this.menuItem('move').set('hidden', !movable);
   },
 
   // Moving the pointer across the list would otherwise flash the
@@ -239,6 +295,13 @@ export const FileItemView = Marionette.ItemView.extend({
     this.ui.thumbnailButton.attr('aria-label', label);
   },
 
+  move: function() {
+    MoveToFolderDialogView.open({
+      models: [this.model],
+      fileFolders: this.options.fileFolders
+    });
+  },
+
   destroy: function() {
     if (confirm("Datei wirklich wirklich löschen?")) {
       this.model.destroy();
@@ -265,20 +328,6 @@ export const FileItemView = Marionette.ItemView.extend({
     }
 
     return false;
-  },
-
-  updateHighlight: function() {
-    if (!this.options.listHighlight) {
-      return false;
-    }
-
-    var highlighted = this.options.listHighlight.get('currentCid') === this.model.cid &&
-                      this.options.listHighlight.get('active');
-
-    this.$el.toggleClass('keyboard_highlight', highlighted);
-    this.$el.attr('aria-selected', highlighted ? 'true' : null);
-
-    return highlighted;
   },
 
   onClose: function() {

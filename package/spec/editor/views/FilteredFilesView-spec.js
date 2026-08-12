@@ -15,14 +15,24 @@ describe('FilteredFilesView', () => {
     'pageflow.entry_types.strange.editor.files.filters.image_files.with_projection.blank_slate': 'Entry Type Blank',
     'pageflow.editor.files.filters.image_files.with_projection.name': 'Fallback Filter',
     'pageflow.editor.files.filters.image_files.with_projection.blank_slate': 'Fallback Blank',
-    'pageflow.editor.templates.list_search_field.placeholder': 'Filter files',
     'pageflow.editor.templates.list_search_field.hint': 'Type / to search',
     'pageflow.editor.templates.list_search_field.reset': 'Clear name filter',
     'pageflow.editor.files.singular.image_files': 'an image',
     'pageflow.editor.views.filtered_files_view.any_file_type': 'a file',
     'pageflow.editor.views.filtered_files_view.cancel_selection': 'Cancel selection',
     'pageflow.editor.views.filtered_files_view.reset_filter': 'Reset filter',
+    'pageflow.editor.views.filtered_files_view.actions': 'File list actions',
+    'pageflow.editor.views.filtered_files_view.select_items': 'Select files and folders',
+    'pageflow.editor.views.filtered_files_view.end_selection': 'End selection',
+    'pageflow.editor.views.filtered_files_view.selected_items': {
+      zero: 'No items selected',
+      one: '1 item selected',
+      other: '%{count} items selected'
+    },
+    'pageflow.editor.templates.file_item.select_file': 'Select %{file}',
     'pageflow.editor.views.filtered_files_view.select': 'Select %{name}',
+    'pageflow.editor.views.filtered_files_view.search': 'Filter files',
+    'pageflow.editor.views.filtered_files_view.search_in_folder': 'Filter files in %{folder}',
     'pageflow.editor.views.filtered_files_view.sort_button_label': 'Sort',
     'pageflow.editor.views.filtered_files_view.sort.alphabetical': 'Alphabetical',
     'pageflow.editor.views.filtered_files_view.sort.most_recent': 'Most recent',
@@ -559,6 +569,176 @@ describe('FilteredFilesView', () => {
       .toBeTruthy();
   });
 
+  describe('file selection', () => {
+    function setup({filesAttributes, ...options} = {}) {
+      const fileTypes = f.fileTypes(function() {
+        this.withImageFileType({filters: [{name: 'with_projection', matches: () => true}]});
+      });
+      const entry = f.entry({}, {
+        fileTypes,
+        filesAttributes: filesAttributes || {
+          image_files: [
+            {id: 1, display_name: 'image.png'},
+            {id: 2, display_name: 'photo.png'}
+          ]
+        }
+      });
+
+      const view = new FilteredFilesView({
+        entry: entry,
+        fileTypes: [fileTypes.first()],
+        ...options
+      });
+
+      return {view, entry, fileTypes, queries: render(view)};
+    }
+
+    async function startSelecting(user, queries) {
+      await user.click(queries.getByRole('link', {name: 'Select files and folders'}));
+    }
+
+    function checkBoxFor(queries, fileName) {
+      return queries.getByRole('checkbox', {name: fileName});
+    }
+
+    function selectionBar(view) {
+      return view.el.querySelector('.filtered_files-selection_bar');
+    }
+
+    function browseControls(view) {
+      return view.el.querySelector('.filtered_files-browse_controls');
+    }
+
+    function list(view) {
+      return view.el.querySelector('ul.files');
+    }
+
+    it('is not offered without files', () => {
+      const {view, queries} = setup({filesAttributes: {image_files: []}});
+
+      expect(queries.getByRole('link', {name: 'Select files and folders'}).closest('li'))
+        .toHaveClass('is_disabled');
+      expect(selectionBar(view)).toHaveClass('is_unavailable');
+    });
+
+    it('is offered once the first file has been added', () => {
+      const {view, entry, fileTypes, queries} = setup({filesAttributes: {image_files: []}});
+
+      entry.getFileCollection('image_files').add({id: 1, display_name: 'image.png'},
+                                                 {fileType: fileTypes.first()});
+
+      expect(queries.getByRole('link', {name: 'Select files and folders'}).closest('li'))
+        .not.toHaveClass('is_disabled');
+      expect(selectionBar(view)).not.toHaveClass('is_unavailable');
+    });
+
+    it('stops selecting once the last file has been removed', async () => {
+      const {view, entry, queries} = setup();
+      const user = userEvent.setup();
+
+      await startSelecting(user, queries);
+
+      const files = entry.getFileCollection('image_files');
+      files.remove(files.models);
+
+      expect(list(view)).not.toHaveClass('is_selecting');
+      expect(selectionBar(view)).toHaveClass('is_unavailable');
+    });
+
+    it('is not offered while a file is being requested', () => {
+      const {queries} = setup({
+        selectionHandler: {call: jest.fn(), getReferer: () => '/'}
+      });
+
+      expect(queries.queryByRole('link', {name: 'Select files and folders'})).toBeNull();
+    });
+
+    it('does not show check boxes before selecting has started', () => {
+      const {view, queries} = setup();
+
+      expect(list(view)).not.toHaveClass('is_selecting');
+      expect(selectionBar(view)).toHaveClass('is_hidden');
+      expect(checkBoxFor(queries, 'image.png')).not.toBeChecked();
+    });
+
+    // Search field, menu and file type pills all change which files are
+    // listed, which would drop checked files from the selection.
+    it('replaces search field, menu and pills with the bar', async () => {
+      const {view, queries} = setup({fileTypeSelection: new FileTypeSelection()});
+      const user = userEvent.setup();
+
+      await startSelecting(user, queries);
+
+      expect(list(view)).toHaveClass('is_selecting');
+      expect(browseControls(view)).toHaveClass('is_hidden');
+      expect(browseControls(view).querySelector('.file_type_pills')).not.toBeNull();
+      expect(selectionBar(view)).not.toHaveClass('is_hidden');
+      expect(selectionBar(view)).toHaveTextContent('No items selected');
+    });
+
+    it('states how many files are checked', async () => {
+      const {view, queries} = setup();
+      const user = userEvent.setup();
+
+      await startSelecting(user, queries);
+      await user.click(checkBoxFor(queries, 'image.png'));
+
+      expect(selectionBar(view)).toHaveTextContent('1 item selected');
+
+      await user.click(checkBoxFor(queries, 'photo.png'));
+
+      expect(selectionBar(view)).toHaveTextContent('2 items selected');
+    });
+
+    it('keeps selecting until the bar is dismissed', async () => {
+      const {view, queries} = setup();
+      const user = userEvent.setup();
+
+      await startSelecting(user, queries);
+      await user.click(checkBoxFor(queries, 'image.png'));
+      await user.click(checkBoxFor(queries, 'image.png'));
+
+      expect(list(view)).toHaveClass('is_selecting');
+      expect(selectionBar(view)).toHaveTextContent('No items selected');
+    });
+
+    it('clears the selection when the bar is dismissed', async () => {
+      const onDismissSelection = jest.fn();
+      const {view, queries} = setup({onDismissSelection});
+      const user = userEvent.setup();
+
+      await startSelecting(user, queries);
+      await user.click(checkBoxFor(queries, 'image.png'));
+      await user.click(selectionBar(view).querySelector('.filtered_files-selection_bar_dismiss'));
+
+      expect(checkBoxFor(queries, 'image.png')).not.toBeChecked();
+      expect(list(view)).not.toHaveClass('is_selecting');
+      expect(browseControls(view)).not.toHaveClass('is_hidden');
+      expect(onDismissSelection).not.toHaveBeenCalled();
+    });
+
+    it('unchecks a file which has left the list', async () => {
+      const {view, entry, queries} = setup();
+      const user = userEvent.setup();
+
+      await startSelecting(user, queries);
+      await user.click(checkBoxFor(queries, 'image.png'));
+      await user.click(checkBoxFor(queries, 'photo.png'));
+
+      const files = entry.getFileCollection('image_files');
+      files.remove(files.get(1));
+
+      expect(selectionBar(view)).toHaveTextContent('1 item selected');
+    });
+
+    it('offers sorting in the same menu', () => {
+      const {view, queries} = setup();
+
+      expect(queries.getByRole('link', {name: 'Alphabetical'})).not.toBeNull();
+      expect(view.el.querySelector('.drop_down_button_item .label')).toHaveTextContent('Sort');
+    });
+  });
+
   describe('banner', () => {
     const selectionHandler = {
       call: jest.fn(),
@@ -635,23 +815,23 @@ describe('FilteredFilesView', () => {
       expect(banner.querySelector('.filtered_files-banner_name')).toHaveTextContent('an image');
     });
 
-    it('stays in the files list when dismissed', () => {
-      const banner = setup({
-        selectionHandler: {...selectionHandler, getReferer: () => '/some/referer'}
-      });
+    it('leaves selection mode when dismissed', () => {
+      const onDismissSelection = jest.fn();
+      const banner = setup({selectionHandler, onDismissSelection});
 
       dismissButton(banner).click();
 
-      expect(editor.router.navigate).toHaveBeenCalledWith('/files', {trigger: true});
+      expect(onDismissSelection).toHaveBeenCalled();
       expect(dismissButton(banner)).toHaveAttribute('title', 'Cancel selection');
     });
 
     it('drops the filter when dismissed while not selecting', () => {
-      const banner = setup({filterName: 'with_projection'});
+      const onDismissSelection = jest.fn();
+      const banner = setup({filterName: 'with_projection', onDismissSelection});
 
       dismissButton(banner).click();
 
-      expect(editor.router.navigate).toHaveBeenCalledWith('/files', {trigger: true});
+      expect(onDismissSelection).toHaveBeenCalled();
       expect(dismissButton(banner)).toHaveAttribute('title', 'Reset filter');
     });
   });
@@ -725,7 +905,7 @@ describe('FilteredFilesView', () => {
     let names = getAllByText(/\.png$/).map(el => el.textContent);
     expect(names).toEqual(['a.png', 'b.png']);
 
-    await user.click(getByTitle('Sort'));
+    await user.click(getByTitle('File list actions'));
     await user.click(getAllByText('Most recent')[1]);
 
     names = getAllByText(/\.png$/).map(el => el.textContent);

@@ -27,6 +27,17 @@ describe('Entry', () => {
     };
   });
 
+  describe('#fileFolders', () => {
+    it('exposes folders passed via options', () => {
+      const entry = testContext.buildEntry({}, {
+        filesAttributes: {image_files: []},
+        fileFoldersAttributes: [{perma_id: 1, name: 'Interviews'}]
+      });
+
+      expect(entry.fileFolders.pluck('name')).toEqual(['Interviews']);
+    });
+  });
+
   describe('#getFileCollection', () => {
     it('supports looking up via fileType object', () => {
       var imageFiles = FilesCollection.createForFileType(testContext.imageFileType, []);
@@ -79,6 +90,30 @@ describe('Entry', () => {
         file_reuse: {
           file_id: 12,
           other_entry_id: 2
+        }
+      });
+    });
+
+    it('posts folder perma id when reusing into folder', () => {
+      var imageFiles = FilesCollection.createForFileType(testContext.imageFileType, [{id: 12}]);
+      var entry = testContext.buildEntry({id: 1}, {
+        files: {
+          image_files: new Backbone.Collection()
+        }
+      });
+      var otherEntry = testContext.buildEntry({id: 2}, {
+        files: {
+          image_files: new Backbone.Collection()
+        }
+      });
+
+      entry.reuseFile(otherEntry, imageFiles.first(), {folderPermaId: 5});
+
+      expect(JSON.parse(testContext.requests[0].requestBody)).toEqual({
+        file_reuse: {
+          file_id: 12,
+          other_entry_id: 2,
+          folder_perma_id: 5
         }
       });
     });

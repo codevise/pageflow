@@ -1,0 +1,83 @@
+&.move_to_folder_dialog {
+  // A short list of folders would otherwise leave most of the dialog
+  // empty, since dialog boxes stretch to the viewport by default. Long
+  // lists still have to stop short of the viewport and scroll.
+  .box {
+    height: fit-content;
+    min-width: 320px;
+    max-width: 480px;
+    max-height: calc(100vh - #{space(20)});
+  }
+
+  // One border around the list of targets, like the inputs of the editor
+  // have. Sits on the scrolling container, so that the border of a long
+  // list stays put while it is scrolled.
+  .content {
+    // Safari resolves the percentage flex basis of the default `flex: 1`
+    // against the indefinite height of the box to zero instead of falling
+    // back to the height of the list.
+    flex: 0 1 auto;
+
+    margin-left: 0;
+    padding: space(1);
+    border: solid 1px var(--ui-on-surface-color-lighter);
+    border-radius: rounded();
+  }
+
+  .move_to_folder_dialog {
+    // The root target holds the top level folders, so its own list does
+    // not get indented.
+    &-targets ul {
+      padding-left: space(4);
+    }
+
+    &-target {
+      display: flex;
+      align-items: center;
+      gap: space(2);
+      width: 100%;
+      box-sizing: border-box;
+      padding: space(1) space(2);
+      border: none;
+      border-radius: rounded(sm);
+      background-color: transparent;
+      color: inherit;
+
+      &:not([disabled]) {
+        cursor: pointer;
+      }
+
+      &:not([disabled]):hover {
+        background-color: var(--ui-selection-color-light);
+      }
+
+      // The folder the items are in is not a target they could move to.
+      &[disabled] {
+        color: var(--ui-on-surface-color-light);
+      }
+
+      // Folders which are being moved and their subfolders are no targets
+      // either. Dimming the whole row fades the folder icon along with
+      // the name, since no hint next to them says why they are inactive.
+      &.is_blocked {
+        opacity: 0.5;
+      }
+    }
+
+    &-pictogram {
+      @include folder-icon;
+
+      flex-shrink: 0;
+      color: var(--ui-primary-color-light);
+    }
+
+    &-name {
+      @include label;
+    }
+
+    &-current {
+      color: var(--ui-on-surface-color-light);
+      white-space: nowrap;
+    }
+  }
+}

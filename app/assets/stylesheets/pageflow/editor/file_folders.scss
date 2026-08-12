@@ -1,0 +1,127 @@
+.file_folders {
+  &-pictogram {
+    @include background-icon-center(var(--ui-primary-color-light), 28px);
+    @include folder-icon;
+
+    flex-shrink: 0;
+    width: space(14);
+    height: space(14);
+    margin: space(1) 0 space(1) space(1);
+    border-radius: rounded(sm);
+    background-color: var(--ui-on-surface-color-lightest);
+  }
+
+  // Unlike the two lines of a file row, name and file count are stacked
+  // right next to each other, so that the row keeps its height.
+  &-info {
+    display: flex;
+    flex: 1;
+    align-items: flex-start;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  &-button {
+    flex: 1;
+    align-self: center;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+
+    // Navigating into the folder is the only action of the row, so the
+    // whole row becomes the target of the button.
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+  }
+
+  // Takes the place of the button while items are being checked, so that
+  // clicking the row checks the folder just like it checks a file.
+  // Undoes the weight, spacing and positioning which labels of form
+  // fields have. Staying static keeps the row the containing block of the
+  // stretched hit area below.
+  &-label {
+    display: block;
+    position: static;
+    flex: 1;
+    align-self: center;
+    min-width: 0;
+    margin-bottom: 0;
+    font-weight: normal;
+    cursor: pointer;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .file_folders-title {
+      gap: space(2);
+    }
+  }
+
+  // Stays above the stretched hit area of the label, so that clicking the
+  // box itself still toggles it.
+  &-check_box {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  &-title {
+    display: flex;
+    align-items: center;
+    gap: space(1);
+    margin-bottom: space(1);
+  }
+
+  &-name {
+    @include label;
+  }
+
+  &-chevron {
+    @include right-open-icon;
+
+    flex-shrink: 0;
+    color: var(--ui-primary-color-light);
+  }
+
+  &-file_count {
+    display: block;
+    color: var(--ui-on-surface-color-light);
+  }
+
+  // Lines up with the buttons of file rows. The button stretches over
+  // the whole row, so the menu has to stay above it.
+  &-actions {
+    --drop-down-button-width: 32px;
+
+    position: relative;
+    z-index: 1;
+    display: flex;
+    padding: space(0.5) space(0.5) 0 0;
+  }
+
+  // Takes the place of the name, so that the row keeps its height while
+  // the name is being entered.
+  &-input {
+    box-sizing: border-box;
+    flex: 1;
+    align-self: center;
+    margin-right: space(2);
+  }
+}

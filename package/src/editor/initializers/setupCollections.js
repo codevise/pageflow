@@ -5,6 +5,7 @@ import {events} from 'pageflow/frontend';
 import {ConfigurationEditorTabView} from 'pageflow/ui';
 
 import {ChaptersCollection} from '../collections/ChaptersCollection';
+import {FileFoldersCollection} from '../collections/FileFoldersCollection';
 import {FilesCollection} from '../collections/FilesCollection';
 import {PagesCollection} from '../collections/PagesCollection';
 
@@ -25,6 +26,8 @@ app.addInitializer(function(options) {
   state.videoFiles = state.files.video_files;
   state.audioFiles = state.files.audio_files;
   state.textTrackFiles = state.files.text_track_files;
+
+  state.fileFolders = new FileFoldersCollection(options.file_folders);
 
   var widgets = new WidgetsCollection(options.widgets, {
     widgetTypes: editor.widgetTypes
@@ -53,9 +56,11 @@ app.addInitializer(function(options) {
   editor.failures.watch(state.entry);
   editor.failures.watch(state.pages);
   editor.failures.watch(state.chapters);
+  editor.failures.watch(state.fileFolders);
 
   editor.savingRecords.watch(state.pages);
   editor.savingRecords.watch(state.chapters);
+  editor.savingRecords.watch(state.fileFolders);
 
   events.trigger('seed:loaded');
 });

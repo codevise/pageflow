@@ -130,8 +130,14 @@ export const CollectionView = Marionette.View.extend({
     else if(!this.placeHolderView || lastPlaceholderConstructor !== this.placeHolderConstructor) {
       this.closePlaceHolderView();
 
-      this.placeHolderView = new this.placeHolderConstructor();
+      this.placeHolderView = new this.placeHolderConstructor(this.getPlaceHolderViewOptions());
       this.$el.append(this.placeHolderView.render().el);
+    }
+  },
+
+  getPlaceHolderViewOptions: function() {
+    if (this.placeHolderConstructor === this.options.blankSlateViewConstructor) {
+      return this.options.blankSlateViewOptions;
     }
   },
 

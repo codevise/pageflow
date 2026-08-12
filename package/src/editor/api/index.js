@@ -11,6 +11,7 @@ import {PageTypes} from './PageTypes';
 import {SavingRecordsCollection} from './SavingRecordsCollection';
 import {WidgetTypes} from './WidgetTypes';
 import {app} from '../app';
+import {filesPath} from '../utils/filesPath';
 import {state} from '$state';
 
 export * from './errors';
@@ -159,6 +160,15 @@ export const EditorApi = Object.extend(
   },
 
   /**
+   * Set the folder that top level files are placed in when they are
+   * uploaded. This value is automatically set and unset upon navigating
+   * towards the appropriate views.
+   */
+  setUploadFolder: function(folder) {
+    this.nextUploadFolder = folder;
+  },
+
+  /**
    * Set the name of the help entry that shall be selected by
    * default when the help view is opened. This value is
    * automatically reset when navigation occurs.
@@ -297,11 +307,12 @@ export const EditorApi = Object.extend(
 
     fileType = fileType || {};
 
-    this.navigate('/files' + filesPathSuffix(fileType) +
-                  '?handler=' + handlerName +
-                  '&payload=' + encodeURIComponent(JSON.stringify(payload)) +
-                  (fileType.filter ? '&filter=' + fileType.filter : ''),
-                  {trigger: true});
+    this.navigate(filesPath({
+      collectionName: filesPathCollectionName(fileType),
+      handler: handlerName,
+      payload: JSON.stringify(payload),
+      filterName: fileType.filter
+    }), {trigger: true});
   },
 
   /**
@@ -362,10 +373,10 @@ export const EditorApi = Object.extend(
   }
 });
 
-function filesPathSuffix(fileType) {
+function filesPathCollectionName(fileType) {
   if (fileType.defaultTab) {
-    return '/' + fileType.defaultTab + ':default';
+    return fileType.defaultTab + ':default';
   }
 
-  return fileType.name ? '/' + fileType.name : '';
+  return fileType.name;
 }

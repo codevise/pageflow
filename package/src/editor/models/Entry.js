@@ -41,6 +41,8 @@ export const Entry = Backbone.Model.extend({
     this.themes = options.themes || state.themes;
     this.site = options.site || state.site;
     this.files = options.files || state.files;
+    this.fileFolders = options.fileFolders || state.fileFolders;
+    this.fileFolders.entry = this;
     this.fileTypes = options.fileTypes || editor.fileTypes;
     this.storylines = options.storylines || state.storylines;
     this.storylines.parentModel = this;
@@ -55,7 +57,10 @@ export const Entry = Backbone.Model.extend({
     this.audioFiles = state.audioFiles;
 
     this.fileTypes.each(function(fileType) {
-      this.watchFileCollection(fileType.collectionName, this.getFileCollection(fileType));
+      var collection = this.getFileCollection(fileType);
+
+      collection.entry = this;
+      this.watchFileCollection(fileType.collectionName, collection);
     }, this);
 
     this.listenTo(this.storylines, 'sort', function() {
@@ -118,11 +123,12 @@ export const Entry = Backbone.Model.extend({
     return this.scaffoldStoryline(_.extend({depth: 'page'}, options)).page;
   },
 
-  reuseFile: function(otherEntry, file) {
+  reuseFile: function(otherEntry, file, options) {
     var entry = this;
 
     FileReuse.submit(otherEntry, file, {
       entry: entry,
+      folderPermaId: (options || {}).folderPermaId,
 
       success: function(model, response) {
         entry._setFiles(response, {merge: false, remove: false});
