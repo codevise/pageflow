@@ -6,6 +6,7 @@ import {
   FilePlaceholder,
   FitViewport,
   InlineFileRights,
+  processImageModifiers,
   useContentElementLifecycle,
   useFileWithInlineRights
 } from 'pageflow-scrolled/frontend';
@@ -20,19 +21,29 @@ export function LottieAnimation({configuration}) {
   });
 
   const {shouldLoad, isVisible} = useContentElementLifecycle();
-  const [aspectRatio, setAspectRatio] = useState();
+  const [animationAspectRatio, setAnimationAspectRatio] = useState();
+
+  const {aspectRatio, rounded} = processImageModifiers(configuration.imageModifiers);
+  const isCircleCrop = rounded === 'circle';
 
   return (
-    <FitViewport aspectRatio={aspectRatio} fallbackAspectRatio={1}>
-      <ContentElementBox configuration={configuration}>
+    <FitViewport aspectRatio={aspectRatio || animationAspectRatio}
+                 fallbackAspectRatio={1}>
+      <ContentElementBox borderRadius={isCircleCrop ? 'none' : rounded}
+                         configuration={isCircleCrop ? undefined : configuration}>
         <ContentElementFigure configuration={configuration}>
           <FitViewport.Content>
-            <FilePlaceholder file={lottieFile} />
-            {lottieFile && shouldLoad &&
-             <Player lottieFile={lottieFile}
-                     loop={configuration.playbackMode !== 'playOnce'}
-                     play={isVisible}
-                     onAspectRatioChange={setAspectRatio} />}
+            <ContentElementBox borderRadius={isCircleCrop ? 'circle' : 'none'}
+                               configuration={isCircleCrop ? configuration : undefined}
+                               positioned={isCircleCrop}>
+              <FilePlaceholder file={lottieFile} />
+              {lottieFile && shouldLoad &&
+               <Player lottieFile={lottieFile}
+                       loop={configuration.playbackMode !== 'playOnce'}
+                       play={isVisible}
+                       fit={aspectRatio ? 'cover' : 'contain'}
+                       onAspectRatioChange={setAnimationAspectRatio} />}
+            </ContentElementBox>
             <InlineFileRights configuration={configuration}
                               context="insideElement"
                               items={[{file: lottieFile}]} />
@@ -46,7 +57,7 @@ export function LottieAnimation({configuration}) {
   );
 }
 
-function Player({lottieFile, loop, play, onAspectRatioChange}) {
+function Player({lottieFile, loop, play, fit, onAspectRatioChange}) {
   const canvasRef = useRef();
   const dotLottieRef = useRef();
 
@@ -58,6 +69,7 @@ function Player({lottieFile, loop, play, onAspectRatioChange}) {
       canvas: canvasRef.current,
       src: lottieFile.urls.original,
       loop,
+      layout: {fit},
       autoplay: false,
       renderConfig: {autoResize: true}
     });
@@ -82,7 +94,7 @@ function Player({lottieFile, loop, play, onAspectRatioChange}) {
       dotLottieRef.current = null;
       dotLottie.destroy();
     };
-  }, [lottieFile.urls.original, loop, onAspectRatioChange]);
+  }, [lottieFile.urls.original, loop, fit, onAspectRatioChange]);
 
   useEffect(() => {
     if (play) {

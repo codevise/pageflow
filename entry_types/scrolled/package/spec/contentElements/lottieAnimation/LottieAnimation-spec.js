@@ -2,7 +2,7 @@ import React from 'react';
 import {act} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
+import {renderInContentElement, useContentElementMatchers} from 'pageflow-scrolled/testHelpers';
 
 import {LottieAnimation} from 'contentElements/lottieAnimation/LottieAnimation';
 import {DotLottie} from '@lottiefiles/dotlottie-web';
@@ -15,6 +15,8 @@ jest.mock('@lottiefiles/dotlottie-web', () => ({
 
 describe('LottieAnimation', () => {
   const {players, setAnimationSize} = fakeDotLottiePlayers({act});
+
+  useContentElementMatchers();
 
   function renderLottieAnimation({
     configuration = {id: 100},
@@ -117,5 +119,123 @@ describe('LottieAnimation', () => {
 
     expect(container.querySelector('[style*="--fit-viewport-aspect-ratio: 0.5"]'))
       .not.toBeNull();
+  });
+
+  it('contains animation inside its intrinsic aspect ratio by default', () => {
+    renderLottieAnimation();
+
+    expect(players[0].config.layout).toEqual({fit: 'contain'});
+  });
+
+  describe('crop image modifier', () => {
+    it('applies aspect ratio from crop value', () => {
+      const {container} = renderLottieAnimation({
+        configuration: {
+          id: 100,
+          imageModifiers: [
+            {name: 'crop', value: 'wide'}
+          ]
+        }
+      });
+
+      expect(container).toContainFitViewport({aspectRatio: 'wide'});
+    });
+
+    it('keeps aspect ratio from crop value once animation has loaded', () => {
+      const {container} = renderLottieAnimation({
+        configuration: {
+          id: 100,
+          imageModifiers: [
+            {name: 'crop', value: 'wide'}
+          ]
+        }
+      });
+
+      players[0].emit('load');
+
+      expect(container).toContainFitViewport({aspectRatio: 'wide'});
+    });
+
+    it('lets animation fill the cropped box', () => {
+      renderLottieAnimation({
+        configuration: {
+          id: 100,
+          imageModifiers: [
+            {name: 'crop', value: 'wide'}
+          ]
+        }
+      });
+
+      expect(players[0].config.layout).toEqual({fit: 'cover'});
+    });
+
+    it('forces 1:1 aspect ratio for circle crop', () => {
+      const {container} = renderLottieAnimation({
+        configuration: {
+          id: 100,
+          imageModifiers: [
+            {name: 'crop', value: 'circle'}
+          ]
+        }
+      });
+
+      expect(container).toContainFitViewport({aspectRatio: 'square'});
+    });
+  });
+
+  describe('rounded image modifier', () => {
+    it('applies border radius from rounded value', () => {
+      const {container} = renderLottieAnimation({
+        configuration: {
+          id: 100,
+          imageModifiers: [
+            {name: 'rounded', value: 'md'}
+          ]
+        }
+      });
+
+      expect(container).toContainContentElementBox({borderRadius: 'md'});
+    });
+
+    it('applies circle border radius for circle crop', () => {
+      const {container} = renderLottieAnimation({
+        configuration: {
+          id: 100,
+          imageModifiers: [
+            {name: 'crop', value: 'circle'}
+          ]
+        }
+      });
+
+      expect(container).toContainContentElementBox({borderRadius: 'circle'});
+    });
+
+    it('applies box shadow on circle box', () => {
+      const {container} = renderLottieAnimation({
+        configuration: {
+          id: 100,
+          boxShadow: 'md',
+          imageModifiers: [
+            {name: 'crop', value: 'circle'}
+          ]
+        }
+      });
+
+      expect(container).toContainContentElementBox({borderRadius: 'circle', boxShadow: 'md'});
+    });
+
+    it('overrides rounded styles for circle crop', () => {
+      const {container} = renderLottieAnimation({
+        configuration: {
+          id: 100,
+          imageModifiers: [
+            {name: 'crop', value: 'circle'},
+            {name: 'rounded', value: 'lg'}
+          ]
+        }
+      });
+
+      expect(container).toContainContentElementBox({borderRadius: 'circle'});
+    });
   });
 });
