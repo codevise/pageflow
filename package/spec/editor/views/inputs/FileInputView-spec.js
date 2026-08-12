@@ -1,5 +1,6 @@
 import {Configuration, FileInputView, BackgroundPositioningView, editor} from 'pageflow/editor';
 import Backbone from 'backbone';
+import Marionette from 'backbone.marionette';
 
 import * as support from '$support';
 import {DropDownButton} from '$support/dominos/editor';
@@ -10,6 +11,55 @@ describe('FileInputView', () => {
 
   beforeEach(() => {
     testContext = {};
+  });
+
+  describe('thumbnail', () => {
+    function fileInputView({thumbnailView, ...options}) {
+      const fileTypes = support.factories.fileTypesWithImageFileType({thumbnailView});
+      const entry = support.factories.entry({}, {
+        fileTypes,
+        filesAttributes: {
+          image_files: [
+            {id: 1, perma_id: 5, state: 'processed'},
+            {id: 2, perma_id: 6, state: 'processed'}
+          ]
+        }
+      });
+
+      return new FileInputView({
+        collection: entry.getFileCollection(fileTypes.first()),
+        propertyName: 'file_id',
+        ...options
+      });
+    }
+
+    it('closes previous thumbnail when another file is selected', () => {
+      const onClose = jest.fn();
+      const model = new Configuration({file_id: 5});
+      const view = fileInputView({
+        model,
+        thumbnailView: Marionette.ItemView.extend({
+          template: () => '<span class="thumbnail_stand_in"></span>',
+          onClose
+        })
+      });
+
+      render(view);
+      model.set('file_id', 6);
+
+      expect(onClose).toHaveBeenCalledTimes(1);
+      expect(view.el.querySelectorAll('.thumbnail_stand_in')).toHaveLength(1);
+    });
+
+    it('keeps thumbnail in the document when another file is selected', () => {
+      const model = new Configuration({file_id: 5});
+      const view = fileInputView({model});
+
+      render(view);
+      model.set('file_id', 6);
+
+      expect(view.el.querySelectorAll('.file_thumbnail')).toHaveLength(1);
+    });
   });
 
   it('displays file title', () => {

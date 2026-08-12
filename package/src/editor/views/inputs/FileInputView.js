@@ -27,7 +27,7 @@ export const FileInputView = Marionette.ItemView.extend({
       <span class="name"></span>
       <span class="inline_help"></span>
     </label>
-    <div class="file_thumbnail"></div>
+    <div class="file_input-thumbnail"></div>
     <div class="file_name"></div>
 
     <a href=""
@@ -44,7 +44,7 @@ export const FileInputView = Marionette.ItemView.extend({
 
   ui: {
     fileName: '.file_name',
-    thumbnail: '.file_thumbnail'
+    thumbnail: '.file_input-thumbnail'
   },
 
   events: {
@@ -114,10 +114,24 @@ export const FileInputView = Marionette.ItemView.extend({
                           file.title() :
                           I18n.t('pageflow.ui.views.inputs.file_input_view.none'));
 
-    this.subview(new FileThumbnailView({
-      el: this.ui.thumbnail,
-      model: file
-    }));
+    this._updateThumbnail(file);
+  },
+
+  onClose: function() {
+    this.thumbnailView?.close();
+  },
+
+  // Thumbnail views of file types can hold on to resources of the file
+  // they display, which requires closing the previous thumbnail rather
+  // than only replacing its markup. Since closing a view removes its
+  // element, the thumbnail lives inside a container of its own.
+  _updateThumbnail: function(file) {
+    if (this.thumbnailView) {
+      this.thumbnailView.close();
+    }
+
+    this.thumbnailView = new FileThumbnailView({model: file});
+    this.ui.thumbnail.append(this.thumbnailView.render().el);
   },
 
   _updatePositioning(positioning) {
