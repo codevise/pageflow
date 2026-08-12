@@ -30,3 +30,9 @@
   width: 100%;
   pointer-events: none;
 }
+
+/* Font size of content element wrappers, which the em based padding of
+   default selection rects is relative to. */
+.plainSelection {
+  font-size: 1rem;
+}

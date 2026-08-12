@@ -2,7 +2,7 @@ import React from 'react';
 import {act, fireEvent, within} from '@testing-library/react';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
-import {EditableInlineText} from 'frontend';
+import {EditableText, EditableInlineText} from 'frontend';
 import {api} from 'frontend/api';
 import {loadInlineEditingExtensions} from 'frontend/inlineEditing';
 import {clearExtensions} from 'frontend/extensionRegistry';
@@ -170,6 +170,17 @@ export function useInlineEditingPageObjects() {
   usePageObjects();
 
   beforeEach(() => {
+    api.contentElementTypes.register('withEditableText', {
+      customSelectionRect: true,
+      component: function WithEditableText({configuration}) {
+        return (
+          <div data-testid={testIdAttribute(configuration)}>
+            <EditableText value={configuration.value} selectionRect={true} />
+          </div>
+        );
+      }
+    });
+
     api.contentElementTypes.register('withEditableInlineText', {
       component: function WithEditableInlineText({configuration}) {
         return (
