@@ -1,4 +1,4 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {useDrag} from 'react-dnd';
 
 import {features} from 'pageflow/frontend';
@@ -9,6 +9,7 @@ import {useI18n} from '../i18n';
 import {api} from '../api';
 import {widths} from '../layouts';
 import {SelectionRect} from './SelectionRect';
+import {hasSelectionModifier} from './multiSelection';
 import {DropTargets} from './DropTargets';
 import {MarginIndicator} from './MarginIndicator';
 import {
@@ -51,8 +52,8 @@ function OptionalSelectionRect(props) {
 }
 
 function DefaultSelectionRect(props) {
-  const {isSelected, type, select, selectComments, selectNewThread} =
-    useContentElementEditorState();
+  const {isSelected, isMultiSelected, type, select, extendSelection,
+         selectComments, selectNewThread} = useContentElementEditorState();
   const commentsSelected = type === 'contentElementComments' || type === 'newThread';
   const {resolution, alwaysShowComments} = useCommentDisplayFilter();
   const {t} = useI18n({locale: 'ui'});
@@ -75,9 +76,12 @@ function DefaultSelectionRect(props) {
     item: { type: 'contentElement', id: props.id }
   });
 
+  useBlurFocusedChildWhenMultiSelected(selectionRectRef, isMultiSelected);
+
   return (
     <SelectionRect ref={selectionRectRef}
-                   selected={isSelected}
+                   selected={isSelected || isMultiSelected}
+                   plain={isMultiSelected}
                    scrollPoint={isSelected}
                    drag={drag}
                    dragHandleTitle={t('pageflow_scrolled.inline_editing.drag_content_element')}
@@ -97,7 +101,11 @@ function DefaultSelectionRect(props) {
                    commentBadgeInset={!isSelected}
                    ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
                    insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
-                   onClick={() => select()}
+                   onMouseDown={event => hasSelectionModifier(event) &&
+                                         event.preventDefault()}
+                   onClick={event => hasSelectionModifier(event) ?
+                                     extendSelection() :
+                                     select()}
                    onInsertButtonClick={at =>
                      postInsertContentElementMessage({id: props.id, at})}>
       <div ref={preview}>
@@ -109,6 +117,14 @@ function DefaultSelectionRect(props) {
                      postMoveContentElementMessage({id, range, to: {id: props.id, at}})}/>
     </SelectionRect>
   )
+}
+
+function useBlurFocusedChildWhenMultiSelected(ref, isMultiSelected) {
+  useEffect(() => {
+    if (isMultiSelected && ref.current.contains(document.activeElement)) {
+      document.activeElement.blur();
+    }
+  }, [ref, isMultiSelected]);
 }
 
 function renderMarginIndicators(props) {

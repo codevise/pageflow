@@ -52,6 +52,18 @@
   border-right: solid 1px currentColor;
 }
 
+.plain:before {
+  border: solid 1px currentColor;
+}
+
+.plain:after {
+  display: none;
+}
+
+.plain.openSides:before {
+  display: block;
+}
+
 .toolbar {
   position: absolute;
   top: -40px;

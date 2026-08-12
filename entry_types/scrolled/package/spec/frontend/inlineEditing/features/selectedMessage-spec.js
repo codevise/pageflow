@@ -31,6 +31,35 @@ describe('inline editing SELECTED message', () => {
     }, expect.anything());
   });
 
+  it('is posted with type multiSelection when content element is clicked with modifier', () => {
+    frontend.contentElementTypes.register('text', {
+      component: function Component({configuration}) {
+        return configuration.text;
+      }
+    });
+
+    const {getByText} = renderEntry({
+      seed: {
+        contentElements: [
+          {id: 1, typeName: 'text', configuration: {text: 'First'}},
+          {id: 2, typeName: 'text', configuration: {text: 'Second'}}
+        ]
+      }
+    });
+
+    fireEvent.click(getByText('First'));
+    fireEvent.click(getByText('Second'), {ctrlKey: true});
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      type: 'SELECTED',
+      payload: {
+        type: 'multiSelection',
+        itemType: 'contentElement',
+        items: [{id: 1}, {id: 2}]
+      }
+    }, expect.anything());
+  });
+
   it('is not posted on click when content element uses custom selection rect', () => {
     frontend.contentElementTypes.register('text', {
       component: function Component() {

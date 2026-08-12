@@ -1,6 +1,9 @@
+import React from 'react';
 import {act, fireEvent, within} from '@testing-library/react';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
+import {EditableInlineText} from 'frontend';
+import {api} from 'frontend/api';
 import {loadInlineEditingExtensions} from 'frontend/inlineEditing';
 import {clearExtensions} from 'frontend/extensionRegistry';
 import badgeStyles from 'review/Badge.module.css';
@@ -95,6 +98,10 @@ function createInlineEditingContentElementPageObject(el) {
   return {
     ...baseCreateContentElementPageObject(el),
 
+    editableText() {
+      return createEditableTextPageObject(el.querySelector('[contenteditable=true]'));
+    },
+
     getMarginIndicator(position) {
       const {getByLabelText} = within(selectionRect);
       const labels = {
@@ -104,8 +111,9 @@ function createInlineEditingContentElementPageObject(el) {
       return getByLabelText(labels[position]);
     },
 
-    select() {
-      fireEvent.click(selectionRect);
+    select({ctrlKey = false} = {}) {
+      fireEvent.mouseDown(selectionRect, {ctrlKey});
+      fireEvent.click(selectionRect, {ctrlKey});
     },
 
     isSelected() {
@@ -160,6 +168,71 @@ export function useInlineEditingPageObjects() {
   });
 
   usePageObjects();
+
+  beforeEach(() => {
+    api.contentElementTypes.register('withEditableInlineText', {
+      component: function WithEditableInlineText({configuration}) {
+        return (
+          <div data-testid={testIdAttribute(configuration)}>
+            <EditableInlineText value={configuration.value} />
+          </div>
+        );
+      }
+    });
+  });
+}
+
+function testIdAttribute({testId}) {
+  return testId === undefined ? undefined : `contentElement-${testId}`;
+}
+
+function createEditableTextPageObject(el) {
+  return {
+    el,
+
+    click(text, {ctrlKey = false} = {}) {
+      const target = within(el).getByText(text);
+
+      if (fireEvent.mouseDown(target, {ctrlKey})) {
+        placeCaret(el, target.firstChild);
+      }
+
+      fireEvent.click(target, {ctrlKey});
+    },
+
+    focus() {
+      act(() => el.focus());
+    },
+
+    isFocused() {
+      return document.activeElement === el;
+    }
+  };
+}
+
+// jsdom neither places a caret on mouse down nor implements
+// `isContentEditable` and a selection slate-react can read. Without
+// these, slate would ignore the `selectionchange` event.
+function placeCaret(editableEl, textNode) {
+  const range = document.createRange();
+  range.setStart(textNode, 0);
+
+  Object.defineProperty(textNode.parentElement, 'isContentEditable', {value: true});
+
+  window.getSelection = () => Object.assign(range, {
+    anchorNode: textNode,
+    focusNode: textNode,
+    type: 'Caret',
+    rangeCount: 1,
+    getRangeAt: () => range,
+    removeAllRanges() {},
+    addRange() {}
+  });
+
+  act(() => {
+    editableEl.focus();
+    document.dispatchEvent(new Event('selectionchange'));
+  });
 }
 
 function createCommentBadgePageObject(el) {

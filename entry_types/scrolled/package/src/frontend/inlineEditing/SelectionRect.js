@@ -9,6 +9,31 @@ import PlusIcon from './images/plus.svg';
 import MoveIcon from './images/move.svg';
 
 export const SelectionRect = forwardRef(function SelectionRect(props, ref) {
+  if (props.plain) {
+    return renderWrapper(props, ref);
+  }
+
+  return renderWrapper(props, ref, {
+    className: {
+      [styles.draggable]: props.drag,
+      [styles.hasCommentBadge]: props.commentBadge && !props.commentBadgeInset
+    },
+    before: (
+      <>
+        {renderDragHandle(props)}
+        {renderCommentBadge(props)}
+        {renderToolbar(props)}
+
+        <InsertButton {...props} at="before" />
+      </>
+    ),
+    after: <InsertButton {...props} at="after" />
+  });
+});
+
+// Without the fixed slots around `props.children`, switching between
+// plain and full rects would remount the content element.
+function renderWrapper(props, ref, {className, before, after} = {}) {
   return (
     <div ref={ref}
          className={classNames(styles.main,
@@ -16,26 +41,21 @@ export const SelectionRect = forwardRef(function SelectionRect(props, ref) {
                                 [styles.tug]: props.full || props.customMargin,
                                 [styles.inset]: props.inset,
                                 [styles.selected]: props.selected,
-                                [styles.draggable]: props.drag,
-                                [styles.hasCommentBadge]: props.commentBadge && !props.commentBadgeInset,
+                                [styles.plain]: props.plain,
                                 [styles.start]: props.selected && props.start,
-                                [styles.end]: props.selected && props.end})}
+                                [styles.end]: props.selected && props.end},
+                               className)}
          aria-label={props.ariaLabel}
          aria-selected={props.selected}
          data-scrollpoint={props.scrollPoint ? 'selection' : undefined}
+         onMouseDown={props.onMouseDown}
          onClick={props.onClick}>
-      {renderDragHandle(props)}
-      {renderCommentBadge(props)}
-      {renderToolbar(props)}
-
-      <InsertButton {...props} at="before" />
-
+      {before}
       {props.children}
-
-      <InsertButton {...props} at="after" />
+      {after}
     </div>
   );
-});
+}
 
 function InsertButton(props) {
   const [insertHovered, setInsertHovered] = useState(false);
