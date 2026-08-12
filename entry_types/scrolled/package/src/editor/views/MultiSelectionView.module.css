@@ -1,0 +1,29 @@
+.root {
+  padding-bottom: space(2);
+}
+
+.actions {
+  float: right;
+}
+
+.tabs {
+  clear: both;
+}
+
+.list {
+  margin-top: space(3);
+}
+
+.list :global(.list_item_thumbnail) {
+  width: space(6);
+  height: space(6);
+}
+
+.pictogram {
+  display: block;
+  height: 100%;
+  background-color: var(--ui-primary-color-light);
+  mask-size: 16px;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}

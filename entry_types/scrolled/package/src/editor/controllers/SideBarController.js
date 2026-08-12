@@ -7,6 +7,7 @@ import {EditSectionView} from '../views/EditSectionView';
 import {EditSectionTransitionView} from '../views/EditSectionTransitionView';
 import {EditSectionPaddingsView} from '../views/EditSectionPaddingsView';
 import {EditContentElementView} from '../views/EditContentElementView';
+import {MultiSelectionView} from '../views/MultiSelectionView';
 import {CommentsView} from '../views/CommentsView';
 import {CommentActivityView} from '../views/CommentActivityView';
 import {NewThreadView} from '../views/NewThreadView';
@@ -77,6 +78,16 @@ export const SideBarController = Marionette.Controller.extend({
       entry: this.entry,
       model: this.entry.contentElements.get(id),
       editor
+    }));
+  },
+
+  multiSelection: function(payload) {
+    const {itemType, items} = JSON.parse(decodeURIComponent(payload));
+
+    this.region.show(new MultiSelectionView({
+      entry: this.entry,
+      itemType,
+      items
     }));
   },
 

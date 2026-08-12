@@ -596,6 +596,35 @@ describe('PreviewMessageController', () => {
     expect(listener).not.toHaveBeenCalled();
   });
 
+  it('navigates to multi selection route on SELECTED message for multi selection', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}, {id: 2}]
+      })
+    });
+    const iframeWindow = createSendingIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {
+          type: 'multiSelection',
+          itemType: 'contentElement',
+          items: [{id: 1}, {id: 2}]
+        }
+      }, '*');
+    })).resolves.toBe(
+      '/scrolled/multi_selection?payload=' +
+      encodeURIComponent(JSON.stringify({
+        itemType: 'contentElement',
+        items: [{id: 1}, {id: 2}]
+      }))
+    );
+  });
+
   it('navigates to edit section route on SELECTED message for section settings', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {

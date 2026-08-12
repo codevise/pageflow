@@ -1,5 +1,6 @@
 import {
   DestroyContentElementMenuItem,
+  DestroyContentElementsMenuItem,
   DuplicateContentElementMenuItem,
   MoveContentElementMenuItem
 } from 'editor/models/contentElementMenuItems';
@@ -440,6 +441,63 @@ describe('ContentElementMenuItems', () => {
         id: 2
       });
       expect(entry.moveContentElement).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('DestroyContentElementsMenuItem', () => {
+    useFakeTranslations({
+      'pageflow_scrolled.editor.destroy_content_elements_menu_item.destroy': 'Delete elements',
+      'pageflow_scrolled.editor.destroy_content_elements_menu_item.confirm_destroy':
+        'Really delete these elements?'
+    });
+
+    function setup() {
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          contentElements: [{id: 1, typeName: 'textBlock'}, {id: 2, typeName: 'textBlock'}]
+        })
+      });
+      entry.deleteContentElements = jest.fn();
+
+      const items = [{id: 1}, {id: 2}];
+
+      return {entry, items, menuItem: new DestroyContentElementsMenuItem({}, {entry, items})};
+    }
+
+    it('has Delete elements label', () => {
+      const {menuItem} = setup();
+
+      expect(menuItem.get('label')).toBe('Delete elements');
+    });
+
+    it('calls deleteContentElements on entry when confirmed', () => {
+      const {entry, items, menuItem} = setup();
+      window.confirm = jest.fn().mockReturnValue(true);
+
+      menuItem.selected();
+
+      expect(window.confirm).toHaveBeenCalledWith('Really delete these elements?');
+      expect(entry.deleteContentElements).toHaveBeenCalledWith(items);
+    });
+
+    it('resets the selection when confirmed', () => {
+      const {entry, menuItem} = setup();
+      const listener = jest.fn();
+      entry.on('resetSelection', listener);
+      window.confirm = jest.fn().mockReturnValue(true);
+
+      menuItem.selected();
+
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it('does nothing when not confirmed', () => {
+      const {entry, menuItem} = setup();
+      window.confirm = jest.fn().mockReturnValue(false);
+
+      menuItem.selected();
+
+      expect(entry.deleteContentElements).not.toHaveBeenCalled();
     });
   });
 });

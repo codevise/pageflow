@@ -69,6 +69,22 @@ export const DestroyContentElementMenuItem = DestroyMenuItem.extend({
   }
 });
 
+export const DestroyContentElementsMenuItem = DestroyMenuItem.extend({
+  translationKeyPrefix: 'pageflow_scrolled.editor.destroy_content_elements_menu_item',
+
+  initialize(attributes, options) {
+    this.entry = options.entry;
+    this.items = options.items;
+
+    DestroyMenuItem.prototype.initialize.call(this, attributes, options);
+  },
+
+  destroyModel() {
+    this.entry.deleteContentElements(this.items);
+    this.entry.trigger('resetSelection');
+  }
+});
+
 export const MoveContentElementMenuItem = Backbone.Model.extend({
   initialize(attributes, options) {
     this.contentElement = options.contentElement;

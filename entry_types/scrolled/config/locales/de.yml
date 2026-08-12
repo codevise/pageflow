@@ -1307,6 +1307,12 @@ de:
           Es kann aus dem Papierkorb wiederhergestellt werden.
         destroy: Element löschen
         selection_label: Auswahl löschen
+      destroy_content_elements_menu_item:
+        confirm_destroy: |-
+          Ausgewählte Elemente wirklich löschen?
+
+          Sie können aus dem Papierkorb wiederhergestellt werden.
+        destroy: Elemente löschen
       duplicate_content_element_menu_item:
         label: Element duplizieren
         selection_label: Auswahl duplizieren
@@ -1784,6 +1790,10 @@ de:
         back: Kommentare
         tabs:
           activity: Letzte Aktivität
+      multi_selection_view:
+        tab:
+          one: 1 Element
+          other: "%{count} Elemente"
       new_thread_view:
         back: Kommentare
         tabs:

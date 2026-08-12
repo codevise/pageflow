@@ -1289,6 +1289,12 @@ en:
           It can be restored from the trash.
         destroy: Delete element
         selection_label: Delete selection
+      destroy_content_elements_menu_item:
+        confirm_destroy: |-
+          Really delete the selected elements?
+
+          They can be restored from the trash.
+        destroy: Delete elements
       duplicate_content_element_menu_item:
         label: Duplicate element
         selection_label: Duplicate selection
@@ -1764,6 +1770,10 @@ en:
         back: Comments
         tabs:
           activity: Latest activity
+      multi_selection_view:
+        tab:
+          one: 1 Element
+          other: "%{count} Elements"
       new_thread_view:
         back: Comments
         tabs:
