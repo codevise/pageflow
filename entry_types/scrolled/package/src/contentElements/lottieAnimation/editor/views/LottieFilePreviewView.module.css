@@ -1,0 +1,12 @@
+/* Scaled down to whatever height the overlay has left, just like the
+   image and video previews. The player keeps the animation centered
+   inside the canvas, so a clamped height only adds transparent space
+   left and right. */
+.canvas {
+  display: block;
+  width: 100%;
+  max-width: var(--preview-width, 100%);
+  max-height: var(--preview-max-height, none);
+  margin: 0 auto;
+  aspect-ratio: var(--preview-aspect-ratio, 1);
+}

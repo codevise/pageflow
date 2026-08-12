@@ -3,11 +3,13 @@ import {FileInputView} from 'pageflow/editor';
 import {SelectInputView, SeparatorView} from 'pageflow/ui';
 
 import {LottieFile} from './models/LottieFile';
+import {LottieFilePreviewView} from './views/LottieFilePreviewView';
 
 import pictogram from './pictogram.svg';
 
 editor.fileTypes.register('lottie_files', {
   model: LottieFile,
+  previewView: LottieFilePreviewView,
 
   // Browsers derive the content type of uploads from the file
   // extension. Since dotLottie is missing from their mappings, uploads

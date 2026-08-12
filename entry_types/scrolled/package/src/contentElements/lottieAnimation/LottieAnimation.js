@@ -1,6 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {DotLottie} from '@lottiefiles/dotlottie-web';
-import wasmUrl from '@lottiefiles/dotlottie-web/dotlottie-player.wasm';
 
 import {
   ContentElementBox,
@@ -12,10 +10,9 @@ import {
   useFileWithInlineRights
 } from 'pageflow-scrolled/frontend';
 
-import styles from './LottieAnimation.module.css';
+import {DotLottie} from './dotLottie';
 
-// Prevent the player from fetching its WebAssembly module from a CDN.
-DotLottie.setWasmUrl(wasmUrl);
+import styles from './LottieAnimation.module.css';
 
 export function LottieAnimation({configuration}) {
   const lottieFile = useFileWithInlineRights({

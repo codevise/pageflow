@@ -7,38 +7,14 @@ import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
 import {LottieAnimation} from 'contentElements/lottieAnimation/LottieAnimation';
 import {DotLottie} from '@lottiefiles/dotlottie-web';
 
+import {fakeDotLottiePlayers} from 'support/fakeDotLottiePlayers';
+
 jest.mock('@lottiefiles/dotlottie-web', () => ({
   DotLottie: Object.assign(jest.fn(), {setWasmUrl: jest.fn()})
 }));
 
 describe('LottieAnimation', () => {
-  let players;
-
-  beforeEach(() => {
-    players = [];
-
-    DotLottie.mockImplementation(function(config) {
-      const listeners = {};
-
-      Object.assign(this, {
-        config,
-        play: jest.fn(),
-        pause: jest.fn(),
-        destroy: jest.fn(),
-        animationSize: jest.fn(() => ({width: 200, height: 100})),
-
-        addEventListener(type, listener) {
-          listeners[type] = listener;
-        },
-
-        emit(type) {
-          act(() => listeners[type] && listeners[type]());
-        }
-      });
-
-      players.push(this);
-    });
-  });
+  const {players, setAnimationSize} = fakeDotLottiePlayers({act});
 
   function renderLottieAnimation({
     configuration = {id: 100},
@@ -134,6 +110,7 @@ describe('LottieAnimation', () => {
   });
 
   it('applies aspect ratio of animation once it has loaded', () => {
+    setAnimationSize({width: 200, height: 100});
     const {container} = renderLottieAnimation();
 
     players[0].emit('load');
