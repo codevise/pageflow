@@ -11,7 +11,8 @@ export const FileThumbnailView = Marionette.ItemView.extend({
   },
 
   ui: {
-    pictogram: '.pictogram'
+    pictogram: '.pictogram',
+    custom: '.file_thumbnail-custom'
   },
 
   onRender: function() {
@@ -37,11 +38,28 @@ export const FileThumbnailView = Marionette.ItemView.extend({
         .removeClass('empty')
         .toggleClass('always_picogram', !!this.model.thumbnailPictogram)
         .toggleClass('ready', this.model.isReady());
+
+      this.renderCustomThumbnail();
     }
     else {
       this.$el.css('background-image', '');
       this.$el.removeClass('ready');
       this.ui.pictogram.addClass('empty');
+    }
+  },
+
+  // File types can render their own thumbnail instead of the image
+  // pointed at by the thumbnail url. Only created once the file is
+  // ready, which is why this is retried on state changes.
+  renderCustomThumbnail: function() {
+    if (this.customThumbnailView) {
+      return;
+    }
+
+    this.customThumbnailView = this.model.createThumbnailView();
+
+    if (this.customThumbnailView) {
+      this.appendSubview(this.customThumbnailView, {to: this.ui.custom});
     }
   },
 
