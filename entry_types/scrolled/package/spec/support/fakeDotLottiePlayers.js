@@ -1,6 +1,7 @@
 import {DotLottie} from '@lottiefiles/dotlottie-web';
 
 const defaultAnimationSize = {width: 100, height: 100};
+const defaultTotalFrames = 10;
 
 // Records the players created by the code under test in the returned
 // `players` array and provides setters to control what those players
@@ -17,18 +18,22 @@ const defaultAnimationSize = {width: 100, height: 100};
 export function fakeDotLottiePlayers({act = fn => fn()} = {}) {
   const players = [];
   let animationSize;
+  let totalFrames;
 
   beforeEach(() => {
     players.length = 0;
     animationSize = defaultAnimationSize;
+    totalFrames = defaultTotalFrames;
 
     DotLottie.mockImplementation(function(config) {
       const listeners = {};
 
       Object.assign(this, {
         config,
+        totalFrames,
         play: jest.fn(),
         pause: jest.fn(),
+        setFrame: jest.fn(),
         destroy: jest.fn(),
         animationSize: jest.fn(() => animationSize),
 
@@ -50,6 +55,10 @@ export function fakeDotLottiePlayers({act = fn => fn()} = {}) {
 
     setAnimationSize(size) {
       animationSize = size;
+    },
+
+    setTotalFrames(count) {
+      totalFrames = count;
     }
   };
 }
