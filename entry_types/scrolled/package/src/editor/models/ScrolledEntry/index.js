@@ -24,7 +24,7 @@ import settingsPictogram from '../../views/images/settingsPictogram.svg';
 
 import {insertContentElement} from './insertContentElement';
 import {moveContentElement} from './moveContentElement';
-import {deleteContentElement} from './deleteContentElement';
+import {deleteContentElements} from './deleteContentElements';
 import {duplicateContentElement} from './duplicateContentElement';
 import {watchFileReferences} from './fileReferences';
 import {updateContentElement} from './updateContentElement';
@@ -181,7 +181,11 @@ export const ScrolledEntry = Entry.extend({
   },
 
   deleteContentElement(contentElement) {
-    deleteContentElement(this, contentElement);
+    deleteContentElements(this, [{id: contentElement.id}]);
+  },
+
+  deleteContentElements(items) {
+    deleteContentElements(this, items);
   },
 
   duplicateContentElement(contentElement) {
