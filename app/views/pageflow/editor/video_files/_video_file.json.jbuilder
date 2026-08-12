@@ -10,6 +10,9 @@ if video_file.state == 'encoded'
     json.src source[:high_src]
     json.type source[:type]
   end
+
+  # Smallest encoded version, sufficient for the preview in the editor.
+  json.preview_url(video_file.mp4_low.url)
 end
 
 json.poster_url(video_file.poster.url(:large)) if video_file.poster.present?

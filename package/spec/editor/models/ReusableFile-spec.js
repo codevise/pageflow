@@ -171,6 +171,42 @@ describe('ReusableFile', () => {
     });
   });
 
+  describe('#createPreviewView', () => {
+    function fileWithPreviewView(previewView, attributes) {
+      return new File({state: 'ready', ...attributes}, {
+        fileType: new FileType({
+          collectionName: 'image_files',
+          typeName: 'Pageflow::ImageFile',
+          model: File,
+          matchUpload: /^image/,
+          previewView
+        })
+      });
+    }
+
+    it('instantiates the view of the file type with the file', () => {
+      var PreviewView = Backbone.View.extend({});
+      var file = fileWithPreviewView(PreviewView);
+
+      var view = file.createPreviewView();
+
+      expect(view).toBeInstanceOf(PreviewView);
+      expect(view.model).toBe(file);
+    });
+
+    it('returns nothing for file types without preview view', () => {
+      var file = fileWithPreviewView(undefined);
+
+      expect(file.createPreviewView()).toBeFalsy();
+    });
+
+    it('returns nothing while the file is still processing', () => {
+      var file = fileWithPreviewView(Backbone.View.extend({}), {state: 'processing'});
+
+      expect(file.createPreviewView()).toBeFalsy();
+    });
+  });
+
   describe('#nestedFiles', () => {
     beforeEach(() => {
       testContext.textTrackFileType = new FileType({collectionName: 'text_track_files',

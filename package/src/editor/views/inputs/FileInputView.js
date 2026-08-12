@@ -58,7 +58,8 @@ export const FileInputView = Marionette.ItemView.extend({
         _.extend({
           id: this.model.getRoutableId ? this.model.getRoutableId() : this.model.id,
           attributeName: this.options.propertyName,
-          returnToTab: this.options.parentTab
+          returnToTab: this.options.parentTab,
+          label: this.labelText()
         }, this.options.fileSelectionHandlerOptions || {})
       );
 

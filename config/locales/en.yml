@@ -1266,6 +1266,11 @@ en:
             failed: Transfer to S3 failed.
             finished: Successfully transferred to S3.
             pending: Transfer to S3 pending.
+        singular:
+          audio_files: an audio file
+          image_files: an image
+          other_files: a file
+          video_files: a video
         tabs:
           audio_files: Audios
           image_files: Images
@@ -1383,7 +1388,8 @@ en:
         entry_preview:
           navigation_disabled_hint: Page changes not possible in phone preview.
         file_item:
-          cancel: Cancel
+          actions: Actions
+          cancel_upload: Cancel upload
           confirm: Confirm
           credits: Credits
           destroy: Delete
@@ -1401,7 +1407,7 @@ en:
         files:
           back: Back
         files_blank_slate:
-          no_files: There are no files of this type, yet. You can upload one to get started.
+          no_files: There are no files yet. You can upload one to get started.
         files_explorer:
           cancel: Cancel
           ok: Ok
@@ -1502,6 +1508,9 @@ en:
       title_loading_spinner:
         widget_type_info_box_text: This is a preview of the 'Title and Image' loading view. The animation runs while the page is loading.
       views:
+        audio_file_preview_view:
+          pause: Pause
+          play: Play
         chapter_item_view:
           chapter: Chapter
           unnamed: "(New chapter)"
@@ -1537,6 +1546,8 @@ en:
           scroll_hint: Scroll down to continue
         file_meta_data_item_value_view:
           blank: "-"
+        file_preview_progress_bar_view:
+          position: Playback position
         files_view:
           add: Add
           authenticating: Authenticating
@@ -1544,9 +1555,17 @@ en:
           importer:
             heading: Import files from
           reuse: Reuse
+          tabs:
+            files: Files
           upload: Upload
+        file_type_pills_view:
+          group_label: 'Filter by file type'
+          hint: 'Click a file type to show only its files. Hold Ctrl/Cmd to combine file types.'
         filtered_files_view:
-          banner_prefix: 'Active filter:'
+          any_file_type: 'a file'
+          cancel_selection: 'Cancel selection'
+          reset_filter: 'Reset filter'
+          select: 'Select %{name}'
           sort_button_label: 'Sort'
           sort:
             alphabetical: 'Alphabetical'
@@ -1581,6 +1600,9 @@ en:
         storylines_picker_view:
           label: Storyline
           without_parent_page: Without parent page
+        video_file_preview_view:
+          mute: Mute
+          unmute: Unmute
       widgets:
         attributes:
           media_loading_spinner:

@@ -2,30 +2,16 @@
   <span class="file_thumbnail"></span>
 </button>
 
-<span class="file_name"></span>
-<button class="select" type="button"><%= I18n.t('pageflow.editor.templates.file_item.select') %></button>
-
-<div class="actions">
-  <button class="settings" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.settings') %>"></button>
-  <button class="confirm" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.confirm') %>"></button>
-  <button class="retry" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.retry') %>"></button>
-  <button class="remove" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.destroy') %>"></button>
-  <button class="cancel" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.cancel') %>"></button>
-</div>
-
-<div class="details">
-  <ul class="file_stage_items"></ul>
-
-  <div class="file_meta_data">
-    <table cellpadding="0" cellspacing="0">
-      <tbody class="attributes">
-      </tbody>
-      <tbody class="downloads">
-        <tr>
-          <th><%= I18n.t('pageflow.editor.templates.file_item.source') %></th>
-          <td><a class="original" href="#" download target="_blank"><%= I18n.t('pageflow.editor.templates.file_item.download') %></a></td>
-        </tr>
-      <tbody>
-    </table>
+<div class="file_item-info">
+  <div class="actions">
+    <% if (data.selectable) { %>
+      <button class="select" type="button"><%= I18n.t('pageflow.editor.templates.file_item.select') %></button>
+    <% } else { %>
+      <button class="confirm" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.confirm') %>"></button>
+      <button class="retry" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.retry') %>"></button>
+      <button class="settings" type="button" title="<%= I18n.t('pageflow.editor.templates.file_item.settings') %>"></button>
+    <% } %>
   </div>
+
+  <span class="file_name"></span>
 </div>

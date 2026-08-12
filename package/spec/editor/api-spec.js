@@ -41,6 +41,18 @@ describe('pageflow.EditorApi', () => {
       );
     });
 
+    it('navigates to files route without collection name if no file type is given', () => {
+      var router = fakeRouter();
+      var api = new EditorApi({router: router});
+
+      api.selectFile(null, 'some_handler');
+
+      expect(router.navigate).toHaveBeenCalledWith(
+        expect.stringContaining('/files?handler=some_handler'),
+        {trigger: true}
+      );
+    });
+
     it('passes payload as serialized string', () => {
       var router = fakeRouter();
       var api = new EditorApi({router: router});

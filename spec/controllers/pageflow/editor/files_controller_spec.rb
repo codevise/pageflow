@@ -62,6 +62,21 @@ module Pageflow
         )
       end
 
+      it 'includes created at timestamp' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        file = create(:text_track_file, used_in: entry.draft)
+
+        sign_in(user, scope: :user)
+        get(:index,
+            params: {entry_id: entry.id, collection_name: 'text_track_files'},
+            format: 'json')
+
+        expect(response.body).to include_json([
+                                                {created_at: file.created_at.utc.iso8601(0)}
+                                              ])
+      end
+
       it 'requires user to be signed in' do
         entry = create(:entry)
         get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')

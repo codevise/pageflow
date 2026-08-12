@@ -1,0 +1,73 @@
+.file_type_pills {
+  &-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: space(1);
+    padding: space(2) 0;
+  }
+
+  &-pill {
+    cursor: pointer;
+
+    // Clicking the pill of the only file type present would have nothing
+    // to filter down to.
+    &.only_type {
+      cursor: default;
+    }
+
+    color: var(--ui-on-surface-color-light);
+    padding: space(1) space(2);
+    border: solid 1px var(--ui-on-surface-color-lighter);
+    border-radius: rounded(full);
+    background-color: transparent;
+    line-height: inherit;
+
+    &.active {
+      color: var(--ui-on-primary-color);
+      border-color: var(--ui-primary-color);
+      background-color: var(--ui-primary-color);
+
+      &.spinner:before {
+        color: var(--ui-on-primary-color);
+      }
+    }
+
+    &.spinner {
+      padding-left: 27px;
+      @include background-icon-left($color: var(--ui-primary-color));
+      @include background-icon-animation(blink);
+      @include up-bold-icon;
+    }
+  }
+
+  &-add,
+  &-remove {
+    display: none;
+    margin-left: space(1);
+    font-size: 0.75em;
+  }
+
+  &-remove {
+    @include cancel-icon;
+  }
+
+  &-add {
+    @include plus-circled-icon;
+  }
+
+  // Clicking the only active pill clears the selection even without the
+  // modifier key, so its indicator does not wait for the pointer.
+  &-pill.only_active .file_type_pills-remove {
+    display: inline;
+  }
+
+  // Indicators would otherwise flash whenever the modifier key takes part in
+  // an unrelated shortcut, like selecting all text in the search field.
+  &-group:hover,
+  &-group:focus-within {
+    .file_type_pills-pill.removable .file_type_pills-remove,
+    .file_type_pills-pill.addable .file_type_pills-add {
+      display: inline;
+    }
+  }
+}

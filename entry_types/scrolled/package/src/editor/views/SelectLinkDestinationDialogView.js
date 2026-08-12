@@ -2,7 +2,7 @@ import I18n from 'i18n-js';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 
-import {app, editor, DropDownButtonView} from 'pageflow/editor';
+import {app, editor} from 'pageflow/editor';
 import {cssModulesUtils, CheckBoxInputView, TextInputView} from 'pageflow/ui';
 import {utils} from 'pageflow-scrolled/frontend';
 
@@ -36,7 +36,10 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
               ${I18n.t('pageflow_scrolled.editor.select_link_destination.select_file_description')}
             </div>
           </div>
-          <div class="${styles.fileTypeButtonContainer}">
+          <div>
+            <button type="button" class="${styles.selectFileButton}">
+              ${I18n.t('pageflow_scrolled.editor.select_link_destination.select_in_sidebar')}
+            </button>
           </div>
         </div>
 
@@ -58,7 +61,7 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
     </div>
   `,
 
-  ui: cssModulesUtils.ui(styles, 'urlContainer', 'outlineContainer', 'fileTypeButtonContainer'),
+  ui: cssModulesUtils.ui(styles, 'urlContainer', 'outlineContainer'),
 
   mixins: [dialogView],
 
@@ -66,6 +69,10 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
     'submit urlContainer': function(event) {
       event.preventDefault();
       this.createExternalLink();
+    },
+
+    'click selectFileButton': function() {
+      this.selectFile();
     }
   }),
 
@@ -82,6 +89,24 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
     }
 
     this.options.onSelect(link);
+    this.close();
+  },
+
+  selectFile() {
+    currentFileSelectionCallback = (file) => {
+      this.options.onSelect({
+        href: {
+          file: {
+            permaId: file.get('perma_id'),
+            collectionName: utils.camelize(file.fileType().collectionName)
+          }
+        }
+      });
+    };
+
+    editor.selectFile(null, 'linkDestination', {
+      label: I18n.t('pageflow_scrolled.editor.select_link_destination.selection_label')
+    });
     this.close();
   },
 
@@ -106,39 +131,6 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
       })).el
     );
 
-    this.ui.fileTypeButtonContainer.append(
-      this.subview(new DropDownButtonView({
-        label: I18n.t('pageflow_scrolled.editor.select_link_destination.select_in_sidebar'),
-        buttonClassName: styles.fileTypeButton,
-        alignMenu: 'right',
-        items: new FileTypeItemCollection(
-          this
-            .options.fileTypes
-            .filter(fileType => fileType.topLevelType)
-            .map(fileType => ({
-              label: I18n.t(`pageflow.editor.file_types.${fileType.collectionName}.name.one`),
-              collectionName: fileType.collectionName
-            })),
-          {
-          onSelect: (collectionName) => {
-            currentFileSelectionCallback = (file) => {
-              this.options.onSelect({
-                href: {
-                  file: {
-                    permaId: file.get('perma_id'),
-                    collectionName: utils.camelize(file.fileType().collectionName)
-                  }
-                }
-              })
-            };
-
-            editor.selectFile({defaultTab: collectionName}, 'linkDestination', {});
-            this.close();
-          }
-        })
-      })).el
-    );
-
     this.ui.outlineContainer.append(
       this.subview(new SelectableEntryOutlineView({
         entry: this.options.entry,
@@ -157,10 +149,7 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
 });
 
 SelectLinkDestinationDialogView.show = function(options) {
-  const view = new SelectLinkDestinationDialogView({
-    fileTypes: editor.fileTypes,
-    ...options
-  });
+  const view = new SelectLinkDestinationDialogView(options);
   app.dialogRegion.show(view.render());
 };
 
@@ -180,17 +169,3 @@ editor.registerFileSelectionHandler(
   'linkDestination',
   FileSelectionHandler
 );
-
-const FileTypeItemModel = Backbone.Model.extend({
-  initialize(attributes, options) {
-    this.onSelect = options.onSelect;
-  },
-
-  selected() {
-    this.onSelect(this.get('collectionName'));
-  }
-});
-
-const FileTypeItemCollection = Backbone.Collection.extend({
-  model: FileTypeItemModel
-});

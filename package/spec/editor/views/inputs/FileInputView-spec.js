@@ -29,6 +29,29 @@ describe('FileInputView', () => {
     expect(getByText('image.png')).not.toBeNull();
   });
 
+  it('passes label along when requesting a file selection', () => {
+    const fixture = support.factories.imageFilesFixture({});
+    const model = new Configuration({});
+    model.parent = new Backbone.Model({id: 10});
+    jest.spyOn(editor, 'selectFile').mockImplementation(() => {});
+
+    const view = new FileInputView({
+      collection: fixture.imageFiles,
+      model: model,
+      propertyName: 'file_id',
+      label: 'Background image'
+    });
+
+    render(view);
+    view.$el.find('.choose').click();
+
+    expect(editor.selectFile).toHaveBeenCalledWith(
+      expect.anything(),
+      'pageConfiguration',
+      expect.objectContaining({label: 'Background image'})
+    );
+  });
+
   it('can render button to edit background position', () => {
     var fixture = support.factories.videoFileWithTextTrackFiles({
       videoFileAttributes: {perma_id: 5, file_name: 'video.mp4', state: 'encoded'}

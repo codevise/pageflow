@@ -1274,6 +1274,11 @@ de:
             failed: Fehler beim übertragen zu S3.
             finished: Erfolgreich zu S3 übertragen.
             pending: Noch nicht zu S3 übertragen.
+        singular:
+          audio_files: Audio-Datei
+          image_files: Bild
+          other_files: Datei
+          video_files: Video
         tabs:
           audio_files: Audios
           image_files: Bilder
@@ -1391,7 +1396,8 @@ de:
         entry_preview:
           navigation_disabled_hint: Seitenwechsel sind innerhalb der Phone Vorschau nicht möglich.
         file_item:
-          cancel: Abbrechen
+          actions: Aktionen
+          cancel_upload: Upload abbrechen
           confirm: Überprüfen und bestätigen
           credits: Rechte
           destroy: Löschen
@@ -1409,7 +1415,7 @@ de:
         files:
           back: Zurück
         files_blank_slate:
-          no_files: Es wurden noch keine Dateien dieses Typs hochgeladen.
+          no_files: Es wurden noch keine Dateien hochgeladen.
         files_explorer:
           cancel: Abbrechen
           ok: Ok
@@ -1510,6 +1516,9 @@ de:
       title_loading_spinner:
         widget_type_info_box_text: Dies ist eine Vorschau der 'Titel und Bild'-Lade-Ansicht. Die Animation läuft ab, während der Beitrag lädt.
       views:
+        audio_file_preview_view:
+          pause: Pause
+          play: Abspielen
         chapter_item_view:
           chapter: Kapitel
           unnamed: "(Unbenannt)"
@@ -1545,6 +1554,8 @@ de:
           scroll_hint: Scrollen, um weiterzulesen
         file_meta_data_item_value_view:
           blank: "-"
+        file_preview_progress_bar_view:
+          position: Wiedergabeposition
         files_view:
           add: Hinzufügen
           authenticating: Authentifizieren
@@ -1552,9 +1563,17 @@ de:
           importer:
             heading: Dateien importieren von
           reuse: Wiederverwenden
+          tabs:
+            files: Dateien
           upload: Hochladen
+        file_type_pills_view:
+          group_label: 'Nach Dateityp filtern'
+          hint: 'Dateityp anklicken, um nur dessen Dateien anzuzeigen. Mit Strg/Cmd Dateitypen kombinieren.'
         filtered_files_view:
-          banner_prefix: 'Aktiver Filter:'
+          any_file_type: 'Datei'
+          cancel_selection: 'Auswahl abbrechen'
+          reset_filter: 'Filter zurücksetzen'
+          select: '%{name} auswählen'
           sort_button_label: 'Sortieren'
           sort:
             alphabetical: 'Alphabetisch'
@@ -1589,6 +1608,9 @@ de:
         storylines_picker_view:
           label: Erzählstrang
           without_parent_page: Ohne übergeordnete Seite
+        video_file_preview_view:
+          mute: Ton ausschalten
+          unmute: Ton einschalten
       widgets:
         attributes:
           media_loading_spinner:

@@ -30,7 +30,7 @@ export const FileProcessingStateDisplayView = Marionette.View.extend({
 
   _update: function() {
     if (this.fileStagesView) {
-      this.stopListening(this.file.unfinishedStages);
+      this.stopListening(this.file.currentStages);
 
       this.fileStagesView.close();
       this.fileStagesView = null;
@@ -39,11 +39,11 @@ export const FileProcessingStateDisplayView = Marionette.View.extend({
     this.file = this._getFile();
 
     if (this.file) {
-      this.listenTo(this.file.unfinishedStages, 'add remove', this._updateClassNames);
+      this.listenTo(this.file.currentStages, 'add remove', this._updateClassNames);
 
       this.fileStagesView = new CollectionView({
         tagName: 'ul',
-        collection: this.file.unfinishedStages,
+        collection: this.file.currentStages,
         itemViewConstructor: FileStageItemView,
         itemViewOptions: {
           standAlone: true
@@ -61,7 +61,7 @@ export const FileProcessingStateDisplayView = Marionette.View.extend({
   },
 
   _hasItems: function() {
-    return this.file && this.file.unfinishedStages.length;
+    return this.file && this.file.currentStages.length;
   },
 
   _getFile: function() {

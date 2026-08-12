@@ -111,6 +111,19 @@ module Pageflow
         )
       end
 
+      it 'renders created at timestamps of files' do
+        entry = create(:published_entry)
+        text_track_file = create(:text_track_file, used_in: entry.revision)
+
+        result = render(helper, entry)
+
+        expect(result).to include_json(
+          text_track_files: [
+            {created_at: text_track_file.created_at.utc.iso8601(0)}
+          ]
+        )
+      end
+
       it 'renders display names of files' do
         entry = create(:published_entry)
         video_file = create(:video_file, file_name: 'generated-name.mp4')

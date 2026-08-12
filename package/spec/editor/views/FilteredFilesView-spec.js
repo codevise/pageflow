@@ -1,4 +1,4 @@
-import {FilteredFilesView, editor} from 'pageflow/editor';
+import {FileTypeSelection, FilteredFilesView, editor} from 'pageflow/editor';
 import * as support from '$support';
 import {waitFor} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
@@ -18,9 +18,17 @@ describe('FilteredFilesView', () => {
     'pageflow.editor.templates.list_search_field.placeholder': 'Filter files',
     'pageflow.editor.templates.list_search_field.hint': 'Type / to search',
     'pageflow.editor.templates.list_search_field.reset': 'Clear name filter',
+    'pageflow.editor.files.singular.image_files': 'an image',
+    'pageflow.editor.views.filtered_files_view.any_file_type': 'a file',
+    'pageflow.editor.views.filtered_files_view.cancel_selection': 'Cancel selection',
+    'pageflow.editor.views.filtered_files_view.reset_filter': 'Reset filter',
+    'pageflow.editor.views.filtered_files_view.select': 'Select %{name}',
     'pageflow.editor.views.filtered_files_view.sort_button_label': 'Sort',
     'pageflow.editor.views.filtered_files_view.sort.alphabetical': 'Alphabetical',
-    'pageflow.editor.views.filtered_files_view.sort.most_recent': 'Most recent'
+    'pageflow.editor.views.filtered_files_view.sort.most_recent': 'Most recent',
+    'pageflow.editor.files.tabs.image_files': 'Images',
+    'pageflow.editor.files.tabs.video_files': 'Videos',
+    'pageflow.editor.views.file_type_pills_view.group_label': 'Filter by file type'
   });
 
   it('uses entry type-specific translations if provided', () => {
@@ -31,13 +39,14 @@ describe('FilteredFilesView', () => {
     const entry = f.entry({}, {fileTypes, filesAttributes: {}});
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType,
+      fileTypes: [fileType],
       filterName: 'with_projection'
     });
 
     const {getByText} = render(view);
 
-    expect(getByText('Entry Type Filter')).not.toBeNull();
+    expect(view.el.querySelector('.filtered_files-banner'))
+      .toHaveTextContent('Select Entry Type Filter');
     expect(getByText('Entry Type Blank')).not.toBeNull();
   });
 
@@ -49,13 +58,14 @@ describe('FilteredFilesView', () => {
     const entry = f.entry({}, {fileTypes, filesAttributes: {}});
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType,
+      fileTypes: [fileType],
       filterName: 'with_projection'
     });
 
     const {getByText} = render(view);
 
-    expect(getByText('Fallback Filter')).not.toBeNull();
+    expect(view.el.querySelector('.filtered_files-banner'))
+      .toHaveTextContent('Select Fallback Filter');
     expect(getByText('Fallback Blank')).not.toBeNull();
   });
 
@@ -78,7 +88,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -101,7 +111,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType,
+      fileTypes: [fileType],
       selectionHandler
     });
 
@@ -125,7 +135,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -152,7 +162,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -175,7 +185,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -202,7 +212,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -224,7 +234,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -255,7 +265,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType,
+      fileTypes: [fileType],
       selectionHandler
     });
 
@@ -277,7 +287,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const {getByLabelText} = render(view);
@@ -300,7 +310,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -341,7 +351,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType,
+      fileTypes: [fileType],
       filterName: 'with_custom_field'
     });
 
@@ -354,6 +364,340 @@ describe('FilteredFilesView', () => {
     const names = getAllByText(/\.png$/).map(el => el.textContent);
 
     expect(names).toEqual(['some-image.png']);
+  });
+
+  it('renders files of all given file types', () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'image.png'}],
+        video_files: [{id: 1, display_name: 'video.mp4'}]
+      }
+    });
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ]
+    });
+
+    const {getAllByText} = render(view);
+
+    const names = getAllByText(/\.(png|mp4)$/).map(el => el.textContent);
+
+    expect(names).toEqual(['image.png', 'video.mp4']);
+  });
+
+  it('sorts files of different types together', () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'b.png'}],
+        video_files: [{id: 2, display_name: 'a.mp4'}]
+      }
+    });
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ]
+    });
+
+    const {getAllByText} = render(view);
+
+    const names = getAllByText(/\.(png|mp4)$/).map(el => el.textContent);
+
+    expect(names).toEqual(['a.mp4', 'b.png']);
+  });
+
+  it('renders meta data attributes of the file type of each file', async () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType({metaDataAttributes: ['dimension']});
+      this.withVideoFileType({metaDataAttributes: ['duration']});
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'image.png', dimension: '200x100px'}],
+        video_files: [{id: 1, display_name: 'video.mp4', duration: '2:30'}]
+      }
+    });
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ]
+    });
+
+    jest.useFakeTimers();
+    const user = userEvent.setup({advanceTimers: jest.advanceTimersByTime});
+
+    const {getByText} = render(view);
+
+    // The overlay holding the meta data is only built on demand, after
+    // the pointer has rested on the thumbnail for a moment.
+    for (const thumbnail of view.$el.find('.file_thumbnail_button').toArray()) {
+      await user.hover(thumbnail);
+      jest.runOnlyPendingTimers();
+    }
+
+    jest.useRealTimers();
+
+    expect(getByText('200x100px')).not.toBeNull();
+    expect(getByText('2:30')).not.toBeNull();
+  });
+
+  it('renders only files of selected file types', () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'image.png'}],
+        video_files: [{id: 1, display_name: 'video.mp4'}]
+      }
+    });
+    const fileTypeSelection = new FileTypeSelection();
+    fileTypeSelection.toggle('video_files');
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ],
+      fileTypeSelection: fileTypeSelection
+    });
+
+    const {getAllByText} = render(view);
+
+    const names = getAllByText(/\.(png|mp4)$/).map(el => el.textContent);
+
+    expect(names).toEqual(['video.mp4']);
+  });
+
+  it('updates list when file type selection changes', () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'image.png'}],
+        video_files: [{id: 1, display_name: 'video.mp4'}]
+      }
+    });
+    const fileTypeSelection = new FileTypeSelection();
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ],
+      fileTypeSelection: fileTypeSelection
+    });
+
+    const {getAllByText} = render(view);
+    fileTypeSelection.toggle('image_files');
+
+    const names = getAllByText(/\.(png|mp4)$/).map(el => el.textContent);
+
+    expect(names).toEqual(['image.png']);
+  });
+
+  it('renders file type pills below search field', () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'image.png'}],
+        video_files: [{id: 1, display_name: 'video.mp4'}]
+      }
+    });
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ],
+      fileTypeSelection: new FileTypeSelection()
+    });
+
+    const {getByRole, getByLabelText} = render(view);
+    const searchField = getByLabelText('Filter files');
+    const pills = getByRole('group', {name: 'Filter by file type'});
+
+    expect(searchField.compareDocumentPosition(pills) & Node.DOCUMENT_POSITION_FOLLOWING)
+      .toBeTruthy();
+  });
+
+  describe('banner', () => {
+    const selectionHandler = {
+      call: jest.fn(),
+      getReferer: () => '/'
+    };
+
+    function setup(options) {
+      editor.registerEntryType('other');
+
+      const fileTypes = f.fileTypes(function() {
+        this.withImageFileType({filters: [{name: 'with_projection', matches: () => true}]});
+      });
+      const entry = f.entry({}, {fileTypes, filesAttributes: {}});
+
+      const view = new FilteredFilesView({
+        entry: entry,
+        fileTypes: [fileTypes.first()],
+        ...options
+      });
+
+      render(view);
+
+      return view.el.querySelector('.filtered_files-banner');
+    }
+
+    function dismissButton(banner) {
+      return banner.querySelector('.filtered_files-banner_dismiss');
+    }
+
+    it('is not rendered while just browsing files', () => {
+      expect(setup()).toBeNull();
+    });
+
+    it('names the file type being selected', () => {
+      const banner = setup({
+        selectionHandler,
+        selectionFileType: {collectionName: 'image_files'}
+      });
+
+      expect(banner).toHaveTextContent('Select an image');
+    });
+
+    it('prefers the label passed by the view requesting the selection', () => {
+      const banner = setup({
+        selectionHandler: {...selectionHandler, selectionLabel: 'a background image'},
+        selectionFileType: {collectionName: 'image_files'}
+      });
+
+      expect(banner).toHaveTextContent('Select a background image');
+    });
+
+    it('falls back to naming no file type in particular', () => {
+      const banner = setup({selectionHandler});
+
+      expect(banner).toHaveTextContent('Select a file');
+    });
+
+    it('names the active filter', () => {
+      const banner = setup({
+        selectionHandler,
+        selectionFileType: {collectionName: 'image_files'},
+        filterName: 'with_projection'
+      });
+
+      expect(banner).toHaveTextContent('Select Fallback Filter');
+    });
+
+    it('emphasizes the name inside the sentence', () => {
+      const banner = setup({
+        selectionHandler,
+        selectionFileType: {collectionName: 'image_files'}
+      });
+
+      expect(banner.querySelector('.filtered_files-banner_name')).toHaveTextContent('an image');
+    });
+
+    it('stays in the files list when dismissed', () => {
+      const banner = setup({
+        selectionHandler: {...selectionHandler, getReferer: () => '/some/referer'}
+      });
+
+      dismissButton(banner).click();
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/files', {trigger: true});
+      expect(dismissButton(banner)).toHaveAttribute('title', 'Cancel selection');
+    });
+
+    it('drops the filter when dismissed while not selecting', () => {
+      const banner = setup({filterName: 'with_projection'});
+
+      dismissButton(banner).click();
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/files', {trigger: true});
+      expect(dismissButton(banner)).toHaveAttribute('title', 'Reset filter');
+    });
+  });
+
+  it('keeps file type pills in the header which sticks while scrolling', () => {
+    const fileTypes = f.fileTypes(function() {
+      this.withImageFileType();
+      this.withVideoFileType();
+      this.withTextTrackFileType();
+    });
+    const entry = f.entry({}, {
+      fileTypes,
+      filesAttributes: {
+        image_files: [{id: 1, display_name: 'image.png'}],
+        video_files: [{id: 1, display_name: 'video.mp4'}]
+      }
+    });
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [
+        fileTypes.findByCollectionName('image_files'),
+        fileTypes.findByCollectionName('video_files')
+      ],
+      fileTypeSelection: new FileTypeSelection()
+    });
+
+    const {getByRole, getByLabelText} = render(view);
+    const header = view.el.querySelector('.filtered_files-header');
+
+    expect(header).toContainElement(getByLabelText('Filter files'));
+    expect(header).toContainElement(getByRole('group', {name: 'Filter by file type'}));
+  });
+
+  it('renders no file type pills without file type selection', () => {
+    const fileTypes = f.fileTypes(function() { this.withImageFileType(); });
+    const entry = f.entry({}, {fileTypes, filesAttributes: {}});
+
+    const view = new FilteredFilesView({
+      entry: entry,
+      fileTypes: [fileTypes.first()]
+    });
+
+    const {queryByRole} = render(view);
+
+    expect(queryByRole('group', {name: 'Filter by file type'})).toBeNull();
   });
 
   it('changes sort order when selecting item from drop down', async () => {
@@ -371,7 +715,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const user = userEvent.setup();
@@ -406,7 +750,7 @@ describe('FilteredFilesView', () => {
 
     const view = new FilteredFilesView({
       entry: entry,
-      fileType: fileType
+      fileTypes: [fileType]
     });
 
     const {getAllByText} = render(view);

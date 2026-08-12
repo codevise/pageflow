@@ -21,6 +21,7 @@ export const FileType = Object.extend({
     this.filters = options.filters || [];
     this.noExtendedFileRights = options.noExtendedFileRights;
     this.metaDataAttributes = options.metaDataAttributes || [];
+    this.previewView = options.previewView;
 
     if (typeof options.matchUpload === 'function') {
       this.matchUpload = options.matchUpload;

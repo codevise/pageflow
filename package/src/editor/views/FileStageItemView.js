@@ -11,7 +11,11 @@ export const FileStageItemView = Marionette.ItemView.extend({
   ui: {
     description: '.description',
     percent: '.percent',
-    errorMessage: '.error_message'
+    errorMessage: '.error_message',
+
+    spinner: '.file_stage_item-spinner',
+    alert: '.file_stage_item-alert',
+    bell: '.file_stage_item-bell'
   },
 
   modelEvents: {
@@ -49,6 +53,17 @@ export const FileStageItemView = Marionette.ItemView.extend({
     this.$el.toggleClass('finished', this.model.get('finished'));
     this.$el.toggleClass('failed', this.model.get('failed'));
     this.$el.toggleClass('action_required', this.model.get('action_required'));
+
+    this.updateIcon();
+  },
+
+  updateIcon: function() {
+    var failed = !!this.model.get('failed');
+    var actionRequired = !!this.model.get('action_required');
+
+    this.ui.spinner.toggle(!failed && !actionRequired);
+    this.ui.alert.toggle(failed);
+    this.ui.bell.toggle(actionRequired);
   },
 
   _translatedErrorMessage: function() {

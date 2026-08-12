@@ -1,0 +1,138 @@
+.file_preview {
+  display: block;
+  position: relative;
+
+  .is_hidden {
+    display: none;
+  }
+
+  // Scaled down to whatever height the overlay has left rather than
+  // being cropped.
+  img,
+  video {
+    display: block;
+    width: 100%;
+    max-width: var(--preview-width, 100%);
+    height: auto;
+    max-height: var(--preview-max-height, none);
+    margin: 0 auto;
+    object-fit: contain;
+  }
+
+  video {
+    cursor: pointer;
+  }
+
+  &-audio {
+    display: flex;
+    align-items: center;
+    gap: space(2);
+    padding: space(2);
+    color: var(--ui-primary-color);
+  }
+
+  &-play_toggle {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  &-play,
+  &-pause {
+    display: block;
+    width: space(6);
+    height: space(6);
+  }
+
+  // Styling the parts of a range input consistently across browsers is
+  // more trouble than it is worth. The bar below paints track and
+  // progress instead, while the input above only handles interaction.
+  &-progress {
+    position: relative;
+    flex: 1;
+    height: space(2);
+    border-radius: rounded(full);
+    background-color: var(--ui-on-surface-color-lightest);
+
+    &:focus-within {
+      box-shadow: 0 0 0 2px var(--ui-button-focus-ring-color);
+    }
+
+    // Taller than the bar to be easier to hit.
+    input {
+      position: absolute;
+      top: space(-1.5);
+      left: 0;
+      width: 100%;
+      height: space(5);
+      border-radius: inherit;
+      background-color: transparent;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+
+      // The bar itself indicates focus, tightly around its own height.
+      &:focus {
+        outline: none;
+      }
+    }
+
+    // A thumb of its own would only offset how clicks map to positions.
+    input::-webkit-slider-thumb {
+      width: 0;
+      -webkit-appearance: none;
+    }
+
+    input::-moz-range-thumb {
+      width: 0;
+      border: 0;
+    }
+
+    input::-moz-range-track,
+    input::-moz-range-progress {
+      background-color: transparent;
+    }
+
+    div {
+      width: var(--progress, 0%);
+      height: 100%;
+      border-radius: inherit;
+      background-color: currentColor;
+    }
+  }
+
+  &-controls {
+    position: absolute;
+    right: space(2);
+    bottom: space(2);
+    left: space(2);
+    display: flex;
+    align-items: center;
+    gap: space(2);
+    color: var(--ui-on-primary-color);
+
+    // Legible on top of both bright and dark videos.
+    .file_preview-progress {
+      background-color: var(--ui-backdrop-color);
+    }
+  }
+
+  &-mute_toggle {
+    padding: space(1.5);
+    border: none;
+    border-radius: rounded(full);
+    background-color: var(--ui-backdrop-color);
+    color: var(--ui-on-primary-color);
+    cursor: pointer;
+
+    svg {
+      display: block;
+      width: space(4);
+      height: space(4);
+    }
+  }
+}

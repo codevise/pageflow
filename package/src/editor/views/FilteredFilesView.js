@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import Backbone from 'backbone';
@@ -7,7 +8,10 @@ import {DropDownButtonView} from './DropDownButtonView';
 
 import {editor} from '../base';
 
+import {CombinedFilesCollection} from '../collections/CombinedFilesCollection';
+import {SubsetCollection} from '../collections/SubsetCollection';
 import {FileItemView} from './FileItemView';
+import {FileTypePillsView} from './FileTypePillsView';
 import {Search} from '../models/Search';
 import {ListHighlight} from '../models/ListHighlight';
 import {ListSearchFieldView} from './ListSearchFieldView';
@@ -22,14 +26,19 @@ export const FilteredFilesView = Marionette.ItemView.extend({
 
   ui: {
     banner: '.filtered_files-banner',
-    filterName: '.filtered_files-filter_name',
+    bannerText: '.filtered_files-banner_text',
+    bannerDismiss: '.filtered_files-banner_dismiss',
+    header: '.filtered_files-header',
     filterBar: '.filtered_files-filter_bar',
     sort: '.filtered_files-sort',
   },
 
   events: {
-    'click .filtered_files-reset_filter': function() {
-      editor.navigate('/files/' + this.options.fileType.collectionName, {trigger: true});
+    // Leaves selection mode and any named filter behind, but stays in
+    // the files list. Returning to where the selection was requested
+    // from is what the back button is for.
+    'click .filtered_files-banner_dismiss': function() {
+      editor.navigate('/files', {trigger: true});
       return false;
     }
   },
@@ -40,13 +49,33 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       storageKey: 'pageflow.filtered_files.sort_order'
     });
 
-    var collection = this.options.entry.getFileCollection(this.options.fileType);
+    var collections = this.options.fileTypes.map(function(fileType) {
+      return this.options.entry.getFileCollection(fileType);
+    }, this);
 
     if (this.options.filterName) {
-      collection = this.filteredCollection = collection.withFilter(this.options.filterName);
+      this.filteredCollections = collections.map(function(collection) {
+        return collection.withFilter(this.options.filterName);
+      }, this);
     }
 
-    this.searchFilteredCollection = this.search.applyTo(collection);
+    this.combinedFiles = new CombinedFilesCollection({
+      collections: this.filteredCollections || collections
+    });
+
+    if (this.options.fileTypeSelection) {
+      this.selectedFiles = new SubsetCollection({
+        parent: this.combinedFiles,
+        filter: this.matchesFileTypeSelection.bind(this)
+      });
+
+      this.listenTo(this.options.fileTypeSelection, 'change:collectionNames', function() {
+        this.selectedFiles.updateFilter(this.matchesFileTypeSelection.bind(this));
+      });
+    }
+
+    this.searchFilteredCollection = this.search.applyTo(this.selectedFiles ||
+                                                       this.combinedFiles);
 
     if (this.options.selectionHandler) {
       this.listHighlight = new ListHighlight({}, {collection: this.searchFilteredCollection});
@@ -54,18 +83,69 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   },
 
   onRender: function() {
-    this.renderNamedFilter();
+    this.renderBanner();
     this.renderSearchField();
     this.renderSortMenu();
+    this.renderFileTypePills();
     this.renderCollectionView();
   },
 
-  renderNamedFilter: function() {
-    this.ui.banner.toggle(!!this.options.filterName);
-
-    if (this.options.filterName) {
-      this.ui.filterName.text(this.filterTranslation('name'));
+  // Being in selection mode is easy to overlook once the list fills the
+  // sidebar, so the banner spells out what is being looked for.
+  renderBanner: function() {
+    // Rendering it hidden is not an option, since jQuery would set an
+    // inline display of block on the still detached element, which the
+    // flex layout of the banner would not survive.
+    if (!this.options.filterName && !this.options.selectionHandler) {
+      return this.ui.banner.remove();
     }
+
+    var dismissLabel = this.bannerTranslation(this.options.selectionHandler ?
+                                              'cancel_selection' :
+                                              'reset_filter');
+
+    this.renderBannerText();
+    this.ui.bannerDismiss.attr({title: dismissLabel, 'aria-label': dismissLabel});
+  },
+
+  // Emphasizes the name inside the sentence without requiring markup in
+  // the translation.
+  renderBannerText: function() {
+    var placeholder = '\u0000';
+    var parts = this.bannerTranslation('select', {name: placeholder}).split(placeholder);
+
+    this.ui.bannerText.empty()
+        .append(document.createTextNode(parts[0]))
+        .append($('<span />', {class: 'filtered_files-banner_name',
+                               text: this.selectionName()}))
+        .append(document.createTextNode(parts[1] || ''));
+  },
+
+  // The view which requested the selection knows best what the file
+  // will be used for. A named filter is only ever requested for a
+  // single file type and its name already says which.
+  selectionName: function() {
+    return this.options.selectionHandler?.selectionLabel ||
+           (this.options.filterName && this.filterTranslation('name')) ||
+           this.fileTypeName() ||
+           this.bannerTranslation('any_file_type');
+  },
+
+  fileTypeName: function() {
+    if (!this.options.selectionFileType) {
+      return;
+    }
+
+    var collectionName = this.options.selectionFileType.collectionName;
+
+    return i18nUtils.findTranslation([
+      'pageflow.editor.files.singular.' + collectionName,
+      'pageflow.editor.files.tabs.' + collectionName
+    ]);
+  },
+
+  bannerTranslation: function(keyName, options) {
+    return I18n.t('pageflow.editor.views.filtered_files_view.' + keyName, options);
   },
 
   renderSearchField() {
@@ -89,6 +169,18 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     }), {to: this.ui.filterBar});
   },
 
+  renderFileTypePills: function() {
+    if (!this.options.fileTypeSelection) {
+      return;
+    }
+
+    this.appendSubview(new FileTypePillsView({
+      entry: this.options.entry,
+      fileTypes: this.options.fileTypes,
+      fileTypeSelection: this.options.fileTypeSelection
+    }), {to: this.ui.header});
+  },
+
   renderCollectionView: function() {
     var blankSlateText = this.options.filterName ?
                          this.filterTranslation('blank_slate') :
@@ -97,14 +189,14 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     this.appendSubview(this.subview(new CollectionView({
       tagName: 'ul',
       id: 'filtered_files',
-      className: 'files expandable',
+      className: 'files',
       collection: this.searchFilteredCollection,
       itemViewConstructor: FileItemView,
-      itemViewOptions: {
-        metaDataAttributes: this.options.fileType.metaDataAttributes,
+      itemViewOptions: file => ({
+        metaDataAttributes: file.fileType().metaDataAttributes,
         selectionHandler: this.options.selectionHandler,
         listHighlight: this.listHighlight
-      },
+      }),
       blankSlateViewConstructor: Marionette.ItemView.extend({
         template: blankSlateTemplate,
         serializeData: function(){
@@ -118,27 +210,39 @@ export const FilteredFilesView = Marionette.ItemView.extend({
 
   filterTranslation: function(keyName, options) {
     var filterName = this.options.filterName;
+    var collectionName = this.filteredFileType().collectionName;
 
     var entryTypeName = editor.entryType.name;
 
     return i18nUtils.findTranslation([
       'pageflow.entry_types.' + entryTypeName + '.editor.files.filters.' +
-        this.options.fileType.collectionName + '.' +
+        collectionName + '.' +
         filterName + '.' +
         keyName,
       'pageflow.entry_types.' + entryTypeName + '.editor.files.common_filters.' + keyName,
       'pageflow.editor.files.filters.' +
-        this.options.fileType.collectionName + '.' +
+        collectionName + '.' +
         filterName + '.' +
         keyName,
       'pageflow.editor.files.common_filters.' + keyName
     ], options);
   },
 
+  // Named filters are only ever requested for a single file type.
+  filteredFileType: function() {
+    return this.options.fileTypes[0];
+  },
+
+  matchesFileTypeSelection: function(file) {
+    return this.options.fileTypeSelection.matches(file);
+  },
+
   onClose: function() {
     Marionette.ItemView.prototype.onClose.call(this);
 
-    this.filteredCollection?.dispose();
+    this.filteredCollections?.forEach(collection => collection.dispose());
+    this.selectedFiles?.dispose();
+    this.combinedFiles.dispose();
     this.searchFilteredCollection.dispose();
   }
 });

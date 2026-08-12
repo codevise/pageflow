@@ -265,16 +265,18 @@ export const EditorApi = Object.extend(
    * @param {string|{name: string, filter: string}|{defaultTab: string, filter: string}} fileType
    *   Either collection name of a file type or and object containing
    *   the collection name a file type and a the name of a file type
-   *   filter or an object containingn a defaultTab property that controls
-   *   which tab will visible initially, while allowing selecting files of
-   *   any type.
+   *   filter or an object containingn a defaultTab property that
+   *   preselects that file type, while allowing selecting files of any
+   *   type. Pass null to allow selecting files of any type without
+   *   preselecting one.
    *
    * @param {string} handlerName
    *   The name of a handler registered via {@link
    *   #editorregisterfileselectionhandler registerFileSelectionHandler}.
    *
    * @param {Object} payload
-   *   Options passed to the file selection handler.
+   *   Options passed to the file selection handler. A `label` property
+   *   is used by the files list to say what the file will be used for.
    *
    * @example
    *
@@ -293,7 +295,9 @@ export const EditorApi = Object.extend(
       };
     }
 
-    this.navigate('/files/' + (fileType.defaultTab ? `${fileType.defaultTab}:default` : fileType.name) +
+    fileType = fileType || {};
+
+    this.navigate('/files' + filesPathSuffix(fileType) +
                   '?handler=' + handlerName +
                   '&payload=' + encodeURIComponent(JSON.stringify(payload)) +
                   (fileType.filter ? '&filter=' + fileType.filter : ''),
@@ -318,7 +322,14 @@ export const EditorApi = Object.extend(
     }
 
     var payloadJson = JSON.parse(decodeURIComponent(encodedPayload));
-    return new this.fileSelectionHandlers[handlerName]({...payloadJson, entry: state.entry});
+    var handler = new this.fileSelectionHandlers[handlerName]({...payloadJson,
+                                                               entry: state.entry});
+
+    // Lets the files list name what is being selected. Handlers are
+    // free to provide a label of their own.
+    handler.selectionLabel = handler.selectionLabel || payloadJson.label;
+
+    return handler;
   },
 
   createPageConfigurationEditorView: function(page, options) {
@@ -350,3 +361,11 @@ export const EditorApi = Object.extend(
 
   }
 });
+
+function filesPathSuffix(fileType) {
+  if (fileType.defaultTab) {
+    return '/' + fileType.defaultTab + ':default';
+  }
+
+  return fileType.name ? '/' + fileType.name : '';
+}

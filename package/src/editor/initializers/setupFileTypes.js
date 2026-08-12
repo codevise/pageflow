@@ -11,6 +11,9 @@ import {app} from '../app';
 import {editor} from '../base';
 
 import {EditFileView} from '../views/EditFileView';
+import {AudioFilePreviewView} from '../views/AudioFilePreviewView';
+import {ImageFilePreviewView} from '../views/ImageFilePreviewView';
+import {VideoFilePreviewView} from '../views/VideoFilePreviewView';
 import {TextFileMetaDataItemValueView} from '../views/TextFileMetaDataItemValueView';
 import {TextTracksFileMetaDataItemValueView} from '../views/TextTracksFileMetaDataItemValueView';
 import {TextTracksView} from '../views/TextTracksView';
@@ -95,6 +98,7 @@ app.addInitializer(function(options) {
 
   editor.fileTypes.register('image_files', {
     model: ImageFile,
+    previewView: ImageFilePreviewView,
     metaDataAttributes: [
       'dimensions',
       altMetaDataAttribute
@@ -107,6 +111,7 @@ app.addInitializer(function(options) {
 
   editor.fileTypes.register('video_files', {
     model: VideoFile,
+    previewView: VideoFilePreviewView,
     metaDataAttributes: [
       'format',
       'dimensions',
@@ -125,6 +130,7 @@ app.addInitializer(function(options) {
 
   editor.fileTypes.register('audio_files', {
     model: AudioFile,
+    previewView: AudioFilePreviewView,
     metaDataAttributes: [
       'format',
       'duration',
