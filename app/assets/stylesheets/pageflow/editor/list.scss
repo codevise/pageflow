@@ -1,38 +1,50 @@
 .list {
   .list_items {
-    margin-bottom: 10px;
+    border: solid 1px var(--ui-on-surface-color-lighter);
+    border-radius: rounded(md);
+    margin-bottom: space(2);
     user-select: none;
   }
 
   .list_blank_slate {
-    background-color: var(--ui-primary-color-lightest);
-    border-radius: rounded();
     color: var(--ui-on-surface-color-light);
-    padding: 10px;
+    padding: space(4);
+    text-align: center;
   }
 
+  // Thumbnail, title and buttons share a single row. The description
+  // takes a line of its own below them, so that the first line keeps its
+  // height and stays centered no matter whether there is a description.
   .list_item {
-    background-color: var(--ui-primary-color-lightest);
-    border-radius: rounded();
-    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "thumbnail title       buttons"
+                         ".         description description";
+    align-items: center;
+    column-gap: space(2);
+    border-bottom: solid 1px var(--ui-on-surface-color-lightest);
     cursor: default;
-    padding: 10px 10px 10px 45px;
-    position: relative;
-    margin-bottom: 2px;
+
+    &:last-child {
+      border-bottom: none;
+    }
   }
 
   &.with_type_pictogram .list_item {
-    padding-left: 70px;
+    grid-template-columns: auto auto 1fr auto;
+    grid-template-areas: "thumbnail pictogram title       buttons"
+                         ".         .         description description";
   }
 
   .list_item_thumbnail,
   .list_item_missing_thumbnail {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 35px;
-    height: 100%;
-    background-size: cover;
+    grid-area: thumbnail;
+    align-self: start;
+    width: space(8);
+    height: space(8);
+    margin: space(1) 0 space(1) space(1);
+    border-radius: rounded(sm);
+    overflow: hidden;
   }
 
   .list_item_thumbnail .thumbnail {
@@ -43,12 +55,12 @@
     font-size: 20px;
   }
 
+  // Covers the thumbnail in the same cell of the grid.
   .list_item_missing_thumbnail {
     @include attention-icon;
     @include background-icon-center($color: var(--ui-error-color));
     background-color: var(--ui-error-surface-color);
     display: none;
-    position: absolute;
   }
 
   .list_item.is_invalid .list_item_missing_thumbnail {
@@ -57,14 +69,13 @@
 
   .list_item_type_pictogram {
     display: none;
-    content: ' ';
-    position: absolute;
-    top: 0;
-    left: 37px;
-    height: 100%;
-    width: 35px;
+    grid-area: pictogram;
+    align-self: start;
+    width: space(9);
+    height: space(8);
+    margin: space(1) 0;
     background-repeat: no-repeat;
-    background-position: 3px 45%;
+    background-position: center;
     opacity: 0.2;
   }
 
@@ -73,41 +84,80 @@
   }
 
   .list_item_title {
-    padding-right: 30px;
-  }
+    @include label;
 
-  .list_item:has(.list_item_edit_button.is_available):has(.list_item_remove_button.is_available)
-    .list_item_title {
-    padding-right: 62px;
+    grid-area: title;
   }
 
   .list_item_description {
-    margin-top: 10px;
+    grid-area: description;
+    padding: space(1) 0 space(2);
     color: var(--ui-on-surface-color-light);
   }
 
+  // Keeps the same inset from the top and right edge of the row as the
+  // thumbnail has from the top and left edge.
   .list_item_buttons {
-    position: absolute;
-    right: 4px;
-    top: 3px;
-    white-space: nowrap;
+    grid-area: buttons;
+    align-self: start;
+    display: flex;
+    margin: space(1) space(1) 0 0;
+  }
+
+  // The copy of the row which follows the pointer while dragging only
+  // points out which item is being moved: it has left the list and
+  // nothing on it can be clicked.
+  .list_item.sortable-drag {
+    border-bottom: none;
+
+    .list_item_buttons {
+      visibility: hidden;
+    }
   }
 
   .list_item_buttons > a {
     display: none;
 
     &.is_available {
-      display: inline-block;
+      display: block;
+    }
+  }
+
+  .list_item_edit_button,
+  .list_item_remove_button {
+    width: space(8);
+    padding: 7px 0;
+    border-radius: rounded();
+    color: var(--ui-primary-color-light);
+    line-height: 16px;
+    text-align: center;
+    cursor: pointer;
+
+    &:before {
+      font-size: 16px;
+      vertical-align: top;
+    }
+
+    &:hover {
+      background-color: var(--ui-on-surface-color-lightest);
+      color: var(--ui-primary-color);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px var(--ui-button-focus-ring-color);
     }
   }
 
   .list_item_edit_button {
-    @include icon-only-button;
     @include pencil-icon;
   }
 
   .list_item_remove_button {
-    @include icon-only-button("destructive");
     @include trash-icon;
+
+    &:hover {
+      background-color: var(--ui-error-color);
+      color: var(--ui-on-error-color);
+    }
   }
 }

@@ -6,8 +6,8 @@ export const ExternalLinkModel = Backbone.Model.extend({
   i18nKey: 'external_link',
   mixins: [transientReferences],
 
-  thumbnailUrl: function () {
-    return this.thumbnail()?.get('thumbnail_url') || '';
+  thumbnailFile: function () {
+    return this.thumbnail()?.thumbnailFile();
   },
 
   thumbnail: function () {
