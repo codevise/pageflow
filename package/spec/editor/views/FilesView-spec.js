@@ -1534,6 +1534,29 @@ describe('FilesView', () => {
         expect(folderNames(queries)).toEqual(['Nested images']);
       });
 
+      it('hides folders without files of selected file type from search results', async () => {
+        const view = new FilesView({model: entryWithFolderTree()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.click(queries.getByRole('button', {name: 'Images'}));
+        await user.type(queries.getByLabelText('Filter files and folders'), 'only');
+
+        expect(folderNames(queries)).toEqual(['Images only']);
+      });
+
+      it('keeps folders whose subfolders hold files of selected file type in search results',
+         async () => {
+        const view = new FilesView({model: entryWithFolderTree()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await user.click(queries.getByRole('button', {name: 'Images'}));
+        await user.type(queries.getByLabelText('Filter files and folders'), 'nested');
+
+        expect(folderNames(queries)).toEqual(['Nested images']);
+      });
+
       it('keeps folder which has not been created yet visible', async () => {
         const view = new FilesView({model: entryWithFolderTree()});
         const user = userEvent.setup();

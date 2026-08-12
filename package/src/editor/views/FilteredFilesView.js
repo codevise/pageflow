@@ -462,7 +462,9 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   // Inside a folder, subfolders would just be noise among the file hits.
   isVisibleFolder: function(folder) {
     if (this.search.get('term')) {
-      return this.searchesAllFolders() && this.search.matchesValue(folder.get('name'));
+      return this.searchesAllFolders() &&
+             this.search.matchesValue(folder.get('name')) &&
+             this.containsSelectedFileTypes(folder);
     }
 
     if (folder.get('parent_folder_perma_id') !== this.folderPermaId()) {
