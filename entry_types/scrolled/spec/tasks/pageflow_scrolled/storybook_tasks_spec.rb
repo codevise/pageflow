@@ -65,6 +65,29 @@ RSpec.describe 'storybook:seed' do
       expect(seed_json).to include('"testReferenceName":"turtle"')
     end
 
+    it 'writes seed containing url templates for feature specific file types' do
+      rake 'pageflow_scrolled:storybook:seed:create_entry'
+      rake 'pageflow_scrolled:storybook:seed:generate_json', test_output_dir
+
+      seed_json = File.read(File.join(test_output_dir, 'seed.json'))
+
+      expect(seed_json).to include('"testReferenceName":"lottieAnimation"')
+      expect(seed_json).to include_json(config: {fileUrlTemplates: {lottieFiles: {}}})
+    end
+
+    it 'writes seed containing feature specific file types if account already exists' do
+      create(:account, name: 'storybook-seed')
+
+      rake 'pageflow_scrolled:storybook:seed:create_entry'
+      rake 'pageflow_scrolled:storybook:seed:generate_json', test_output_dir
+
+      seed_json = File.read(File.join(test_output_dir, 'seed.json'))
+
+      expect(seed_json).to include_json(
+        config: {fileModelTypes: {lottieFiles: 'PageflowScrolled::LottieFile'}}
+      )
+    end
+
     it 'sets locale to entry locale' do
       rake 'pageflow_scrolled:storybook:seed:create_entry'
       Pageflow::Entry.where(title: 'Storybook seed').first.draft.update(locale: 'fr')

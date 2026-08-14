@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pageflow/test_uploadable_file'
 
 module PageflowScrolled
   module SeedsDsl
@@ -558,6 +559,56 @@ module PageflowScrolled
 
             expect(text_track_file.parent_file_id).to eq(audio_file.id)
           end
+        end
+      end
+
+      context 'files of custom file types' do
+        before do
+          pageflow_configure do |config|
+            config.file_types.register(
+              Pageflow::FileType.new(model: 'Pageflow::TestUploadableFile',
+                                     collection_name: 'test_files')
+            )
+          end
+
+          stub_request(:get, /example.com/)
+            .to_return(status: 200,
+                       body: File.read('spec/fixtures/image.jpg'),
+                       headers: {'Content-Type' => 'image/jpg'})
+        end
+
+        it 'creates file for collection name of registered file type' do
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   test_files: {
+                                                     'some-file' => {
+                                                       'url' => 'https://example.com/some.jpg'
+                                                     }
+                                                   },
+                                                   chapters: []
+                                                 })
+
+          file = entry.draft.find_files(Pageflow::TestUploadableFile).first
+
+          expect(file.display_name).to eq('some.jpg')
+        end
+
+        it 'marks file as uploaded' do
+          entry = SeedsDsl.sample_scrolled_entry(attributes: {
+                                                   account: create(:account),
+                                                   title: 'Example',
+                                                   test_files: {
+                                                     'some-file' => {
+                                                       'url' => 'https://example.com/some.jpg'
+                                                     }
+                                                   },
+                                                   chapters: []
+                                                 })
+
+          file = entry.draft.find_files(Pageflow::TestUploadableFile).first
+
+          expect(file.state).to eq('uploaded')
         end
       end
 

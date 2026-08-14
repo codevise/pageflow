@@ -24,6 +24,12 @@ module PageflowScrolled
     # @option attributes [Hash] :video_files A hash mapping video
     #   names used in properties like `backdrop.video` to urls.
     # @option attributes [Hash] :text_track_files A hash mapping text track files to urls.
+    #
+    # Any further attribute ending in `_files` is interpreted as the
+    # collection name of a registered file type. Passing `lottie_files`,
+    # for example, creates files of the file type registered with
+    # collection name `lottie_files`.
+    #
     # @yield [entry] a block to be called before the entry is saved
     # @param [Hash] options  options for entry and files creation
     # @option options [Boolean] :skip_encoding
@@ -36,12 +42,10 @@ module PageflowScrolled
                              .first
 
       if entry.nil?
-        entry = Pageflow::Entry.create!(type_name: 'scrolled',
-                                        **attributes.except(:chapters,
-                                                            :image_files,
-                                                            :video_files,
-                                                            :audio_files,
-                                                            :text_track_files)) do |created_entry|
+        entry = Pageflow::Entry.create!(
+          type_name: 'scrolled',
+          **attributes.except(:chapters, *file_collection_names(attributes))
+        ) do |created_entry|
           created_entry.site = attributes.fetch(:account).default_site
 
           say_creating_scrolled_entry(created_entry)
@@ -50,29 +54,8 @@ module PageflowScrolled
 
         draft_entry = Pageflow::DraftEntry.new(entry)
 
-        image_files_by_name = create_files(draft_entry,
-                                           :image,
-                                           attributes.fetch(:image_files, {}))
-
-        video_files_by_name = create_files(draft_entry,
-                                           :video,
-                                           attributes.fetch(:video_files, {}),
-                                           skip_encoding: options.fetch(:skip_encoding, false))
-
-        audio_files_by_name = create_files(draft_entry,
-                                           :audio,
-                                           attributes.fetch(:audio_files, {}),
-                                           skip_encoding: options.fetch(:skip_encoding, false))
-
-        files_by_name = image_files_by_name.merge(video_files_by_name).merge(audio_files_by_name)
-
-        # rewrite parent file references to actual ids
-        text_tracks_by_name = attributes.fetch(:text_track_files, {})
-        text_tracks_by_name.each_value do |text_track_config|
-          parent_file = files_by_name.fetch(text_track_config['parent_file_id'])
-          text_track_config['parent_file_id'] = parent_file.id
-        end
-        create_files(draft_entry, :text_track, text_tracks_by_name)
+        files_by_name = create_top_level_files(draft_entry, attributes, options)
+        create_text_track_files(draft_entry, attributes, files_by_name)
 
         attributes[:chapters].each_with_index do |chapter_config, i|
           create_chapter(entry, chapter_config, i, files_by_name)
@@ -92,24 +75,53 @@ module PageflowScrolled
       say("   sample scrolled entry '#{entry.title}'\n")
     end
 
-    def create_files(draft_entry, file_type, file_data_by_name, skip_encoding: false)
-      file_data_by_name.transform_values do |data|
-        say("     creating #{file_type} file from #{data['url']}")
+    def file_collection_names(attributes)
+      attributes.keys.select { |name| name.to_s.end_with?('_files') }
+    end
 
-        file_state = %i[image text_track].include?(file_type) ? 'processed' : 'uploading'
+    def create_top_level_files(draft_entry, attributes, options)
+      collection_names = file_collection_names(attributes) - [:text_track_files]
+
+      collection_names.reduce({}) do |files_by_name, collection_name|
+        files_by_name.merge(
+          create_files(draft_entry,
+                       collection_name.to_s,
+                       attributes.fetch(collection_name),
+                       skip_encoding: options.fetch(:skip_encoding, false))
+        )
+      end
+    end
+
+    def create_text_track_files(draft_entry, attributes, files_by_name)
+      text_tracks_by_name = attributes.fetch(:text_track_files, {})
+
+      text_tracks_by_name.each_value do |text_track_config|
+        parent_file = files_by_name.fetch(text_track_config['parent_file_id'])
+        text_track_config['parent_file_id'] = parent_file.id
+      end
+
+      create_files(draft_entry, 'text_track_files', text_tracks_by_name)
+    end
+
+    def create_files(draft_entry, collection_name, file_data_by_name, skip_encoding: false)
+      file_type = Pageflow.config.file_types.find_by_collection_name!(collection_name)
+
+      file_data_by_name.transform_values do |data|
+        say("     creating #{collection_name.delete_suffix('_files')} file from #{data['url']}")
+
         uri = URI.parse(data['url'])
-        file = draft_entry.create_file!(Pageflow::BuiltInFileType.send(file_type),
-                                        state: file_state,
+        file = draft_entry.create_file!(file_type,
+                                        state: initial_file_state(collection_name),
                                         attachment: uri,
                                         display_name: File.basename(uri.path, '*'),
                                         configuration: data['configuration'],
                                         parent_file_model_type: data['parent_file_model_type'],
                                         parent_file_id: data['parent_file_id'],
                                         **data.slice('width', 'height').symbolize_keys)
-        if %i[audio video].include?(file_type)
+        if %w[audio_files video_files].include?(collection_name)
           if skip_encoding
             file.update!(state: 'encoded')
-            if file_type.eql?(:video)
+            if collection_name == 'video_files'
               file.update!(output_presences: {
                              'dash-playlist' => true,
                              'hls-playlist' => true,
@@ -130,6 +142,14 @@ module PageflowScrolled
         end
 
         file
+      end
+    end
+
+    def initial_file_state(collection_name)
+      case collection_name
+      when 'image_files', 'text_track_files' then 'processed'
+      when 'audio_files', 'video_files' then 'uploading'
+      else 'uploaded'
       end
     end
 
