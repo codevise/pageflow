@@ -174,6 +174,7 @@ export * from './views/mixins/listHighlighting';
 export * from './views/mixins/loadable';
 export * from './views/mixins/dialogView';
 export * from './views/mixins/modelLifecycleTrackingView';
+export * from './views/FileStageIconView';
 export * from './views/FileStageItemView';
 export * from './views/ConfirmUploadView';
 export * from './views/ChooseImporterView';
