@@ -22,7 +22,7 @@ editor.fileTypes.register('lottie_files', {
   matchUpload: upload => /\.lottie$/i.test(upload.name)
 });
 
-const playbackModes = ['loop', 'playOnce'];
+const playbackModes = ['loop', 'playOnce', 'scroll'];
 
 editor.contentElementTypes.register('lottieAnimation', {
   pictogram,

@@ -775,11 +775,12 @@ de:
             id:
               label: Animation
             playbackMode:
-              inline_help_html: Bestimmt, wie die Animation abgespielt wird, sobald sie sichtbar wird:<ul><li><strong>Endlosschleife:</strong> Immer wieder, solange sie sichtbar ist.</li><li><strong>Einmal abspielen:</strong> Einmal von Anfang bis Ende.</li></ul>
+              inline_help_html: Bestimmt, wie die Animation abgespielt wird, sobald sie sichtbar wird:<ul><li><strong>Endlosschleife:</strong> Immer wieder, solange sie sichtbar ist.</li><li><strong>Einmal abspielen:</strong> Einmal von Anfang bis Ende.</li><li><strong>Scrollposition:</strong> Bild für Bild beim Scrollen. Die Animation beginnt, wenn das Element in den Viewport scrollt, und endet, sobald es den Viewport wieder verlassen hat.</li></ul>
               label: Wiedergabe-Modus
               values:
                 loop: Endlosschleife
                 playOnce: Einmal abspielen
+                scroll: Scrollposition
           description: Eine als dotLottie-Datei exportierte Animation einbinden
           name: Lottie-Animation
           tabs:

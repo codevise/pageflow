@@ -760,11 +760,12 @@ en:
             id:
               label: Animation
             playbackMode:
-              inline_help_html: Determines how the animation is played once it becomes visible:<ul><li><strong>Loop:</strong> Again and again as long as it is visible.</li><li><strong>Play once:</strong> Once from start to end.</li></ul>
+              inline_help_html: Determines how the animation is played once it becomes visible:<ul><li><strong>Loop:</strong> Again and again as long as it is visible.</li><li><strong>Play once:</strong> Once from start to end.</li><li><strong>Scroll position:</strong> Frame by frame while scrolling. The animation starts when the element enters the viewport and ends once it has left the viewport again.</li></ul>
               label: Playback Mode
               values:
                 loop: Loop
                 playOnce: Play once
+                scroll: Scroll position
           description: Embed an animation exported as dotLottie file
           name: Lottie animation
           tabs:

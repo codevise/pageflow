@@ -58,7 +58,7 @@ describe('lottieAnimation/editor', () => {
         inView: configurationEditor
       });
 
-      expect(input.values()).toEqual(['loop', 'playOnce']);
+      expect(input.values()).toEqual(['loop', 'playOnce', 'scroll']);
     });
 
     it('displays image modifiers input if animation is present', () => {
