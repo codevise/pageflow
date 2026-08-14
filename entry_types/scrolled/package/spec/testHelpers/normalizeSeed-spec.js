@@ -102,6 +102,52 @@ describe('normalizeSeed', () => {
     });
   });
 
+  it('supports files of custom collections', () => {
+    const result = normalizeSeed({
+      lottieFiles: [{basename: 'animation'}]
+    });
+
+    expect(result).toMatchObject({
+      config: {
+        fileModelTypes: {
+          lottieFiles: 'LottieFile'
+        },
+        fileUrlTemplates: {
+          lottieFiles: {}
+        }
+      },
+      collections: {
+        lottieFiles: [
+          {
+            id: expect.any(Number),
+            permaId: expect.any(Number),
+            isReady: true,
+            basename: 'animation',
+            configuration: {}
+          }
+        ]
+      }
+    });
+  });
+
+  it('supports passing model type of custom collections', () => {
+    const result = normalizeSeed({
+      fileModelTypes: {lottieFiles: 'PageflowScrolled::LottieFile'},
+      lottieFiles: [{}]
+    });
+
+    expect(result).toMatchObject({
+      config: {
+        fileModelTypes: {
+          lottieFiles: 'PageflowScrolled::LottieFile'
+        }
+      },
+      collections: {
+        lottieFiles: [{id: expect.any(Number)}]
+      }
+    });
+  });
+
   it('ensures required audio file properties are present', () => {
     const result = normalizeSeed({
       audioFiles: [{}]

@@ -15,6 +15,11 @@
  * @param {Array} [options.consentVendors] - Server rendered consent vendor data.
  * @param {Object} [options.contentElementConsentVendors] - Consent vendor name by content element id.
  * @param {Object} [options.entry] - attributes of entry.
+ * @param {Object} [options.fileModelTypes] - Mapping of file collection names to model types.
+ *   Only needed to associate nested files with their parent. Collections of file types
+ *   registered by plugins get a placeholder model type.
+ * @param {Object} [options.fileUrlTemplates] - Mapping of file collection names to mappings of
+ *   url template names to url templates.
  * @param {Array} [options.imageFiles] - Array of objects with image file attributes of entry.
  * @param {Array} [options.videoFiles] - Array of objects with video file attributes of entry.
  * @param {Array} [options.audioFiles] - Array of objects with audio file attributes of entry.
@@ -54,8 +59,14 @@ export function normalizeSeed({
   embed,
   originUrl,
   fileLicenses,
-  entryTranslations
+  entryTranslations,
+  ...customFiles
 } = {}) {
+  const customFileCollectionNames = [...new Set([
+    ...Object.keys(customFiles).filter(name => name.endsWith('Files')),
+    ...Object.keys(fileModelTypes || {})
+  ])].filter(name => !builtInFileCollectionNames.includes(name));
+
   const entries = entry ? [entry] : [{}];
   const normalizedEntries = normalizeCollection(entries, {
     locale: 'en',
@@ -80,6 +91,7 @@ export function normalizeSeed({
         videoFiles: {},
         audioFiles: {},
         textTrackFiles: {},
+        ...emptyUrlTemplates(customFileCollectionNames),
         ...fileUrlTemplates
       },
       fileModelTypes: {
@@ -87,6 +99,7 @@ export function normalizeSeed({
         imageFiles: 'Pageflow::ImageFile',
         textTrackFiles: 'Pageflow::TextTrackFile',
         videoFiles: 'Pageflow::VideoFile',
+        ...placeholderModelTypes(customFileCollectionNames),
         ...fileModelTypes
       },
       prettyUrl: prettyUrl,
@@ -128,6 +141,7 @@ export function normalizeSeed({
         parentFileType: null,
         configuration: {}
       }),
+      ...customFileCollections(customFileCollectionNames, customFiles),
       storylines: normalizedStorylines,
       chapters: normalizedChapters,
       sections: normalizedSections,
@@ -135,6 +149,37 @@ export function normalizeSeed({
       widgets: normalizeWidgets(widgets)
     }
   }
+}
+
+const builtInFileCollectionNames = [
+  'imageFiles',
+  'videoFiles',
+  'audioFiles',
+  'textTrackFiles'
+];
+
+// Model types are only compared to associate nested files with their
+// parent. Specs that seed nested files need to pass the real model type
+// via the fileModelTypes option.
+function placeholderModelTypes(collectionNames) {
+  return Object.fromEntries(collectionNames.map(name => [
+    name,
+    name.replace(/Files$/, 'File').replace(/^./, letter => letter.toUpperCase())
+  ]));
+}
+
+function emptyUrlTemplates(collectionNames) {
+  return Object.fromEntries(collectionNames.map(name => [name, {}]));
+}
+
+function customFileCollections(collectionNames, customFiles) {
+  return Object.fromEntries(collectionNames.map(name => [
+    name,
+    normalizeCollection(customFiles[name], {
+      isReady: true,
+      configuration: {}
+    })
+  ]));
 }
 
 function normalizeSections(sections = [], contentElements) {
