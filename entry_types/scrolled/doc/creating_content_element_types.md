@@ -199,6 +199,75 @@ function LoopingVideo(props) {
 }
 ```
 
+### View Timeline Progress
+
+While the lifecycle hook tells a content element when it enters or
+leaves the viewport, the `useContentElementViewTimelineProgress` hook
+tells it how far it has travelled through the viewport. The content
+element acts as the subject of a view timeline, using the same
+concepts as CSS scroll driven animations. Requires the `viewTimeline`
+option to be set to true when registering the content element type.
+
+The `range` option determines which part of the timeline to measure:
+
+* `cover` (default): From the moment the content element starts
+  entering the viewport until it has completely left it.
+
+* `contain`: While the content element is completely inside the
+  viewport. For content elements taller than the viewport, while the
+  content element completely covers the viewport.
+
+* `entry`: While the content element is entering the viewport.
+
+* `exit`: While the content element is leaving the viewport.
+
+Progress is passed to the `onProgress` callback as a number between 0
+and 1 instead of being returned by the hook. This prevents rerendering
+the content element on every scroll frame. Use it to drive imperative
+APIs:
+
+```javascript
+// frontend.js
+
+frontend.contentElementTypes.register('scrollAnimation', {
+  viewTimeline: true,
+  component: Component
+});
+
+function Component() {
+  const playerRef = useRef();
+
+  useContentElementViewTimelineProgress({
+    range: 'cover',
+    onProgress: progress => playerRef.current.seekTo(progress)
+  });
+
+  // ...
+}
+```
+
+Pass a falsy `onProgress` value to not observe scroll position at all,
+for example if scroll coupled behavior is optional:
+
+```javascript
+useContentElementViewTimelineProgress({
+  onProgress: configuration.playbackMode === 'scroll' ? seek : null
+});
+```
+
+Note that content elements with `sticky` or `standAlone` position stop
+moving with the page while they are pinned. Progress along their view
+timeline stalls accordingly.
+
+In specs, `renderInContentElement` provides a `simulateScrollProgress`
+function to invoke the callback:
+
+```javascript
+const {simulateScrollProgress} = renderInContentElement(<Component />);
+
+simulateScrollProgress(0.5);
+```
+
 ## Using the Storybook
 
 Pageflow Scrolled uses [Storybook](https://storybook.js.org/) to ease

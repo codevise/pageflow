@@ -99,6 +99,10 @@ export {
   useContentElementLifecycle,
   ContentElementLifecycleContext
 } from './useContentElementLifecycle';
+export {
+  useContentElementViewTimelineProgress,
+  ContentElementViewTimelineContext
+} from './useContentElementViewTimelineProgress';
 export {useCurrentChapter} from './useCurrentChapter';
 export {useIsStaticPreview} from './useScrollPositionLifecycle';
 export {useMediaMuted, useOnUnmuteMedia} from './useMediaMuted';
