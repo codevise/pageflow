@@ -103,6 +103,68 @@ describe('LottieAnimation', () => {
     expect(players[0].pause).toHaveBeenCalled();
   });
 
+  describe('scroll playback mode', () => {
+    const configuration = {id: 100, playbackMode: 'scroll'};
+
+    it('does not loop', () => {
+      renderLottieAnimation({configuration});
+
+      expect(players[0].config.loop).toBe(false);
+    });
+
+    it('does not play animation', () => {
+      renderLottieAnimation({configuration});
+
+      players[0].emit('load');
+
+      expect(players[0].play).not.toHaveBeenCalled();
+    });
+
+    it('sets frame matching scroll progress', () => {
+      const {simulateScrollProgress} = renderLottieAnimation({configuration});
+      players[0].emit('load');
+
+      simulateScrollProgress(0.5);
+
+      expect(players[0].setFrame).toHaveBeenCalledWith(4.5);
+    });
+
+    it('sets last frame at end of scroll progress', () => {
+      const {simulateScrollProgress} = renderLottieAnimation({configuration});
+      players[0].emit('load');
+
+      simulateScrollProgress(1);
+
+      expect(players[0].setFrame).toHaveBeenCalledWith(9);
+    });
+
+    it('does not set frame before animation has loaded', () => {
+      const {simulateScrollProgress} = renderLottieAnimation({configuration});
+
+      simulateScrollProgress(0.5);
+
+      expect(players[0].setFrame).not.toHaveBeenCalled();
+    });
+
+    it('applies scroll progress from before load once animation has loaded', () => {
+      const {simulateScrollProgress} = renderLottieAnimation({configuration});
+
+      simulateScrollProgress(0.5);
+      players[0].emit('load');
+
+      expect(players[0].setFrame).toHaveBeenCalledWith(4.5);
+    });
+
+    it('does not set frame in other playback modes', () => {
+      const {simulateScrollProgress} = renderLottieAnimation();
+      players[0].emit('load');
+
+      simulateScrollProgress(0.5);
+
+      expect(players[0].setFrame).not.toHaveBeenCalled();
+    });
+  });
+
   it('destroys player on unmount', () => {
     const {unmount} = renderLottieAnimation();
 

@@ -4,5 +4,6 @@ import {LottieAnimation} from './LottieAnimation';
 
 frontend.contentElementTypes.register('lottieAnimation', {
   component: LottieAnimation,
-  lifecycle: true
+  lifecycle: true,
+  viewTimeline: true
 });
