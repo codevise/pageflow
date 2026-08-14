@@ -41,6 +41,11 @@ namespace :pageflow_scrolled do
           attributes: {
             title: 'Storybook seed',
             account:,
+            # File types registered inside a feature are only included in
+            # the seed's model types and url templates if the feature is
+            # enabled. Enabled on the entry, which is recreated on each
+            # run, since the account is only seeded once.
+            features_configuration: {'lottie_animation_content_element' => true},
             chapters: [],
             image_files: {
               turtle: {
@@ -96,6 +101,14 @@ namespace :pageflow_scrolled do
                 }
               }.stringify_keys
             }.stringify_keys,
+            lottie_files: {
+              animation: {
+                url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/lottie_animations/animation.lottie',
+                configuration: {
+                  testReferenceName: 'lottieAnimation'
+                }
+              }.stringify_keys
+            },
             text_track_files: {
               sample: {
                 url: 'https://s3-eu-west-1.amazonaws.com/de.codevise.pageflow.development/pageflow-next/seed-assets/text_tracks/sample.vtt',
