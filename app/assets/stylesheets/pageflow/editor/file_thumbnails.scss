@@ -9,15 +9,35 @@
     inset: 0;
   }
 
-  .pictogram {
-    width: 100%;
-    height: 100%;
+  // Covers thumbnail image and pictogram while the file is being
+  // processed.
+  &-stage_icon {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--ui-on-surface-color-light-solid);
+    color: var(--ui-on-primary-color);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .file_stage_icon {
+    width: 40%;
+    height: 40%;
   }
 
   .pictogram {
+    width: 100%;
+    height: 100%;
+
     background-color: var(--ui-on-surface-color-light-solid);
     @include background-icon-center($color: var(--ui-on-primary-color), $font-size: 30px);
-    @include background-icon-animation(blink);
 
     &.audio {
       @include note-icon;
@@ -27,38 +47,14 @@
       @include fa-cloud-download-icon;
     }
 
-    &.uploading {
-      @include up-bold-icon;
-    }
-
-    &.fetching_meta_data {
-      @include clipboard-icon;
-    }
-
-    &.processing,
-    &.encoding {
-      @include cog-icon;
-    }
-
     &.empty {
       @include picture-icon;
-      @include background-icon-animation(none);
     }
-
-    &.action_required {
-      @include bell-icon;
-    }
-  }
-
-  div.pictogram.failed {
-    @include attention-icon;
-    @include background-icon-animation(none);
   }
 
   &.ready {
     .pictogram {
       display: none;
-      @include background-icon-animation(none);
     }
   }
 

@@ -1,11 +1,15 @@
 import Marionette from 'backbone.marionette';
 
-import {FileThumbnailView} from 'pageflow/editor';
+import {AudioFile, FileThumbnailView} from 'pageflow/editor';
 
 import * as support from '$support';
 import {renderBackboneView as render} from 'pageflow/testHelpers';
 
 describe('FileThumbnailView', () => {
+  support.setupGlobals({
+    config: {confirmEncodingJobs: false}
+  });
+
   const ThumbnailView = Marionette.ItemView.extend({
     template: () => '<span class="thumbnail_stand_in"></span>'
   });
@@ -14,6 +18,10 @@ describe('FileThumbnailView', () => {
     return support.factories.file({id: 123, state: 'processed', ...attributes}, {
       fileType: support.factories.fileType({thumbnailView: ThumbnailView})
     });
+  }
+
+  function stageIcons(view) {
+    return view.$el.find('.file_stage_icon');
   }
 
   it('renders background image from thumbnail url', () => {
@@ -88,5 +96,65 @@ describe('FileThumbnailView', () => {
     view.close();
 
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it('renders stage icon while file is not ready', () => {
+    const view = new FileThumbnailView({
+      model: support.factories.file({state: 'uploading'})
+    });
+
+    render(view);
+
+    expect(stageIcons(view).length).toEqual(1);
+  });
+
+  it('renders icon of stage the file is waiting on', () => {
+    const view = new FileThumbnailView({
+      model: support.factories.file({state: 'processing_failed'})
+    });
+
+    render(view);
+
+    expect(stageIcons(view).find('.file_stage_icon-alert')[0].style.display)
+      .not.toEqual('none');
+  });
+
+  it('renders no stage icon once file is ready', () => {
+    const view = new FileThumbnailView({
+      model: support.factories.file({state: 'processed'})
+    });
+
+    render(view);
+
+    expect(stageIcons(view).length).toEqual(0);
+  });
+
+  it('removes stage icon when file becomes ready', () => {
+    const file = support.factories.file({state: 'processing'});
+    const view = new FileThumbnailView({model: file});
+
+    render(view);
+    file.set('state', 'processed');
+
+    expect(stageIcons(view).length).toEqual(0);
+  });
+
+  it('renders no stage icon when no file is set', () => {
+    const view = new FileThumbnailView({});
+
+    render(view);
+
+    expect(stageIcons(view).length).toEqual(0);
+  });
+
+  it('renders pictogram of file types that define one', () => {
+    const view = new FileThumbnailView({
+      model: new AudioFile({state: 'encoded'}, {fileType: support.factories.fileType()})
+    });
+
+    render(view);
+
+    expect(view.$el.find('.pictogram').hasClass('audio')).toEqual(true);
+    expect(view.$el.hasClass('always_picogram')).toEqual(true);
   });
 });
