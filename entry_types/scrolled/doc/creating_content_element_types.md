@@ -255,9 +255,11 @@ useContentElementViewTimelineProgress({
 });
 ```
 
-Note that content elements with `sticky` or `standAlone` position stop
-moving with the page while they are pinned. Progress along their view
-timeline stalls accordingly.
+Content elements with `standAlone` position are pinned in the center
+of the viewport for part of their scroll space. Their progress is
+measured along that scroll space, so it keeps advancing while the
+element is pinned. Content elements with `sticky` position, on the
+other hand, stop making progress while they are sticky.
 
 In specs, `renderInContentElement` provides a `simulateScrollProgress`
 function to invoke the callback:

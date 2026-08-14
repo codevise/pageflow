@@ -1,9 +1,18 @@
-import React, {createContext, useContext, useEffect, useMemo, useRef, useState} from 'react';
+import React, {createContext, useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 
 import {api} from './api';
 import {getViewTimelineProgress} from './viewTimelineRanges';
 
 export const ContentElementViewTimelineContext = createContext();
+
+// Lets components that pin content elements in the viewport for part
+// of their scroll space pass a function returning the element that
+// keeps moving with the page. Pinned content elements would otherwise
+// stop making progress along their view timeline for exactly the part
+// of the page that the extra scroll space was added for. The subject
+// is looked up on demand since it may only be known once the content
+// element has been mounted.
+export const ViewTimelineSubjectContext = createContext();
 
 export function ContentElementViewTimelineProvider({type, children}) {
   const {viewTimeline} = api.contentElementTypes.getOptions(type);
@@ -21,7 +30,9 @@ export function ContentElementViewTimelineProvider({type, children}) {
 }
 
 function ViewTimelineProvider({children}) {
-  const subjectRef = useRef();
+  const getOuterSubject = useContext(ViewTimelineSubjectContext);
+  const ownSubjectRef = useRef();
+
   const subscriptionsRef = useRef(new Set());
 
   // Content element types can support view timelines without always
@@ -29,27 +40,31 @@ function ViewTimelineProvider({children}) {
   // subscriptions to prevent each of them from adding a handler.
   const [hasSubscriptions, setHasSubscriptions] = useState(false);
 
+  const getSubject = useCallback(
+    () => getOuterSubject ? getOuterSubject() : ownSubjectRef.current,
+    [getOuterSubject]
+  );
+
   const viewTimeline = useMemo(() => ({
     subscribe(range, callback) {
       const subscription = {range, callback};
 
       subscriptionsRef.current.add(subscription);
       setHasSubscriptions(true);
-      update(subjectRef.current, [subscription]);
+      update(getSubject(), [subscription]);
 
       return () => {
         subscriptionsRef.current.delete(subscription);
         setHasSubscriptions(subscriptionsRef.current.size > 0);
       };
     }
-  }), []);
+  }), [getSubject]);
 
   useEffect(() => {
     if (!hasSubscriptions) {
       return;
     }
 
-    const subject = subjectRef.current;
     const subscriptions = subscriptionsRef.current;
 
     let animationFrame;
@@ -61,7 +76,7 @@ function ViewTimelineProvider({children}) {
 
       animationFrame = requestAnimationFrame(() => {
         animationFrame = null;
-        update(subject, subscriptions);
+        update(getSubject(), subscriptions);
       });
     }
 
@@ -74,13 +89,21 @@ function ViewTimelineProvider({children}) {
       window.removeEventListener('scroll', handle);
       window.removeEventListener('resize', handle);
     };
-  }, [hasSubscriptions]);
+  }, [getSubject, hasSubscriptions]);
+
+  const content = (
+    <ContentElementViewTimelineContext.Provider value={viewTimeline}>
+      {children}
+    </ContentElementViewTimelineContext.Provider>
+  );
+
+  if (getOuterSubject) {
+    return content;
+  }
 
   return (
-    <div ref={subjectRef}>
-      <ContentElementViewTimelineContext.Provider value={viewTimeline}>
-        {children}
-      </ContentElementViewTimelineContext.Provider>
+    <div ref={ownSubjectRef}>
+      {content}
     </div>
   );
 }

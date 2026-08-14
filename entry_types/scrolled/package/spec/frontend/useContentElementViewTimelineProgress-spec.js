@@ -4,7 +4,12 @@ import {act} from '@testing-library/react';
 import {frontend, Entry, useContentElementViewTimelineProgress} from 'pageflow-scrolled/frontend';
 
 import {renderInEntry} from 'support';
-import {fakeBoundingClientRectsByTestId} from 'support/fakeBoundingClientRects';
+import {
+  fakeBoundingClientRectsByClassName,
+  fakeBoundingClientRectsByTestId
+} from 'support/fakeBoundingClientRects';
+
+import scrollSpaceStyles from 'frontend/ContentElementScrollSpace.module.css';
 
 describe('useContentElementViewTimelineProgress', () => {
   beforeEach(() => {
@@ -13,7 +18,7 @@ describe('useContentElementViewTimelineProgress', () => {
 
   afterEach(() => jest.restoreAllMocks());
 
-  function renderTestContentElement({onProgress, range, viewTimeline = true} = {}) {
+  function renderTestContentElement({onProgress, range, viewTimeline = true, position} = {}) {
     frontend.contentElementTypes.register('test', {
       viewTimeline,
 
@@ -24,7 +29,7 @@ describe('useContentElementViewTimelineProgress', () => {
     });
 
     return renderInEntry(<Entry />, {
-      seed: {contentElements: [{typeName: 'test'}]}
+      seed: {contentElements: [{typeName: 'test', configuration: {position}}]}
     });
   }
 
@@ -127,6 +132,40 @@ describe('useContentElementViewTimelineProgress', () => {
     simulateScrollTo({top: 250});
 
     expect(onProgress).not.toHaveBeenCalledWith(0.5);
+  });
+
+  describe('for standAlone content elements', () => {
+    it('measures progress along the scroll space', () => {
+      const onProgress = jest.fn();
+      fakeBoundingClientRectsByClassName({
+        [scrollSpaceStyles.wrapper]: {top: 0, height: 1000},
+        [scrollSpaceStyles.inner]: {top: 500, height: 500}
+      });
+
+      renderTestContentElement({onProgress, position: 'standAlone'});
+
+      expect(onProgress).toHaveBeenCalledWith(0.5);
+    });
+
+    it('keeps measuring progress while element is pinned', () => {
+      const onProgress = jest.fn();
+      fakeBoundingClientRectsByClassName({
+        [scrollSpaceStyles.wrapper]: {top: 0, height: 1000},
+        [scrollSpaceStyles.inner]: {top: 500, height: 500}
+      });
+
+      renderTestContentElement({onProgress, position: 'standAlone'});
+
+      fakeBoundingClientRectsByClassName({
+        [scrollSpaceStyles.wrapper]: {top: -500, height: 1000},
+        [scrollSpaceStyles.inner]: {top: 500, height: 500}
+      });
+      act(() => {
+        window.dispatchEvent(new Event('scroll'));
+      });
+
+      expect(onProgress).toHaveBeenLastCalledWith(0.75);
+    });
   });
 
   it('throws descriptive error if content element type is missing flag', () => {
