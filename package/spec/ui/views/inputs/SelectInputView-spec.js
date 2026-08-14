@@ -23,6 +23,19 @@ describe('pageflow.SelectInputView', () => {
     expect($('select', selectInputView.el).val()).toEqual('second');
   });
 
+  it('supports passing function returning values', () => {
+    var model = new Model({value: 'second'});
+    var selectInputView = new SelectInputView({
+      model: model,
+      propertyName: 'value',
+      values: () => ['first', 'second']
+    });
+
+    selectInputView.render();
+
+    expect($('select', selectInputView.el).val()).toEqual('second');
+  });
+
   it('saves value on change', () => {
     var model = new Model();
     var selectInputView = new SelectInputView({

@@ -14,8 +14,9 @@ import template from '../../templates/inputs/selectInput.jst';
  *
  * @param {Object} [options]
  *
- * @param {string[]} [options.values]
- *   List of possible values to persist in the attribute.
+ * @param {string[]|function} [options.values]
+ *   List of possible values to persist in the attribute. Pass a
+ *   function returning the list to defer reading the values.
  *
  * @param {number} [options.defaultValue]
  *   Default value to display if property is not set.
@@ -107,6 +108,8 @@ export const SelectInputView = Marionette.ItemView.extend({
   },
 
   initialize: function() {
+    this.options.values = _.result(this.options, 'values');
+
     if (this.options.collection) {
       this.options.values = _.pluck(this.options.collection, this.options.valueProperty);
 
