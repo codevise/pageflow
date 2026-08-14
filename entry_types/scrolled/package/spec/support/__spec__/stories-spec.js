@@ -191,6 +191,33 @@ describe('exampleStories', () => {
     }));
   });
 
+  it('applies inline file rights to lottie files', () => {
+    stubSeedFixture(normalizeSeed({
+      lottieFiles: [
+        {id: 10, permaId: 1}
+      ]
+    }));
+
+    const stories = exampleStories({
+      typeName: 'test',
+      inlineFileRights: true,
+      baseConfiguration: {}
+    });
+
+    expect(stories).toContainEqual(expect.objectContaining({
+      title: 'Inline File Rights - Icon',
+      seed: expect.objectContaining({
+        collections: expect.objectContaining({
+          lottieFiles: expect.arrayContaining([
+            expect.objectContaining({
+              configuration: expect.objectContaining({rights_display: 'inline'})
+            })
+          ])
+        })
+      })
+    }));
+  });
+
   it('supports adding story for inline file rights', () => {
     stubSeedFixture(normalizeSeed({
       imageFiles: [

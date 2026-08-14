@@ -136,6 +136,7 @@ function renderCss(rules) {
  * * "turtle" (image)
  * * "interview_toni" (video)
  * * "quicktime_jingle" (audio)
+ * * "lottieAnimation" (lottie)
  *
  * @param {string} collectionName - A name of a files collection like `"imageFiles"`.
  * @param {string} testReferenceName - Name of a predefined file from the seed JSON file.
@@ -170,6 +171,10 @@ export function filePermaId(collectionName, testReferenceName) {
   return file.permaId;
 }
 
+const inlineFileRightsCollectionNames = [
+  'audioFiles', 'imageFiles', 'lottieFiles', 'videoFiles'
+];
+
 export function exampleStories(options) {
   return [
     ...variantsExampleStories(options),
@@ -198,7 +203,7 @@ function variantsExampleStories({typeName, baseConfiguration, variants}) {
       themeOptions,
       sectionConfiguration,
       viewport,
-      inlineFileRightsFor: inlineFileRightsWidgetTypeName ? ['audioFiles', 'imageFiles', 'videoFiles'] : [],
+      inlineFileRightsFor: inlineFileRightsWidgetTypeName ? inlineFileRightsCollectionNames : [],
       widgets: inlineFileRightsWidgetTypeName ? [{
         role: 'inlineFileRights',
         typeName: inlineFileRightsWidgetTypeName
@@ -290,7 +295,7 @@ function inlineFileRightsStories({typeName, inlineFileRights, baseConfiguration}
   return exampleStoryGroup({
     typeName,
     name: 'Inline File Rights',
-    inlineFileRightsFor: ['audioFiles', 'imageFiles', 'videoFiles'],
+    inlineFileRightsFor: inlineFileRightsCollectionNames,
     examples: [
       ['Icon', 'iconInlineFileRights'], ['Text', 'textInlineFileRights']
     ].map(([name, typeName]) => (
@@ -426,7 +431,7 @@ export function normalizeAndMergeFixture({inlineFileRightsFor = [], ...options} 
   };
 }
 
-function applyInlineFileRights(files) {
+function applyInlineFileRights(files = []) {
   return files.map(file => ({
     ...file,
     rights: 'Jane Doe',

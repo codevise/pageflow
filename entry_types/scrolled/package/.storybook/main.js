@@ -29,6 +29,7 @@ module.exports = {
             )
           ),
           reactSvgLoader(),
+          wasmLoader()
         ]
       },
       resolve: {
@@ -60,6 +61,17 @@ function reactSvgLoader() {
         }
       }
     ]
+  };
+}
+
+function wasmLoader() {
+  // Emit the WebAssembly module of the dotLottie player as asset, so
+  // that it does not have to be loaded from a CDN. See
+  // `config/webpack.js` for the equivalent rule used by host
+  // applications.
+  return {
+    test: /\.wasm$/,
+    type: 'asset/resource'
   };
 }
 
