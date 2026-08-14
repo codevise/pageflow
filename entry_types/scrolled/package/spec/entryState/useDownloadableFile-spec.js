@@ -65,9 +65,6 @@ describe('useDownloadableFile', () => {
               large: '/image_files/:id_partition/large/:basename.:processed_extension',
             }
           },
-          fileModelTypes: {
-            imageFiles: 'Pageflow::ImageFile'
-          },
           imageFiles: []
         }
       }
