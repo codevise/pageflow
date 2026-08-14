@@ -29,12 +29,16 @@
   }
 }
 
+// Deprecated: The editor displays the same icons for all processing
+// stages of a file. Pictograms per stage are no longer supported.
 @mixin pageflow-uploadable-file-stage($stage-name) {
-  .editor {
-    .file_thumbnail .pictogram.#{$stage-name},
-    .file_stage_item.#{$stage-name} {
-      @content;
-    }
+  @warn "pageflow-uploadable-file-stage is deprecated and no longer has any effect. " +
+        "Remove the include for stage '#{$stage-name}'.";
+
+  // Keeps existing call sites from failing since they pass a content
+  // block.
+  @if false {
+    @content;
   }
 }
 
