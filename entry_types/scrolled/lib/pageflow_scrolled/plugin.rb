@@ -204,6 +204,15 @@ module PageflowScrolled
           )
         end
 
+        c.features.register('lottie_animation_content_element') do |feature_config|
+          feature_config.file_types.register(PageflowScrolled.lottie_file_type)
+
+          feature_config.additional_frontend_packs.register(
+            'pageflow-scrolled/contentElements/lottieAnimation-frontend',
+            content_element_type_names: ['lottieAnimation']
+          )
+        end
+
         c.features.register('datawrapper_chart_embed_opt_in')
         c.features.enable_by_default('datawrapper_chart_embed_opt_in')
         c.features.register('iframe_embed_content_element')

@@ -86,6 +86,16 @@ export const ReusableFile = Backbone.Model.extend({
     return new PreviewView({model: this});
   },
 
+  createThumbnailView: function() {
+    var ThumbnailView = this.fileType().thumbnailView;
+
+    if (!ThumbnailView || !this.isReady()) {
+      return;
+    }
+
+    return new ThumbnailView({model: this});
+  },
+
   title: function() {
     return this.get('display_name') || this.get('file_name');
   },

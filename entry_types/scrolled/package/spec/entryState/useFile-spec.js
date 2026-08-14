@@ -185,9 +185,6 @@ describe('useFile', () => {
               'hls-playlist': 'http://example.com/,:pageflow_hls_qualities,.mp4.csmil/master.m3u8'
             }
           },
-          fileModelTypes: {
-            videoFiles: 'Pageflow::VideoFile'
-          },
           videoFiles: [
             {
               id: 100,
@@ -222,9 +219,6 @@ describe('useFile', () => {
               large: '/image_files/:id_partition/large/:basename.:processed_extension',
             }
           },
-          fileModelTypes: {
-            imageFiles: 'Pageflow::ImageFile'
-          },
           imageFiles: [
             {
               id: 100,
@@ -256,9 +250,6 @@ describe('useFile', () => {
               medium: '/image_files/:id_partition/medium/:basename.:processed_extension',
               large: '/image_files/:id_partition/large/:basename.:processed_extension',
             }
-          },
-          fileModelTypes: {
-            imageFiles: 'Pageflow::ImageFile'
           },
           imageFiles: [
             {
@@ -293,9 +284,6 @@ describe('useFile', () => {
               ultra: '/image_files/:id_partition/ultra/:basename.:processed_extension',
             }
           },
-          fileModelTypes: {
-            imageFiles: 'Pageflow::ImageFile'
-          },
           imageFiles: [
             {
               id: 100,
@@ -326,9 +314,6 @@ describe('useFile', () => {
             videoFiles: {
               high: '/video_files/:id_partition/high.mp4',
             },
-          },
-          fileModelTypes: {
-            videoFiles: 'Pageflow::VideoFile'
           },
           videoFiles: [
             {

@@ -18,6 +18,10 @@ en:
           name:
             one: Image
             other: Images
+        lottie_files:
+          name:
+            one: Lottie animation
+            other: Lottie animations
         other_files:
           name:
             one: Other
@@ -26,6 +30,9 @@ en:
           name:
             one: Video
             other: Videos
+      files:
+        tabs:
+          lottie_files: Lottie
       widgets:
         attributes:
           defaultNavigation:
@@ -77,6 +84,8 @@ en:
       feature_name: iframe embed content element
     legacy_social_embed_content_elements:
       feature_name: Legacy Twitter and TikTok content elements
+    lottie_animation_content_element:
+      feature_name: Lottie animation content element
     scrolled_entry_fragment_caching:
       feature_name: Pageflow Next Fragment Caching
     social_embed_content_element:
@@ -746,6 +755,20 @@ en:
           name: Video
           tabs:
             general: Video
+        lottieAnimation:
+          attributes:
+            id:
+              label: Animation
+            playbackMode:
+              inline_help_html: Determines how the animation is played once it becomes visible:<ul><li><strong>Loop:</strong> Again and again as long as it is visible.</li><li><strong>Play once:</strong> Once from start to end.</li></ul>
+              label: Playback Mode
+              values:
+                loop: Loop
+                playOnce: Play once
+          description: Embed an animation exported as dotLottie file
+          name: Lottie animation
+          tabs:
+            general: Lottie animation
         question:
           attributes:
             expandByDefault:

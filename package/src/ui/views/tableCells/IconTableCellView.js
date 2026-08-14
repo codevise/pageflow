@@ -1,3 +1,5 @@
+import _ from 'underscore';
+
 import {TableCellView} from './TableCellView';
 
 /**
@@ -12,11 +14,12 @@ import {TableCellView} from './TableCellView';
  *
  * @param {Object} [options]
  *
- * @param {string[]} [options.icons]
+ * @param {string[]|function} [options.icons]
  *   An array of all possible attribute values to be mapped to HTML
  *   classes of the same name. A global mapping from those classes to
  *   icon mixins is provided in
- *   pageflow/ui/table_cells/icon_table_cell.scss.
+ *   pageflow/ui/table_cells/icon_table_cell.scss. Pass a function
+ *   returning the array to defer reading the values.
  *
  * @since 12.0
  */
@@ -39,6 +42,6 @@ export const IconTableCellView = TableCellView.extend({
   },
 
   removeExistingIcons: function() {
-    this.$el.removeClass(this.options.icons.join(' '));
+    this.$el.removeClass(_.result(this.options, 'icons').join(' '));
   }
 });

@@ -1,5 +1,13 @@
 .file_thumbnail {
+  position: relative;
   background-size: cover;
+
+  // Fills the box just like the background image would, so file types
+  // can render a thumbnail of their own.
+  &-custom {
+    position: absolute;
+    inset: 0;
+  }
 
   .pictogram {
     width: 100%;

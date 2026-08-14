@@ -62,6 +62,24 @@ describe('IconTableCellView', () => {
     expect(cell.$el).toHaveClass('caustic');
   });
 
+  it('supports passing function returning icons', () => {
+    var toxin = new Backbone.Model({warning: 'caustic'});
+    var cell = new IconTableCellView({
+      column: {
+        name: 'warning'
+      },
+      model: toxin,
+      icons: () => icons
+    });
+
+    cell.render();
+    toxin.set('warning', 'radioactive');
+    cell.render();
+
+    expect(cell.$el).not.toHaveClass('caustic');
+    expect(cell.$el).toHaveClass('radioactive');
+  });
+
   it(
     'removes previous class when changing column attribute value',
     () => {

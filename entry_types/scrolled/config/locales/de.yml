@@ -18,6 +18,10 @@ de:
           name:
             one: Bild
             other: Bilder
+        lottie_files:
+          name:
+            one: Lottie-Animation
+            other: Lottie-Animationen
         other_files:
           name:
             one: Andere
@@ -26,6 +30,9 @@ de:
           name:
             one: Video
             other: Videos
+      files:
+        tabs:
+          lottie_files: Lottie
       widgets:
         attributes:
           defaultNavigation:
@@ -77,6 +84,8 @@ de:
       feature_name: iframe-Embed Inhaltselement
     legacy_social_embed_content_elements:
       feature_name: Legacy Twitter und TikTok Inhaltselemente
+    lottie_animation_content_element:
+      feature_name: Lottie-Animation-Inhaltselement
     scrolled_entry_fragment_caching:
       feature_name: Pageflow-Next-Fragment-Caching
     social_embed_content_element:
@@ -761,6 +770,20 @@ de:
           name: Video
           tabs:
             general: Video
+        lottieAnimation:
+          attributes:
+            id:
+              label: Animation
+            playbackMode:
+              inline_help_html: Bestimmt, wie die Animation abgespielt wird, sobald sie sichtbar wird:<ul><li><strong>Endlosschleife:</strong> Immer wieder, solange sie sichtbar ist.</li><li><strong>Einmal abspielen:</strong> Einmal von Anfang bis Ende.</li></ul>
+              label: Wiedergabe-Modus
+              values:
+                loop: Endlosschleife
+                playOnce: Einmal abspielen
+          description: Eine als dotLottie-Datei exportierte Animation einbinden
+          name: Lottie-Animation
+          tabs:
+            general: Lottie-Animation
         question:
           attributes:
             expandByDefault:
