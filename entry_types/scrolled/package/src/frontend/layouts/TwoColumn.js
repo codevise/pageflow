@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useCallback, useRef} from 'react';
 import classNames from 'classnames';
 
 import {api} from '../api';
 import {ContentElements} from '../ContentElements';
+import {ViewTimelineSubjectContext} from '../useContentElementViewTimelineProgress';
 import useMediaQuery from '../useMediaQuery';
 import {useTheme} from 'pageflow-scrolled/entryState';
 import {widths, widthName} from './widths';
@@ -68,10 +69,7 @@ function renderItems(props, shouldInline) {
 function renderItemGroup(props, box, key) {
   if (box.items.length) {
     return (
-      <div key={key} className={classNames(styles.box,
-                                           styles[box.position],
-                                           styles[`width-${widthName(box.width)}`],
-                                           {[styles.customMargin]: box.customMargin})}>
+      <Box key={key} box={box}>
         {props.children(
           <ContentElements sectionProps={props.sectionProps}
                            customMargin={box.customMargin}
@@ -91,9 +89,34 @@ function renderItemGroup(props, box, key) {
             atSectionEnd: box.atSectionEnd
           }
         )}
-      </div>
+      </Box>
     );
   }
+}
+
+function Box({box, children}) {
+  const ref = useRef();
+
+  // Sticky boxes stay pinned while the rest of their group scrolls
+  // past. The group therefore is the element that drives view
+  // timelines of content elements inside the box.
+  const getViewTimelineSubject = useCallback(
+    () => ref.current.closest(`.${styles.group}`),
+    []
+  );
+
+  return (
+    <div ref={ref}
+         className={classNames(styles.box,
+                               styles[box.position],
+                               styles[`width-${widthName(box.width)}`],
+                               {[styles.customMargin]: box.customMargin})}>
+      {box.position === 'sticky' ?
+       <ViewTimelineSubjectContext.Provider value={getViewTimelineSubject}
+                                            children={children} /> :
+       children}
+    </div>
+  );
 }
 
 function restrictWidth(width, alignment, children) {

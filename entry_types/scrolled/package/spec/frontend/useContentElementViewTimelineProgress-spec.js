@@ -10,6 +10,7 @@ import {
 } from 'support/fakeBoundingClientRects';
 
 import scrollSpaceStyles from 'frontend/ContentElementScrollSpace.module.css';
+import twoColumnStyles from 'frontend/layouts/TwoColumn.module.css';
 
 describe('useContentElementViewTimelineProgress', () => {
   beforeEach(() => {
@@ -165,6 +166,53 @@ describe('useContentElementViewTimelineProgress', () => {
       });
 
       expect(onProgress).toHaveBeenLastCalledWith(0.75);
+    });
+  });
+
+  describe('for sticky content elements', () => {
+    it('measures progress along the group the element sticks in', () => {
+      const onProgress = jest.fn();
+      fakeBoundingClientRectsByClassName({
+        [twoColumnStyles.group]: {top: 0, height: 1000},
+        [twoColumnStyles.sticky]: {top: 500, height: 500}
+      });
+
+      renderTestContentElement({onProgress, position: 'sticky'});
+
+      expect(onProgress).toHaveBeenCalledWith(0.5);
+    });
+
+    it('keeps measuring progress while element is sticky', () => {
+      const onProgress = jest.fn();
+      fakeBoundingClientRectsByClassName({
+        [twoColumnStyles.group]: {top: 0, height: 1000},
+        [twoColumnStyles.sticky]: {top: 500, height: 500}
+      });
+
+      renderTestContentElement({onProgress, position: 'sticky'});
+
+      fakeBoundingClientRectsByClassName({
+        [twoColumnStyles.group]: {top: -500, height: 1000},
+        [twoColumnStyles.sticky]: {top: 500, height: 500}
+      });
+      act(() => {
+        window.dispatchEvent(new Event('scroll'));
+      });
+
+      expect(onProgress).toHaveBeenLastCalledWith(0.75);
+    });
+
+    it('measures progress of element itself if sticky position is inlined', () => {
+      const onProgress = jest.fn();
+      window.matchMedia.mockViewportWidth(500);
+      fakeBoundingClientRectsByClassName(
+        {[twoColumnStyles.group]: {top: 0, height: 1000}},
+        {otherElements: {top: 500, height: 500}}
+      );
+
+      renderTestContentElement({onProgress, position: 'sticky'});
+
+      expect(onProgress).toHaveBeenCalledWith(1 / 3);
     });
   });
 
