@@ -29,7 +29,8 @@ describe('ReviewSession', () => {
           id: 1,
           comments: [expect.objectContaining({body: 'Hello'})]
         })
-      ]
+      ],
+      commentThreadReads: {}
     });
   });
 
@@ -66,7 +67,8 @@ describe('ReviewSession', () => {
       currentUser: {id: 42, name: 'Alice'},
       commentThreads: [
         expect.objectContaining({id: 1})
-      ]
+      ],
+      commentThreadReads: {}
     });
   });
 
@@ -1079,6 +1081,142 @@ describe('ReviewSession', () => {
         pending: false
       });
       expect(session.state.commentThreads).toEqual([]);
+    });
+  });
+
+  describe('#markThreadsRead', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    async function createFetchedSession({commentThreadReads = {}} = {}) {
+      const request = jest.fn().mockResolvedValue({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [{id: 1, permaId: 5, comments: []}],
+        commentThreadReads
+      });
+
+      const session = new ReviewSession({entryId: 5, request});
+      await session.fetch();
+      request.mockClear();
+      request.mockResolvedValue(null);
+
+      return {session, request};
+    }
+
+    it('exposes read timestamps from fetch in state', async () => {
+      const {session} = await createFetchedSession({
+        commentThreadReads: {5: '2026-08-17T10:00:00.000Z'}
+      });
+
+      expect(session.state.commentThreadReads).toEqual({5: '2026-08-17T10:00:00.000Z'});
+    });
+
+    it('emits change:reads with read timestamp for marked threads', async () => {
+      const {session} = await createFetchedSession();
+      const listener = jest.fn();
+      session.on('change:reads', listener);
+
+      session.markThreadsRead([5]);
+
+      expect(listener).toHaveBeenCalledWith({5: expect.any(String)});
+      expect(session.state.commentThreadReads[5]).toEqual(expect.any(String));
+    });
+
+    it('keeps read timestamps of other threads', async () => {
+      const {session} = await createFetchedSession({
+        commentThreadReads: {7: '2026-08-17T10:00:00.000Z'}
+      });
+
+      session.markThreadsRead([5]);
+
+      expect(session.state.commentThreadReads[7]).toEqual('2026-08-17T10:00:00.000Z');
+    });
+
+    it('sends marked perma ids in single request after delay', async () => {
+      const {session, request} = await createFetchedSession();
+
+      session.markThreadsRead([5]);
+      session.markThreadsRead([6]);
+
+      expect(request).not.toHaveBeenCalled();
+
+      jest.runAllTimers();
+
+      expect(request).toHaveBeenCalledTimes(1);
+      expect(request).toHaveBeenCalledWith({
+        url: '/review/entries/5/comment_thread_reads',
+        method: 'POST',
+        payload: {comment_thread_perma_ids: [5, 6]}
+      });
+    });
+
+    it('does not send perma id twice', async () => {
+      const {session, request} = await createFetchedSession();
+
+      session.markThreadsRead([5]);
+      session.markThreadsRead([5]);
+      jest.runAllTimers();
+
+      expect(request).toHaveBeenCalledWith(
+        expect.objectContaining({payload: {comment_thread_perma_ids: [5]}})
+      );
+    });
+
+    it('does not send request for empty list of perma ids', async () => {
+      const {session, request} = await createFetchedSession();
+
+      session.markThreadsRead([]);
+      jest.runAllTimers();
+
+      expect(request).not.toHaveBeenCalled();
+    });
+
+    it('ignores marks before state has been fetched', () => {
+      const request = jest.fn();
+      const session = new ReviewSession({entryId: 5, request});
+
+      session.markThreadsRead([5]);
+      jest.runAllTimers();
+
+      expect(request).not.toHaveBeenCalled();
+    });
+
+    it('sends pending perma ids on flushReads', async () => {
+      const {session, request} = await createFetchedSession();
+
+      session.markThreadsRead([5]);
+      await session.flushReads();
+
+      expect(request).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not send request again when nothing is pending', async () => {
+      const {session, request} = await createFetchedSession();
+
+      session.markThreadsRead([5]);
+      await session.flushReads();
+      await session.flushReads();
+
+      expect(request).toHaveBeenCalledTimes(1);
+    });
+
+    it('retries perma ids of failed request on next flush', async () => {
+      const {session, request} = await createFetchedSession();
+      request.mockRejectedValueOnce(new Error('Network down'));
+
+      session.markThreadsRead([5]);
+      await session.flushReads();
+      await session.flushReads();
+
+      expect(request).toHaveBeenCalledTimes(2);
+      expect(request).toHaveBeenLastCalledWith(
+        expect.objectContaining({payload: {comment_thread_perma_ids: [5]}})
+      );
     });
   });
 });

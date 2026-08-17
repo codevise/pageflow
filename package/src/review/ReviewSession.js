@@ -1,11 +1,15 @@
 import BackboneEvents from 'backbone-events-standalone';
 
+const FLUSH_READS_DELAY = 1000;
+
 export class ReviewSession {
   constructor({entryId, request, initialState = null}) {
     this._entryId = entryId;
     this._request = request;
     this._state = initialState;
     this._drafts = {};
+    this._pendingReads = new Set();
+    this._flushReadsTimeout = null;
   }
 
   get state() {
@@ -181,10 +185,59 @@ export class ReviewSession {
 
     this._state = {
       currentUser: data.currentUser,
-      commentThreads: data.commentThreads
+      commentThreads: data.commentThreads,
+      commentThreadReads: data.commentThreadReads || {}
     };
 
     this.trigger('reset', this._state);
+  }
+
+  // Read marks are frequent and individually unimportant, so they are
+  // collected and sent as one request instead of one request per thread.
+  markThreadsRead(permaIds) {
+    if (!this._state || !permaIds.length) return;
+
+    const readAt = new Date().toISOString();
+
+    this._state = {
+      ...this._state,
+      commentThreadReads: {
+        ...this._state.commentThreadReads,
+        ...Object.fromEntries(permaIds.map(permaId => [permaId, readAt]))
+      }
+    };
+
+    permaIds.forEach(permaId => this._pendingReads.add(permaId));
+
+    this.trigger('change:reads', this._state.commentThreadReads);
+    this._scheduleFlushReads();
+  }
+
+  async flushReads() {
+    clearTimeout(this._flushReadsTimeout);
+    this._flushReadsTimeout = null;
+
+    if (!this._pendingReads.size) return;
+
+    const permaIds = [...this._pendingReads];
+    this._pendingReads.clear();
+
+    await this._request({
+      url: `/review/entries/${this._entryId}/comment_thread_reads`,
+      method: 'POST',
+      payload: {comment_thread_perma_ids: permaIds}
+    }).catch(() => {
+      // Local state already counts the threads as read. Keeping the
+      // perma ids pending lets the next flush try again instead of
+      // leaving them unread until the next page load.
+      permaIds.forEach(permaId => this._pendingReads.add(permaId));
+    });
+  }
+
+  _scheduleFlushReads() {
+    if (this._flushReadsTimeout) return;
+
+    this._flushReadsTimeout = setTimeout(() => this.flushReads(), FLUSH_READS_DELAY);
   }
 
   _writeDraft({body, pending = false, ...of}) {
