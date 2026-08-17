@@ -230,6 +230,21 @@ When editors select the "rounded" modifier for an image, they can
 choose from these predefined values, ensuring consistent styling across
 the story.
 
+### Figure Caption
+
+The following properties control the appearance of captions rendered
+below figures like inline images and videos.
+
+| Name | Description |
+| ---- | ----------- |
+| `figure_caption_padding_inline` | Space on the left and right inside the caption. |
+| `figure_caption_padding_top` | Space above the caption text. |
+| `figure_caption_padding_bottom` | Space below the caption text. |
+| `figure_caption_surface_color` | Background color of the caption. Defaults to `light_content_surface_color` (or `dark_content_surface_color` in inverted sections). |
+| `figure_caption_text_color` | Text color of the caption. Defaults to `dark_content_text_color` (or `light_content_text_color` in inverted sections). |
+| `figure_caption_border_bottom` | Border rendered below the caption using CSS `border-bottom` shorthand syntax (e.g. `2px solid #ccc`). |
+| `figure_caption_border_bottom_radius` | Rounds the bottom left and right corners of the caption. |
+
 ### Text Block Styles
 
 | Name | Description |

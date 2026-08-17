@@ -10,9 +10,15 @@
 }
 
 .root > figcaption {
-  padding: 3px var(--theme-figure-caption-padding-inline, 10px) 5px;
+  padding:
+    var(--theme-figure-caption-padding-top, 3px)
+    var(--theme-figure-caption-padding-inline, 10px)
+    var(--theme-figure-caption-padding-bottom, 5px);
   background-color: var(--theme-figure-caption-surface-color, lightContentSurfaceColor);
   color: var(--theme-figure-caption-text-color, darkContentTextColor);
+  border-bottom: var(--theme-figure-caption-border-bottom, none);
+  border-bottom-left-radius: var(--theme-figure-caption-border-bottom-radius, 0);
+  border-bottom-right-radius: var(--theme-figure-caption-border-bottom-radius, 0);
 }
 
 .root > figcaption p {
