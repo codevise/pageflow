@@ -35,6 +35,7 @@ export function fakeDotLottiePlayers({act = fn => fn()} = {}) {
         pause: jest.fn(),
         setFrame: jest.fn(),
         setLayout: jest.fn(),
+        resize: jest.fn(),
         destroy: jest.fn(),
         animationSize: jest.fn(() => animationSize),
 
