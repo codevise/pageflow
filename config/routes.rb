@@ -84,6 +84,8 @@ Pageflow::Engine.routes.draw do
         resources :comment_threads, only: [:index, :create, :update] do
           resources :comments, only: [:create, :update]
         end
+
+        resources :comment_thread_reads, only: [:create]
       end
     end
 
