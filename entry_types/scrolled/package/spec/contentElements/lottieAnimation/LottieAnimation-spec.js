@@ -124,7 +124,27 @@ describe('LottieAnimation', () => {
   it('contains animation inside its intrinsic aspect ratio by default', () => {
     renderLottieAnimation();
 
-    expect(players[0].config.layout).toEqual({fit: 'contain'});
+    expect(players[0].config.layout.fit).toEqual('contain');
+  });
+
+  it('centers animation by default', () => {
+    renderLottieAnimation();
+
+    expect(players[0].config.layout.align).toEqual([0.5, 0.5]);
+  });
+
+  it('aligns animation according to crop position', () => {
+    renderLottieAnimation({
+      configuration: {
+        id: 100,
+        imageModifiers: [
+          {name: 'crop', value: 'wide'}
+        ],
+        cropPosition: {x: 20, y: 30}
+      }
+    });
+
+    expect(players[0].config.layout.align).toEqual([0.2, 0.3]);
   });
 
   describe('crop image modifier', () => {
@@ -166,7 +186,7 @@ describe('LottieAnimation', () => {
         }
       });
 
-      expect(players[0].config.layout).toEqual({fit: 'cover'});
+      expect(players[0].config.layout.fit).toEqual('cover');
     });
 
     it('forces 1:1 aspect ratio for circle crop', () => {

@@ -42,6 +42,8 @@ export function LottieAnimation({configuration}) {
                        loop={configuration.playbackMode !== 'playOnce'}
                        play={isVisible}
                        fit={aspectRatio ? 'cover' : 'contain'}
+                       cropPositionX={configuration.cropPosition?.x}
+                       cropPositionY={configuration.cropPosition?.y}
                        onAspectRatioChange={setAnimationAspectRatio} />}
             </ContentElementBox>
             <InlineFileRights configuration={configuration}
@@ -57,7 +59,9 @@ export function LottieAnimation({configuration}) {
   );
 }
 
-function Player({lottieFile, loop, play, fit, onAspectRatioChange}) {
+function Player({
+  lottieFile, loop, play, fit, cropPositionX = 50, cropPositionY = 50, onAspectRatioChange
+}) {
   const canvasRef = useRef();
   const dotLottieRef = useRef();
 
@@ -69,7 +73,7 @@ function Player({lottieFile, loop, play, fit, onAspectRatioChange}) {
       canvas: canvasRef.current,
       src: lottieFile.urls.original,
       loop,
-      layout: {fit},
+      layout: {fit, align: [cropPositionX / 100, cropPositionY / 100]},
       autoplay: false,
       renderConfig: {autoResize: true}
     });
@@ -94,7 +98,7 @@ function Player({lottieFile, loop, play, fit, onAspectRatioChange}) {
       dotLottieRef.current = null;
       dotLottie.destroy();
     };
-  }, [lottieFile.urls.original, loop, fit, onAspectRatioChange]);
+  }, [lottieFile.urls.original, loop, fit, cropPositionX, cropPositionY, onAspectRatioChange]);
 
   useEffect(() => {
     if (play) {
