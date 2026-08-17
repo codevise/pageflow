@@ -96,6 +96,7 @@ export * from './controllers/SidebarController';
 
 export * from './views/UploaderView';
 export * from './views/BackgroundPositioningView';
+export * from './views/BackgroundPositioningImageView';
 export * from './views/ExplorerFileItemView';
 export * from './views/ConfirmableFileItemView';
 export * from './views/ScrollingView';

@@ -2,6 +2,8 @@ import _ from 'underscore';
 
 import {Object} from 'pageflow/ui';
 
+import {BackgroundPositioningImageView} from '../views/BackgroundPositioningImageView';
+
 export const FileType = Object.extend({
   initialize: function(options) {
     this.model = options.model;
@@ -23,6 +25,7 @@ export const FileType = Object.extend({
     this.metaDataAttributes = options.metaDataAttributes || [];
     this.previewView = options.previewView;
     this.thumbnailView = options.thumbnailView;
+    this.positioningView = options.positioningView || BackgroundPositioningImageView;
 
     if (typeof options.matchUpload === 'function') {
       this.matchUpload = options.matchUpload;

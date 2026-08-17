@@ -96,6 +96,12 @@ export const ReusableFile = Backbone.Model.extend({
     return new ThumbnailView({model: this});
   },
 
+  createPositioningView: function(options) {
+    var PositioningView = this.fileType().positioningView;
+
+    return new PositioningView({model: this, ...options});
+  },
+
   title: function() {
     return this.get('display_name') || this.get('file_name');
   },

@@ -58,13 +58,23 @@
     position: relative;
     height: 100%;
 
-    img {
+    // Shrinks to the size of whatever renders the file, so the sliders
+    // line up with its edges.
+    .file {
+      --positioning-max-width: 600px;
+      --positioning-max-height: 300px;
+
+      display: inline-block;
       outline: solid 1px var(--ui-on-surface-color-light);
-      display: block;
-      max-height: 300px;
-      max-width: 600px;
+      line-height: 0;
       cursor: crosshair;
     }
+  }
+
+  &-image-contain {
+    display: block;
+    max-width: var(--positioning-max-width, 100%);
+    max-height: var(--positioning-max-height, none);
   }
 
   .slider {

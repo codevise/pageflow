@@ -9,6 +9,7 @@ export const BackgroundPositioningSlidersView = Marionette.ItemView.extend({
 
   ui: {
     container: '.container',
+    file: '.file',
 
     sliderHorizontal: '.horizontal.slider',
     sliderVertical: '.vertical.slider',
@@ -18,7 +19,7 @@ export const BackgroundPositioningSlidersView = Marionette.ItemView.extend({
   },
 
   events: {
-    'mousedown img': function(event) {
+    'mousedown .file': function(event) {
       var view = this;
       view.saveFromEvent(event);
 
@@ -37,7 +38,7 @@ export const BackgroundPositioningSlidersView = Marionette.ItemView.extend({
         .on('mouseup', onUp);
     },
 
-    'dragstart img': function(event) {
+    'dragstart .file': function(event) {
       event.preventDefault();
     }
   },
@@ -48,10 +49,8 @@ export const BackgroundPositioningSlidersView = Marionette.ItemView.extend({
 
   onRender: function() {
     var view = this;
-    var file = this.model.getReference(this.options.propertyName, this.options.filesCollection),
-        image = $('<img />').attr('src', file.getBackgroundPositioningImageUrl());
 
-    this.ui.container.append(image);
+    this.renderFile();
 
     this.ui.sliderVertical.slider({
       orientation: 'vertical',
@@ -86,6 +85,15 @@ export const BackgroundPositioningSlidersView = Marionette.ItemView.extend({
     });
 
     this.update();
+  },
+
+  // File types can render the file themselves, which is the only way
+  // to display files that do not have an image to position on the
+  // server.
+  renderFile: function() {
+    var file = this.model.getReference(this.options.propertyName, this.options.filesCollection);
+
+    this.appendSubview(file.createPositioningView({fit: 'contain'}), {to: this.ui.file});
   },
 
   update: function() {
