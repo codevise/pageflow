@@ -23,6 +23,10 @@ module Pageflow
 
       has_many :revisions, class_name: 'Pageflow::Revision', foreign_key: :creator_id
 
+      has_many :comment_thread_reads,
+               dependent: :destroy,
+               class_name: 'Pageflow::CommentThreadRead'
+
       validates :first_name, :last_name, presence: true
       validates_inclusion_of :locale, in: Pageflow.config.available_locales.map(&:to_s)
 

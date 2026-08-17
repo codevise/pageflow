@@ -33,6 +33,8 @@ module Pageflow
 
     has_many :imports, class_name: 'Pageflow::FileImport', dependent: :destroy
 
+    has_many :comment_thread_reads, dependent: :destroy
+
     has_one :draft, -> { editable }, class_name: 'Revision', inverse_of: :entry
     has_one :published_revision, -> { published }, class_name: 'Revision', inverse_of: :entry
 
