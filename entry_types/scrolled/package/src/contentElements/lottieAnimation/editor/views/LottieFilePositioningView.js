@@ -1,31 +1,16 @@
-import Marionette from 'backbone.marionette';
-
-import {cssModulesUtils} from 'pageflow/ui';
-
-import {DotLottie} from '../../dotLottie';
+import {LottieFilePlayerView} from './LottieFilePlayerView';
 
 import styles from './LottieFilePositioningView.module.css';
 
-export const LottieFilePositioningView = Marionette.ItemView.extend({
+export const LottieFilePositioningView = LottieFilePlayerView.extend({
   template: () => `<canvas class="${styles.canvas}"></canvas>`,
 
   className: function() {
     return styles[this.options.fit];
   },
 
-  ui: cssModulesUtils.ui(styles, 'canvas'),
-
-  onRender: function() {
-    this.player = new DotLottie({
-      canvas: this.ui.canvas[0],
-      src: this.model.get('original_url'),
-      autoplay: true,
-      loop: true,
-      layout: this.layout(),
-      renderConfig: {autoResize: true}
-    });
-
-    this.player.addEventListener('load', this.onAnimationLoad.bind(this));
+  playerOptions: function() {
+    return {autoplay: true, loop: true, layout: this.layout()};
   },
 
   setPosition: function(x, y) {
@@ -55,9 +40,5 @@ export const LottieFilePositioningView = Marionette.ItemView.extend({
                                 `${size.width / size.height}`);
       this.el.style.setProperty('--positioning-width', `${size.width}px`);
     }
-  },
-
-  onClose: function() {
-    this.player.destroy();
   }
 });
