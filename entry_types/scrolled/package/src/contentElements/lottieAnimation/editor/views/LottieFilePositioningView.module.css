@@ -1,0 +1,23 @@
+.cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* A max height would squash the canvas instead of scaling it down,
+   since the aspect ratio only determines the height before it is
+   clamped. Limiting the width covers both directions. */
+.contain {
+  display: block;
+  width: var(--positioning-width, 100%);
+  max-width: min(var(--positioning-max-width, 100%),
+                 var(--positioning-max-height, 100vh) *
+                   var(--positioning-aspect-ratio, 1));
+  aspect-ratio: var(--positioning-aspect-ratio, 1);
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

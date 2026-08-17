@@ -3,6 +3,7 @@ import {FileInputView} from 'pageflow/editor';
 import {SelectInputView, SeparatorView} from 'pageflow/ui';
 
 import {LottieFile} from './models/LottieFile';
+import {LottieFilePositioningView} from './views/LottieFilePositioningView';
 import {LottieFilePreviewView} from './views/LottieFilePreviewView';
 import {LottieFileThumbnailView} from './views/LottieFileThumbnailView';
 
@@ -10,6 +11,7 @@ import pictogram from './pictogram.svg';
 
 editor.fileTypes.register('lottie_files', {
   model: LottieFile,
+  positioningView: LottieFilePositioningView,
   previewView: LottieFilePreviewView,
   thumbnailView: LottieFileThumbnailView,
 
