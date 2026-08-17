@@ -8,6 +8,7 @@ import {ReplyForm} from './ReplyForm';
 import {useCommentDraft} from './ReviewStateProvider';
 import {useSubjectQuote} from './subjectQuote';
 import {commentsWithOutdatedQuote} from './outdatedQuotes';
+import {useMarkThreadReadWhenSeen} from './markThreadReadWhenSeen';
 import {useScrollHighlightedThreadIntoView} from './scrollHighlightedThreadIntoView';
 
 import ChevronIcon from './images/chevron.svg';
@@ -50,6 +51,8 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
 
   const ref = useRef();
   const scrollHighlightedIntoView = useScrollHighlightedThreadIntoView();
+
+  useMarkThreadReadWhenSeen({thread, ref, enabled: !repliesCollapsed});
 
   useEffect(() => {
     if (scrollHighlightedIntoView && highlighted && ref.current) {
