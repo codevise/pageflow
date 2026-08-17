@@ -17,6 +17,10 @@ const ReviewStateContext = createContext(null);
 const CommentDraftsContext = createContext(null);
 const CommentThreadReadsContext = createContext(null);
 
+// Kept stable so consumers outside the provider do not see a new object
+// on every render.
+const emptyCommentThreadReads = {};
+
 export function ReviewStateProvider({initialState, initialDrafts, setDraft, children}) {
   const [state, dispatch] = useReducer(
     reducer,
@@ -163,9 +167,13 @@ export function useCurrentUser() {
   return context ? context.currentUser : null;
 }
 
-export function useCommentThreadReadAt(permaId) {
+export function useCommentThreadReads() {
   const context = useContext(CommentThreadReadsContext);
-  return context?.commentThreadReads[permaId];
+  return context ? context.commentThreadReads : emptyCommentThreadReads;
+}
+
+export function useCommentThreadReadAt(permaId) {
+  return useCommentThreadReads()[permaId];
 }
 
 export function useMarkThreadRead() {

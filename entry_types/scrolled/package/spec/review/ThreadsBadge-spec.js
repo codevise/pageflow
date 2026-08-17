@@ -1,5 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
+import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {ThreadsBadge} from 'review/ThreadsBadge';
 import {renderWithReviewState} from 'support/renderWithReviewState';
@@ -12,11 +13,92 @@ const seed = {
   contentElements: [{id: 1, permaId: 10, sectionId: 1, typeName: 'textBlock'}]
 };
 
-function renderThreadsBadge(ui, {commentThreads = []} = {}) {
-  return renderWithReviewState(ui, {seed, commentThreads});
+function renderThreadsBadge(ui, {commentThreads = [], ...options} = {}) {
+  return renderWithReviewState(ui, {seed, commentThreads, ...options});
 }
 
 describe('ThreadsBadge', () => {
+  describe('unread comments', () => {
+    useFakeTranslations({
+      'pageflow_scrolled.review.unread_comment_count.one': '1 unread comment',
+      'pageflow_scrolled.review.unread_comment_count.other': '%{count} unread comments'
+    });
+
+    const currentUser = {id: 42, name: 'Alice'};
+
+    function threadWithComment(attributes) {
+      return {
+        id: 1,
+        permaId: 5,
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        comments: [{
+          id: 100,
+          creatorId: 43,
+          createdAt: '2026-08-17T11:00:00.000Z',
+          ...attributes
+        }]
+      };
+    }
+
+    it('marks badge as unread and names the count', () => {
+      const {getByRole} = renderThreadsBadge(
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} />,
+        {currentUser, commentThreads: [threadWithComment()]}
+      );
+
+      expect(getByRole('status')).toHaveClass(badgeStyles.unread);
+      expect(getByRole('status')).toHaveAttribute('aria-label', '1 unread comment');
+    });
+
+    it('counts unread comments across threads of the subject', () => {
+      const {getByRole} = renderThreadsBadge(
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} />,
+        {
+          currentUser,
+          commentThreads: [
+            threadWithComment(),
+            {...threadWithComment({id: 101}), id: 2, permaId: 6}
+          ]
+        }
+      );
+
+      expect(getByRole('status')).toHaveAttribute('aria-label', '2 unread comments');
+    });
+
+    it('does not mark badge as unread once comments have been read', () => {
+      const {getByRole} = renderThreadsBadge(
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} />,
+        {
+          currentUser,
+          commentThreads: [threadWithComment()],
+          commentThreadReads: {5: '2026-08-17T12:00:00.000Z'}
+        }
+      );
+
+      expect(getByRole('status')).not.toHaveClass(badgeStyles.unread);
+      expect(getByRole('status')).not.toHaveAttribute('aria-label');
+    });
+
+    it('does not mark badge as unread for own comments', () => {
+      const {getByRole} = renderThreadsBadge(
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} />,
+        {currentUser, commentThreads: [threadWithComment({creatorId: currentUser.id})]}
+      );
+
+      expect(getByRole('status')).not.toHaveClass(badgeStyles.unread);
+    });
+
+    it('does not mark badge as unread before current user is known', () => {
+      const {getByRole} = renderThreadsBadge(
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} />,
+        {commentThreads: [threadWithComment()]}
+      );
+
+      expect(getByRole('status')).not.toHaveClass(badgeStyles.unread);
+    });
+  });
+
   it('does not display count for single thread', () => {
     const {getByRole} = renderThreadsBadge(
       <ThreadsBadge subjectType="ContentElement" subjectId={10} />,

@@ -1,6 +1,8 @@
 .badge {
   --dot-size: 12px;
   --icon-size: 15px;
+  --unread-dot-size: 8px;
+  position: relative;
   display: flex;
   align-items: center;
   gap: space(1);
@@ -60,4 +62,19 @@
   display: block;
   width: var(--icon-size);
   height: var(--icon-size);
+}
+
+/* Marks subjects with comments the reviewer has not seen yet. Sits on
+   the badge corner rather than changing its color, so it reads the same
+   on every badge variant. */
+.unread::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--unread-dot-size);
+  height: var(--unread-dot-size);
+  border-radius: 50%;
+  background: var(--ui-warning-color);
+  box-shadow: 0 0 0 1px var(--ui-on-surface-color-lighter);
 }

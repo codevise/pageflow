@@ -4,7 +4,9 @@ import classNames from 'classnames';
 import CommentIcon from './images/comment.svg';
 import styles from './Badge.module.css';
 
-export const Badge = forwardRef(function Badge({counter, mode, resolved, onClick}, ref) {
+export const Badge = forwardRef(function Badge({
+  counter, mode, resolved, unread, label, onClick
+}, ref) {
   const variant = resolveVariant(mode, counter > 0);
 
   if (!variant) {
@@ -14,8 +16,10 @@ export const Badge = forwardRef(function Badge({counter, mode, resolved, onClick
   return (
     <button ref={ref}
             role="status"
+            aria-label={label}
             className={classNames(styles.badge, styles[variant],
-                                  {[styles.resolved]: resolved})}
+                                  {[styles.resolved]: resolved,
+                                   [styles.unread]: unread})}
             onClick={onClick}>
       {variant !== 'dot' && <CommentIcon className={styles.icon} />}
       {(variant === 'active' || variant === 'expanded') && counter > 1 ? counter : null}

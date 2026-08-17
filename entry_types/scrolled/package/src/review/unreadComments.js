@@ -1,6 +1,24 @@
 import {useMemo} from 'react';
 
-import {useCommentThreadReadAt, useCurrentUser} from './ReviewStateProvider';
+import {
+  useCommentThreadReadAt, useCommentThreadReads, useCurrentUser
+} from './ReviewStateProvider';
+
+export function useUnreadCommentCount(threads) {
+  const currentUser = useCurrentUser();
+  const commentThreadReads = useCommentThreadReads();
+
+  return useMemo(
+    () => threads.reduce(
+      (count, thread) => count + unreadComments(thread, {
+        currentUser,
+        readAt: commentThreadReads[thread.permaId]
+      }).length,
+      0
+    ),
+    [threads, currentUser, commentThreadReads]
+  );
+}
 
 export function useUnreadComments(thread) {
   const currentUser = useCurrentUser();

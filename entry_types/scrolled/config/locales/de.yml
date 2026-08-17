@@ -1995,6 +1995,9 @@ de:
         zero: Keine Kommentare
         one: 1 Kommentar
         other: '%{count} Kommentare'
+      unread_comment_count:
+        one: 1 ungelesener Kommentar
+        other: '%{count} ungelesene Kommentare'
       select_content_element: Zum Kommentieren auswählen
       select_section: Abschnitt zum Kommentieren auswählen
       select_text_to_comment: Text zum Kommentieren auswählen
