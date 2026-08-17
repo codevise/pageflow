@@ -7,7 +7,7 @@ export const LottieFileThumbnailView = LottieFilePlayerView.extend({
   className: styles.thumbnail,
 
   playerOptions: function() {
-    return {autoplay: false};
+    return {autoplay: false, layout: {fit: 'cover'}};
   },
 
   // Animations commonly build up their scene over time, which would

@@ -44,6 +44,14 @@ describe('LottieFileThumbnailView', () => {
     expect(players[0].setFrame).toHaveBeenCalledWith(59);
   });
 
+  it('crops the animation to fill the thumbnail', () => {
+    const view = thumbnailView();
+
+    render(view);
+
+    expect(players[0].config.layout).toEqual({fit: 'cover'});
+  });
+
   it('does not play the animation', () => {
     const view = thumbnailView();
 
