@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
 import template from '../templates/fileStageItem.jst';
+import {FileStageIconView} from './FileStageIconView';
 
 export const FileStageItemView = Marionette.ItemView.extend({
   tagName: 'li',
@@ -9,13 +10,10 @@ export const FileStageItemView = Marionette.ItemView.extend({
   template,
 
   ui: {
+    icon: '.file_stage_item-icon',
     description: '.description',
     percent: '.percent',
-    errorMessage: '.error_message',
-
-    spinner: '.file_stage_item-spinner',
-    alert: '.file_stage_item-alert',
-    bell: '.file_stage_item-bell'
+    errorMessage: '.error_message'
   },
 
   modelEvents: {
@@ -23,6 +21,8 @@ export const FileStageItemView = Marionette.ItemView.extend({
   },
 
   onRender: function() {
+    this.appendSubview(new FileStageIconView({model: this.model}), {to: this.ui.icon});
+
     this.update();
     this.$el.addClass(this.model.get('name'));
 
@@ -53,17 +53,6 @@ export const FileStageItemView = Marionette.ItemView.extend({
     this.$el.toggleClass('finished', this.model.get('finished'));
     this.$el.toggleClass('failed', this.model.get('failed'));
     this.$el.toggleClass('action_required', this.model.get('action_required'));
-
-    this.updateIcon();
-  },
-
-  updateIcon: function() {
-    var failed = !!this.model.get('failed');
-    var actionRequired = !!this.model.get('action_required');
-
-    this.ui.spinner.toggle(!failed && !actionRequired);
-    this.ui.alert.toggle(failed);
-    this.ui.bell.toggle(actionRequired);
   },
 
   _translatedErrorMessage: function() {

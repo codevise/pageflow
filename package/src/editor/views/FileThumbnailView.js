@@ -1,6 +1,9 @@
 import Marionette from 'backbone.marionette';
 
+import {CollectionView} from 'pageflow/ui';
+
 import template from '../templates/fileThumbnail.jst';
+import {FileStageIconView} from './FileStageIconView';
 
 export const FileThumbnailView = Marionette.ItemView.extend({
   className: 'file_thumbnail',
@@ -16,26 +19,23 @@ export const FileThumbnailView = Marionette.ItemView.extend({
   },
 
   onRender: function() {
+    if (this.model) {
+      this.appendSubview(new CollectionView({
+        tagName: 'span',
+        className: 'file_thumbnail-stage_icon',
+        collection: this.model.currentStages,
+        itemViewConstructor: FileStageIconView
+      }));
+    }
+
     this.update();
   },
 
   update: function() {
     if (this.model) {
-      var stage = this.model.currentStage();
-
-      if (stage) {
-        this.setStageClassName(stage.get('name'));
-        this.ui.pictogram.toggleClass('action_required', stage.get('action_required'));
-        this.ui.pictogram.toggleClass('failed', stage.get('failed'));
-      }
-      else {
-        this.ui.pictogram.removeClass(this.model.stages.pluck('name').join(' '));
-      }
-
       this.ui.pictogram.addClass(this.model.thumbnailPictogram);
       this.$el.css('background-image', this._imageUrl() ? 'url(' + this._imageUrl() + ')' : '');
       this.$el
-        .removeClass('empty')
         .toggleClass('always_picogram', !!this.model.thumbnailPictogram)
         .toggleClass('ready', this.model.isReady());
 
@@ -60,14 +60,6 @@ export const FileThumbnailView = Marionette.ItemView.extend({
 
     if (this.customThumbnailView) {
       this.appendSubview(this.customThumbnailView, {to: this.ui.custom});
-    }
-  },
-
-  setStageClassName: function(name) {
-    if (!this.$el.hasClass(name)) {
-      this.ui.pictogram.removeClass('empty');
-      this.ui.pictogram.removeClass(this.model.stages.pluck('name').join(' '));
-      this.ui.pictogram.addClass(name);
     }
   },
 
