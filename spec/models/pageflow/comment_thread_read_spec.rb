@@ -79,6 +79,27 @@ module Pageflow
       end
     end
 
+    describe '.read_at_by_perma_id' do
+      it 'returns read timestamps of user in entry keyed by thread perma id' do
+        read = create(:comment_thread_read, comment_thread_perma_id: 5)
+
+        result = CommentThreadRead.read_at_by_perma_id(entry: read.entry, user: read.user)
+
+        expect(result.keys).to eq([5])
+        expect(result[5]).to eq(read.read_at)
+      end
+
+      it 'ignores records of other users and entries' do
+        read = create(:comment_thread_read, comment_thread_perma_id: 5)
+        create(:comment_thread_read, entry: read.entry, comment_thread_perma_id: 6)
+        create(:comment_thread_read, user: read.user, comment_thread_perma_id: 7)
+
+        result = CommentThreadRead.read_at_by_perma_id(entry: read.entry, user: read.user)
+
+        expect(result.keys).to eq([5])
+      end
+    end
+
     it 'is destroyed together with entry' do
       read = create(:comment_thread_read)
 

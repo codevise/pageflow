@@ -10,6 +10,8 @@ module Pageflow
         authorize!(:read, entry.to_model)
 
         @comment_threads = entry.comment_threads.includes(comments: :creator)
+        @read_at_by_perma_id =
+          CommentThreadRead.read_at_by_perma_id(entry: entry.to_model, user: current_user)
       end
 
       def create

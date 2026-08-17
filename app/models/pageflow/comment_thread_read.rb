@@ -8,6 +8,10 @@ module Pageflow
     belongs_to :entry
     belongs_to :user
 
+    def self.read_at_by_perma_id(entry:, user:)
+      where(entry:, user:).pluck(:comment_thread_perma_id, :read_at).to_h
+    end
+
     def self.mark(entry:, user:, comment_thread_perma_ids:, read_at: Time.current)
       comment_thread_perma_ids.each do |perma_id|
         find_or_initialize_by(entry:, user:, comment_thread_perma_id: perma_id)
