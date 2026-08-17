@@ -31,6 +31,13 @@ export function postSetCommentDraftMessage(draft) {
   );
 }
 
+export function postMarkThreadsReadMessage(permaIds) {
+  window.top.postMessage(
+    {type: 'MARK_THREADS_READ', payload: {permaIds}},
+    window.location.origin
+  );
+}
+
 export function postUpdateThreadMessage({threadId, resolved}) {
   window.top.postMessage(
     {type: 'UPDATE_THREAD', payload: {threadId, resolved}},
@@ -55,6 +62,13 @@ export function postReviewStateThreadChangeMessage(targetWindow, thread) {
 export function postReviewStateDraftsChangeMessage(targetWindow, drafts) {
   targetWindow.postMessage(
     {type: 'REVIEW_STATE_DRAFTS_CHANGE', payload: drafts},
+    window.location.origin
+  );
+}
+
+export function postReviewStateReadsChangeMessage(targetWindow, reads) {
+  targetWindow.postMessage(
+    {type: 'REVIEW_STATE_READS_CHANGE', payload: reads},
     window.location.origin
   );
 }

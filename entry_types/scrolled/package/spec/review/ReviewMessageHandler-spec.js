@@ -8,7 +8,8 @@ function fakeReviewSession() {
     createComment: jest.fn().mockResolvedValue(),
     updateThread: jest.fn().mockResolvedValue(),
     updateComment: jest.fn().mockResolvedValue(),
-    setDraft: jest.fn()
+    setDraft: jest.fn(),
+    markThreadsRead: jest.fn()
   };
 
   Object.assign(session, BackboneEvents);
@@ -92,6 +93,43 @@ describe('ReviewMessageHandler', () => {
 
     expect(postMessage).toHaveBeenCalledWith(
       {type: 'REVIEW_STATE_RESET', payload: state},
+      window.location.origin
+    );
+
+    window.postMessage.mockRestore();
+  });
+
+  it('calls session.markThreadsRead on MARK_THREADS_READ message from targetWindow', async () => {
+    const session = fakeReviewSession();
+
+    ReviewMessageHandler.create({session, targetWindow: window});
+
+    window.dispatchEvent(new MessageEvent('message', {
+      data: {
+        type: 'MARK_THREADS_READ',
+        payload: {permaIds: [5, 6]}
+      },
+      origin: window.location.origin,
+      source: window
+    }));
+
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(session.markThreadsRead).toHaveBeenCalledWith([5, 6]);
+  });
+
+  it('posts REVIEW_STATE_READS_CHANGE to target window on session change:reads', () => {
+    const session = fakeReviewSession();
+    const postMessage = jest.fn();
+    jest.spyOn(window, 'postMessage').mockImplementation(postMessage);
+
+    ReviewMessageHandler.create({session, targetWindow: window});
+
+    const reads = {5: '2026-08-17T10:00:00.000Z'};
+    session.trigger('change:reads', reads);
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {type: 'REVIEW_STATE_READS_CHANGE', payload: reads},
       window.location.origin
     );
 

@@ -7,16 +7,19 @@ import {
   ReviewStateProvider,
   useCommentDraft,
   useCommentThread,
+  useCommentThreadReadAt,
   useCommentThreads,
   useCreateComment,
   useCreateCommentThread,
   useCurrentUser,
+  useMarkThreadRead,
   useUpdateComment
 } from 'review/ReviewStateProvider';
 import {
   postReviewStateResetMessage,
   postReviewStateThreadChangeMessage,
-  postReviewStateDraftsChangeMessage
+  postReviewStateDraftsChangeMessage,
+  postReviewStateReadsChangeMessage
 } from 'review/postMessage';
 import {renderHookWithReviewState} from 'support/renderWithReviewState';
 
@@ -547,6 +550,92 @@ describe('ReviewStateProvider', () => {
       act(() => result.current.createThread('Looks good'));
 
       expect(result.current.other).toMatchObject({body: 'Elsewhere'});
+    });
+  });
+
+  describe('comment thread reads', () => {
+    function postReadsChange(payload) {
+      act(() => {
+        postReviewStateReadsChangeMessage(window, payload);
+      });
+    }
+
+    it('provides no read timestamp initially', () => {
+      const {result} = renderHook(() => useCommentThreadReadAt(5), {wrapper});
+
+      expect(result.current).toBeUndefined();
+    });
+
+    it('provides read timestamp from reset message', async () => {
+      const {result, waitForNextUpdate} = renderHook(
+        () => useCommentThreadReadAt(5),
+        {wrapper}
+      );
+
+      postReset({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [],
+        commentThreadReads: {5: '2026-08-17T10:00:00.000Z'}
+      });
+      await waitForNextUpdate();
+
+      expect(result.current).toEqual('2026-08-17T10:00:00.000Z');
+    });
+
+    it('updates read timestamp on reads change message', async () => {
+      const {result, waitForNextUpdate} = renderHook(
+        () => useCommentThreadReadAt(5),
+        {wrapper}
+      );
+
+      postReadsChange({5: '2026-08-17T12:00:00.000Z'});
+      await waitForNextUpdate();
+
+      expect(result.current).toEqual('2026-08-17T12:00:00.000Z');
+    });
+
+    it('marks thread read by posting a message', () => {
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+      const {result} = renderHook(() => useMarkThreadRead(), {wrapper});
+
+      result.current(5);
+
+      expect(postMessage).toHaveBeenCalledWith(
+        {type: 'MARK_THREADS_READ', payload: {permaIds: [5]}},
+        window.location.origin
+      );
+
+      postMessage.mockRestore();
+    });
+
+    it('keeps mark callback stable when reads change', async () => {
+      const {result, waitForNextUpdate} = renderHook(() => useMarkThreadRead(), {wrapper});
+
+      const markThreadRead = result.current;
+      postReadsChange({5: '2026-08-17T12:00:00.000Z'});
+      await waitForNextUpdate();
+
+      expect(result.current).toBe(markThreadRead);
+    });
+
+    it('does not invalidate thread state when reads change', async () => {
+      const {result, waitForNextUpdate} = renderHook(
+        () => useCommentThreads(),
+        {wrapper}
+      );
+
+      postReset({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [{id: 1, permaId: 5, subjectType: 'CE', subjectId: 10, comments: []}],
+        commentThreadReads: {}
+      });
+      await waitForNextUpdate();
+
+      const threadsBefore = result.current;
+      postReadsChange({5: '2026-08-17T12:00:00.000Z'});
+
+      expect(result.current).toBe(threadsBefore);
     });
   });
 });
