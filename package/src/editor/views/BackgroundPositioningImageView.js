@@ -13,5 +13,9 @@ export const BackgroundPositioningImageView = Marionette.ItemView.extend({
 
   onRender: function() {
     this.$el.attr('src', this.model.getBackgroundPositioningImageUrl());
+  },
+
+  setPosition: function(x, y) {
+    this.$el.css('object-position', x + '% ' + y + '%');
   }
 });

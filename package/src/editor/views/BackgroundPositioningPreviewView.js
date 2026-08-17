@@ -16,7 +16,20 @@ export const BackgroundPositioningPreviewView = Marionette.ItemView.extend({
   },
 
   onRender: function() {
+    this.renderFile();
     this.update();
+  },
+
+  // File types can crop the file themselves, which is the only way to
+  // preview files that have no image to position on the server.
+  renderFile: function() {
+    var file = this.file();
+
+    this.positioningView = file && file.createPositioningView({fit: 'cover'});
+
+    if (this.positioningView) {
+      this.appendSubview(this.positioningView, {to: this.ui.image});
+    }
   },
 
   update: function() {
@@ -27,17 +40,20 @@ export const BackgroundPositioningPreviewView = Marionette.ItemView.extend({
 
     this.ui.image.css({
       width: width + 'px',
-      height: height + 'px',
-      backgroundImage: this.imageValue(),
-      backgroundPosition: this.model.getFilePosition(this.options.propertyName, 'x') + '% ' +
-        this.model.getFilePosition(this.options.propertyName, 'y') + '%'
+      height: height + 'px'
     });
+
+    if (this.positioningView) {
+      this.positioningView.setPosition(
+        this.model.getFilePosition(this.options.propertyName, 'x'),
+        this.model.getFilePosition(this.options.propertyName, 'y')
+      );
+    }
 
     this.ui.label.text(this.options.label);
   },
 
-  imageValue: function() {
-    var file = this.model.getReference(this.options.propertyName, this.options.filesCollection);
-    return file ? 'url("' + file.getBackgroundPositioningImageUrl()  + '")' : 'none';
+  file: function() {
+    return this.model.getReference(this.options.propertyName, this.options.filesCollection);
   }
 });
