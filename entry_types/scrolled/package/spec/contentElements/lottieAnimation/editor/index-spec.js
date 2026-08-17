@@ -1,5 +1,5 @@
 import {editor} from 'pageflow-scrolled/editor';
-import {SelectInput, useFakeFeatures} from 'pageflow/testHelpers';
+import {FileInput, SelectInput, useFakeFeatures} from 'pageflow/testHelpers';
 
 import {renderContentElementConfigurationEditor, useEditorGlobals} from 'support';
 
@@ -76,6 +76,26 @@ describe('lottieAnimation/editor', () => {
 
       expect(configurationEditor.visibleInputPropertyNames())
         .not.toContain('imageModifiers');
+    });
+
+    it('offers to position animation inside crop', () => {
+      const configurationEditor = renderConfigurationEditor({
+        lottieFiles: [{perma_id: 100, state: 'uploaded'}],
+        configuration: {id: 100, imageModifiers: [{name: 'crop', value: 'wide'}]}
+      });
+
+      expect(FileInput.findByPropertyName('id', {inView: configurationEditor}).menuItemNames())
+        .toContain('edit_background_positioning');
+    });
+
+    it('does not offer to position animation that is not cropped', () => {
+      const configurationEditor = renderConfigurationEditor({
+        lottieFiles: [{perma_id: 100, state: 'uploaded'}],
+        configuration: {id: 100}
+      });
+
+      expect(FileInput.findByPropertyName('id', {inView: configurationEditor}).menuItemNames())
+        .not.toContain('edit_background_positioning');
     });
   });
 

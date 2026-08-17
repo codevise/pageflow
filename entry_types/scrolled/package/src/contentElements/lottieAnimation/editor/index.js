@@ -1,4 +1,5 @@
 import {editor, ImageModifierListInputView, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
+import {processImageModifiers} from 'pageflow-scrolled/frontend';
 import {FileInputView} from 'pageflow/editor';
 import {SelectInputView, SeparatorView} from 'pageflow/ui';
 
@@ -43,7 +44,15 @@ editor.contentElementTypes.register('lottieAnimation', {
       this.input('id', FileInputView, {
         collection: 'lottie_files',
         fileSelectionHandler: 'contentElementConfiguration',
-        positioning: false,
+        positioning: imageModifiers => !!processImageModifiers(imageModifiers).aspectRatio,
+        positioningBinding: 'imageModifiers',
+        positioningOptions: () => {
+          const {aspectRatio} = processImageModifiers(this.model.get('imageModifiers'));
+
+          return {
+            preview: aspectRatio && (1 / entry.getAspectRatio(aspectRatio))
+          };
+        },
         dropDownMenuItems: [InlineFileRightsMenuItem]
       });
       this.input('imageModifiers', ImageModifierListInputView, {
