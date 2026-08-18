@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rails-version: ['~> 7.1.0', '~> 7.2.0']
+        rails-version: ['~> 7.2.0', '~> 8.1.0']
         job:
           - pageflow
           - pageflow_js
