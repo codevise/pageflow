@@ -16,7 +16,18 @@ const milestones = {
 
   lastContained: ({subjectHeight, elementHeight}) => elementHeight - subjectHeight,
 
-  lastVisible: ({subjectHeight}) => -subjectHeight
+  lastVisible: ({subjectHeight}) => -subjectHeight,
+
+  // The pinned position is only known while the element actually is
+  // pinned. That is exactly when progress along the pinned range is
+  // between 0 and 1, though: Before, the element's top edge coincides
+  // with the subject's, after, its bottom edge does. Both edges of the
+  // range therefore come out equally far off in those phases, which
+  // makes progress clamp to 0 respectively 1.
+  reachesPinnedPosition: ({elementTop}) => elementTop,
+
+  leavesPinnedPosition: ({elementTop, subjectHeight, elementHeight}) =>
+    elementTop - subjectHeight + elementHeight
 };
 
 const ranges = {
@@ -28,7 +39,11 @@ const ranges = {
 
   // Same part of the page during which content elements become active
   // and autoplayed videos play.
-  center: ['reachesCenter', 'leavesCenter']
+  center: ['reachesCenter', 'leavesCenter'],
+
+  // Only elements that components like TwoColumn or
+  // ContentElementScrollSpace pin in the viewport have a pinned phase.
+  pinned: ['reachesPinnedPosition', 'leavesPinnedPosition']
 };
 
 export function getViewTimelineProgress({range, subjectRect, elementRect, viewportHeight}) {
@@ -46,6 +61,7 @@ export function getViewTimelineProgress({range, subjectRect, elementRect, viewpo
 
   const [start, end] = orderEdges(milestoneNames.map(name => milestones[name]({
     subjectHeight: subject.height,
+    elementTop: elementRect.top,
     elementHeight: elementRect.height,
     viewportHeight
   })));

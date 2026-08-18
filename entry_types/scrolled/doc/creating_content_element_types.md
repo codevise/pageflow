@@ -227,6 +227,11 @@ The `range` option determines which part of the timeline to measure:
   content element counts as active (see [Content Element
   Lifecycle](#content-element-lifecycle)) and autoplayed videos play.
 
+* `pinned`: While the content element stays pinned in the viewport,
+  i.e. from the moment it reaches the position it is pinned at until it
+  starts moving with the page again. Progress stays 1 for content
+  elements that are not pinned at all (see below).
+
 Progress is passed to the `onProgress` callback as a number between 0
 and 1 instead of being returned by the hook. This prevents rerendering
 the content element on every scroll frame. Use it to drive imperative

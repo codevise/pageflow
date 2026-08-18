@@ -171,6 +171,44 @@ describe('getViewTimelineProgress', () => {
       expect(pinnedElementProgress({range: 'center', subjectTop: -1500})).toEqual(1);
     });
 
+    describe('pinned range', () => {
+      it('is 0 before the element has reached its pinned position', () => {
+        expect(pinnedElementProgress({
+          range: 'pinned', subjectTop: 500, elementTop: 500
+        })).toEqual(0);
+      });
+
+      it('is 0 once the element reaches its pinned position', () => {
+        expect(pinnedElementProgress({
+          range: 'pinned', subjectTop: 300, elementTop: 300
+        })).toEqual(0);
+      });
+
+      it('is 0.5 halfway through the pinned phase', () => {
+        expect(pinnedElementProgress({
+          range: 'pinned', subjectTop: -450, elementTop: 300
+        })).toEqual(0.5);
+      });
+
+      it('is 1 once the element leaves its pinned position', () => {
+        expect(pinnedElementProgress({
+          range: 'pinned', subjectTop: -1200, elementTop: 300
+        })).toEqual(1);
+      });
+
+      it('is 1 after the element has left its pinned position', () => {
+        expect(pinnedElementProgress({
+          range: 'pinned', subjectTop: -1500, elementTop: 0
+        })).toEqual(1);
+      });
+
+      it('stays 1 for elements that never reach a pinned position', () => {
+        expect(pinnedElementProgress({
+          range: 'pinned', subjectTop: 250, subjectHeight: 300, elementTop: 250
+        })).toEqual(1);
+      });
+    });
+
     it('measures along element if subject is not taller than element', () => {
       expect(pinnedElementProgress({
         range: 'contain', subjectTop: 250, subjectHeight: 300, elementTop: 250

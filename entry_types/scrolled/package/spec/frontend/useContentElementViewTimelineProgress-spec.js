@@ -214,6 +214,18 @@ describe('useContentElementViewTimelineProgress', () => {
       expect(onProgress).toHaveBeenCalledWith(0.25);
     });
 
+    it('measures pinned range while element is sticky', () => {
+      const onProgress = jest.fn();
+      fakeBoundingClientRectsByClassName({
+        [twoColumnStyles.group]: {top: -450, height: 2000},
+        [twoColumnStyles.sticky]: {top: 300, height: 500}
+      });
+
+      renderTestContentElement({onProgress, range: 'pinned', position: 'sticky'});
+
+      expect(onProgress).toHaveBeenCalledWith(0.5);
+    });
+
     it('measures progress of element itself if sticky position is inlined', () => {
       const onProgress = jest.fn();
       window.matchMedia.mockViewportWidth(500);

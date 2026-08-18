@@ -172,6 +172,11 @@ function update({subject, element}, subscriptions) {
  *     center of the viewport, i.e. from its top edge passing the
  *     center until its bottom edge does.
  *
+ *   * `pinned`: While the content element stays pinned in the
+ *     viewport, i.e. from the moment it reaches the position it is
+ *     pinned at until it starts moving with the page again. Progress
+ *     stays 1 for content elements that are not pinned at all.
+ *
  * @param {Function} [options.onProgress] -
  *   Invoked with a number between 0 and 1 whenever progress along the
  *   range changes. Pass a falsy value to not observe scroll position
