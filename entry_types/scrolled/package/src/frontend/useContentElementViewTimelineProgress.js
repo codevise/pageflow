@@ -6,13 +6,23 @@ import {getViewTimelineProgress} from './viewTimelineRanges';
 export const ContentElementViewTimelineContext = createContext();
 
 // Lets components that pin content elements in the viewport for part
-// of their scroll space pass a function returning the element that
-// keeps moving with the page. Pinned content elements would otherwise
-// stop making progress along their view timeline for exactly the part
-// of the page that the extra scroll space was added for. The subject
-// is looked up on demand since it may only be known once the content
-// element has been mounted.
-export const ViewTimelineSubjectContext = createContext();
+// of their scroll space pass a function returning the pinned element
+// and the subject that keeps moving with the page. Pinned content
+// elements would otherwise stop making progress along their view
+// timeline for exactly the part of the page that the extra scroll
+// space was added for.
+//
+// Passing a function instead of refs lets components resolve elements
+// they do not render themselves: Sticky boxes in TwoColumn walk up the
+// DOM to find their group.
+const ViewTimelinePinContext = createContext();
+
+export function ViewTimelinePinProvider({getPinnedElements, children}) {
+  return (
+    <ViewTimelinePinContext.Provider value={getPinnedElements}
+                                     children={children} />
+  );
+}
 
 export function ContentElementViewTimelineProvider({type, children}) {
   const {viewTimeline} = api.contentElementTypes.getOptions(type);
@@ -30,8 +40,8 @@ export function ContentElementViewTimelineProvider({type, children}) {
 }
 
 function ViewTimelineProvider({children}) {
-  const getOuterSubject = useContext(ViewTimelineSubjectContext);
-  const ownSubjectRef = useRef();
+  const getPinnedElements = useContext(ViewTimelinePinContext);
+  const ownElementRef = useRef();
 
   const subscriptionsRef = useRef(new Set());
 
@@ -40,9 +50,11 @@ function ViewTimelineProvider({children}) {
   // subscriptions to prevent each of them from adding a handler.
   const [hasSubscriptions, setHasSubscriptions] = useState(false);
 
-  const getSubject = useCallback(
-    () => getOuterSubject ? getOuterSubject() : ownSubjectRef.current,
-    [getOuterSubject]
+  const getElements = useCallback(
+    () => getPinnedElements ?
+          getPinnedElements() :
+          {subject: ownElementRef.current, element: ownElementRef.current},
+    [getPinnedElements]
   );
 
   const viewTimeline = useMemo(() => ({
@@ -51,14 +63,14 @@ function ViewTimelineProvider({children}) {
 
       subscriptionsRef.current.add(subscription);
       setHasSubscriptions(true);
-      update(getSubject(), [subscription]);
+      update(getElements(), [subscription]);
 
       return () => {
         subscriptionsRef.current.delete(subscription);
         setHasSubscriptions(subscriptionsRef.current.size > 0);
       };
     }
-  }), [getSubject]);
+  }), [getElements]);
 
   useEffect(() => {
     if (!hasSubscriptions) {
@@ -76,7 +88,7 @@ function ViewTimelineProvider({children}) {
 
       animationFrame = requestAnimationFrame(() => {
         animationFrame = null;
-        update(getSubject(), subscriptions);
+        update(getElements(), subscriptions);
       });
     }
 
@@ -89,7 +101,7 @@ function ViewTimelineProvider({children}) {
       window.removeEventListener('scroll', handle);
       window.removeEventListener('resize', handle);
     };
-  }, [getSubject, hasSubscriptions]);
+  }, [getElements, hasSubscriptions]);
 
   const content = (
     <ContentElementViewTimelineContext.Provider value={viewTimeline}>
@@ -97,25 +109,27 @@ function ViewTimelineProvider({children}) {
     </ContentElementViewTimelineContext.Provider>
   );
 
-  if (getOuterSubject) {
+  if (getPinnedElements) {
     return content;
   }
 
   return (
-    <div ref={ownSubjectRef}>
+    <div ref={ownElementRef}>
       {content}
     </div>
   );
 }
 
-function update(subject, subscriptions) {
-  const rect = subject.getBoundingClientRect();
+function update({subject, element}, subscriptions) {
+  const subjectRect = subject.getBoundingClientRect();
+  const elementRect = element === subject ? subjectRect : element.getBoundingClientRect();
   const viewportHeight = window.innerHeight;
 
   subscriptions.forEach(subscription => {
     const progress = getViewTimelineProgress({
       range: subscription.range,
-      rect,
+      subjectRect,
+      elementRect,
       viewportHeight
     });
 

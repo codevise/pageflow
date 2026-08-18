@@ -1,19 +1,23 @@
 import React, {useCallback, useRef} from 'react';
 import Measure from 'react-measure';
 
-import {ViewTimelineSubjectContext} from './useContentElementViewTimelineProgress';
+import {ViewTimelinePinProvider} from './useContentElementViewTimelineProgress';
 
 import styles from './ContentElementScrollSpace.module.css';
 
 export function ContentElementScrollSpace({children}) {
   const ref = useRef();
+  const innerRef = useRef();
 
-  const getViewTimelineSubject = useCallback(() => ref.current, []);
+  const getPinnedElements = useCallback(
+    () => ({subject: ref.current, element: innerRef.current}),
+    []
+  );
 
   return (
     <div className={styles.wrapper} ref={ref}>
-      <ViewTimelineSubjectContext.Provider value={getViewTimelineSubject}>
-        <Measure bounds>
+      <ViewTimelinePinProvider getPinnedElements={getPinnedElements}>
+        <Measure bounds innerRef={innerRef}>
           {({measureRef, contentRect}) =>
             <div ref={measureRef}
                  className={styles.inner}
@@ -22,7 +26,7 @@ export function ContentElementScrollSpace({children}) {
             </div>
           }
         </Measure>
-      </ViewTimelineSubjectContext.Provider>
+      </ViewTimelinePinProvider>
     </div>
   );
 }

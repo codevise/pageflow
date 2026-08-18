@@ -202,6 +202,18 @@ describe('useContentElementViewTimelineProgress', () => {
       expect(onProgress).toHaveBeenLastCalledWith(0.75);
     });
 
+    it('measures ranges relative to the height of the element', () => {
+      const onProgress = jest.fn();
+      fakeBoundingClientRectsByClassName({
+        [twoColumnStyles.group]: {top: 0, height: 2000},
+        [twoColumnStyles.sticky]: {top: 0, height: 500}
+      });
+
+      renderTestContentElement({onProgress, range: 'contain', position: 'sticky'});
+
+      expect(onProgress).toHaveBeenCalledWith(0.25);
+    });
+
     it('measures progress of element itself if sticky position is inlined', () => {
       const onProgress = jest.fn();
       window.matchMedia.mockViewportWidth(500);

@@ -259,9 +259,15 @@ Content elements that are pinned in the viewport for part of the page
 keep making progress while they stick: For `standAlone` position,
 progress is measured along the scroll space added around the element.
 For `sticky` position, it is measured along the group of content
-elements that scrolls past the element. On narrow viewports, where
-sticky elements are rendered inline, progress is measured along the
-element itself again.
+elements that scrolls past the element. Ranges still refer to the
+element itself, so `contain` covers the page from the element being
+completely inside the viewport to it starting to leave again, no matter
+how long it stays pinned in between.
+
+Progress is measured along the element itself again whenever it is not
+actually pinned: On narrow viewports, where sticky elements are
+rendered inline, and if there is not enough content next to a sticky
+element for it to ever reach its sticky position.
 
 In specs, `renderInContentElement` provides a `simulateScrollProgress`
 function to invoke the callback:

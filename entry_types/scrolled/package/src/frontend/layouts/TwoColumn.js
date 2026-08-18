@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import {api} from '../api';
 import {ContentElements} from '../ContentElements';
-import {ViewTimelineSubjectContext} from '../useContentElementViewTimelineProgress';
+import {ViewTimelinePinProvider} from '../useContentElementViewTimelineProgress';
 import useMediaQuery from '../useMediaQuery';
 import {useTheme} from 'pageflow-scrolled/entryState';
 import {widths, widthName} from './widths';
@@ -97,14 +97,6 @@ function renderItemGroup(props, box, key) {
 function Box({box, children}) {
   const ref = useRef();
 
-  // Sticky boxes stay pinned while the rest of their group scrolls
-  // past. The group therefore is the element that drives view
-  // timelines of content elements inside the box.
-  const getViewTimelineSubject = useCallback(
-    () => ref.current.closest(`.${styles.group}`),
-    []
-  );
-
   return (
     <div ref={ref}
          className={classNames(styles.box,
@@ -112,10 +104,27 @@ function Box({box, children}) {
                                styles[`width-${widthName(box.width)}`],
                                {[styles.customMargin]: box.customMargin})}>
       {box.position === 'sticky' ?
-       <ViewTimelineSubjectContext.Provider value={getViewTimelineSubject}
-                                            children={children} /> :
+       <ViewTimelinePin boxRef={ref} children={children} /> :
        children}
     </div>
+  );
+}
+
+// Sticky boxes stay pinned while the rest of their group scrolls past.
+// The group therefore is the subject that drives view timelines of
+// content elements inside the box.
+function ViewTimelinePin({boxRef, children}) {
+  const getPinnedElements = useCallback(
+    () => ({
+      subject: boxRef.current.closest(`.${styles.group}`),
+      element: boxRef.current
+    }),
+    [boxRef]
+  );
+
+  return (
+    <ViewTimelinePinProvider getPinnedElements={getPinnedElements}
+                             children={children} />
   );
 }
 
