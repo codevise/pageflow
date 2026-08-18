@@ -209,6 +209,20 @@ describe('getViewTimelineProgress', () => {
       });
     });
 
+    describe('inFocus range', () => {
+      it('measures pinned range while element has a pinned phase', () => {
+        expect(pinnedElementProgress({
+          range: 'inFocus', subjectTop: -150, elementTop: 300
+        })).toEqual(0.3);
+      });
+
+      it('measures center range if element is never pinned', () => {
+        expect(pinnedElementProgress({
+          range: 'inFocus', subjectTop: 250, subjectHeight: 300, elementTop: 250
+        })).toEqual(0.5);
+      });
+    });
+
     it('measures along element if subject is not taller than element', () => {
       expect(pinnedElementProgress({
         range: 'contain', subjectTop: 250, subjectHeight: 300, elementTop: 250
@@ -218,6 +232,6 @@ describe('getViewTimelineProgress', () => {
 
   it('throws descriptive error for unknown range', () => {
     expect(() => progress({range: 'crossing', top: 0}))
-      .toThrow(/Unknown view timeline range 'crossing'/);
+      .toThrow(/Unknown view timeline range 'crossing'.*inFocus/);
   });
 });

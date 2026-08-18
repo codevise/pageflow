@@ -46,18 +46,30 @@ const ranges = {
   pinned: ['reachesPinnedPosition', 'leavesPinnedPosition']
 };
 
+const rangeAliases = {
+  // Elements that are pinned in the viewport hold the reader's
+  // attention while they stay in place. Elements that are not pinned
+  // at all do so while they pass the center of the viewport.
+  inFocus: hasPinnedPhase => hasPinnedPhase ? 'pinned' : 'center'
+};
+
 export function getViewTimelineProgress({range, subjectRect, elementRect, viewportHeight}) {
-  const milestoneNames = ranges[range];
+  const hasPinnedPhase = subjectRect.height > elementRect.height;
+  const alias = rangeAliases[range];
+
+  const milestoneNames = ranges[alias ? alias(hasPinnedPhase) : range];
 
   if (!milestoneNames) {
+    const supportedRanges = [...Object.keys(ranges), ...Object.keys(rangeAliases)];
+
     throw new Error(`Unknown view timeline range '${range}'. ` +
-                    `Supported ranges: ${Object.keys(ranges).join(', ')}.`);
+                    `Supported ranges: ${supportedRanges.join(', ')}.`);
   }
 
   // Without enough content next to it, a pinned element never reaches
   // its pinned position and keeps moving with the page. Its own rect
   // then is the subject covering the same range of the page.
-  const subject = subjectRect.height > elementRect.height ? subjectRect : elementRect;
+  const subject = hasPinnedPhase ? subjectRect : elementRect;
 
   const [start, end] = orderEdges(milestoneNames.map(name => milestones[name]({
     subjectHeight: subject.height,

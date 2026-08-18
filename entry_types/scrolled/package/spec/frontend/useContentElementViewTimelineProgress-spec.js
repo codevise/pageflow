@@ -226,6 +226,18 @@ describe('useContentElementViewTimelineProgress', () => {
       expect(onProgress).toHaveBeenCalledWith(0.5);
     });
 
+    it('measures center range for inFocus range if element cannot become sticky', () => {
+      const onProgress = jest.fn();
+      fakeBoundingClientRectsByClassName({
+        [twoColumnStyles.group]: {top: 250, height: 300},
+        [twoColumnStyles.sticky]: {top: 250, height: 500}
+      });
+
+      renderTestContentElement({onProgress, range: 'inFocus', position: 'sticky'});
+
+      expect(onProgress).toHaveBeenCalledWith(0.5);
+    });
+
     it('measures progress of element itself if sticky position is inlined', () => {
       const onProgress = jest.fn();
       window.matchMedia.mockViewportWidth(500);

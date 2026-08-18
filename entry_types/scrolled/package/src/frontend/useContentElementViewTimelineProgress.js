@@ -177,6 +177,10 @@ function update({subject, element}, subscriptions) {
  *     pinned at until it starts moving with the page again. Progress
  *     stays 1 for content elements that are not pinned at all.
  *
+ *   * `inFocus`: While the content element holds the reader's
+ *     attention: `pinned` for content elements that are pinned in the
+ *     viewport, `center` for all others.
+ *
  * @param {Function} [options.onProgress] -
  *   Invoked with a number between 0 and 1 whenever progress along the
  *   range changes. Pass a falsy value to not observe scroll position

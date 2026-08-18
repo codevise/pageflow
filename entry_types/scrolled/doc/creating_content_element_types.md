@@ -232,6 +232,11 @@ The `range` option determines which part of the timeline to measure:
   starts moving with the page again. Progress stays 1 for content
   elements that are not pinned at all (see below).
 
+* `inFocus`: While the content element holds the reader's attention:
+  `pinned` for content elements that are pinned in the viewport,
+  `center` for all others. Which of the two applies can change with the
+  viewport width.
+
 Progress is passed to the `onProgress` callback as a number between 0
 and 1 instead of being returned by the hook. This prevents rerendering
 the content element on every scroll frame. Use it to drive imperative
@@ -278,7 +283,9 @@ how long it stays pinned in between.
 Progress is measured along the element itself again whenever it is not
 actually pinned: On narrow viewports, where sticky elements are
 rendered inline, and if there is not enough content next to a sticky
-element for it to ever reach its sticky position.
+element for it to ever reach its sticky position. The `inFocus` range
+therefore measures the same part of the page as `center` for those
+elements.
 
 In specs, `renderInContentElement` provides a `simulateScrollProgress`
 function to invoke the callback:
