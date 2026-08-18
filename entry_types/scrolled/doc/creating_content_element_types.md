@@ -120,9 +120,9 @@ registering the content element type.
   it to start media playback that should remain active even when the
   element is not fully centered.
 
-* `isActive` is true if the content element is completely in the
-  viewport. Use it to activate some interactive behavior like an
-  animation or media playback.
+* `isActive` is true if the content element intersects the vertical
+  center of the viewport. Use it to activate some interactive behavior
+  like an animation or media playback.
 
 * `inForeground` is true when the storyline containing the content
   element is active (not in background mode). Use it to distinguish
@@ -220,6 +220,12 @@ The `range` option determines which part of the timeline to measure:
 * `entry`: While the content element is entering the viewport.
 
 * `exit`: While the content element is leaving the viewport.
+
+* `center`: While the content element intersects the vertical center of
+  the viewport, i.e. from its top edge passing the center until its
+  bottom edge does. This is the same part of the page during which the
+  content element counts as active (see [Content Element
+  Lifecycle](#content-element-lifecycle)) and autoplayed videos play.
 
 Progress is passed to the `onProgress` callback as a number between 0
 and 1 instead of being returned by the hook. This prevents rerendering

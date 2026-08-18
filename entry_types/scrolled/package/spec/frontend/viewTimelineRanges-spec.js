@@ -68,6 +68,28 @@ describe('getViewTimelineProgress', () => {
     });
   });
 
+  describe('center range', () => {
+    it('is 0 while subject is about to reach center of viewport', () => {
+      expect(progress({range: 'center', top: 500})).toEqual(0);
+    });
+
+    it('is 1 once subject has completely passed center of viewport', () => {
+      expect(progress({range: 'center', top: 0})).toEqual(1);
+    });
+
+    it('is 0.5 while subject is centered in viewport', () => {
+      expect(progress({range: 'center', top: 250})).toEqual(0.5);
+    });
+
+    it('is clamped below center of viewport', () => {
+      expect(progress({range: 'center', top: 1000})).toEqual(0);
+    });
+
+    it('is clamped above center of viewport', () => {
+      expect(progress({range: 'center', top: -500})).toEqual(1);
+    });
+  });
+
   describe('contain range for subject smaller than viewport', () => {
     it('is 0 once subject is completely inside viewport', () => {
       expect(progress({range: 'contain', top: 500})).toEqual(0);
@@ -141,6 +163,12 @@ describe('getViewTimelineProgress', () => {
     it('starts exit range once element starts leaving viewport', () => {
       expect(pinnedElementProgress({range: 'exit', subjectTop: -1500})).toEqual(0);
       expect(pinnedElementProgress({range: 'exit', subjectTop: -1750})).toEqual(0.5);
+    });
+
+    it('measures center range along the subject', () => {
+      expect(pinnedElementProgress({range: 'center', subjectTop: 500})).toEqual(0);
+      expect(pinnedElementProgress({range: 'center', subjectTop: -500})).toEqual(0.5);
+      expect(pinnedElementProgress({range: 'center', subjectTop: -1500})).toEqual(1);
     });
 
     it('measures along element if subject is not taller than element', () => {

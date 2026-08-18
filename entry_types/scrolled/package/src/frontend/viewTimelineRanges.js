@@ -10,17 +10,25 @@ const milestones = {
 
   firstContained: ({viewportHeight, elementHeight}) => viewportHeight - elementHeight,
 
+  reachesCenter: ({viewportHeight}) => viewportHeight / 2,
+
+  leavesCenter: ({subjectHeight, viewportHeight}) => viewportHeight / 2 - subjectHeight,
+
   lastContained: ({subjectHeight, elementHeight}) => elementHeight - subjectHeight,
 
   lastVisible: ({subjectHeight}) => -subjectHeight
 };
 
-// Mirrors the named ranges of CSS scroll driven animations.
 const ranges = {
+  // Mirror the named ranges of CSS scroll driven animations.
   cover: ['firstVisible', 'lastVisible'],
   contain: ['firstContained', 'lastContained'],
   entry: ['firstVisible', 'firstContained'],
-  exit: ['lastContained', 'lastVisible']
+  exit: ['lastContained', 'lastVisible'],
+
+  // Same part of the page during which content elements become active
+  // and autoplayed videos play.
+  center: ['reachesCenter', 'leavesCenter']
 };
 
 export function getViewTimelineProgress({range, subjectRect, elementRect, viewportHeight}) {

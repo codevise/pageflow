@@ -168,6 +168,10 @@ function update({subject, element}, subscriptions) {
  *
  *   * `exit`: While the content element is leaving the viewport.
  *
+ *   * `center`: While the content element intersects the vertical
+ *     center of the viewport, i.e. from its top edge passing the
+ *     center until its bottom edge does.
+ *
  * @param {Function} [options.onProgress] -
  *   Invoked with a number between 0 and 1 whenever progress along the
  *   range changes. Pass a falsy value to not observe scroll position
