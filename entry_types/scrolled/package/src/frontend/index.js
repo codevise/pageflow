@@ -103,6 +103,7 @@ export {
   useContentElementViewTimelineProgress,
   ContentElementViewTimelineContext
 } from './useContentElementViewTimelineProgress';
+export {getViewTimelineProgress} from './viewTimelineRanges';
 export {useCurrentChapter} from './useCurrentChapter';
 export {useIsStaticPreview} from './useScrollPositionLifecycle';
 export {useMediaMuted, useOnUnmuteMedia} from './useMediaMuted';
