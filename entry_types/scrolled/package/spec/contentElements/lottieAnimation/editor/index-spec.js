@@ -1,7 +1,11 @@
 import {editor} from 'pageflow-scrolled/editor';
 import {FileInput, SelectInput, useFakeFeatures, useFakeTranslations} from 'pageflow/testHelpers';
 
-import {renderContentElementConfigurationEditor, useEditorGlobals} from 'support';
+import {
+  renderContentElementConfigurationEditor,
+  scrollRangeNames,
+  useEditorGlobals
+} from 'support';
 
 import 'contentElements/lottieAnimation/editor';
 import {LottieFile} from 'contentElements/lottieAnimation/editor/models/LottieFile';
@@ -52,6 +56,19 @@ describe('lottieAnimation/editor', () => {
       });
     }
 
+    useFakeTranslations({
+      'pageflow_scrolled.editor.content_elements.lottieAnimation.attributes.scrollRange.values.cover':
+        'While visible',
+      'pageflow_scrolled.editor.content_elements.lottieAnimation.attributes.scrollRange.values.contain':
+        'While completely visible',
+      'pageflow_scrolled.editor.content_elements.lottieAnimation.attributes.scrollRange.values.entry':
+        'While entering',
+      'pageflow_scrolled.editor.content_elements.lottieAnimation.attributes.scrollRange.values.inFocus':
+        'While crossing the viewport center',
+      'pageflow_scrolled.editor.content_elements.lottieAnimation.attributes.scrollRange.values.inFocusWhenPinned':
+        'While locked in place'
+    });
+
     it('displays select to choose playback mode', () => {
       const configurationEditor = renderConfigurationEditor({configuration: {}});
 
@@ -62,75 +79,49 @@ describe('lottieAnimation/editor', () => {
       expect(input.values()).toEqual(['loop', 'playOnce', 'scroll']);
     });
 
-    // The texts a select offers cannot depend on other attributes, so
-    // there is one input per wording of the inFocus range.
-    function visibleScrollRangeInput(configurationEditor) {
-      return SelectInput.findByPropertyName('scrollRange', {
-        inView: configurationEditor,
-        visible: true
+    it('displays select to choose scroll range in scroll playback mode', async () => {
+      const configurationEditor = renderConfigurationEditor({
+        configuration: {playbackMode: 'scroll'}
       });
-    }
 
-    useFakeTranslations({
-      'pageflow_scrolled.editor.content_elements.lottieAnimation.attributes.scrollRange.values.inFocus':
+      expect(await scrollRangeNames('scrollRange', {inView: configurationEditor})).toEqual([
+        'While visible',
+        'While completely visible',
         'While crossing the viewport center',
-      'pageflow_scrolled.editor.content_elements.lottieAnimation.attributes.scrollRange.values.inFocusWhenPinned':
-        'While locked in place'
+        'While entering'
+      ]);
     });
 
-    it('displays select to choose scroll range in scroll playback mode', () => {
-      const configurationEditor = renderConfigurationEditor({
-        configuration: {playbackMode: 'scroll'}
-      });
-
-      expect(visibleScrollRangeInput(configurationEditor).values())
-        .toEqual(['cover', 'contain', 'inFocus', 'entry']);
-    });
-
-    it('offers same scroll ranges for positions that pin the element', () => {
+    it('names in focus range after pinned phase for sticky position', async () => {
       const configurationEditor = renderConfigurationEditor({
         configuration: {playbackMode: 'scroll', position: 'sticky'}
       });
 
-      expect(visibleScrollRangeInput(configurationEditor).values())
-        .toEqual(['cover', 'contain', 'inFocus', 'entry']);
+      expect(await scrollRangeNames('scrollRange', {inView: configurationEditor})).toEqual([
+        'While visible',
+        'While completely visible',
+        'While locked in place',
+        'While entering'
+      ]);
     });
 
-    it('names in focus range after viewport center by default', () => {
+    it('names in focus range after pinned phase for standAlone position', async () => {
       const configurationEditor = renderConfigurationEditor({
-        configuration: {playbackMode: 'scroll'}
+        configuration: {playbackMode: 'scroll', position: 'standAlone'}
       });
 
-      expect(visibleScrollRangeInput(configurationEditor).texts())
-        .toContain('While crossing the viewport center');
-    });
-
-    it('names in focus range after pinned phase for sticky position', () => {
-      const configurationEditor = renderConfigurationEditor({
-        configuration: {playbackMode: 'scroll', position: 'sticky'}
-      });
-
-      expect(visibleScrollRangeInput(configurationEditor).texts())
+      expect(await scrollRangeNames('scrollRange', {inView: configurationEditor}))
         .toContain('While locked in place');
     });
 
-    it('names in focus range after viewport center if layout inlines sticky', () => {
+    it('names in focus range after viewport center if layout inlines sticky', async () => {
       const configurationEditor = renderConfigurationEditor({
         layout: 'center',
         configuration: {playbackMode: 'scroll', position: 'sticky'}
       });
 
-      expect(visibleScrollRangeInput(configurationEditor).texts())
+      expect(await scrollRangeNames('scrollRange', {inView: configurationEditor}))
         .toContain('While crossing the viewport center');
-    });
-
-    it('names in focus range after pinned phase for standAlone position', () => {
-      const configurationEditor = renderConfigurationEditor({
-        configuration: {playbackMode: 'scroll', position: 'standAlone'}
-      });
-
-      expect(visibleScrollRangeInput(configurationEditor).texts())
-        .toContain('While locked in place');
     });
 
     it('does not display select to choose scroll range in other playback modes', () => {
