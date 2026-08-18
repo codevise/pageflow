@@ -296,6 +296,13 @@ const {simulateScrollProgress} = renderInContentElement(<Component />);
 simulateScrollProgress(0.5);
 ```
 
+Callbacks are invoked no matter which range they observe. Pass a
+`range` option to only invoke callbacks observing that range:
+
+```javascript
+simulateScrollProgress(0.5, {range: 'pinned'});
+```
+
 ## Using the Storybook
 
 Pageflow Scrolled uses [Storybook](https://storybook.js.org/) to ease

@@ -155,6 +155,37 @@ describe('LottieAnimation', () => {
       expect(players[0].setFrame).toHaveBeenCalledWith(4.5);
     });
 
+    it('couples animation to cover range by default', () => {
+      const {simulateScrollProgress} = renderLottieAnimation({configuration});
+      players[0].emit('load');
+
+      simulateScrollProgress(0.5, {range: 'cover'});
+
+      expect(players[0].setFrame).toHaveBeenCalledWith(4.5);
+    });
+
+    it('couples animation to configured scroll range', () => {
+      const {simulateScrollProgress} = renderLottieAnimation({
+        configuration: {...configuration, scrollRange: 'inFocus'}
+      });
+      players[0].emit('load');
+
+      simulateScrollProgress(0.5, {range: 'inFocus'});
+
+      expect(players[0].setFrame).toHaveBeenCalledWith(4.5);
+    });
+
+    it('ignores progress along other ranges', () => {
+      const {simulateScrollProgress} = renderLottieAnimation({
+        configuration: {...configuration, scrollRange: 'inFocus'}
+      });
+      players[0].emit('load');
+
+      simulateScrollProgress(0.5, {range: 'cover'});
+
+      expect(players[0].setFrame).not.toHaveBeenCalledWith(4.5);
+    });
+
     it('does not set frame in other playback modes', () => {
       const {simulateScrollProgress} = renderLottieAnimation();
       players[0].emit('load');

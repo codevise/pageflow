@@ -760,12 +760,21 @@ en:
             id:
               label: Animation
             playbackMode:
-              inline_help_html: Determines how the animation is played once it becomes visible:<ul><li><strong>Loop:</strong> Again and again as long as it is visible.</li><li><strong>Play once:</strong> Once from start to end.</li><li><strong>Scroll position:</strong> Frame by frame while scrolling. The animation starts when the element enters the viewport and ends once it has left the viewport again.</li></ul>
+              inline_help_html: Determines how the animation is played once it becomes visible:<ul><li><strong>Loop:</strong> Again and again as long as it is visible.</li><li><strong>Play once:</strong> Once from start to end.</li><li><strong>Scroll position:</strong> Frame by frame while scrolling. Use the scroll range setting to choose when scrolling the page drives the animation.</li></ul>
               label: Playback Mode
               values:
                 loop: Loop
                 playOnce: Play once
                 scroll: Scroll position
+            scrollRange:
+              inline_help_html: Determines when scrolling the page drives the animation:<ul><li><strong>While visible:</strong> From the moment the element starts entering the viewport until it has completely left it.</li><li><strong>While completely visible:</strong> While the element is completely inside the viewport.</li><li><strong>While crossing the viewport center:</strong> Scrolling the page drives the animation while the element crosses the vertical center of the viewport. Available for all elements except those with position "Alongside (sticky)" or "Stand alone".</li><li><strong>While locked in place:</strong> Scrolling the page drives the animation while the element stays in place. If the element does not stay in place - in mobile view, where such elements are anchored in the text, or if there is not enough text next to it - scrolling drives the animation while crossing the viewport center instead. Available for elements with position "Alongside (sticky)" or "Stand alone".</li><li><strong>While entering:</strong> While the element is entering the viewport.</li></ul>
+              label: Scroll Range
+              values:
+                contain: While completely visible
+                cover: While visible
+                entry: While entering
+                inFocus: While crossing the viewport center
+                inFocusWhenPinned: While locked in place
           description: Embed an animation exported as dotLottie file
           name: Lottie animation
           tabs:

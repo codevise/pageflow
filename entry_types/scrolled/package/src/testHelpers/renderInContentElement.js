@@ -27,7 +27,8 @@ import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycl
  *
  * `simulateScrollProgress` passes the given progress to all
  * `useContentElementViewTimelineProgress` callbacks, no matter which
- * range they observe.
+ * range they observe. Pass a `range` option to only invoke callbacks
+ * observing that range.
  *
  * @param {Function} callback - React component or function returning a React component.
  * @param {Object} [options] - Supports all options supported by {@link `renderInEntry`}.
@@ -54,6 +55,7 @@ import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycl
  *   });
  * simulateScrollPosition('near viewport');
  * simulateScrollProgress(0.5);
+ * simulateScrollProgress(0.5, {range: 'pinned'});
  * triggerEditorCommand({type: 'HIGHLIGHT'});
  * simulateStorylineMode('background');
  */
@@ -69,8 +71,14 @@ export function renderInContentElement(ui, {inlineEditing,
 
   const viewTimeline = {
     subscribe(range, callback) {
-      viewTimelineEmitter.on('progress', callback);
-      return () => viewTimelineEmitter.off('progress', callback);
+      function handleProgress(progress, options) {
+        if (!options.range || options.range === range) {
+          callback(progress);
+        }
+      }
+
+      viewTimelineEmitter.on('progress', handleProgress);
+      return () => viewTimelineEmitter.off('progress', handleProgress);
     }
   };
 
@@ -134,9 +142,9 @@ export function renderInContentElement(ui, {inlineEditing,
         storylineEmitter.trigger('storylineMode', mode)
       });
     },
-    simulateScrollProgress(progress) {
+    simulateScrollProgress(progress, {range} = {}) {
       act(() => {
-        viewTimelineEmitter.trigger('progress', progress)
+        viewTimelineEmitter.trigger('progress', progress, {range})
       });
     }
   };

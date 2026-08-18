@@ -4,11 +4,12 @@ export const Base = BaseDomino.extend({
   selector: '.input'
 });
 
-Base.findByPropertyName = function(propertyName, options) {
+Base.findByPropertyName = function(propertyName, {visible, ...options} = {}) {
   return this.findBy(
-    el => el.data('inputPropertyName') === propertyName,
+    el => el.data('inputPropertyName') === propertyName &&
+          (!visible || !el.hasClass('hidden_via_binding')),
     {
-      predicateName: `input property name '${propertyName}'`,
+      predicateName: `${visible ? 'visible ' : ''}input property name '${propertyName}'`,
       ...options
     }
   )

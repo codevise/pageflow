@@ -27,7 +27,7 @@ export function LottieAnimation({configuration}) {
   const {aspectRatio, rounded} = processImageModifiers(configuration.imageModifiers);
   const isCircleCrop = rounded === 'circle';
 
-  const {playbackMode = 'loop'} = configuration;
+  const {playbackMode = 'loop', scrollRange = 'cover'} = configuration;
 
   return (
     <FitViewport aspectRatio={aspectRatio || animationAspectRatio}
@@ -45,6 +45,7 @@ export function LottieAnimation({configuration}) {
                        loop={playbackMode === 'loop'}
                        play={isVisible}
                        seekOnScroll={playbackMode === 'scroll'}
+                       scrollRange={scrollRange}
                        fit={aspectRatio ? 'cover' : 'contain'}
                        cropPositionX={configuration.cropPosition?.x}
                        cropPositionY={configuration.cropPosition?.y}
@@ -64,7 +65,8 @@ export function LottieAnimation({configuration}) {
 }
 
 function Player({
-  lottieFile, loop, play, seekOnScroll, fit, cropPositionX = 50, cropPositionY = 50, onAspectRatioChange
+  lottieFile, loop, play, seekOnScroll, scrollRange, fit,
+  cropPositionX = 50, cropPositionY = 50, onAspectRatioChange
 }) {
   const canvasRef = useRef();
   const dotLottieRef = useRef();
@@ -85,7 +87,7 @@ function Player({
   }, []);
 
   useContentElementViewTimelineProgress({
-    range: 'cover',
+    range: scrollRange,
     onProgress: seekOnScroll ? seek : null
   });
 

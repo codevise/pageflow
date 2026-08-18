@@ -23,6 +23,13 @@ editor.fileTypes.register('lottie_files', {
 });
 
 const playbackModes = ['loop', 'playOnce', 'scroll'];
+const scrollRanges = ['cover', 'contain', 'inFocus', 'entry'];
+const pinnedPositions = ['sticky', 'standAlone'];
+
+const scrollRangeValuesKey =
+  'pageflow_scrolled.editor.content_elements.lottieAnimation.attributes.scrollRange.values';
+const pinnedScrollRangeKeys = ['cover', 'contain', 'inFocusWhenPinned', 'entry']
+  .map(name => `${scrollRangeValuesKey}.${name}`);
 
 editor.contentElementTypes.register('lottieAnimation', {
   pictogram,
@@ -39,7 +46,7 @@ editor.contentElementTypes.register('lottieAnimation', {
     this.input('playbackMode', SelectInputView, {values: playbackModes});
   },
 
-  configurationEditor({entry}) {
+  configurationEditor({entry, contentElement}) {
     this.tab('general', function() {
       this.input('id', FileInputView, {
         collection: 'lottie_files',
@@ -61,6 +68,23 @@ editor.contentElementTypes.register('lottieAnimation', {
         visible: () => this.model.getReference('id', 'lottie_files')
       });
       this.input('playbackMode', SelectInputView, {values: playbackModes});
+      // Elements that stay in place while scrolling name the inFocus
+      // range after that phase instead of after the center of the
+      // viewport. Since the texts of a select cannot depend on other
+      // attributes, there is one input per wording.
+      this.input('scrollRange', SelectInputView, {
+        values: scrollRanges,
+        visibleBinding: ['playbackMode', 'position'],
+        visible: ([playbackMode]) =>
+          playbackMode === 'scroll' && !staysInPlace(contentElement)
+      });
+      this.input('scrollRange', SelectInputView, {
+        values: scrollRanges,
+        translationKeys: pinnedScrollRangeKeys,
+        visibleBinding: ['playbackMode', 'position'],
+        visible: ([playbackMode]) =>
+          playbackMode === 'scroll' && staysInPlace(contentElement)
+      });
 
       this.view(SeparatorView);
 
@@ -73,3 +97,9 @@ editor.contentElementTypes.register('lottieAnimation', {
     });
   }
 });
+
+// Layouts that do not support sticky position render such elements
+// inline, which does not keep them in place while scrolling.
+function staysInPlace(contentElement) {
+  return pinnedPositions.includes(contentElement.getResolvedPosition());
+}
