@@ -627,8 +627,7 @@ module Pageflow
     def register_page_type(page_type)
       Pageflow::Deprecation.warn(
         'Pageflow::Configuration#register_page_type is deprecated. ' \
-        'Use config.page_types.register instead.',
-        caller
+        'Use config.page_types.register instead.'
       )
       page_types.register(page_type)
     end
@@ -637,13 +636,13 @@ module Pageflow
     # Please change your forms accordingly.
     def paperclip_filesystem_root
       Pageflow::Deprecation.warn(
-        'Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller
+        'Pageflow::Configuration#paperclip_filesystem_root is deprecated.'
       )
     end
 
     def paperclip_filesystem_root=(_val)
       Pageflow::Deprecation.warn(
-        'Pageflow::Configuration#paperclip_filesystem_root is deprecated.', caller
+        'Pageflow::Configuration#paperclip_filesystem_root is deprecated.'
       )
     end
 
