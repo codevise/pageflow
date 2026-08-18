@@ -14,10 +14,17 @@ module Pageflow
 
       entry = entry_for_auto_generated_perma_id
 
-      entry.with_lock do
-        entry.increment!(:perma_id_counter)
-        self.perma_id = entry.perma_id_counter
-      end
+      self.perma_id =
+        if entry.new_record?
+          # No other process can see the entry yet, so there is nothing
+          # to lock.
+          entry.increment(:perma_id_counter).perma_id_counter
+        else
+          entry.with_lock do
+            entry.increment!(:perma_id_counter)
+            entry.perma_id_counter
+          end
+        end
     end
 
     def entry_for_auto_generated_perma_id
