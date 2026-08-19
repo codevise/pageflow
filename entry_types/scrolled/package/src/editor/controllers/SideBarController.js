@@ -8,6 +8,7 @@ import {EditSectionTransitionView} from '../views/EditSectionTransitionView';
 import {EditSectionPaddingsView} from '../views/EditSectionPaddingsView';
 import {EditContentElementView} from '../views/EditContentElementView';
 import {CommentsView} from '../views/CommentsView';
+import {CommentActivityView} from '../views/CommentActivityView';
 import {NewThreadView} from '../views/NewThreadView';
 
 export const SideBarController = Marionette.Controller.extend({
@@ -54,6 +55,13 @@ export const SideBarController = Marionette.Controller.extend({
       entry: this.entry,
       editor,
       defaultTab: tab
+    }));
+  },
+
+  commentActivity: function() {
+    this.region.show(new CommentActivityView({
+      entry: this.entry,
+      editor
     }));
   },
 

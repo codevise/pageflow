@@ -1629,6 +1629,10 @@ en:
         tabs:
           comments: All comments
           selection: For selection
+      comment_activity_view:
+        back: Comments
+        tabs:
+          activity: Latest activity
       new_thread_view:
         back: Comments
         tabs:

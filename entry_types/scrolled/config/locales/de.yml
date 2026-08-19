@@ -1647,6 +1647,10 @@ de:
         tabs:
           comments: Alle Kommentare
           selection: Für Auswahl
+      comment_activity_view:
+        back: Kommentare
+        tabs:
+          activity: Letzte Aktivität
       new_thread_view:
         back: Kommentare
         tabs:
