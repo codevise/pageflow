@@ -1,4 +1,4 @@
-import {unreadComments, useUnreadComments} from 'review/unreadComments';
+import {isUnseen, unreadComments, useUnreadComments} from 'review/unreadComments';
 import {renderHookWithReviewState} from 'support/renderWithReviewState';
 
 describe('unreadComments', () => {
@@ -102,6 +102,75 @@ describe('unreadComments', () => {
     );
 
     expect(result).toEqual([]);
+  });
+
+  describe('isUnseen', () => {
+    it('is true for a comment created after the read timestamp', () => {
+      const result = isUnseen(
+        {creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'},
+        {currentUser, readAt: '2026-08-17T10:00:00.000Z'}
+      );
+
+      expect(result).toBe(true);
+    });
+
+    it('is false for a comment created before the read timestamp', () => {
+      const result = isUnseen(
+        {creatorId: 43, createdAt: '2026-08-17T09:00:00.000Z'},
+        {currentUser, readAt: '2026-08-17T10:00:00.000Z'}
+      );
+
+      expect(result).toBe(false);
+    });
+
+    it('is true for a comment in a never read thread', () => {
+      const result = isUnseen(
+        {creatorId: 43, createdAt: '2026-08-17T09:00:00.000Z'},
+        {currentUser, readAt: undefined}
+      );
+
+      expect(result).toBe(true);
+    });
+
+    it('is false for an event of the current user', () => {
+      const result = isUnseen(
+        {creatorId: 42, createdAt: '2026-08-17T11:00:00.000Z'},
+        {currentUser, readAt: undefined}
+      );
+
+      expect(result).toBe(false);
+    });
+
+    it('is false while the current user is unknown', () => {
+      const result = isUnseen(
+        {creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'},
+        {currentUser: null, readAt: undefined}
+      );
+
+      expect(result).toBe(false);
+    });
+
+    describe('with a baseline on the current user', () => {
+      const joinedUser = {...currentUser, unreadCommentsSinceAt: '2026-08-17T10:00:00.000Z'};
+
+      it('is false for an event from before the baseline', () => {
+        const result = isUnseen(
+          {creatorId: 43, createdAt: '2026-08-17T09:00:00.000Z'},
+          {currentUser: joinedUser, readAt: undefined}
+        );
+
+        expect(result).toBe(false);
+      });
+
+      it('is true for an event from after the baseline', () => {
+        const result = isUnseen(
+          {creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'},
+          {currentUser: joinedUser, readAt: undefined}
+        );
+
+        expect(result).toBe(true);
+      });
+    });
   });
 
   describe('useUnreadComments', () => {

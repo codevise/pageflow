@@ -49,26 +49,31 @@ export function useLiveUnreadComments(thread) {
   );
 }
 
-// Comments the reviewer has not seen yet. Own comments never count: the
-// reviewer has read what they just wrote, and a thread would otherwise
-// turn unread by replying to it.
+// Comments the reviewer has not seen yet.
+export function unreadComments(thread, {currentUser, readAt}) {
+  return thread.comments.filter(comment => isUnseen(comment, {currentUser, readAt}));
+}
+
+// Whether an event in a thread is new to the reviewer. Own events never
+// count: the reviewer has read what they just wrote, and a thread would
+// otherwise turn unread by replying to it.
 //
-// Comments from before the reviewer's baseline do not count either. It
+// Events from before the reviewer's baseline do not count either. It
 // keeps the comments that were already there when read tracking started
 // - or when the reviewer joined - from all turning up as unread at once.
 //
 // Read state is only known once the current user has been fetched. Until
-// then nothing counts as unread, so lists do not briefly show every
+// then nothing counts as unseen, so lists do not briefly show every
 // thread as new.
-export function unreadComments(thread, {currentUser, readAt}) {
-  if (!currentUser) return [];
+//
+// Kept in sync with Pageflow::EntryCommentSummary, which applies the same
+// rule server side to summarize entries in the admin.
+export function isUnseen({creatorId, createdAt}, {currentUser, readAt}) {
+  if (!currentUser || creatorId === currentUser.id) return false;
 
   const seenUpTo = latestTime([readAt, currentUser.unreadCommentsSinceAt]);
 
-  return thread.comments.filter(
-    comment => comment.creatorId !== currentUser.id &&
-               (seenUpTo === null || new Date(comment.createdAt).getTime() > seenUpTo)
-  );
+  return seenUpTo === null || new Date(createdAt).getTime() > seenUpTo;
 }
 
 function latestTime(timestamps) {

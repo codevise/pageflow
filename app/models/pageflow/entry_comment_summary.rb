@@ -81,6 +81,8 @@ module Pageflow
 
     # Mirrors the unread rule of the review interface: own comments never
     # count, and neither do comments from before the user's baseline.
+    # Kept in sync with isUnseen in
+    # entry_types/scrolled/package/src/review/unreadComments.js.
     def self.unread?(comment, seen_up_to, user)
       comment.creator_id != user.id &&
         (seen_up_to.nil? || comment.created_at > seen_up_to)
