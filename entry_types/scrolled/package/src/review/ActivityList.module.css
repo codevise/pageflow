@@ -1,0 +1,27 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: space(3);
+}
+
+.showMore {
+  align-self: center;
+  font: inherit;
+  font-weight: 500;
+  color: var(--ui-on-surface-color-light);
+  background: none;
+  border: none;
+  padding: space(2);
+  cursor: pointer;
+}
+
+.showMore:hover {
+  color: var(--ui-primary-color);
+}
+
+.blankSlate {
+  margin: 0;
+  padding: space(4) space(2);
+  text-align: center;
+  color: var(--ui-on-surface-color-light);
+}

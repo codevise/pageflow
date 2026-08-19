@@ -2034,3 +2034,6 @@ de:
         other: '%{count} weitere Antworten'
       no_threads_yet: Noch keine Kommentare
       refers_to_deleted_element: Bezieht sich auf ein gelöschtes Element
+      activity:
+        no_activity_yet: Noch keine Aktivität
+        show_more: Mehr anzeigen

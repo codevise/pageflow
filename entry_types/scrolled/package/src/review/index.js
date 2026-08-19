@@ -9,6 +9,7 @@ export {ThreadsBadge} from './ThreadsBadge';
 export {Badge} from './Badge';
 export {ThreadList} from './ThreadList';
 export {activityEntries, useActivityEntries, useUnseenActivityCount} from './activityEntries';
+export {ActivityList} from './ActivityList';
 export {CommentThreadReadsSnapshot} from './commentThreadReadsSnapshot';
 export {Thread} from './Thread';
 export {ScrollHighlightedThreadIntoViewProvider} from './scrollHighlightedThreadIntoView';
