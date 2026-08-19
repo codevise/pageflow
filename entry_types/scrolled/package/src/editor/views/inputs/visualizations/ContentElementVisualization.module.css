@@ -1,0 +1,167 @@
+.visualization {
+  /* Lets children refer to the height of the visualization, which
+     acts as the viewport of the illustration. */
+  container-type: size;
+  aspect-ratio: 16 / 9;
+  border: solid 1px var(--ui-on-surface-color-lightest);
+  border-radius: rounded(sm);
+  margin-bottom: space(1);
+  background-color: var(--ui-primary-color);
+  color: var(--ui-on-primary-color-light);
+  padding: space(4) space(8);
+  overflow: hidden;
+  position: relative;
+  max-width: 260px;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.backdropPosition {
+  background-color: var(--ui-selection-color);
+}
+
+.backdropPosition .section {
+  padding-top: 40%;
+}
+
+.content {
+  width: 45%;
+}
+
+.centerLayout .content,
+.centerLayout .block,
+.centerRaggedLayout .content,
+.centerRaggedLayout .block {
+  position: relative;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rightLayout .content,
+.rightLayout .block {
+  margin-left: auto;
+}
+
+.textBlock {
+  display: block;
+  width: 100%;
+  margin-bottom: space(3);
+  line-height: space(3);
+}
+
+.centerRaggedLayout .textBlock {
+  text-align: center;
+}
+
+.textBlockWord {
+  display: inline-block;
+  border: solid 1px currentColor;
+  width: space(2);
+}
+
+.textBlockWord:nth-child(5n) {
+  width: space(3);
+}
+
+.textBlockWord:nth-child(2n) {
+  width: space(2.5);
+}
+
+.block {
+  position: relative;
+  width: 60%;
+  aspect-ratio: 4 / 3;
+  background-color: var(--ui-selection-color);
+  border-radius: rounded();
+  margin-bottom: space(2);
+}
+
+.leftPosition .block,
+.rightPosition .block {
+  width: 40%;
+  margin: space(2) 0 0;
+}
+
+.leftPosition .block {
+  float: left;
+  margin-left: -5%;
+  margin-right: space(3);
+}
+
+.rightPosition .block {
+  float: right;
+  margin-right: -5%;
+  margin-left: space(3);
+}
+
+.sidePosition .block {
+  width: 100%;
+}
+
+.sidePosition .wrapper {
+  float: right;
+  width: 40%;
+  top: 30%;
+}
+
+.rightLayout.sidePosition .wrapper {
+  float: left;
+}
+
+.stickyPosition {
+  composes: sidePosition;
+}
+
+.stickyPosition .wrapper {
+  position: sticky;
+}
+
+.standAlonePosition .wrapper {
+  height: 170px;
+}
+
+.standAlonePosition .block {
+  position: sticky;
+  top: 10%;
+
+  /* Sticky elements are constrained by their margin box, so a bottom
+     margin would keep the element from sliding all the way down to the
+     bottom of its scroll space. Progress along the pinned range would
+     stop short of the end. */
+  margin-bottom: 0;
+}
+
+.backdropPosition .block {
+  display: none;
+}
+
+/* Elements that are not placed next to the text fill most of the
+   visualization, which makes it hard to tell ranges apart. */
+.narrowBlock:not(.sidePosition) .block {
+  width: 40%;
+}
+
+/* Room to scroll above and below the section content, so the element
+   can start out below the viewport and the visualization can be
+   scrolled far enough for the element to leave it completely. The
+   latter requires more than a viewport height of room below the
+   content: Container query units refer to the content box of the
+   visualization, which is shorter than the area it scrolls. */
+.scrollRoom .section {
+  padding-block: 200cqh;
+}
+
+/* Sticky instead of absolute, so the line stays in place while the
+   content of the visualization scrolls past it. */
+.viewportCenter {
+  position: sticky;
+  top: 50cqh;
+  z-index: 1;
+
+  /* Span the full width of the visualization, not only its content
+     box. */
+  margin-inline: space(-8);
+  border-top: dotted 1px var(--ui-on-primary-color-lighter);
+}

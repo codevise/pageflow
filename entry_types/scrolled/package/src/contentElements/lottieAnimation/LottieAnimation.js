@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 import {
   ContentElementBox,
@@ -8,6 +8,7 @@ import {
   InlineFileRights,
   processImageModifiers,
   useContentElementLifecycle,
+  useContentElementViewTimelineProgress,
   useFileWithInlineRights
 } from 'pageflow-scrolled/frontend';
 
@@ -26,6 +27,8 @@ export function LottieAnimation({configuration}) {
   const {aspectRatio, rounded} = processImageModifiers(configuration.imageModifiers);
   const isCircleCrop = rounded === 'circle';
 
+  const {playbackMode = 'loop', scrollRange = 'cover'} = configuration;
+
   return (
     <FitViewport aspectRatio={aspectRatio || animationAspectRatio}
                  fallbackAspectRatio={1}>
@@ -39,8 +42,10 @@ export function LottieAnimation({configuration}) {
               <FilePlaceholder file={lottieFile} />
               {lottieFile && shouldLoad &&
                <Player lottieFile={lottieFile}
-                       loop={configuration.playbackMode !== 'playOnce'}
+                       loop={playbackMode === 'loop'}
                        play={isVisible}
+                       seekOnScroll={playbackMode === 'scroll'}
+                       scrollRange={scrollRange}
                        fit={aspectRatio ? 'cover' : 'contain'}
                        cropPositionX={configuration.cropPosition?.x}
                        cropPositionY={configuration.cropPosition?.y}
@@ -60,13 +65,31 @@ export function LottieAnimation({configuration}) {
 }
 
 function Player({
-  lottieFile, loop, play, fit, cropPositionX = 50, cropPositionY = 50, onAspectRatioChange
+  lottieFile, loop, play, seekOnScroll, scrollRange, fit,
+  cropPositionX = 50, cropPositionY = 50, onAspectRatioChange
 }) {
   const canvasRef = useRef();
   const dotLottieRef = useRef();
+  const isLoadedRef = useRef(false);
 
   const playRef = useRef(play);
   playRef.current = play;
+
+  const progressRef = useRef(0);
+
+  const seek = useCallback(progress => {
+    progressRef.current = progress;
+
+    if (isLoadedRef.current) {
+      const dotLottie = dotLottieRef.current;
+      dotLottie.setFrame(progress * (dotLottie.totalFrames - 1));
+    }
+  }, []);
+
+  useContentElementViewTimelineProgress({
+    range: scrollRange,
+    onProgress: seekOnScroll ? seek : null
+  });
 
   useEffect(() => {
     const dotLottie = new DotLottie({
@@ -79,7 +102,7 @@ function Player({
     });
 
     // Playback is only started here since the animation cannot be
-    // played before it has been loaded.
+    // played or seeked before it has been loaded.
     dotLottie.addEventListener('load', () => {
       const {width, height} = dotLottie.animationSize();
 
@@ -87,7 +110,12 @@ function Player({
         onAspectRatioChange(height / width);
       }
 
-      if (playRef.current) {
+      isLoadedRef.current = true;
+
+      if (seekOnScroll) {
+        seek(progressRef.current);
+      }
+      else if (playRef.current) {
         dotLottie.play();
       }
     });
@@ -95,19 +123,24 @@ function Player({
     dotLottieRef.current = dotLottie;
 
     return () => {
+      isLoadedRef.current = false;
       dotLottieRef.current = null;
       dotLottie.destroy();
     };
-  }, [lottieFile.urls.original, loop, fit, cropPositionX, cropPositionY, onAspectRatioChange]);
+  }, [lottieFile.urls.original, loop, fit, seekOnScroll, seek, cropPositionX, cropPositionY, onAspectRatioChange]);
 
   useEffect(() => {
+    if (seekOnScroll) {
+      return;
+    }
+
     if (play) {
       dotLottieRef.current.play();
     }
     else {
       dotLottieRef.current.pause();
     }
-  }, [play]);
+  }, [play, seekOnScroll]);
 
   return (
     <canvas ref={canvasRef} className={styles.canvas} />

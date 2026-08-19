@@ -4,6 +4,7 @@ import {api} from './api';
 import {extensible} from './extensionRegistry';
 import {ContentElementAttributesProvider} from './useContentElementAttributes';
 import {ContentElementLifecycleProvider} from './useContentElementLifecycle';
+import {ContentElementViewTimelineProvider} from './useContentElementViewTimelineProgress';
 import {ContentElementMargin} from './ContentElementMargin';
 import {ContentElementErrorBoundary} from './ContentElementErrorBoundary';
 
@@ -26,14 +27,16 @@ export const ContentElement = React.memo(extensible(
                                   top={props.itemProps.marginTop}
                                   bottom={props.marginBottom}
                                   previousBottom={props.previousMarginBottom}>
-              <ContentElementErrorBoundary typeName={props.type}
-                                           configuration={props.itemProps}>
-                <Component sectionProps={props.sectionProps}
-                           customMargin={props.customMargin}
-                           configuration={props.itemProps}
-                           contentElementWidth={props.width}
-                           contentElementId={props.id} />
-              </ContentElementErrorBoundary>
+              <ContentElementViewTimelineProvider type={props.type}>
+                <ContentElementErrorBoundary typeName={props.type}
+                                             configuration={props.itemProps}>
+                  <Component sectionProps={props.sectionProps}
+                             customMargin={props.customMargin}
+                             configuration={props.itemProps}
+                             contentElementWidth={props.width}
+                             contentElementId={props.id} />
+                </ContentElementErrorBoundary>
+              </ContentElementViewTimelineProvider>
             </ContentElementMargin>
           </ContentElementLifecycleProvider>
         </ContentElementAttributesProvider>

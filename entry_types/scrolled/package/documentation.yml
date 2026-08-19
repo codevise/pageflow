@@ -34,6 +34,7 @@ toc:
       - useAudioFocus
       - useContentElementEditorState
       - useContentElementLifecycle
+      - useContentElementViewTimelineProgress
       - useCurrentChapter
       - useCredits
       - useDarkBackground

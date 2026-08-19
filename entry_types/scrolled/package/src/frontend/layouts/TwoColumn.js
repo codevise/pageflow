@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useCallback, useRef} from 'react';
 import classNames from 'classnames';
 
 import {api} from '../api';
 import {ContentElements} from '../ContentElements';
+import {ViewTimelinePinProvider} from '../useContentElementViewTimelineProgress';
 import useMediaQuery from '../useMediaQuery';
 import {useTheme} from 'pageflow-scrolled/entryState';
 import {widths, widthName} from './widths';
@@ -68,10 +69,7 @@ function renderItems(props, shouldInline) {
 function renderItemGroup(props, box, key) {
   if (box.items.length) {
     return (
-      <div key={key} className={classNames(styles.box,
-                                           styles[box.position],
-                                           styles[`width-${widthName(box.width)}`],
-                                           {[styles.customMargin]: box.customMargin})}>
+      <Box key={key} box={box}>
         {props.children(
           <ContentElements sectionProps={props.sectionProps}
                            customMargin={box.customMargin}
@@ -91,9 +89,43 @@ function renderItemGroup(props, box, key) {
             atSectionEnd: box.atSectionEnd
           }
         )}
-      </div>
+      </Box>
     );
   }
+}
+
+function Box({box, children}) {
+  const ref = useRef();
+
+  return (
+    <div ref={ref}
+         className={classNames(styles.box,
+                               styles[box.position],
+                               styles[`width-${widthName(box.width)}`],
+                               {[styles.customMargin]: box.customMargin})}>
+      {box.position === 'sticky' ?
+       <ViewTimelinePin boxRef={ref} children={children} /> :
+       children}
+    </div>
+  );
+}
+
+// Sticky boxes stay pinned while the rest of their group scrolls past.
+// The group therefore is the subject that drives view timelines of
+// content elements inside the box.
+function ViewTimelinePin({boxRef, children}) {
+  const getPinnedElements = useCallback(
+    () => ({
+      subject: boxRef.current.closest(`.${styles.group}`),
+      element: boxRef.current
+    }),
+    [boxRef]
+  );
+
+  return (
+    <ViewTimelinePinProvider getPinnedElements={getPinnedElements}
+                             children={children} />
+  );
 }
 
 function restrictWidth(width, alignment, children) {

@@ -120,9 +120,9 @@ registering the content element type.
   it to start media playback that should remain active even when the
   element is not fully centered.
 
-* `isActive` is true if the content element is completely in the
-  viewport. Use it to activate some interactive behavior like an
-  animation or media playback.
+* `isActive` is true if the content element intersects the vertical
+  center of the viewport. Use it to activate some interactive behavior
+  like an animation or media playback.
 
 * `inForeground` is true when the storyline containing the content
   element is active (not in background mode). Use it to distinguish
@@ -197,6 +197,110 @@ function LoopingVideo(props) {
     <Video playerState={playerState} playerActions={playerActions} loop />
   );
 }
+```
+
+### View Timeline Progress
+
+While the lifecycle hook tells a content element when it enters or
+leaves the viewport, the `useContentElementViewTimelineProgress` hook
+tells it how far it has travelled through the viewport. The content
+element acts as the subject of a view timeline, using the same
+concepts as CSS scroll driven animations. Requires the `viewTimeline`
+option to be set to true when registering the content element type.
+
+The `range` option determines which part of the timeline to measure:
+
+* `cover` (default): From the moment the content element starts
+  entering the viewport until it has completely left it.
+
+* `contain`: While the content element is completely inside the
+  viewport. For content elements taller than the viewport, while the
+  content element completely covers the viewport.
+
+* `entry`: While the content element is entering the viewport.
+
+* `exit`: While the content element is leaving the viewport.
+
+* `center`: While the content element intersects the vertical center of
+  the viewport, i.e. from its top edge passing the center until its
+  bottom edge does. This is the same part of the page during which the
+  content element counts as active (see [Content Element
+  Lifecycle](#content-element-lifecycle)) and autoplayed videos play.
+
+* `pinned`: While the content element stays pinned in the viewport,
+  i.e. from the moment it reaches the position it is pinned at until it
+  starts moving with the page again. Progress stays 1 for content
+  elements that are not pinned at all (see below).
+
+* `inFocus`: While the content element holds the reader's attention:
+  `pinned` for content elements that are pinned in the viewport,
+  `center` for all others. Which of the two applies can change with the
+  viewport width.
+
+Progress is passed to the `onProgress` callback as a number between 0
+and 1 instead of being returned by the hook. This prevents rerendering
+the content element on every scroll frame. Use it to drive imperative
+APIs:
+
+```javascript
+// frontend.js
+
+frontend.contentElementTypes.register('scrollAnimation', {
+  viewTimeline: true,
+  component: Component
+});
+
+function Component() {
+  const playerRef = useRef();
+
+  useContentElementViewTimelineProgress({
+    range: 'cover',
+    onProgress: progress => playerRef.current.seekTo(progress)
+  });
+
+  // ...
+}
+```
+
+Pass a falsy `onProgress` value to not observe scroll position at all,
+for example if scroll coupled behavior is optional:
+
+```javascript
+useContentElementViewTimelineProgress({
+  onProgress: configuration.playbackMode === 'scroll' ? seek : null
+});
+```
+
+Content elements that are pinned in the viewport for part of the page
+keep making progress while they stick: For `standAlone` position,
+progress is measured along the scroll space added around the element.
+For `sticky` position, it is measured along the group of content
+elements that scrolls past the element. Ranges still refer to the
+element itself, so `contain` covers the page from the element being
+completely inside the viewport to it starting to leave again, no matter
+how long it stays pinned in between.
+
+Progress is measured along the element itself again whenever it is not
+actually pinned: On narrow viewports, where sticky elements are
+rendered inline, and if there is not enough content next to a sticky
+element for it to ever reach its sticky position. The `inFocus` range
+therefore measures the same part of the page as `center` for those
+elements.
+
+In specs, `renderInContentElement` provides a `simulateScrollProgress`
+function to invoke the callback:
+
+```javascript
+const {simulateScrollProgress} = renderInContentElement(<Component />);
+
+simulateScrollProgress(0.5);
+```
+
+Callbacks are invoked no matter which range they observe. Pass a
+`range` option to only invoke callbacks observing that range:
+
+```javascript
+simulateScrollProgress(0.5, {range: 'pinned'});
 ```
 
 ## Using the Storybook

@@ -775,11 +775,21 @@ de:
             id:
               label: Animation
             playbackMode:
-              inline_help_html: Bestimmt, wie die Animation abgespielt wird, sobald sie sichtbar wird:<ul><li><strong>Endlosschleife:</strong> Immer wieder, solange sie sichtbar ist.</li><li><strong>Einmal abspielen:</strong> Einmal von Anfang bis Ende.</li></ul>
+              inline_help_html: Bestimmt, wie die Animation abgespielt wird, sobald sie sichtbar wird:<ul><li><strong>Endlosschleife:</strong> Immer wieder, solange sie sichtbar ist.</li><li><strong>Einmal abspielen:</strong> Einmal von Anfang bis Ende.</li><li><strong>Scrollposition:</strong> Bild für Bild beim Scrollen. Über die Einstellung „Scroll-Bereich“ kann gewählt werden, wann das Scrollen der Seite die Animation antreibt.</li></ul>
               label: Wiedergabe-Modus
               values:
                 loop: Endlosschleife
                 playOnce: Einmal abspielen
+                scroll: Scrollposition
+            scrollRange:
+              inline_help_html: Bestimmt, wann das Scrollen der Seite die Animation antreibt:<ul><li><strong>Während sichtbar:</strong> Von dem Moment, in dem das Element in den Viewport scrollt, bis es ihn wieder vollständig verlassen hat.</li><li><strong>Während vollständig sichtbar:</strong> Solange das Element vollständig im Viewport ist.</li><li><strong>Beim Passieren der Viewport-Mitte:</strong> Das Scrollen der Seite treibt die Animation an, während das Element die vertikale Mitte des Viewports passiert. Verfügbar für alle Elemente außer solchen mit Position „Neben dem Text (Sticky)“ oder „Stand-Alone“.</li><li><strong>Während eingerastet:</strong> Das Scrollen der Seite treibt die Animation an, solange das Element stehenbleibt. Bleibt das Element nicht stehen - in der Mobil-Darstellung, in der solche Elemente im Text verankert werden, oder wenn nicht genug Text daneben steht -, treibt das Scrollen die Animation stattdessen beim Passieren der Viewport-Mitte an. Verfügbar für Elemente mit Position „Neben dem Text (Sticky)“ oder „Stand-Alone“.</li><li><strong>Beim Hereinscrollen:</strong> Solange das Element in den Viewport scrollt.</li></ul>
+              label: Scroll-Bereich
+              values:
+                contain: Während vollständig sichtbar
+                cover: Während sichtbar
+                entry: Beim Hereinscrollen
+                inFocus: Beim Passieren der Viewport-Mitte
+                inFocusWhenPinned: Während eingerastet
           description: Eine als dotLottie-Datei exportierte Animation einbinden
           name: Lottie-Animation
           tabs:

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {ListboxInputView} from './ListboxInputView';
-import {SectionVisualization} from './SectionVisualization';
+import {SectionVisualization} from './visualizations/SectionVisualization';
 
 export const AppearanceSelectInputView = ListboxInputView.extend({
   modelEvents() {

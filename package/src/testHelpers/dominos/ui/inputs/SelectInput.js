@@ -13,6 +13,12 @@ export const SelectInput = Base.extend({
     }).get();
   },
 
+  texts: function() {
+    return this.$el.find('option').map(function() {
+      return $(this).text();
+    }).get();
+  },
+
   enabledValues: function() {
     return this.$el.find('option:not([disabled])').map(function() {
       return $(this).attr('value');

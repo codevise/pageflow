@@ -9,6 +9,7 @@ import {
   ContentElementEditorCommandEmitterContext,
   ContentElementEditorStateContext,
   ContentElementLifecycleContext,
+  ContentElementViewTimelineContext,
   MainStorylineActivity
 } from 'pageflow-scrolled/frontend';
 
@@ -20,8 +21,14 @@ import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycl
  * Provide context as if component was rendered inside of a content element.
  *
  * Returns additional functions to control content element scroll
- * lifecycle, editor commands, and storyline mode: `simulateScrollPosition`,
+ * lifecycle, view timeline progress, editor commands, and storyline
+ * mode: `simulateScrollPosition`, `simulateScrollProgress`,
  * `triggerEditorCommand`, and `simulateStorylineMode`.
+ *
+ * `simulateScrollProgress` passes the given progress to all
+ * `useContentElementViewTimelineProgress` callbacks, no matter which
+ * range they observe. Pass a `range` option to only invoke callbacks
+ * observing that range.
  *
  * @param {Function} callback - React component or function returning a React component.
  * @param {Object} [options] - Supports all options supported by {@link `renderInEntry`}.
@@ -47,6 +54,8 @@ import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycl
  *     inlineEditing: {isSelected: true}
  *   });
  * simulateScrollPosition('near viewport');
+ * simulateScrollProgress(0.5);
+ * simulateScrollProgress(0.5, {range: 'pinned'});
  * triggerEditorCommand({type: 'HIGHLIGHT'});
  * simulateStorylineMode('background');
  */
@@ -58,6 +67,20 @@ export function renderInContentElement(ui, {inlineEditing,
                                             ...options} = {}) {
   const emitter = Object.assign({}, BackboneEvents);
   const storylineEmitter = Object.assign({}, BackboneEvents);
+  const viewTimelineEmitter = Object.assign({}, BackboneEvents);
+
+  const viewTimeline = {
+    subscribe(range, callback) {
+      function handleProgress(progress, options) {
+        if (!options.range || options.range === range) {
+          callback(progress);
+        }
+      }
+
+      viewTimelineEmitter.on('progress', handleProgress);
+      return () => viewTimelineEmitter.off('progress', handleProgress);
+    }
+  };
 
   const inlineEditingConfig = resolveInlineEditing(inlineEditing);
 
@@ -86,7 +109,9 @@ export function renderInContentElement(ui, {inlineEditing,
     return (
       <MainStorylineActivity activeExcursion={storylineMode !== 'active' ? {id: 1} : null}>
         <ContentElementAttributesProvider id={42}>
-          {tree}
+          <ContentElementViewTimelineContext.Provider value={viewTimeline}>
+            {tree}
+          </ContentElementViewTimelineContext.Provider>
         </ContentElementAttributesProvider>
       </MainStorylineActivity>
     );
@@ -115,6 +140,11 @@ export function renderInContentElement(ui, {inlineEditing,
     simulateStorylineMode(mode) {
       act(() => {
         storylineEmitter.trigger('storylineMode', mode)
+      });
+    },
+    simulateScrollProgress(progress, {range} = {}) {
+      act(() => {
+        viewTimelineEmitter.trigger('progress', progress, {range})
       });
     }
   };

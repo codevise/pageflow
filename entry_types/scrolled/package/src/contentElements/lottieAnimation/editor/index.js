@@ -1,4 +1,9 @@
-import {editor, ImageModifierListInputView, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
+import {
+  editor,
+  ImageModifierListInputView,
+  InlineFileRightsMenuItem,
+  ScrollRangeSelectInputView
+} from 'pageflow-scrolled/editor';
 import {processImageModifiers} from 'pageflow-scrolled/frontend';
 import {FileInputView} from 'pageflow/editor';
 import {SelectInputView, SeparatorView} from 'pageflow/ui';
@@ -22,7 +27,14 @@ editor.fileTypes.register('lottie_files', {
   matchUpload: upload => /\.lottie$/i.test(upload.name)
 });
 
-const playbackModes = ['loop', 'playOnce'];
+const playbackModes = ['loop', 'playOnce', 'scroll'];
+const scrollRanges = ['cover', 'contain', 'inFocus', 'entry'];
+const pinnedPositions = ['sticky', 'standAlone'];
+
+const scrollRangeValuesKey =
+  'pageflow_scrolled.editor.content_elements.lottieAnimation.attributes.scrollRange.values';
+const pinnedScrollRangeKeys = ['cover', 'contain', 'inFocusWhenPinned', 'entry']
+  .map(name => `${scrollRangeValuesKey}.${name}`);
 
 editor.contentElementTypes.register('lottieAnimation', {
   pictogram,
@@ -39,7 +51,7 @@ editor.contentElementTypes.register('lottieAnimation', {
     this.input('playbackMode', SelectInputView, {values: playbackModes});
   },
 
-  configurationEditor({entry}) {
+  configurationEditor({entry, contentElement}) {
     this.tab('general', function() {
       this.input('id', FileInputView, {
         collection: 'lottie_files',
@@ -61,6 +73,25 @@ editor.contentElementTypes.register('lottieAnimation', {
         visible: () => this.model.getReference('id', 'lottie_files')
       });
       this.input('playbackMode', SelectInputView, {values: playbackModes});
+      // Elements that stay in place while scrolling name the inFocus
+      // range after that phase instead of after the center of the
+      // viewport. Since the texts of a select cannot depend on other
+      // attributes, there is one input per wording.
+      this.input('scrollRange', ScrollRangeSelectInputView, {
+        values: scrollRanges,
+        ...scrollRangeIllustration(contentElement),
+        visibleBinding: ['playbackMode', 'position'],
+        visible: ([playbackMode]) =>
+          playbackMode === 'scroll' && !staysInPlace(contentElement)
+      });
+      this.input('scrollRange', ScrollRangeSelectInputView, {
+        values: scrollRanges,
+        translationKeys: pinnedScrollRangeKeys,
+        ...scrollRangeIllustration(contentElement),
+        visibleBinding: ['playbackMode', 'position'],
+        visible: ([playbackMode]) =>
+          playbackMode === 'scroll' && staysInPlace(contentElement)
+      });
 
       this.view(SeparatorView);
 
@@ -73,3 +104,17 @@ editor.contentElementTypes.register('lottieAnimation', {
     });
   }
 });
+
+// Layouts that do not support sticky position render such elements
+// inline, which does not keep them in place while scrolling.
+function staysInPlace(contentElement) {
+  return pinnedPositions.includes(contentElement.getResolvedPosition());
+}
+
+// Illustrate the ranges with the element as it looks in its section.
+function scrollRangeIllustration(contentElement) {
+  return {
+    position: () => contentElement.getResolvedPosition(),
+    sectionLayout: () => contentElement.section.configuration.get('layout')
+  };
+}
