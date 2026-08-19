@@ -267,6 +267,28 @@ describe('ThreadsBadge', () => {
       expect(getByRole('status')).toBeInTheDocument();
       expect(getByRole('status')).not.toHaveTextContent(/\d/);
     });
+
+    // Two dots on one badge say less than one, so unseen comments keep
+    // the badge from collapsing.
+    it('renders full badge when comments are unread', () => {
+      const {container, getByRole} = renderThreadsBadge(
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} mode="dot" />,
+        {
+          currentUser: {id: 42, name: 'Alice'},
+          commentThreads: [
+            {
+              id: 1, permaId: 5, subjectType: 'ContentElement', subjectId: 10,
+              comments: [{
+                id: 100, creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'
+              }]
+            }
+          ]
+        }
+      );
+
+      expect(getByRole('status')).not.toHaveClass(badgeStyles.dot);
+      expect(container.querySelector(`.${badgeStyles.icon}`)).not.toBeNull();
+    });
   });
 
   describe('mode active', () => {
