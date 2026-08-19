@@ -34,10 +34,10 @@ module.exports = {
     {
       // Content elements, widgets, the editor and the review interface
       // are bundled separately and need to import from
-      // 'pageflow-scrolled/frontend' and 'pageflow-scrolled/entryState'
-      // to keep that code external. Importing relatively would inline a
-      // second copy of the module, giving the bundle its own React
-      // contexts.
+      // 'pageflow-scrolled/frontend', 'pageflow-scrolled/entryState' and
+      // 'pageflow-scrolled/review' to keep that code external. Importing
+      // relatively would inline a second copy of the module, giving the
+      // bundle its own React contexts.
       // Stories are excluded because they legitimately import the
       // content element's sibling './frontend' aggregator via
       // '../frontend'.
@@ -52,7 +52,8 @@ module.exports = {
         "no-restricted-imports": ["error", {
           "patterns": [
             "**/frontend/**", "../**/frontend",
-            "**/entryState/**", "../**/entryState"
+            "**/entryState/**", "../**/entryState",
+            "**/review/**", "../**/review"
           ]
         }]
       }
