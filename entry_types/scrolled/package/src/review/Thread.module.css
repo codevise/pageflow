@@ -60,6 +60,23 @@
   font-weight: 600;
 }
 
+.newRepliesDivider {
+  display: flex;
+  align-items: center;
+  gap: space(2);
+  font-weight: 500;
+  color: var(--ui-warning-color);
+}
+
+.newRepliesDivider::before,
+.newRepliesDivider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ui-warning-color);
+  opacity: 0.4;
+}
+
 .deletedHint {
   margin: 0;
   font-size: space(3);

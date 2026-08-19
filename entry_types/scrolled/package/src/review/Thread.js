@@ -37,6 +37,18 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
 
   const hidesNewReplies = repliesCollapsed && newReplyCount > 0;
 
+  // Where the unseen part of the thread starts. Only meaningful with
+  // seen comments above it: a thread that is new all through says so
+  // through its dot instead of repeating it at the very top.
+  const firstNewReplyId = useMemo(() => {
+    if (!newComments.length || newComments[0].id === firstComment?.id) {
+      return null;
+    }
+
+    const ids = new Set(newComments.map(comment => comment.id));
+    return replies.find(reply => ids.has(reply.id))?.id;
+  }, [newComments, replies, firstComment]);
+
   // Kept here rather than per comment so that a thread never shows two
   // textareas at once: neither two comments being edited, nor an edit next
   // to the reply form.
@@ -116,10 +128,15 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
         </button>}
 
       {!collapsed && replies.map(comment => (
-        <Comment key={comment.id}
-                 comment={comment}
-                 showQuote={outdatedQuotes.has(comment.id)}
-                 {...editProps(comment)} />
+        <React.Fragment key={comment.id}>
+          {comment.id === firstNewReplyId &&
+            <div className={styles.newRepliesDivider}>
+              {t('pageflow_scrolled.review.new_replies')}
+            </div>}
+          <Comment comment={comment}
+                   showQuote={outdatedQuotes.has(comment.id)}
+                   {...editProps(comment)} />
+        </React.Fragment>
       ))}
 
       {interactive && !thread.resolvedAt && !repliesCollapsed && !editing &&
