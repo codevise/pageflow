@@ -72,6 +72,7 @@ function Entry({entry, day, highlighted, onClick}) {
               onExpandReplies={() => setExpanded(true)}
               collapsed={collapsed}
               onToggle={() => setCollapsed(!collapsed)}
+              showUnreadMarker
               onClick={onClick}
               highlighted={highlighted}
               onResolve={() => postUpdateThreadMessage({
@@ -88,7 +89,8 @@ function summary(t, {thread}, day) {
   const replies = thread.comments.slice(1);
 
   const parts = [
-    onDay(thread.comments[0], day) && t('pageflow_scrolled.review.activity.summary.topic'),
+    onDay(thread.comments[0], day) &&
+      t('pageflow_scrolled.review.activity.summary.topic'),
     replyCountPart(t, replies.filter(reply => onDay(reply, day)).length),
     thread.resolvedAt && dayOf(thread.resolvedAt) === day &&
       t('pageflow_scrolled.review.activity.summary.resolution')
@@ -115,14 +117,20 @@ function joinParts(t, parts) {
     .join(t('pageflow_scrolled.review.activity.summary.and'));
 }
 
-// Everything said on the day the row is listed under, falling back to
-// the latest reply so that a row never shows a thread without the comment
-// it is listed for.
-function visibleReplyCount({thread}, day) {
+// Everything said on the day the row is listed under, plus anything
+// unseen from before it - folding that away would hide what the feed
+// exists to surface. Falls back to the latest reply, so that a row never
+// shows a thread without the comment it is listed for.
+function visibleReplyCount({thread, unseenCommentIds}, day) {
   const replies = thread.comments.slice(1);
-  const firstOfDay = replies.findIndex(reply => dayOf(reply.createdAt) === day);
 
-  return firstOfDay < 0 ? Math.min(replies.length, 1) : replies.length - firstOfDay;
+  const starts = [
+    replies.findIndex(reply => unseenCommentIds.includes(reply.id)),
+    replies.findIndex(reply => dayOf(reply.createdAt) === day)
+  ].filter(index => index >= 0);
+
+  return starts.length ? replies.length - Math.min(...starts) :
+                         Math.min(replies.length, 1);
 }
 
 function DayHeading({day, at}) {

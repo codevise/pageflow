@@ -55,6 +55,8 @@ describe('ActivityList', () => {
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.review.toggle_replies': 'Toggle replies',
+    'pageflow_scrolled.review.unread_comment_count.one': '1 unread comment',
+    'pageflow_scrolled.review.unread_comment_count.other': '%{count} unread comments',
     'pageflow_scrolled.review.resolution_by': 'Marked as resolved by',
     'pageflow_scrolled.review.resolve': 'Mark as resolved',
     'pageflow_scrolled.review.unresolve': 'Mark as unresolved'
@@ -121,11 +123,16 @@ describe('ActivityList', () => {
       return container.querySelector(`.${styles.summary}`);
     }
 
+    // Everything counts as new without a read mark, so the tests about
+    // the plain wording have to say the thread was read.
+    const seen = {5: '2026-08-18T12:00:00.000Z'};
+
     it('names a topic started on the day it is listed under', () => {
       const {container} = renderActivityList(<ActivityList />, {
         commentThreads: [thread({
           comments: [comment({body: 'A topic', createdAt: '2026-08-17T09:00:00.000Z'})]
-        })]
+        })],
+        commentThreadReads: seen
       });
 
       expect(summaryOf(container)).toHaveTextContent('topic started');
@@ -139,7 +146,8 @@ describe('ActivityList', () => {
             comment({id: 101, body: 'First', createdAt: '2026-08-17T12:00:00.000Z'}),
             comment({id: 102, body: 'Second', createdAt: '2026-08-17T13:00:00.000Z'})
           ]
-        })]
+        })],
+        commentThreadReads: seen
       });
 
       expect(summaryOf(container)).toHaveTextContent('2 replies');
@@ -155,11 +163,28 @@ describe('ActivityList', () => {
           resolvedAt: '2026-08-17T13:00:00.000Z',
           resolvedById: 44,
           resolverName: 'Carol'
-        })]
+        })],
+        commentThreadReads: seen
       });
 
       expect(summaryOf(container))
         .toHaveTextContent('topic started, 1 reply and marked as resolved');
+    });
+
+    it('counts a day\'s replies whether or not they have been read', () => {
+      const {container} = renderActivityList(<ActivityList />, {
+        commentThreads: [thread({
+          permaId: 7,
+          comments: [
+            comment({id: 100, body: 'A topic', createdAt: '2026-08-16T12:00:00.000Z'}),
+            comment({id: 101, body: 'First', createdAt: '2026-08-17T12:00:00.000Z'}),
+            comment({id: 102, body: 'Second', createdAt: '2026-08-17T13:00:00.000Z'})
+          ]
+        })],
+        commentThreadReads: {7: '2026-08-17T12:30:00.000Z'}
+      });
+
+      expect(summaryOf(container).textContent).toEqual('2 replies');
     });
 
     it('leaves out what happened on other days', () => {
@@ -169,7 +194,8 @@ describe('ActivityList', () => {
             comment({id: 100, body: 'A topic', createdAt: '2026-08-16T12:00:00.000Z'}),
             comment({id: 101, body: 'A reply', createdAt: '2026-08-17T12:00:00.000Z'})
           ]
-        })]
+        })],
+        commentThreadReads: seen
       });
 
       expect(summaryOf(container).textContent).toEqual('1 reply');
@@ -184,6 +210,10 @@ describe('ActivityList', () => {
         comment({id: 102, body: 'Second reply', createdAt: '2026-08-17T12:00:00.000Z'})
       ]
     });
+
+    // Unseen comments show whatever day they are from, so the tests about
+    // folding have to say the thread was read.
+    const seenAll = {5: '2026-08-18T12:00:00.000Z'};
 
     const threadAcrossDays = thread({
       comments: [
@@ -206,7 +236,8 @@ describe('ActivityList', () => {
 
     it('folds away replies from earlier days', () => {
       const {getByText, queryByText} = renderActivityList(<ActivityList />, {
-        commentThreads: [threadAcrossDays]
+        commentThreads: [threadAcrossDays],
+        commentThreadReads: seenAll
       });
 
       expect(getByText('A topic')).toBeInTheDocument();
@@ -235,7 +266,8 @@ describe('ActivityList', () => {
       const user = userEvent.setup();
 
       const {getByRole, getByText} = renderActivityList(<ActivityList />, {
-        commentThreads: [threadAcrossDays]
+        commentThreads: [threadAcrossDays],
+        commentThreadReads: seenAll
       });
 
       await user.click(getByRole('button', {name: '1 more'}));
@@ -248,7 +280,10 @@ describe('ActivityList', () => {
       const user = userEvent.setup();
 
       const {getByRole, getByPlaceholderText, queryByPlaceholderText} =
-        renderActivityList(<ActivityList />, {commentThreads: [threadAcrossDays]});
+        renderActivityList(<ActivityList />, {
+          commentThreads: [threadAcrossDays],
+          commentThreadReads: seenAll
+        });
 
       expect(queryByPlaceholderText('Reply...')).toBeNull();
 
@@ -259,7 +294,8 @@ describe('ActivityList', () => {
 
     it('offers no reply count toggle while replies are folded', () => {
       const {queryByRole} = renderActivityList(<ActivityList />, {
-        commentThreads: [threadAcrossDays]
+        commentThreads: [threadAcrossDays],
+        commentThreadReads: seenAll
       });
 
       expect(queryByRole('button', {name: /2 replies/})).toBeNull();
@@ -269,7 +305,8 @@ describe('ActivityList', () => {
       const user = userEvent.setup();
 
       const {getByRole, getByText, queryByText} = renderActivityList(<ActivityList />, {
-        commentThreads: [threadAcrossDays]
+        commentThreads: [threadAcrossDays],
+        commentThreadReads: seenAll
       });
 
       await user.click(getByRole('button', {name: '1 more'}));
@@ -286,6 +323,59 @@ describe('ActivityList', () => {
       });
 
       expect(getByRole('button', {name: 'Mark as resolved'})).toBeInTheDocument();
+    });
+  });
+
+  describe('unseen activity', () => {
+    // Read state is per thread, so a reply left unread days ago sits above
+    // the day the row is listed under. Folding it away would hide the very
+    // thing the feed exists to surface.
+    const threadWithUnseenReplyFromEarlierDay = thread({
+      permaId: 7,
+      comments: [
+        comment({id: 100, body: 'A topic', createdAt: '2026-08-15T12:00:00.000Z'}),
+        comment({id: 101, body: 'Unseen reply', createdAt: '2026-08-16T12:00:00.000Z'}),
+        comment({id: 102, body: 'Latest reply', createdAt: '2026-08-17T12:00:00.000Z'})
+      ]
+    });
+
+    it('marks a thread with unseen comments', () => {
+      const {getByLabelText} = renderActivityList(<ActivityList />, {
+        commentThreads: [threadWithUnseenReplyFromEarlierDay],
+        commentThreadReads: {}
+      });
+
+      expect(getByLabelText('3 unread comments')).toBeInTheDocument();
+    });
+
+    it('does not mark a thread the reviewer has seen', () => {
+      const {queryByLabelText} = renderActivityList(<ActivityList />, {
+        commentThreads: [threadWithUnseenReplyFromEarlierDay],
+        commentThreadReads: {7: '2026-08-18T12:00:00.000Z'}
+      });
+
+      expect(queryByLabelText('1 unread comment')).toBeNull();
+      expect(queryByLabelText('2 unread comments')).toBeNull();
+    });
+
+    it('shows unseen replies from earlier days', () => {
+      const {getByText} = renderActivityList(<ActivityList />, {
+        commentThreads: [threadWithUnseenReplyFromEarlierDay],
+        commentThreadReads: {7: '2026-08-15T18:00:00.000Z'}
+      });
+
+      expect(getByText('Unseen reply')).toBeInTheDocument();
+      expect(getByText('Latest reply')).toBeInTheDocument();
+    });
+
+    it('folds away seen replies from earlier days', () => {
+      const {getByText, queryByText} = renderActivityList(<ActivityList />, {
+        commentThreads: [threadWithUnseenReplyFromEarlierDay],
+        commentThreadReads: {7: '2026-08-18T12:00:00.000Z'}
+      });
+
+      expect(queryByText('Unseen reply')).toBeNull();
+      expect(getByText('1 more')).toBeInTheDocument();
     });
   });
 
