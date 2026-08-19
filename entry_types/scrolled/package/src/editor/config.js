@@ -63,7 +63,8 @@ editor.addInitializer(() => {
     editor.registerMainMenuItem({
       translationKey: 'pageflow_scrolled.editor.main_menu.comments',
       path: '/scrolled/comments',
-      id: 'comments'
+      id: 'comments',
+      indicatorAttribute: 'hasUnreadComments'
     });
   }
 });

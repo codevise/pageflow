@@ -15,4 +15,18 @@ ul.menu {
     display: block;
     padding: space(2.5);
   }
+
+  // Set right after the label rather than at the edge of the item, so
+  // it reads as belonging to the label it marks.
+  a.indicator::after {
+    content: "";
+    display: inline-block;
+    position: relative;
+    top: space(-2);
+    margin-left: space(0.5);
+    width: space(1);
+    height: space(1);
+    border-radius: 50%;
+    background: var(--ui-warning-color);
+  }
 }

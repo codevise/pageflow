@@ -2,6 +2,7 @@ import {Entry, editor} from 'pageflow/editor';
 import I18n from 'i18n-js';
 import {features} from 'pageflow/frontend';
 import {createReviewSession} from 'pageflow/review';
+import {watchUnreadComments} from 'pageflow-scrolled/review';
 
 import {ConsentVendors} from '../ConsentVendors';
 
@@ -81,6 +82,7 @@ export const ScrolledEntry = Entry.extend({
 
     if (features.isEnabled('commenting')) {
       this.reviewSession = createReviewSession({entryId: this.id});
+      watchUnreadComments({entry: this, session: this.reviewSession});
     }
   },
 

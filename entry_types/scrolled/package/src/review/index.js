@@ -3,6 +3,7 @@ export {ReviewStateProvider, useCommentThreads, useCommentThread} from './Review
 export {LocatedCommentThreadsProvider, useLocatedCommentThreads} from './useLocatedCommentThreads';
 export {useLocatedCommentThreadsForSubject} from './useLocatedCommentThreadsForSubject';
 export {ReviewMessageHandler} from './ReviewMessageHandler';
+export {watchUnreadComments} from './watchUnreadComments';
 export {ThreadsBadge} from './ThreadsBadge';
 export {Badge} from './Badge';
 export {ThreadList} from './ThreadList';
