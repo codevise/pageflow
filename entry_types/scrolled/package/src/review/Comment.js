@@ -5,6 +5,7 @@ import {Avatar} from './Avatar';
 import {CommentMenu} from './CommentMenu';
 import {useCurrentUser, useUpdateComment} from './ReviewStateProvider';
 import {autoGrow, autoResize} from './autoGrow';
+import {formatDate, formatDateTime} from './formatDate';
 import {isSubmitShortcut} from './submitShortcut';
 
 import styles from './Comment.module.css';
@@ -107,20 +108,4 @@ function EditForm({comment, threadId, onDone}) {
       </div>
     </form>
   );
-}
-
-function formatDate(isoString, locale, options) {
-  const date = new Date(isoString);
-  const fromCurrentYear = date.getFullYear() === new Date().getFullYear();
-
-  return date.toLocaleString(locale, {
-    month: 'short',
-    day: 'numeric',
-    ...(!fromCurrentYear && {year: 'numeric'}),
-    ...options
-  });
-}
-
-function formatDateTime(isoString, locale) {
-  return formatDate(isoString, locale, {hour: 'numeric', minute: '2-digit'});
 }
