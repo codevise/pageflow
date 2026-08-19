@@ -23,3 +23,46 @@
   composes: secondaryAddButton from './buttons.module.css';
   float: right;
 }
+
+/* Rides the tab bar at its far end. The bar is the scroller's containing
+   block, and its tab list is absolutely positioned for the same reason. */
+.activityButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: none;
+  border: 0;
+  padding: 0 space(2);
+  cursor: pointer;
+}
+
+.activityIcon {
+  width: 16px;
+  height: 16px;
+  background: var(--ui-on-surface-color-light);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+.activityButton:hover .activityIcon {
+  background: var(--ui-primary-color);
+}
+
+/* Matches a.indicator::after in app/assets/stylesheets/pageflow/editor/menu.scss,
+   which points at the same unseen comments from the sidebar root. */
+.indicator::after {
+  content: "";
+  position: absolute;
+  top: space(1);
+  right: space(1);
+  width: space(1.5);
+  height: space(1.5);
+  border-radius: 50%;
+  background: var(--ui-warning-color);
+  box-shadow: 0 0 0 1px var(--ui-on-surface-color-lighter);
+}

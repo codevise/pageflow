@@ -1624,10 +1624,11 @@ en:
       main_menu:
         comments: Comments
       comments_view:
+        activity: Latest activity
         new_thread: New topic
         section: Section
         tabs:
-          comments: All comments
+          comments: All
           selection: For selection
       comment_activity_view:
         back: Comments

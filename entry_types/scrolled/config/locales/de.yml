@@ -1642,10 +1642,11 @@ de:
       main_menu:
         comments: Kommentare
       comments_view:
+        activity: Letzte Aktivität
         new_thread: Neues Thema
         section: Abschnitt
         tabs:
-          comments: Alle Kommentare
+          comments: Alle
           selection: Für Auswahl
       comment_activity_view:
         back: Kommentare
