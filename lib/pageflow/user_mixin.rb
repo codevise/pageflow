@@ -31,6 +31,14 @@ module Pageflow
       validates_inclusion_of :locale, in: Pageflow.config.available_locales.map(&:to_s)
 
       scope :admins, -> { where(admin: true) }
+
+      before_create :ensure_unread_comments_since_at
+    end
+
+    # Comments predating a user are not new to them. Without a baseline,
+    # joining would mean facing every comment ever written as unread.
+    def ensure_unread_comments_since_at
+      self.unread_comments_since_at ||= Time.current
     end
 
     def admin?

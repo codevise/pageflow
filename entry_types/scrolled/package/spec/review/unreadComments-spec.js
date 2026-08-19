@@ -53,6 +53,48 @@ describe('unreadComments', () => {
     expect(result).toEqual([]);
   });
 
+  describe('with a baseline on the current user', () => {
+    const joinedUser = {...currentUser, unreadCommentsSinceAt: '2026-08-17T10:00:00.000Z'};
+
+    it('ignores comments from before the baseline', () => {
+      const result = unreadComments(
+        thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T09:00:00.000Z'}]),
+        {currentUser: joinedUser, readAt: undefined}
+      );
+
+      expect(result).toEqual([]);
+    });
+
+    it('returns comments from after the baseline', () => {
+      const result = unreadComments(
+        thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'}]),
+        {currentUser: joinedUser, readAt: undefined}
+      );
+
+      expect(result.map(comment => comment.id)).toEqual([100]);
+    });
+
+    // A thread read after the baseline has moved past it.
+    it('prefers a later read timestamp over the baseline', () => {
+      const result = unreadComments(
+        thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'}]),
+        {currentUser: joinedUser, readAt: '2026-08-17T12:00:00.000Z'}
+      );
+
+      expect(result).toEqual([]);
+    });
+
+    // A thread last read before the baseline says nothing newer than it.
+    it('prefers the baseline over an earlier read timestamp', () => {
+      const result = unreadComments(
+        thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T09:30:00.000Z'}]),
+        {currentUser: joinedUser, readAt: '2026-08-17T09:00:00.000Z'}
+      );
+
+      expect(result).toEqual([]);
+    });
+  });
+
   it('compares timestamps of different time zone offsets', () => {
     const result = unreadComments(
       thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T12:00:00.000+02:00'}]),

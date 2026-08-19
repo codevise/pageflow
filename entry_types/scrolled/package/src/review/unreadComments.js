@@ -53,16 +53,26 @@ export function useLiveUnreadComments(thread) {
 // reviewer has read what they just wrote, and a thread would otherwise
 // turn unread by replying to it.
 //
+// Comments from before the reviewer's baseline do not count either. It
+// keeps the comments that were already there when read tracking started
+// - or when the reviewer joined - from all turning up as unread at once.
+//
 // Read state is only known once the current user has been fetched. Until
 // then nothing counts as unread, so lists do not briefly show every
 // thread as new.
 export function unreadComments(thread, {currentUser, readAt}) {
   if (!currentUser) return [];
 
-  const readAtTime = readAt ? new Date(readAt).getTime() : null;
+  const seenUpTo = latestTime([readAt, currentUser.unreadCommentsSinceAt]);
 
   return thread.comments.filter(
     comment => comment.creatorId !== currentUser.id &&
-               (readAtTime === null || new Date(comment.createdAt).getTime() > readAtTime)
+               (seenUpTo === null || new Date(comment.createdAt).getTime() > seenUpTo)
   );
+}
+
+function latestTime(timestamps) {
+  const times = timestamps.filter(Boolean).map(timestamp => new Date(timestamp).getTime());
+
+  return times.length ? Math.max(...times) : null;
 }

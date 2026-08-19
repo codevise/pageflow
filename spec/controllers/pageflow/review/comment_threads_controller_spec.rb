@@ -113,6 +113,19 @@ module Pageflow
         end
       end
 
+      it 'includes the unread baseline of the current user' do
+        unread_comments_since_at = 2.hours.ago
+        user = create(:user, unread_comments_since_at:)
+        entry = create(:entry, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        baseline = JSON.parse(response.body)['currentUser']['unreadCommentsSinceAt']
+
+        expect(Time.zone.parse(baseline)).to eq(unread_comments_since_at)
+      end
+
       it 'includes read timestamps of current user by thread perma id' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)

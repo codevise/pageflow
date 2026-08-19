@@ -3,6 +3,7 @@ json.key_format!(camelize: :lower)
 json.current_user do
   json.id current_user.id
   json.name current_user.full_name
+  json.unread_comments_since_at current_user.unread_comments_since_at
 end
 
 json.comment_threads(@comment_threads) do |comment_thread|
