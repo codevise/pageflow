@@ -26,10 +26,15 @@ namespace :pageflow_scrolled do
           Pageflow.config.paperclip_s3_root = ENV['PAGEFLOW_PAPERCLIP_S3_ROOT']
         end
 
+        # Runs which skip uploads reference the files uploaded by the
+        # last upstream run. Since the storage path contains the file
+        # name, both need to use the original file name instead of the
+        # random one normally generated for uploads.
+        Pageflow::DraftEntry.class_eval { def generate_file_name(file_name) = file_name }
+
         if ENV['PAGEFLOW_SCROLLED_DB_SEED_SKIP_FILES'] == 'true'
           puts 'Skipping file uploads to S3.'
           Paperclip::Storage::S3.class_eval { def flush_writes; end }
-          Pageflow::DraftEntry.class_eval { def generate_file_name(file_name) = file_name }
         end
 
         account = seeds.account(name: 'storybook-seed') do |account_in_progress|
