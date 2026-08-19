@@ -172,10 +172,6 @@ export function useCommentThreadReads() {
   return context ? context.commentThreadReads : emptyCommentThreadReads;
 }
 
-export function useCommentThreadReadAt(permaId) {
-  return useCommentThreadReads()[permaId];
-}
-
 export function useMarkThreadRead() {
   const context = useContext(CommentThreadReadsContext);
   return context?.markThreadRead;

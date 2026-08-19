@@ -1,12 +1,11 @@
 import {useMemo} from 'react';
 
-import {
-  useCommentThreadReadAt, useCommentThreadReads, useCurrentUser
-} from './ReviewStateProvider';
+import {useCommentThreadReads, useCurrentUser} from './ReviewStateProvider';
+import {useDisplayedCommentThreadReads} from './commentThreadReadsSnapshot';
 
 export function useUnreadCommentCount(threads) {
   const currentUser = useCurrentUser();
-  const commentThreadReads = useCommentThreadReads();
+  const commentThreadReads = useDisplayedCommentThreadReads();
 
   return useMemo(
     () => threads.reduce(
@@ -22,11 +21,31 @@ export function useUnreadCommentCount(threads) {
 
 export function useUnreadComments(thread) {
   const currentUser = useCurrentUser();
-  const readAt = useCommentThreadReadAt(thread.permaId);
+  const commentThreadReads = useDisplayedCommentThreadReads();
 
   return useMemo(
-    () => unreadComments(thread, {currentUser, readAt}),
-    [thread, currentUser, readAt]
+    () => unreadComments(thread, {
+      currentUser,
+      readAt: commentThreadReads[thread.permaId]
+    }),
+    [thread, currentUser, commentThreadReads]
+  );
+}
+
+// Counterpart of useUnreadComments for deciding whether a thread still
+// needs to be marked read. Reading frozen state here would keep the
+// thread unread no matter how often it was marked, leaving the read
+// signal firing forever.
+export function useLiveUnreadComments(thread) {
+  const currentUser = useCurrentUser();
+  const commentThreadReads = useCommentThreadReads();
+
+  return useMemo(
+    () => unreadComments(thread, {
+      currentUser,
+      readAt: commentThreadReads[thread.permaId]
+    }),
+    [thread, currentUser, commentThreadReads]
   );
 }
 

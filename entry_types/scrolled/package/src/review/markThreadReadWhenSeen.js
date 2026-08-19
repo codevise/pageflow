@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 
 import {useMarkThreadRead} from './ReviewStateProvider';
-import {useUnreadComments} from './unreadComments';
+import {useLiveUnreadComments} from './unreadComments';
 
 const DWELL_TIME = 800;
 
@@ -17,7 +17,7 @@ const ROOT_MARGIN = '-10% 0px -10% 0px';
 // Callers pass `enabled: false` while the thread hides part of itself,
 // so collapsed replies do not get marked as read unseen.
 export function useMarkThreadReadWhenSeen({thread, ref, enabled}) {
-  const unreadComments = useUnreadComments(thread);
+  const unreadComments = useLiveUnreadComments(thread);
   const markThreadRead = useMarkThreadRead();
 
   const {permaId} = thread;

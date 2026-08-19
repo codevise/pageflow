@@ -6,6 +6,7 @@ export {ReviewMessageHandler} from './ReviewMessageHandler';
 export {ThreadsBadge} from './ThreadsBadge';
 export {Badge} from './Badge';
 export {ThreadList} from './ThreadList';
+export {CommentThreadReadsSnapshot} from './commentThreadReadsSnapshot';
 export {Thread} from './Thread';
 export {ScrollHighlightedThreadIntoViewProvider} from './scrollHighlightedThreadIntoView';
 export {NewThreadForm} from './NewThreadForm';

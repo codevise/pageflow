@@ -7,7 +7,7 @@ import {
   ReviewStateProvider,
   useCommentDraft,
   useCommentThread,
-  useCommentThreadReadAt,
+  useCommentThreadReads,
   useCommentThreads,
   useCreateComment,
   useCreateCommentThread,
@@ -561,14 +561,14 @@ describe('ReviewStateProvider', () => {
     }
 
     it('provides no read timestamp initially', () => {
-      const {result} = renderHook(() => useCommentThreadReadAt(5), {wrapper});
+      const {result} = renderHook(() => useCommentThreadReads()[5], {wrapper});
 
       expect(result.current).toBeUndefined();
     });
 
     it('provides read timestamp from reset message', async () => {
       const {result, waitForNextUpdate} = renderHook(
-        () => useCommentThreadReadAt(5),
+        () => useCommentThreadReads()[5],
         {wrapper}
       );
 
@@ -584,7 +584,7 @@ describe('ReviewStateProvider', () => {
 
     it('updates read timestamp on reads change message', async () => {
       const {result, waitForNextUpdate} = renderHook(
-        () => useCommentThreadReadAt(5),
+        () => useCommentThreadReads()[5],
         {wrapper}
       );
 

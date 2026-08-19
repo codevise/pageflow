@@ -4,6 +4,7 @@ import {useFakeTranslations} from 'pageflow/testHelpers';
 import {loadCommentingExtensions} from 'frontend/commenting';
 import {clearExtensions} from 'frontend/extensionRegistry';
 import contentElementDecoratorStyles from 'frontend/commenting/ContentElementDecorator.module.css';
+import badgeStyles from 'review/Badge.module.css';
 
 import {
   renderEntry as baseRenderEntry,
@@ -34,6 +35,9 @@ export function renderEntry({
     queryNewThreadInput: () => result.queryByPlaceholderText('Add a comment...'),
     getAllCommentBadges: () => result.getAllByRole('status'),
     queryAllCommentBadges: () => result.queryAllByRole('status'),
+    queryAllUnreadCommentBadges: () => result.queryAllByRole('status').filter(
+      badge => badge.classList.contains(badgeStyles.unread)
+    ),
     getCommentFilterButton: resolution =>
       result.getByRole('button', {name: resolution === 'all' ? 'All' : 'Unresolved'}),
     getPreviousCommentButton: () => result.getByRole('button', {name: 'Previous comment'}),

@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import {useI18n} from 'pageflow-scrolled/frontend';
 import {useCommentDraft} from './ReviewStateProvider';
 import {useLocatedCommentThreadsForSubject} from './useLocatedCommentThreadsForSubject';
+import {CommentThreadReadsSnapshot} from './commentThreadReadsSnapshot';
 import {Thread} from './Thread';
 import {NewThreadForm} from './NewThreadForm';
 import {postUpdateThreadMessage} from './postMessage';
@@ -59,58 +60,60 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
   }
 
   return (
-    <div className={styles.container}>
-      {!showNewForm && !hideNewTopicButton &&
-        <button className={classNames(styles.newTopicButton,
-                                      {[styles.reversed]: reversed})}
-                onClick={() => setFormToggled(true)}
-                aria-label={t('pageflow_scrolled.review.new_topic')}>
-          <NewTopicIcon />
-          {t('pageflow_scrolled.review.new_topic')}
-        </button>}
+    <CommentThreadReadsSnapshot>
+      <div className={styles.container}>
+        {!showNewForm && !hideNewTopicButton &&
+          <button className={classNames(styles.newTopicButton,
+                                        {[styles.reversed]: reversed})}
+                  onClick={() => setFormToggled(true)}
+                  aria-label={t('pageflow_scrolled.review.new_topic')}>
+            <NewTopicIcon />
+            {t('pageflow_scrolled.review.new_topic')}
+          </button>}
 
-      {showNewForm &&
-        <NewThreadForm subjectType={subjectType}
-                       subjectId={subjectId}
-                       subjectRange={subjectRange}
-                       onSubmit={() => setFormToggled(false)} />}
+        {showNewForm &&
+          <NewThreadForm subjectType={subjectType}
+                         subjectId={subjectId}
+                         subjectRange={subjectRange}
+                         onSubmit={() => setFormToggled(false)} />}
 
-      {noThreads && !showNewForm &&
-        <p className={styles.blankSlate}>
-          {t('pageflow_scrolled.review.no_threads_yet')}
-        </p>}
+        {noThreads && !showNewForm &&
+          <p className={styles.blankSlate}>
+            {t('pageflow_scrolled.review.no_threads_yet')}
+          </p>}
 
-      {activeThreads.map(thread => (
-        <Thread key={thread.id}
-                thread={thread}
-                collapsed={activeThreads.length > 1 && expandedThreadId !== thread.id}
-                onToggle={() => toggleThread(thread.id)}
-                onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: true})}
-                onClick={onThreadClick && (() => onThreadClick(thread))}
-                highlighted={isHighlighted(thread)}
-                interactive={!restrictInteractionsToHighlighted || isHighlighted(thread)} />
-      ))}
+        {activeThreads.map(thread => (
+          <Thread key={thread.id}
+                  thread={thread}
+                  collapsed={activeThreads.length > 1 && expandedThreadId !== thread.id}
+                  onToggle={() => toggleThread(thread.id)}
+                  onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: true})}
+                  onClick={onThreadClick && (() => onThreadClick(thread))}
+                  highlighted={isHighlighted(thread)}
+                  interactive={!restrictInteractionsToHighlighted || isHighlighted(thread)} />
+        ))}
 
-      {resolvedThreads.length > 0 &&
-        <div className={styles.resolvedSection}>
-          <button className={styles.resolvedPill}
-                  onClick={() => setResolvedToggled(!showResolved)}>
-            {t('pageflow_scrolled.review.resolved_count', {count: resolvedThreads.length})}
-            <ChevronIcon className={classNames(styles.chevron,
-                                               {[styles.chevronExpanded]: showResolved})} />
-          </button>
+        {resolvedThreads.length > 0 &&
+          <div className={styles.resolvedSection}>
+            <button className={styles.resolvedPill}
+                    onClick={() => setResolvedToggled(!showResolved)}>
+              {t('pageflow_scrolled.review.resolved_count', {count: resolvedThreads.length})}
+              <ChevronIcon className={classNames(styles.chevron,
+                                                 {[styles.chevronExpanded]: showResolved})} />
+            </button>
 
-          {showResolved && resolvedThreads.map(thread => (
-            <Thread key={thread.id}
-                    thread={thread}
-                    collapsed={resolvedThreads.length > 1 && expandedThreadId !== thread.id}
-                    onToggle={() => toggleThread(thread.id)}
-                    onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: false})}
-                    onClick={onThreadClick && (() => onThreadClick(thread))}
-                    highlighted={isHighlighted(thread)}
-                    interactive={!restrictInteractionsToHighlighted || isHighlighted(thread)} />
-          ))}
-        </div>}
-    </div>
+            {showResolved && resolvedThreads.map(thread => (
+              <Thread key={thread.id}
+                      thread={thread}
+                      collapsed={resolvedThreads.length > 1 && expandedThreadId !== thread.id}
+                      onToggle={() => toggleThread(thread.id)}
+                      onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: false})}
+                      onClick={onThreadClick && (() => onThreadClick(thread))}
+                      highlighted={isHighlighted(thread)}
+                      interactive={!restrictInteractionsToHighlighted || isHighlighted(thread)} />
+            ))}
+          </div>}
+      </div>
+    </CommentThreadReadsSnapshot>
   );
 }
