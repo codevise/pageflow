@@ -4,10 +4,10 @@
    puck together (the content deforms and cross-fades along with the rect,
    having no counterpart in the puck). The toggle icons (eye and bubble) share
    `comment-toolbar-icon` and morph on their own — naming them lifts them out
-   of the surface snapshot so the icon swap stays crisp. The
-   ::view-transition old/new overrides below stretch the surface snapshots to
-   fill the animating box, so it reshapes into the puck rather than scaling
-   down with a fixed aspect ratio. */
+   of the surface snapshot so the icon swap stays crisp, and the unread dot is
+   named for the same reason. The ::view-transition old/new overrides below
+   stretch the surface snapshots to fill the animating box, so it reshapes into
+   the puck rather than scaling down with a fixed aspect ratio. */
 .toolbar {
   position: fixed;
   bottom: space(3);
@@ -72,6 +72,21 @@
 .puck:focus-visible {
   opacity: 1;
   animation: none;
+}
+
+.unreadDot {
+  position: absolute;
+  top: space(-1);
+  right: space(-1);
+  width: space(2);
+  height: space(2);
+  border-radius: 50%;
+  background: var(--ui-warning-color);
+  box-shadow: 0 0 0 1px var(--ui-on-surface-color-lighter);
+
+  /* Naming the dot lifts it out of the puck's surface snapshot, so it
+     does not deform along with the rect while the toolbar expands. */
+  view-transition-name: comment-toolbar-unread-dot;
 }
 
 @keyframes puckIdle {

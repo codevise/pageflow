@@ -27,8 +27,9 @@ export function renderEntry({
     getCommentToolbar: () => result.getByRole('group', {name: 'Comments'}),
     queryCommentToolbar: () => result.queryByRole('group', {name: 'Comments'}),
     getHideCommentsButton: () => result.getByRole('button', {name: 'Hide comments'}),
-    getShowCommentsButton: () => result.getByRole('button', {name: 'Show comments'}),
-    queryShowCommentsButton: () => result.queryByRole('button', {name: 'Show comments'}),
+    // Matched by prefix since the button also names unread comments.
+    getShowCommentsButton: () => result.getByRole('button', {name: /^Show comments/}),
+    queryShowCommentsButton: () => result.queryByRole('button', {name: /^Show comments/}),
     getAddCommentButton: () => result.getByRole('button', {name: 'Add comment'}),
     getCancelAddCommentButton: () => result.getByRole('button', {name: 'Cancel add comment'}),
     getNewThreadInput: () => result.getByPlaceholderText('Add a comment...'),

@@ -1984,6 +1984,9 @@ de:
       cancel_add_comment: Abbrechen
       hide_comments: Kommentare ausblenden
       show_comments: Kommentare einblenden
+      show_comments_with_unread:
+        one: Kommentare einblenden (1 ungelesener Kommentar)
+        other: Kommentare einblenden (%{count} ungelesene Kommentare)
       comment_toolbar: Kommentare
       filter:
         label: Kommentare filtern
