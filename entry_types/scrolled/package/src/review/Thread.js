@@ -9,6 +9,7 @@ import {useCommentDraft} from './ReviewStateProvider';
 import {useSubjectQuote} from './subjectQuote';
 import {commentsWithOutdatedQuote} from './outdatedQuotes';
 import {useMarkThreadReadWhenSeen} from './markThreadReadWhenSeen';
+import {useUnreadComments} from './unreadComments';
 import {useScrollHighlightedThreadIntoView} from './scrollHighlightedThreadIntoView';
 
 import ChevronIcon from './images/chevron.svg';
@@ -16,7 +17,7 @@ import ResolveIcon from './images/resolve.svg';
 import UnresolveIcon from './images/unresolve.svg';
 import styles from './Thread.module.css';
 
-export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, onClick, highlighted, interactive = true}) {
+export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, onClick, highlighted, showNewMarker, interactive = true}) {
   const {t} = useI18n({locale: 'ui'});
   const firstComment = thread.comments[0];
   const replies = thread.comments.slice(1);
@@ -27,6 +28,14 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
   const collapsed = collapsedProp && !replyDraft;
 
   const repliesCollapsed = collapsed && replies.length > 0;
+
+  const newComments = useUnreadComments(thread);
+  const newReplyCount = useMemo(() => {
+    const ids = new Set(newComments.map(comment => comment.id));
+    return replies.filter(reply => ids.has(reply.id)).length;
+  }, [newComments, replies]);
+
+  const hidesNewReplies = repliesCollapsed && newReplyCount > 0;
 
   // Kept here rather than per comment so that a thread never shows two
   // textareas at once: neither two comments being edited, nor an edit next
@@ -69,6 +78,14 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
          })}
          onClick={onClick}
          aria-current={highlighted ? 'true' : undefined}>
+      {/* A lone thread needs no marker of its own: the badge that opened
+          the list already says the same thing right next to it. */}
+      {showNewMarker && newComments.length > 0 &&
+        <span role="img"
+              className={styles.newDot}
+              aria-label={t('pageflow_scrolled.review.unread_comment_count',
+                            {count: newComments.length})} />}
+
       {replies.length > 0 &&
         <button className={styles.chevronButton}
                 onClick={onToggle}
@@ -88,7 +105,13 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
 
       {repliesCollapsed &&
         <button className={styles.expandButton} onClick={onToggle}>
-          {t('pageflow_scrolled.review.reply_count', {count: replies.length})}
+          <span className={styles.replyCount}>
+            {t('pageflow_scrolled.review.reply_count', {count: replies.length})}
+            {hidesNewReplies &&
+              <span className={styles.newReplyCount}>
+                {t('pageflow_scrolled.review.new_reply_count', {count: newReplyCount})}
+              </span>}
+          </span>
           <AvatarStack names={replies.map(c => c.creatorName)} />
         </button>}
 

@@ -86,6 +86,7 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
           <Thread key={thread.id}
                   thread={thread}
                   collapsed={activeThreads.length > 1 && expandedThreadId !== thread.id}
+                  showNewMarker={activeThreads.length > 1}
                   onToggle={() => toggleThread(thread.id)}
                   onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: true})}
                   onClick={onThreadClick && (() => onThreadClick(thread))}
@@ -106,6 +107,7 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
               <Thread key={thread.id}
                       thread={thread}
                       collapsed={resolvedThreads.length > 1 && expandedThreadId !== thread.id}
+                      showNewMarker={resolvedThreads.length > 1}
                       onToggle={() => toggleThread(thread.id)}
                       onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: false})}
                       onClick={onThreadClick && (() => onThreadClick(thread))}

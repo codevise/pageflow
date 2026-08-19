@@ -29,6 +29,37 @@
   background: var(--review-resolved-thread-background, var(--ui-surface-color));
 }
 
+/* Locates the new thread among several. Matches the badge dot, which
+   carries the same meaning one level up. Straddles the corner so it
+   stays clear of the chevron button inside it. */
+.newDot {
+  position: absolute;
+  top: space(-1);
+  right: space(-1);
+  width: space(2);
+  height: space(2);
+  border-radius: 50%;
+  background: var(--ui-warning-color);
+  box-shadow: 0 0 0 1px var(--ui-on-surface-color-lighter);
+}
+
+.replyCount {
+  display: flex;
+  align-items: center;
+  gap: space(2);
+}
+
+.newReplyCount::before {
+  content: '·';
+  margin-right: space(2);
+  color: var(--ui-on-surface-color-light);
+}
+
+.newReplyCount {
+  color: var(--ui-warning-color);
+  font-weight: 600;
+}
+
 .deletedHint {
   margin: 0;
   font-size: space(3);
@@ -69,14 +100,14 @@
   padding: 0 0 0 space(8);
   font: inherit;
   font-weight: 500;
-  color: var(--ui-primary-color);
+  color: var(--ui-on-surface-color-light);
   background: none;
   border: none;
   cursor: pointer;
 }
 
 .expandButton:hover {
-  text-decoration: underline;
+  color: var(--ui-primary-color);
 }
 
 .resolveRow {
