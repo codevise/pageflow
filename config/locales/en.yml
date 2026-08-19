@@ -827,6 +827,17 @@ en:
         site_defaults_inline_help: The following settings will be used as defaults for new stories in this account. Changes do not affect existing stories.
       entries:
         add_folder: Add folder
+        comments:
+          new_reply_count:
+            one: 1 new reply
+            other: "%{count} new replies"
+          new_topic_count:
+            one: 1 new topic
+            other: "%{count} new topics"
+          tooltip: "Comments: %{summary}"
+          topic_count:
+            one: 1 unresolved topic
+            other: "%{count} unresolved topics"
         confirm_depublish: Depublish this story?
         confirm_duplicate: Duplicate this story?
         confirm_restore: Restore story to the selected version? A snapshot will be created, so that you can roll back later.

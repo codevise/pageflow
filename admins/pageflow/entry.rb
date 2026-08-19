@@ -9,7 +9,8 @@ module Pageflow
         entry_publication_state_indicator(entry)
       end
       column :title, sortable: 'title' do |entry|
-        link_to(entry.title, admin_entry_path(entry))
+        safe_join([link_to(entry.title, admin_entry_path(entry)),
+                   entry_comments_indicator(entry)].compact)
       end
       column I18n.t('pageflow.admin.entries.members'), class: 'members' do |entry|
         entry_user_badge_list(entry)
