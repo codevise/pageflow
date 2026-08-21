@@ -64,6 +64,17 @@ export const FileFoldersCollection = Backbone.Collection.extend({
     });
   },
 
+  // The server refuses to delete a folder which still holds files or
+  // subfolders, empty subfolders included.
+  isEmptyFolder: function(folder, files) {
+    var permaId = folder.get('perma_id');
+
+    return !this.childrenOf(folder).length &&
+           !files.some(function(file) {
+             return file.get('folder_perma_id') === permaId;
+           });
+  },
+
   descendantPermaIdsOf: function(folder) {
     return this.collectDescendantPermaIds(folder, []);
   },

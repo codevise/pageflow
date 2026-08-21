@@ -132,16 +132,10 @@ export const FolderItemView = Marionette.ItemView.extend({
     this.menuItems.findWhere({name: 'move'}).set('hidden', !movable);
   },
 
-  // The server refuses to delete a folder which still holds files or
-  // subfolders. Files hidden by the file type filter cannot make one
-  // look empty, since such a folder is not listed to begin with.
+  // Files hidden by the file type filter cannot make a folder look
+  // empty, since such a folder is not listed to begin with.
   updateDestroyItem: function() {
-    var permaId = this.model.get('perma_id');
-
-    var empty = !this.options.fileFolders.childrenOf(this.model).length &&
-                !this.options.files.some(function(file) {
-                  return file.get('folder_perma_id') === permaId;
-                });
+    var empty = this.options.fileFolders.isEmptyFolder(this.model, this.options.files);
 
     this.menuItems.findWhere({name: 'destroy'}).set('hidden', !empty);
   },

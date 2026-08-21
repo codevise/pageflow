@@ -1,3 +1,5 @@
+import Backbone from 'backbone';
+
 import {FileFoldersCollection} from 'pageflow/editor';
 
 import * as support from '$support';
@@ -156,6 +158,32 @@ describe('FileFoldersCollection', () => {
       const ancestors = fileFolders.ancestorsOf(fileFolders.byPermaId(1));
 
       expect(ancestors.map(folder => folder.get('name'))).toEqual(['Interviews', 'Raw']);
+    });
+  });
+
+  describe('#isEmptyFolder', () => {
+    it('returns true for folder without files or subfolders', () => {
+      const fileFolders = collection([{perma_id: 1, name: 'Interviews'}]);
+      const files = new Backbone.Collection([{folder_perma_id: 2}]);
+
+      expect(fileFolders.isEmptyFolder(fileFolders.byPermaId(1), files)).toBe(true);
+    });
+
+    it('returns false for folder which holds a file', () => {
+      const fileFolders = collection([{perma_id: 1, name: 'Interviews'}]);
+      const files = new Backbone.Collection([{folder_perma_id: 1}]);
+
+      expect(fileFolders.isEmptyFolder(fileFolders.byPermaId(1), files)).toBe(false);
+    });
+
+    it('returns false for folder which holds an empty subfolder', () => {
+      const fileFolders = collection([
+        {perma_id: 1, name: 'Interviews'},
+        {perma_id: 2, name: 'Raw', parent_folder_perma_id: 1}
+      ]);
+      const files = new Backbone.Collection([]);
+
+      expect(fileFolders.isEmptyFolder(fileFolders.byPermaId(1), files)).toBe(false);
     });
   });
 
