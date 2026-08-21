@@ -21,6 +21,10 @@ export async function request({url, method, payload}) {
     throw new Error(`${response.status} ${response.statusText}`);
   }
 
+  if (response.status === 204) {
+    return null;
+  }
+
   return response.json();
 }
 

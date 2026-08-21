@@ -1812,6 +1812,9 @@ en:
       cancel_add_comment: Cancel
       hide_comments: Hide comments
       show_comments: Show comments
+      show_comments_with_unread:
+        one: Show comments (1 unread comment)
+        other: Show comments (%{count} unread comments)
       comment_toolbar: Comments
       filter:
         label: Filter comments
@@ -1823,6 +1826,13 @@ en:
         zero: No comments
         one: 1 comment
         other: '%{count} comments'
+      unread_comment_count:
+        one: 1 unread comment
+        other: '%{count} unread comments'
+      new_reply_count:
+        one: 1 new
+        other: '%{count} new'
+      new_replies: New replies
       select_content_element: Select to comment
       select_section: Select section to comment
       select_text_to_comment: Select text to comment

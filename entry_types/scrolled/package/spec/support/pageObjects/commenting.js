@@ -4,6 +4,7 @@ import {useFakeTranslations} from 'pageflow/testHelpers';
 import {loadCommentingExtensions} from 'frontend/commenting';
 import {clearExtensions} from 'frontend/extensionRegistry';
 import contentElementDecoratorStyles from 'frontend/commenting/ContentElementDecorator.module.css';
+import badgeStyles from 'review/Badge.module.css';
 
 import {
   renderEntry as baseRenderEntry,
@@ -26,14 +27,18 @@ export function renderEntry({
     getCommentToolbar: () => result.getByRole('group', {name: 'Comments'}),
     queryCommentToolbar: () => result.queryByRole('group', {name: 'Comments'}),
     getHideCommentsButton: () => result.getByRole('button', {name: 'Hide comments'}),
-    getShowCommentsButton: () => result.getByRole('button', {name: 'Show comments'}),
-    queryShowCommentsButton: () => result.queryByRole('button', {name: 'Show comments'}),
+    // Matched by prefix since the button also names unread comments.
+    getShowCommentsButton: () => result.getByRole('button', {name: /^Show comments/}),
+    queryShowCommentsButton: () => result.queryByRole('button', {name: /^Show comments/}),
     getAddCommentButton: () => result.getByRole('button', {name: 'Add comment'}),
     getCancelAddCommentButton: () => result.getByRole('button', {name: 'Cancel add comment'}),
     getNewThreadInput: () => result.getByPlaceholderText('Add a comment...'),
     queryNewThreadInput: () => result.queryByPlaceholderText('Add a comment...'),
     getAllCommentBadges: () => result.getAllByRole('status'),
     queryAllCommentBadges: () => result.queryAllByRole('status'),
+    queryAllUnreadCommentBadges: () => result.queryAllByRole('status').filter(
+      badge => badge.classList.contains(badgeStyles.unread)
+    ),
     getCommentFilterButton: resolution =>
       result.getByRole('button', {name: resolution === 'all' ? 'All' : 'Unresolved'}),
     getPreviousCommentButton: () => result.getByRole('button', {name: 'Previous comment'}),

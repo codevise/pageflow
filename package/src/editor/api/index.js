@@ -190,6 +190,8 @@ export const EditorApi = Object.extend(
    * - translationKey: for the label
    * - path: route to link to
    * - click: click handler
+   * - indicatorAttribute: name of an entry attribute. While it is
+   *   truthy, the item displays an indicator dot.
    */
   registerMainMenuItem: function(options) {
     this.mainMenuItems.push(options);

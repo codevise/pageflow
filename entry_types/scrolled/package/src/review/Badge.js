@@ -4,8 +4,10 @@ import classNames from 'classnames';
 import CommentIcon from './images/comment.svg';
 import styles from './Badge.module.css';
 
-export const Badge = forwardRef(function Badge({counter, mode, resolved, onClick}, ref) {
-  const variant = resolveVariant(mode, counter > 0);
+export const Badge = forwardRef(function Badge({
+  counter, mode, resolved, unread, label, onClick
+}, ref) {
+  const variant = resolveVariant(mode, counter > 0, unread);
 
   if (!variant) {
     return null;
@@ -14,8 +16,10 @@ export const Badge = forwardRef(function Badge({counter, mode, resolved, onClick
   return (
     <button ref={ref}
             role="status"
+            aria-label={label}
             className={classNames(styles.badge, styles[variant],
-                                  {[styles.resolved]: resolved})}
+                                  {[styles.resolved]: resolved,
+                                   [styles.unread]: unread})}
             onClick={onClick}>
       {variant !== 'dot' && <CommentIcon className={styles.icon} />}
       {(variant === 'active' || variant === 'expanded') && counter > 1 ? counter : null}
@@ -23,14 +27,16 @@ export const Badge = forwardRef(function Badge({counter, mode, resolved, onClick
   );
 });
 
-function resolveVariant(mode, hasThreads) {
+function resolveVariant(mode, hasThreads, unread) {
   switch (mode) {
   case 'active':
     return 'active';
   case 'icon':
     return hasThreads ? 'expanded' : 'iconOnly';
   case 'dot':
-    return hasThreads ? 'dot' : null;
+    // Collapsing to a dot would leave the unread dot sitting on a dot.
+    // Unseen comments are worth the space of the full badge anyway.
+    return hasThreads ? (unread ? 'expanded' : 'dot') : null;
   default:
     return hasThreads ? 'expanded' : null;
   }

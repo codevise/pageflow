@@ -3,9 +3,12 @@ export {ReviewStateProvider, useCommentThreads, useCommentThread} from './Review
 export {LocatedCommentThreadsProvider, useLocatedCommentThreads} from './useLocatedCommentThreads';
 export {useLocatedCommentThreadsForSubject} from './useLocatedCommentThreadsForSubject';
 export {ReviewMessageHandler} from './ReviewMessageHandler';
+export {watchUnreadComments} from './watchUnreadComments';
+export {useUnreadCommentCount} from './unreadComments';
 export {ThreadsBadge} from './ThreadsBadge';
 export {Badge} from './Badge';
 export {ThreadList} from './ThreadList';
+export {CommentThreadReadsSnapshot} from './commentThreadReadsSnapshot';
 export {Thread} from './Thread';
 export {ScrollHighlightedThreadIntoViewProvider} from './scrollHighlightedThreadIntoView';
 export {NewThreadForm} from './NewThreadForm';

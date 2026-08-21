@@ -1,0 +1,45 @@
+$pageflow-entry-comments-indicator-color: #8a5a00 !default;
+
+$pageflow-entry-comments-indicator-background-color: #fdf1dc !default;
+
+$pageflow-entry-comments-indicator-dot-color: #ff7400 !default;
+
+$pageflow-entry-comments-indicator-icon-directory: "pageflow/admin/icons" !default;
+
+.entry_comments_indicator {
+  $dir: $pageflow-entry-comments-indicator-icon-directory;
+
+  position: relative;
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 6px 1px 22px;
+  vertical-align: middle;
+  border-radius: 10px;
+  background: $pageflow-entry-comments-indicator-background-color
+              image-url("#{$dir}/comment.svg") no-repeat 5px center / 13px 13px;
+  color: $pageflow-entry-comments-indicator-color;
+  font-size: 0.7rem;
+  line-height: 1.6;
+
+  // The tooltip claims both pseudo elements of the indicator, so the
+  // dot has to be an element of its own.
+  //
+  // Straddles the corner like the unread dot inside the editor, so both
+  // read as the same signal.
+  .unread_dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: $pageflow-entry-comments-indicator-dot-color;
+  }
+
+  // The bubble is placed by its static position, which on an inline
+  // element sits at the far end of the content and thus away from the
+  // arrow anchored to the left.
+  &::after {
+    left: 0;
+  }
+}

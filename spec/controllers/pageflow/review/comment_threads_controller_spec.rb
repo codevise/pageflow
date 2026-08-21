@@ -113,6 +113,53 @@ module Pageflow
         end
       end
 
+      it 'includes the unread baseline of the current user' do
+        unread_comments_since_at = 2.hours.ago
+        user = create(:user, unread_comments_since_at:)
+        entry = create(:entry, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        baseline = JSON.parse(response.body)['currentUser']['unreadCommentsSinceAt']
+
+        expect(Time.zone.parse(baseline)).to eq(unread_comments_since_at)
+      end
+
+      it 'includes read timestamps of current user by thread perma id' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft, creator: user)
+        read_at = 2.hours.ago
+        create(:comment_thread_read,
+               entry:,
+               user:,
+               comment_thread_perma_id: thread.perma_id,
+               read_at:)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        reads = JSON.parse(response.body)['commentThreadReads']
+
+        expect(Time.zone.parse(reads[thread.perma_id.to_s])).to eq(read_at)
+      end
+
+      it 'does not include read timestamps of other users' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft, creator: user)
+        create(:comment_thread_read,
+               entry:,
+               user: create(:user),
+               comment_thread_perma_id: thread.perma_id)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(JSON.parse(response.body)['commentThreadReads']).to eq({})
+      end
+
       it 'requires user to be signed in' do
         entry = create(:entry)
 

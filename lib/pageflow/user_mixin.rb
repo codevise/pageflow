@@ -23,10 +23,22 @@ module Pageflow
 
       has_many :revisions, class_name: 'Pageflow::Revision', foreign_key: :creator_id
 
+      has_many :comment_thread_reads,
+               dependent: :destroy,
+               class_name: 'Pageflow::CommentThreadRead'
+
       validates :first_name, :last_name, presence: true
       validates_inclusion_of :locale, in: Pageflow.config.available_locales.map(&:to_s)
 
       scope :admins, -> { where(admin: true) }
+
+      before_create :ensure_unread_comments_since_at
+    end
+
+    # Comments predating a user are not new to them. Without a baseline,
+    # joining would mean facing every comment ever written as unread.
+    def ensure_unread_comments_since_at
+      self.unread_comments_since_at ||= Time.current
     end
 
     def admin?

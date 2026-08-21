@@ -1984,6 +1984,9 @@ de:
       cancel_add_comment: Abbrechen
       hide_comments: Kommentare ausblenden
       show_comments: Kommentare einblenden
+      show_comments_with_unread:
+        one: Kommentare einblenden (1 ungelesener Kommentar)
+        other: Kommentare einblenden (%{count} ungelesene Kommentare)
       comment_toolbar: Kommentare
       filter:
         label: Kommentare filtern
@@ -1995,6 +1998,13 @@ de:
         zero: Keine Kommentare
         one: 1 Kommentar
         other: '%{count} Kommentare'
+      unread_comment_count:
+        one: 1 ungelesener Kommentar
+        other: '%{count} ungelesene Kommentare'
+      new_reply_count:
+        one: 1 neu
+        other: '%{count} neu'
+      new_replies: Neue Antworten
       select_content_element: Zum Kommentieren auswählen
       select_section: Abschnitt zum Kommentieren auswählen
       select_text_to_comment: Text zum Kommentieren auswählen

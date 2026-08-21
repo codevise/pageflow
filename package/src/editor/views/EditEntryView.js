@@ -98,7 +98,22 @@ export const EditEntryView = Marionette.Layout.extend({
         $(link).click(options.click);
       }
 
+      if (options.indicatorAttribute) {
+        view._bindMenuItemIndicator(link, options.indicatorAttribute);
+      }
+
       view.ui.menu.append(item);
     });
+  },
+
+  _bindMenuItemIndicator: function(link, attribute) {
+    var view = this;
+
+    var update = function() {
+      link.toggleClass('indicator', !!view.model.get(attribute));
+    };
+
+    this.listenTo(this.model, 'change:' + attribute, update);
+    update();
   }
 });

@@ -7,6 +7,7 @@ import {useSectionPermaIdOfSubject} from 'pageflow-scrolled/entryState';
 import {
   postCreateCommentMessage,
   postCreateCommentThreadMessage,
+  postMarkThreadsReadMessage,
   postSetCommentDraftMessage,
   postUpdateCommentMessage
 } from './postMessage';
@@ -14,6 +15,11 @@ import {useSubjectQuote} from './subjectQuote';
 
 const ReviewStateContext = createContext(null);
 const CommentDraftsContext = createContext(null);
+const CommentThreadReadsContext = createContext(null);
+
+// Kept stable so consumers outside the provider do not see a new object
+// on every render.
+const emptyCommentThreadReads = {};
 
 export function ReviewStateProvider({initialState, initialDrafts, setDraft, children}) {
   const [state, dispatch] = useReducer(
@@ -36,6 +42,9 @@ export function ReviewStateProvider({initialState, initialDrafts, setDraft, chil
       }
       else if (type === 'REVIEW_STATE_DRAFTS_CHANGE') {
         dispatch({type: 'SET_DRAFTS', payload});
+      }
+      else if (type === 'REVIEW_STATE_READS_CHANGE') {
+        dispatch({type: 'SET_READS', payload});
       }
     }
 
@@ -81,10 +90,27 @@ export function ReviewStateProvider({initialState, initialDrafts, setDraft, chil
     createComment
   }), [state.drafts, setDraft, createThread, createComment]);
 
+  // Kept stable across read state changes: consumers wait for a thread
+  // to stay visible before marking it read, which a changing callback
+  // would start over.
+  const markThreadRead = useCallback(
+    permaId => postMarkThreadsReadMessage([permaId]),
+    []
+  );
+
+  // Read marks arrive whenever a thread is displayed, so they get their
+  // own context to keep thread lists from rerendering along with them.
+  const readsValue = useMemo(() => ({
+    commentThreadReads: state.commentThreadReads,
+    markThreadRead
+  }), [state.commentThreadReads, markThreadRead]);
+
   return (
     <ReviewStateContext.Provider value={value}>
       <CommentDraftsContext.Provider value={draftsValue}>
-        {children}
+        <CommentThreadReadsContext.Provider value={readsValue}>
+          {children}
+        </CommentThreadReadsContext.Provider>
       </CommentDraftsContext.Provider>
     </ReviewStateContext.Provider>
   );
@@ -141,6 +167,16 @@ export function useCurrentUser() {
   return context ? context.currentUser : null;
 }
 
+export function useCommentThreadReads() {
+  const context = useContext(CommentThreadReadsContext);
+  return context ? context.commentThreadReads : emptyCommentThreadReads;
+}
+
+export function useMarkThreadRead() {
+  const context = useContext(CommentThreadReadsContext);
+  return context?.markThreadRead;
+}
+
 export function useCommentThread(threadId) {
   const context = useContext(ReviewStateContext);
   return context?.commentThreads.find(t => t.id === threadId);
@@ -172,7 +208,12 @@ export function matchesResolution(thread, resolution) {
 }
 
 function initState({initialState, initialDrafts}) {
-  const empty = {currentUser: null, threads: {}, drafts: initialDrafts || {}};
+  const empty = {
+    currentUser: null,
+    threads: {},
+    drafts: initialDrafts || {},
+    commentThreadReads: {}
+  };
 
   if (initialState) {
     return reducer(empty, {type: 'RESET', payload: initialState});
@@ -193,9 +234,15 @@ function reducer(state, action) {
     return {
       ...state,
       currentUser: action.payload.currentUser,
-      threads
+      threads,
+      commentThreadReads: action.payload.commentThreadReads || {}
     };
   }
+  case 'SET_READS':
+    return {
+      ...state,
+      commentThreadReads: action.payload
+    };
   case 'SET_DRAFTS':
     return {
       ...state,

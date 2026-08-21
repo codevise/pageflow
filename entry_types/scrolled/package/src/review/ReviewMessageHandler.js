@@ -1,7 +1,8 @@
 import {
   postReviewStateResetMessage,
   postReviewStateThreadChangeMessage,
-  postReviewStateDraftsChangeMessage
+  postReviewStateDraftsChangeMessage,
+  postReviewStateReadsChangeMessage
 } from './postMessage';
 
 export const ReviewMessageHandler = {
@@ -27,6 +28,9 @@ export const ReviewMessageHandler = {
       else if (type === 'SET_COMMENT_DRAFT') {
         session.setDraft(payload);
       }
+      else if (type === 'MARK_THREADS_READ') {
+        session.markThreadsRead(payload.permaIds);
+      }
     }
 
     function handleReset(state) {
@@ -41,10 +45,15 @@ export const ReviewMessageHandler = {
       postReviewStateDraftsChangeMessage(targetWindow, drafts);
     }
 
+    function handleReadsChange(reads) {
+      postReviewStateReadsChangeMessage(targetWindow, reads);
+    }
+
     window.addEventListener('message', handleMessage);
     session.on('reset', handleReset);
     session.on('change:thread', handleThreadChange);
     session.on('change:drafts', handleDraftsChange);
+    session.on('change:reads', handleReadsChange);
 
     return {
       dispose() {
@@ -52,6 +61,7 @@ export const ReviewMessageHandler = {
         session.off('reset', handleReset);
         session.off('change:thread', handleThreadChange);
         session.off('change:drafts', handleDraftsChange);
+        session.off('change:reads', handleReadsChange);
       }
     };
   }

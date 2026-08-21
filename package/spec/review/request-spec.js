@@ -23,6 +23,18 @@ describe('request', () => {
     expect(result).toEqual({some: 'data'});
   });
 
+  it('returns null for responses without content', async () => {
+    window.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 204,
+      json: () => Promise.reject(new Error('Unexpected end of JSON input'))
+    });
+
+    const result = await request({url: '/some/path', method: 'POST', payload: {}});
+
+    expect(result).toBeNull();
+  });
+
   it('sends JSON body with CSRF token for POST requests', async () => {
     window.fetch = jest.fn().mockResolvedValue({
       ok: true,
