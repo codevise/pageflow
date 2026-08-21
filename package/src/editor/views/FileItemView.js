@@ -303,7 +303,7 @@ export const FileItemView = Marionette.ItemView.extend({
   },
 
   destroy: function() {
-    if (confirm("Datei wirklich wirklich löschen?")) {
+    if (window.confirm(I18n.t('pageflow.editor.views.file_item_view.confirm_destroy'))) {
       this.model.destroy();
     }
   },

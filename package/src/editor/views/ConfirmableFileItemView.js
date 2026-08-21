@@ -1,4 +1,5 @@
 import Marionette from 'backbone.marionette';
+import I18n from 'i18n-js';
 
 import template from '../templates/confirmableFileItem.jst';
 
@@ -31,7 +32,7 @@ export const ConfirmableFileItemView = Marionette.ItemView.extend({
   },
 
   destroy: function() {
-    if (confirm("Datei wirklich wirklich löschen?")) {
+    if (window.confirm(I18n.t('pageflow.editor.views.confirmable_file_item_view.confirm_destroy'))) {
       this.model.destroy();
     }
   },

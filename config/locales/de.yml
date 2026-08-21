@@ -1535,6 +1535,8 @@ de:
         chapter_item_view:
           chapter: Kapitel
           unnamed: "(Unbenannt)"
+        confirmable_file_item_view:
+          confirm_destroy: Datei wirklich löschen?
         edit_chapter_view:
           confirm_destroy: |-
             Kapitel einschließlich ALLER enthaltener Seiten wirklich löschen?
@@ -1565,6 +1567,8 @@ de:
           show_editor: Editorleiste einblenden
         entry_preview_view:
           scroll_hint: Scrollen, um weiterzulesen
+        file_item_view:
+          confirm_destroy: Datei wirklich löschen?
         file_meta_data_item_value_view:
           blank: "-"
         file_preview_progress_bar_view:
