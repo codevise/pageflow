@@ -1582,6 +1582,10 @@ en:
           actions: 'File list actions'
           any_file_type: 'a file'
           cancel_selection: 'Cancel selection'
+          confirm_destroy_selection:
+            one: 'Really delete 1 item?'
+            other: 'Really delete %{count} items?'
+          destroy_selection: 'Delete selection'
           end_selection: 'End selection'
           move_selection: 'Move...'
           reset_filter: 'Reset filter'

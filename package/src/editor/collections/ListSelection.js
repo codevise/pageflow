@@ -34,5 +34,13 @@ export const ListSelection = Backbone.Collection.extend({
 
   includes: function(item) {
     return !!this.get(item);
+  },
+
+  // Iterating a copy since destroying an item takes it out of the list,
+  // which drops it from the selection and would skip the item behind it.
+  destroyAll: function() {
+    this.models.slice().forEach(function(item) {
+      item.destroy();
+    });
   }
 });

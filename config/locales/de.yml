@@ -1590,6 +1590,10 @@ de:
           actions: 'Aktionen für die Dateiliste'
           any_file_type: 'Datei'
           cancel_selection: 'Auswahl abbrechen'
+          confirm_destroy_selection:
+            one: '1 Element wirklich löschen?'
+            other: '%{count} Elemente wirklich löschen?'
+          destroy_selection: 'Auswahl löschen'
           end_selection: 'Auswahl beenden'
           move_selection: 'Verschieben...'
           reset_filter: 'Filter zurücksetzen'

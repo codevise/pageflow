@@ -77,6 +77,11 @@ describe('FilesView', () => {
     'pageflow.editor.views.filtered_files_view.actions': 'File list actions',
     'pageflow.editor.views.filtered_files_view.select_items': 'Select files and folders',
     'pageflow.editor.views.filtered_files_view.end_selection': 'End selection',
+    'pageflow.editor.views.filtered_files_view.destroy_selection': 'Delete selection',
+    'pageflow.editor.views.filtered_files_view.confirm_destroy_selection': {
+      one: 'Really delete 1 item?',
+      other: 'Really delete %{count} items?'
+    },
     'pageflow.editor.views.filtered_files_view.selected_items': {
       zero: 'No items selected',
       one: '1 item selected',
@@ -1322,6 +1327,10 @@ describe('FilesView', () => {
         return view.el.querySelector('.filtered_files-selection_bar');
       }
 
+      function destroyButton(queries) {
+        return queries.getByRole('button', {name: 'Delete selection'});
+      }
+
       it('does not show check boxes before selecting has started', () => {
         const view = new FilesView({model: entryWithFolders()});
 
@@ -1446,6 +1455,62 @@ describe('FilesView', () => {
         const {queryByRole} = render(view);
 
         expect(queryByRole('checkbox', {name: /^Interviews/})).toBeNull();
+      });
+
+      it('deletes checked folders and files at once', async () => {
+        const entry = entryWithFolders();
+        const view = new FilesView({model: entry});
+        const user = userEvent.setup();
+        window.confirm = jest.fn(() => true);
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await check(user, queries, /^Landscapes/);
+        await check(user, queries, 'unfiled.png');
+        await user.click(destroyButton(queries));
+
+        expect(window.confirm).toHaveBeenCalledWith('Really delete 2 items?');
+        expect(testContext.requests.map(request => request.url))
+          .toEqual(['/editor/entries/1/file_folders/12',
+                    '/editor/entries/1/files/image_files/1']);
+      });
+
+      it('is not offered for a folder which still holds files', async () => {
+        const view = new FilesView({model: entryWithFolders(), folderPermaId: '1'});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await check(user, queries, /^Raw/);
+
+        expect(destroyButton(queries)).toBeDisabled();
+      });
+
+      it('is not offered for a folder which still holds subfolders', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await check(user, queries, /^Interviews/);
+
+        expect(destroyButton(queries)).toBeDisabled();
+      });
+
+      it('is offered again once the non-empty folder is unchecked', async () => {
+        const view = new FilesView({model: entryWithFolders()});
+        const user = userEvent.setup();
+
+        const queries = render(view);
+        await startSelecting(user, queries);
+        await check(user, queries, /^Landscapes/);
+        await check(user, queries, /^Interviews/);
+
+        expect(destroyButton(queries)).toBeDisabled();
+
+        await check(user, queries, /^Interviews/);
+
+        expect(destroyButton(queries)).toBeEnabled();
       });
     });
 
