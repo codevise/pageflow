@@ -7,7 +7,11 @@
   background: var(--ui-surface-color);
   border-radius: rounded(lg);
   box-shadow: var(--review-thread-box-shadow, var(--ui-box-shadow));
-  border: var(--review-thread-border, solid 1px var(--ui-surface-color));
+  /* The folded seam is drawn in this too. Hosts restyling the border set
+     the color here as well, since a shorthand leaves nothing to read it
+     back out of. */
+  --thread-border-color: var(--review-thread-border-color, var(--ui-surface-color));
+  border: var(--review-thread-border, solid 1px var(--thread-border-color));
   scroll-margin-top: space(11);
 }
 
@@ -16,11 +20,13 @@
 }
 
 .clickable:not(.highlighted):hover {
-  border-color: var(--review-thread-hover-border-color, var(--ui-accent-color-light));
+  --thread-border-color: var(--review-thread-hover-border-color, var(--ui-accent-color-light));
+  border-color: var(--thread-border-color);
 }
 
 .highlighted {
-  --review-thread-border: solid 1px var(--ui-accent-color);
+  --thread-border-color: var(--ui-accent-color);
+  --review-thread-border: solid 1px var(--thread-border-color);
   --review-thread-box-shadow: 0 0 0 space(1) var(--ui-accent-color-lighter);
 }
 
@@ -192,4 +198,40 @@
   color: var(--ui-on-surface-color);
 }
 
+/* Drawn as a mask so the zig-zag takes the surrounding color, which a
+   data URI could not read from a custom property. */
+.foldedReplies {
+  display: flex;
+  align-items: center;
+  gap: space(2);
+  margin: space(1) space(-3);
+  font-size: space(3);
+  color: var(--ui-on-surface-color-light);
+}
 
+.foldedReplies::before,
+.foldedReplies::after {
+  content: '';
+  flex: 1;
+  height: 10px;
+  background: var(--thread-border-color);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='M0 8L4 2L8 8L12 2L16 8' fill='none' stroke='%23000' stroke-width='1'/%3E%3C/svg%3E");
+  mask-size: 16px 10px;
+  mask-repeat: repeat-x;
+  mask-position: center;
+}
+
+.foldedRepliesButton {
+  composes: foldedReplies;
+  font: inherit;
+  font-size: space(3);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.foldedRepliesButton:hover,
+.foldedRepliesButton:focus-visible {
+  color: var(--ui-primary-color);
+}

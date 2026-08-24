@@ -2029,5 +2029,8 @@ de:
       reply_count:
         one: 1 Antwort
         other: '%{count} Antworten'
+      earlier_reply_count:
+        one: 1 weitere Antwort
+        other: '%{count} weitere Antworten'
       no_threads_yet: Noch keine Kommentare
       refers_to_deleted_element: Bezieht sich auf ein gelöschtes Element

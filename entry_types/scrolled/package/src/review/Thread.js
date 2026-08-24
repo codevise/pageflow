@@ -19,7 +19,7 @@ import ResolveIcon from './images/resolve.svg';
 import UnresolveIcon from './images/unresolve.svg';
 import styles from './Thread.module.css';
 
-export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, onClick, highlighted, showUnreadMarker, interactive = true}) {
+export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onExpandReplies, onToggle, onResolve, onClick, highlighted, showUnreadMarker, interactive = true}) {
   const {t} = useI18n({locale: 'ui'});
   const firstComment = thread.comments[0];
   const replies = thread.comments.slice(1);
@@ -30,6 +30,17 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
   const collapsed = collapsedProp && !replyDraft;
 
   const repliesCollapsed = collapsed && replies.length > 0;
+
+  // A partial view is not a read thread: read state is one timestamp per
+  // thread, so marking it read would cover comments never shown. A
+  // collapsed thread has nothing folded - hiding both the fold and the
+  // count would leave no way back into it.
+  const foldedReplyCount = visibleReplyCount === undefined || repliesCollapsed ?
+                           0 :
+                           Math.max(replies.length - visibleReplyCount, 0);
+  const shownReplies = foldedReplyCount > 0 ?
+                       replies.slice(foldedReplyCount) :
+                       replies;
 
   const unreadComments = useUnreadComments(thread);
   const unreadReplyCount = useMemo(() => {
@@ -75,7 +86,7 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
   const ref = useRef();
   const scrollHighlightedIntoView = useScrollHighlightedThreadIntoView();
 
-  useMarkThreadReadWhenSeen({thread, ref, enabled: !repliesCollapsed});
+  useMarkThreadReadWhenSeen({thread, ref, enabled: !repliesCollapsed && !foldedReplyCount});
 
   useEffect(() => {
     if (scrollHighlightedIntoView && highlighted && ref.current) {
@@ -109,7 +120,7 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
                  showQuote={outdatedQuotes.has(firstComment.id)}
                  {...editProps(firstComment)} />}
 
-      {replies.length > 0 &&
+      {replies.length > 0 && !foldedReplyCount &&
         <button className={styles.repliesToggle}
                 onClick={onToggle}
                 aria-expanded={!collapsed}>
@@ -129,7 +140,10 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
           {repliesCollapsed && <AvatarStack names={replies.map(c => c.creatorName)} />}
         </button>}
 
-      {!collapsed && replies.map(comment => (
+      {!collapsed && foldedReplyCount > 0 &&
+        <FoldedReplies count={foldedReplyCount} onExpand={onExpandReplies} />}
+
+      {!collapsed && shownReplies.map(comment => (
         <React.Fragment key={comment.id}>
           {comment.id === firstUnreadReplyId &&
             <div className={styles.unreadRepliesDivider}>
@@ -141,7 +155,7 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
         </React.Fragment>
       ))}
 
-      {interactive && !thread.resolvedAt && !repliesCollapsed && !editing &&
+      {interactive && !thread.resolvedAt && !repliesCollapsed && !foldedReplyCount && !editing &&
         <ReplyForm threadId={thread.id}
                    subjectType={thread.subjectType}
                    subjectId={thread.subjectId}
@@ -190,5 +204,20 @@ function Resolution({thread, onUnresolve}) {
                               label: t('pageflow_scrolled.review.unresolve'),
                               onSelect: onUnresolve}]} />}
     </>
+  );
+}
+
+function FoldedReplies({count, onExpand}) {
+  const {t} = useI18n({locale: 'ui'});
+  const label = t('pageflow_scrolled.review.earlier_reply_count', {count});
+
+  if (!onExpand) {
+    return <div className={styles.foldedReplies}>{label}</div>;
+  }
+
+  return (
+    <button className={styles.foldedRepliesButton} onClick={onExpand}>
+      {label}
+    </button>
   );
 }

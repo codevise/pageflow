@@ -1857,5 +1857,8 @@ en:
       reply_count:
         one: 1 reply
         other: '%{count} replies'
+      earlier_reply_count:
+        one: 1 more
+        other: '%{count} more'
       no_threads_yet: No comments yet
       refers_to_deleted_element: Refers to a deleted element
