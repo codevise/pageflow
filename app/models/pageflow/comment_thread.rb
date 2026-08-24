@@ -7,7 +7,9 @@ module Pageflow
 
     belongs_to :creator, class_name: 'User'
     belongs_to :resolver, class_name: 'User', foreign_key: :resolved_by_id, optional: true
-    has_many :comments, dependent: :destroy
+    # Ordered because clients read position as meaning: the first comment
+    # is the topic, the rest are replies.
+    has_many :comments, -> { order(:id) }, dependent: :destroy
 
     nested_revision_components :comments
 
