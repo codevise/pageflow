@@ -18,7 +18,7 @@ import I18n from 'i18n-js';
  * @since edge
  */
 export const DestroyMenuItem = Backbone.Model.extend({
-  translationKeyPrefix: 'pageflow.editor.destroy_menu_item',
+  translationKeyPrefix: 'pageflow.editor.views.destroy_menu_item',
 
   defaults: {
     name: 'destroy',
