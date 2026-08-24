@@ -22,7 +22,8 @@ describe('FileItemView', () => {
     'pageflow.editor.templates.file_item.move': 'Move...',
     'pageflow.editor.templates.file_item.settings': 'Settings',
     'pageflow.editor.templates.file_item.select': 'Select',
-    'pageflow.editor.templates.files.in_folder': 'In folder:'
+    'pageflow.editor.templates.files.in_folder': 'In folder:',
+    'pageflow.editor.views.file_item_view.confirm_destroy': 'Really delete this file?'
   });
 
   it('displays file title', () => {
@@ -406,7 +407,21 @@ describe('FileItemView', () => {
       const {getByRole} = render(view);
       getByRole('link', {name: 'Delete'}).click();
 
+      expect(window.confirm).toHaveBeenCalledWith('Really delete this file?');
       expect(file.destroy).toHaveBeenCalled();
+    });
+
+    it('keeps file when the confirmation is dismissed', () => {
+      window.confirm = jest.fn(() => false);
+      const file = support.factories.file({id: 123});
+      jest.spyOn(file, 'destroy').mockImplementation(() => {});
+
+      const view = new FileItemView({model: file});
+
+      const {getByRole} = render(view);
+      getByRole('link', {name: 'Delete'}).click();
+
+      expect(file.destroy).not.toHaveBeenCalled();
     });
 
     it('cancels upload when cancel upload is selected', () => {

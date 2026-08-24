@@ -46,4 +46,31 @@ describe('ListSelection', () => {
 
     expect(selection.models).toEqual([file]);
   });
+
+  describe('#destroyAll', () => {
+    it('destroys every selected item', () => {
+      const file = f.file({id: 1});
+      const otherFile = f.file({id: 2});
+      jest.spyOn(file, 'destroy').mockImplementation(() => {});
+      jest.spyOn(otherFile, 'destroy').mockImplementation(() => {});
+      const selection = new ListSelection([file, otherFile]);
+
+      selection.destroyAll();
+
+      expect(file.destroy).toHaveBeenCalled();
+      expect(otherFile.destroy).toHaveBeenCalled();
+    });
+
+    it('destroys items which leave the selection along the way', () => {
+      const file = f.file({id: 1});
+      const otherFile = f.file({id: 2});
+      const selection = new ListSelection([file, otherFile]);
+      jest.spyOn(file, 'destroy').mockImplementation(() => selection.remove(file));
+      jest.spyOn(otherFile, 'destroy').mockImplementation(() => selection.remove(otherFile));
+
+      selection.destroyAll();
+
+      expect(otherFile.destroy).toHaveBeenCalled();
+    });
+  });
 });

@@ -24,6 +24,11 @@ describe('FilteredFilesView', () => {
     'pageflow.editor.views.filtered_files_view.actions': 'File list actions',
     'pageflow.editor.views.filtered_files_view.select_items': 'Select files and folders',
     'pageflow.editor.views.filtered_files_view.end_selection': 'End selection',
+    'pageflow.editor.views.filtered_files_view.destroy_selection': 'Delete selection',
+    'pageflow.editor.views.filtered_files_view.confirm_destroy_selection': {
+      one: 'Really delete 1 item?',
+      other: 'Really delete %{count} items?'
+    },
     'pageflow.editor.views.filtered_files_view.selected_items': {
       zero: 'No items selected',
       one: '1 item selected',
@@ -736,6 +741,76 @@ describe('FilteredFilesView', () => {
 
       expect(queries.getByRole('link', {name: 'Alphabetical'})).not.toBeNull();
       expect(view.el.querySelector('.drop_down_button_item .label')).toHaveTextContent('Sort');
+    });
+
+    describe('deleting the selection', () => {
+      let testContext;
+
+      beforeEach(() => {
+        testContext = {};
+      });
+
+      support.useFakeXhr(() => testContext);
+
+      function destroyButton(queries) {
+        return queries.getByRole('button', {name: 'Delete selection'});
+      }
+
+      it('deletes all checked files once the confirmation is accepted', async () => {
+        const {entry, queries} = setup();
+        const user = userEvent.setup();
+        window.confirm = jest.fn(() => true);
+
+        await startSelecting(user, queries);
+        await user.click(checkBoxFor(queries, 'image.png'));
+        await user.click(checkBoxFor(queries, 'photo.png'));
+        await user.click(destroyButton(queries));
+
+        expect(window.confirm).toHaveBeenCalledWith('Really delete 2 items?');
+        expect(testContext.requests.map(request => request.method)).toEqual(['DELETE', 'DELETE']);
+        expect(entry.getFileCollection('image_files').length).toEqual(0);
+      });
+
+      it('keeps the files when the confirmation is dismissed', async () => {
+        const {view, entry, queries} = setup();
+        const user = userEvent.setup();
+        window.confirm = jest.fn(() => false);
+
+        await startSelecting(user, queries);
+        await user.click(checkBoxFor(queries, 'image.png'));
+        await user.click(destroyButton(queries));
+
+        expect(testContext.requests).toEqual([]);
+        expect(entry.getFileCollection('image_files').length).toEqual(2);
+        expect(list(view)).toHaveClass('is_selecting');
+        expect(selectionBar(view)).toHaveTextContent('1 item selected');
+      });
+
+      it('stops checking files once they have been deleted', async () => {
+        const {view, queries} = setup();
+        const user = userEvent.setup();
+        window.confirm = jest.fn(() => true);
+
+        await startSelecting(user, queries);
+        await user.click(checkBoxFor(queries, 'image.png'));
+        await user.click(destroyButton(queries));
+
+        expect(list(view)).not.toHaveClass('is_selecting');
+        expect(selectionBar(view)).toHaveTextContent('No items selected');
+      });
+
+      it('is not offered while nothing is checked', async () => {
+        const {queries} = setup();
+        const user = userEvent.setup();
+
+        await startSelecting(user, queries);
+
+        expect(destroyButton(queries)).toBeDisabled();
+
+        await user.click(checkBoxFor(queries, 'image.png'));
+
+        expect(destroyButton(queries)).toBeEnabled();
+      });
     });
   });
 

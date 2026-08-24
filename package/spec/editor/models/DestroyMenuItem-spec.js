@@ -3,8 +3,8 @@ import {useFakeTranslations} from 'pageflow/testHelpers';
 
 describe('DestroyMenuItem', () => {
   useFakeTranslations({
-    'pageflow.editor.destroy_menu_item.destroy': 'Delete',
-    'pageflow.editor.destroy_menu_item.confirm_destroy': 'Really delete?'
+    'pageflow.editor.views.destroy_menu_item.destroy': 'Delete',
+    'pageflow.editor.views.destroy_menu_item.confirm_destroy': 'Really delete?'
   });
 
   it('has name destroy by default', () => {

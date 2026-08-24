@@ -112,18 +112,33 @@
     flex: 1;
   }
 
-  // On a line of its own, so that the number of checked files is not
-  // squeezed next to it in languages with longer words than English.
+  // On a line of their own, so that the number of checked files is not
+  // squeezed next to them in languages with longer words than English.
+  &-selection_bar_actions {
+    display: flex;
+    align-self: flex-end;
+    gap: space(1);
+  }
+
   &-selection_bar_action {
     @include simple-button;
 
-    align-self: flex-end;
     padding: space(1) space(4);
 
     &[disabled] {
       opacity: 0.5;
       cursor: default;
     }
+  }
+
+  // The icon only mixin brings its own vertical padding, which would
+  // make this button taller than the one next to it.
+  &-selection_bar_destroy {
+    @include icon-only-button("destructive");
+    @include trash-icon;
+
+    padding-top: space(1);
+    padding-bottom: space(1);
   }
 
   &-selection_bar_dismiss {

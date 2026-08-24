@@ -16,6 +16,7 @@ import {FilesBlankSlateView} from './FilesBlankSlateView';
 import {FilesListItemView} from './FilesListItemView';
 import {FileTypePillsView} from './FileTypePillsView';
 import {FolderBreadcrumbView} from './FolderBreadcrumbView';
+import {FileFolder} from '../models/FileFolder';
 import {Search} from '../models/Search';
 import {ListHighlight} from '../models/ListHighlight';
 import {ListSearchFieldView} from './ListSearchFieldView';
@@ -37,6 +38,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     selectionBar: '.filtered_files-selection_bar',
     selectionBarText: '.filtered_files-selection_bar_text',
     selectionBarAction: '.filtered_files-selection_bar_action',
+    selectionBarDestroy: '.filtered_files-selection_bar_destroy',
     selectionBarDismiss: '.filtered_files-selection_bar_dismiss',
     list: '.filtered_files-list',
     sort: '.filtered_files-sort',
@@ -51,8 +53,8 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       return false;
     },
 
-    // Moving is all a selection is good for so far, so the check boxes
-    // go away again once the files have been moved.
+    // Each bulk action is the point of the selection it acts on, so the
+    // check boxes go away again once one of them has run.
     'click .filtered_files-selection_bar_action': function() {
       MoveToFolderDialogView.open({
         models: this.listSelection.models,
@@ -60,6 +62,11 @@ export const FilteredFilesView = Marionette.ItemView.extend({
         onMove: () => this.stopSelecting()
       });
 
+      return false;
+    },
+
+    'click .filtered_files-selection_bar_destroy': function() {
+      this.destroySelection();
       return false;
     },
 
@@ -308,6 +315,18 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     this.listSelection.stop();
   },
 
+  destroySelection: function() {
+    var message = this.translation('confirm_destroy_selection',
+                                   {count: this.listSelection.length});
+
+    if (!window.confirm(message)) {
+      return;
+    }
+
+    this.listSelection.destroyAll();
+    this.stopSelecting();
+  },
+
   updateSelecting: function() {
     if (!this.listSelection) {
       return this.ui.selectionBar.remove();
@@ -320,12 +339,14 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     this.collectionView.$el.toggleClass('is_selecting', selecting);
 
     var dismissLabel = this.translation('end_selection');
+    var destroyLabel = this.translation('destroy_selection');
 
     this.ui.selectionBarDismiss.attr({title: dismissLabel, 'aria-label': dismissLabel});
     this.ui.selectionBarAction.text(this.translation('move_selection'));
+    this.ui.selectionBarDestroy.attr({title: destroyLabel, 'aria-label': destroyLabel});
 
     // Files can only be moved into folders, so entries which have none
-    // offer nothing to do with a selection yet.
+    // offer nothing to move a selection into.
     this.ui.selectionBarAction.toggle(!!this.options.fileFolders);
 
     this.updateSelectionBar();
@@ -355,6 +376,17 @@ export const FilteredFilesView = Marionette.ItemView.extend({
                                                    {count: this.listSelection.length}));
 
     this.ui.selectionBarAction.prop('disabled', !this.listSelection.length);
+    this.ui.selectionBarDestroy.prop('disabled', !this.listSelection.length ||
+                                                 this.selectionContainsNonEmptyFolder());
+  },
+
+  selectionContainsNonEmptyFolder: function() {
+    var files = this.selectedFiles || this.combinedFiles;
+
+    return this.listSelection.some(function(model) {
+      return model instanceof FileFolder &&
+             !this.options.fileFolders.isEmptyFolder(model, files);
+    }, this);
   },
 
   translation: function(keyName, options) {

@@ -1527,6 +1527,8 @@ en:
         chapter_item_view:
           chapter: Chapter
           unnamed: "(New chapter)"
+        confirmable_file_item_view:
+          confirm_destroy: Really delete this file?
         edit_chapter_view:
           confirm_destroy: |-
             Really delete this chapter including ALL its pages?
@@ -1557,6 +1559,8 @@ en:
           show_editor: Show editor panel
         entry_preview_view:
           scroll_hint: Scroll down to continue
+        file_item_view:
+          confirm_destroy: Really delete this file?
         file_meta_data_item_value_view:
           blank: "-"
         file_preview_progress_bar_view:
@@ -1582,6 +1586,10 @@ en:
           actions: 'File list actions'
           any_file_type: 'a file'
           cancel_selection: 'Cancel selection'
+          confirm_destroy_selection:
+            one: 'Really delete 1 item?'
+            other: 'Really delete %{count} items?'
+          destroy_selection: 'Delete selection'
           end_selection: 'End selection'
           move_selection: 'Move...'
           reset_filter: 'Reset filter'
