@@ -13,6 +13,7 @@ RSpec.feature 'as entry previewer, commenting on content elements', js: true do
     translation('en', 'pageflow_scrolled.review.select_text_to_comment', 'Select text to comment')
     translation('en', 'pageflow_scrolled.review.resolve', 'Mark as resolved')
     translation('en', 'pageflow_scrolled.review.unresolve', 'Mark as unresolved')
+    translation('en', 'pageflow_scrolled.review.thread_actions', 'Thread actions')
     translation('en', 'pageflow_scrolled.review.resolved_count.one', '1 resolved')
     translation('en', 'pageflow_scrolled.review.resolved_count.other', '%{count} resolved')
   end
@@ -158,6 +159,7 @@ RSpec.feature 'as entry previewer, commenting on content elements', js: true do
     click_button('1 resolved')
     expect(page).to have_text('Needs work', wait: 10)
 
+    find('[aria-label="Thread actions"]').click
     click_button('Mark as unresolved')
 
     expect(page).not_to have_text('1 resolved', wait: 10)

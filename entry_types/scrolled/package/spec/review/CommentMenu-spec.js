@@ -1,21 +1,23 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
-import {useFakeTranslations} from 'pageflow/testHelpers';
-
 import {CommentMenu} from 'review/CommentMenu';
+import EditIcon from 'review/images/edit.svg';
 import {renderWithReviewState} from 'support/renderWithReviewState';
 
 describe('CommentMenu', () => {
-  useFakeTranslations({
-    'pageflow_scrolled.review.comment_actions': 'Comment actions',
-    'pageflow_scrolled.review.edit_comment': 'Edit'
-  });
+  function menu(props) {
+    return (
+      <CommentMenu label="Comment actions"
+                   items={[{icon: EditIcon, label: 'Edit', onSelect: () => {}}]}
+                   {...props} />
+    );
+  }
 
   it('only renders the menu once the button has been clicked', async () => {
     const user = userEvent.setup();
 
-    const {getByRole, queryByRole} = renderWithReviewState(<CommentMenu />);
+    const {getByRole, queryByRole} = renderWithReviewState(menu());
 
     expect(queryByRole('menu')).toBeNull();
 
@@ -27,7 +29,7 @@ describe('CommentMenu', () => {
   // The form styles in pageflow/ui/forms.scss turn buttons announcing a
   // popup into full width select lookalikes, but spare this value.
   it('announces a menu rather than a generic popup', () => {
-    const {getByRole} = renderWithReviewState(<CommentMenu />);
+    const {getByRole} = renderWithReviewState(menu());
 
     expect(getByRole('button', {name: 'Comment actions'}))
       .toHaveAttribute('aria-haspopup', 'menu');
@@ -36,7 +38,7 @@ describe('CommentMenu', () => {
   it('exposes the expanded state of the menu', async () => {
     const user = userEvent.setup();
 
-    const {getByRole} = renderWithReviewState(<CommentMenu />);
+    const {getByRole} = renderWithReviewState(menu());
     const button = getByRole('button', {name: 'Comment actions'});
 
     expect(button).toHaveAttribute('aria-expanded', 'false');
@@ -46,23 +48,25 @@ describe('CommentMenu', () => {
     expect(button).toHaveAttribute('aria-expanded', 'true');
   });
 
-  it('invokes onEdit and closes the menu when the item is selected', async () => {
+  it('invokes onSelect and closes the menu when the item is selected', async () => {
     const user = userEvent.setup();
-    const onEdit = jest.fn();
+    const onSelect = jest.fn();
 
-    const {getByRole, queryByRole} = renderWithReviewState(<CommentMenu onEdit={onEdit} />);
+    const {getByRole, queryByRole} = renderWithReviewState(
+      menu({items: [{icon: EditIcon, label: 'Edit', onSelect}]})
+    );
 
     await user.click(getByRole('button', {name: 'Comment actions'}));
     await user.click(getByRole('menuitem', {name: 'Edit'}));
 
-    expect(onEdit).toHaveBeenCalled();
+    expect(onSelect).toHaveBeenCalled();
     expect(queryByRole('menu')).toBeNull();
   });
 
   it('closes the menu on escape', async () => {
     const user = userEvent.setup();
 
-    const {getByRole, queryByRole} = renderWithReviewState(<CommentMenu />);
+    const {getByRole, queryByRole} = renderWithReviewState(menu());
 
     await user.click(getByRole('button', {name: 'Comment actions'}));
     await user.keyboard('{Escape}');
@@ -77,7 +81,7 @@ describe('CommentMenu', () => {
     const user = userEvent.setup();
     const listener = jest.fn();
 
-    const {getByRole, queryByRole} = renderWithReviewState(<CommentMenu />);
+    const {getByRole, queryByRole} = renderWithReviewState(menu());
 
     await user.click(getByRole('button', {name: 'Comment actions'}));
 
@@ -97,7 +101,7 @@ describe('CommentMenu', () => {
   it('moves focus to items via arrow keys', async () => {
     const user = userEvent.setup();
 
-    const {getByRole} = renderWithReviewState(<CommentMenu />);
+    const {getByRole} = renderWithReviewState(menu());
 
     await user.click(getByRole('button', {name: 'Comment actions'}));
     await user.keyboard('{ArrowDown}');
@@ -112,7 +116,7 @@ describe('CommentMenu', () => {
 
     const {getByRole} = renderWithReviewState(
       <div onClick={onClick}>
-        <CommentMenu />
+        {menu()}
       </div>
     );
 

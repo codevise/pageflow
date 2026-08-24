@@ -2020,6 +2020,9 @@ de:
       edited: Bearbeitet %{date}
       resolve: Als gelöst markieren
       unresolve: Als ungelöst markieren
+      resolution: Als gelöst markiert
+      resolution_by: Als gelöst markiert von
+      thread_actions: Aktionen für Thema
       resolved_count:
         one: 1 erledigt
         other: '%{count} erledigt'

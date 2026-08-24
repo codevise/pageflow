@@ -1848,6 +1848,9 @@ en:
       edited: Edited %{date}
       resolve: Mark as resolved
       unresolve: Mark as unresolved
+      resolution: Marked as resolved
+      resolution_by: Marked as resolved by
+      thread_actions: Thread actions
       resolved_count:
         one: 1 resolved
         other: '%{count} resolved'

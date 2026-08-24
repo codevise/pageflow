@@ -1,9 +1,11 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import classNames from 'classnames';
 
-import {useI18n} from 'pageflow-scrolled/frontend';
+import {useI18n, useLocale} from 'pageflow-scrolled/frontend';
 import {AvatarStack} from './Avatar';
 import {Comment} from './Comment';
+import {CommentMenu} from './CommentMenu';
+import {formatDate} from './formatDate';
 import {ReplyForm} from './ReplyForm';
 import {useCommentDraft} from './ReviewStateProvider';
 import {useSubjectQuote} from './subjectQuote';
@@ -85,8 +87,7 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
     <div ref={ref}
          className={classNames(styles.thread, {
            [styles.highlighted]: highlighted,
-           [styles.clickable]: onClick,
-           [styles.resolved]: thread.resolvedAt
+           [styles.clickable]: onClick
          })}
          onClick={onClick}
          aria-current={highlighted ? 'true' : undefined}>
@@ -146,15 +147,48 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
                    subjectId={thread.subjectId}
                    subjectRange={thread.subjectRange} />}
 
-      {interactive && onResolve && !repliesCollapsed &&
+      {(thread.resolvedAt || (interactive && onResolve)) && !repliesCollapsed &&
         <div className={styles.resolveRow}>
-          <button className={styles.resolveButton} onClick={onResolve}>
-            {thread.resolvedAt ? <UnresolveIcon /> : <ResolveIcon />}
-            {t(thread.resolvedAt
-              ? 'pageflow_scrolled.review.unresolve'
-              : 'pageflow_scrolled.review.resolve')}
-          </button>
+          {thread.resolvedAt ?
+           <Resolution thread={thread}
+                       onUnresolve={interactive ? onResolve : undefined} /> :
+           <button className={styles.resolveButton} onClick={onResolve}>
+             <ResolveIcon className={styles.resolveIcon} />
+             {t('pageflow_scrolled.review.resolve')}
+           </button>}
         </div>}
     </div>
+  );
+}
+
+
+function Resolution({thread, onUnresolve}) {
+  const {t} = useI18n({locale: 'ui'});
+  const locale = useLocale({locale: 'ui'});
+
+  return (
+    <>
+      <ResolveIcon className={styles.resolutionIcon} />
+      <div className={styles.resolution}>
+        <span>
+          {t(thread.resolverName
+            ? 'pageflow_scrolled.review.resolution_by'
+            : 'pageflow_scrolled.review.resolution')}
+        </span>
+        <span className={styles.resolutionMeta}>
+          {thread.resolverName &&
+            <span className={styles.resolver}>{thread.resolverName}</span>}
+          <time dateTime={thread.resolvedAt}>
+            {formatDate(thread.resolvedAt, locale)}
+          </time>
+        </span>
+      </div>
+
+      {onUnresolve &&
+        <CommentMenu label={t('pageflow_scrolled.review.thread_actions')}
+                     items={[{icon: UnresolveIcon,
+                              label: t('pageflow_scrolled.review.unresolve'),
+                              onSelect: onUnresolve}]} />}
+    </>
   );
 }

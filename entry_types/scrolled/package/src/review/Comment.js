@@ -8,6 +8,7 @@ import {autoGrow, autoResize} from './autoGrow';
 import {formatDate, formatDateTime} from './formatDate';
 import {isSubmitShortcut} from './submitShortcut';
 
+import EditIcon from './images/edit.svg';
 import styles from './Comment.module.css';
 
 export function Comment({comment, threadId, showQuote, editing, onEdit, onEditEnd}) {
@@ -30,7 +31,10 @@ export function Comment({comment, threadId, showQuote, editing, onEdit, onEditEn
         </div>
         {editable &&
           <span className={styles.headerMenu}>
-            <CommentMenu onEdit={onEdit} />
+            <CommentMenu label={t('pageflow_scrolled.review.comment_actions')}
+                         items={[{icon: EditIcon,
+                                  label: t('pageflow_scrolled.review.edit_comment'),
+                                  onSelect: onEdit}]} />
           </span>}
       </div>
       {showQuote &&

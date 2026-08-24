@@ -5,6 +5,4 @@
   --review-resolved-threads-pill-align: flex-end;
   --review-resolved-threads-pill-color: var(--ui-on-surface-color);
   --review-resolved-threads-pill-background-color: transparent;
-  --review-resolved-thread-opacity: 0.6;
-  --review-resolved-thread-background: var(--ui-on-surface-color-lightest);
 }
