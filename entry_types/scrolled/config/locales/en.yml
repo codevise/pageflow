@@ -1863,5 +1863,14 @@ en:
       no_threads_yet: No comments yet
       refers_to_deleted_element: Refers to a deleted element
       activity:
+        summary:
+          topic: topic started
+          reply_count:
+            one: 1 reply
+            other: '%{count} replies'
+          resolution: marked as resolved
+          and: ' and '
+        today: Today
+        yesterday: Yesterday
         no_activity_yet: No activity yet
         show_more: Show more

@@ -25,3 +25,38 @@
   text-align: center;
   color: var(--ui-on-surface-color-light);
 }
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: space(2);
+}
+
+.summary {
+  margin: space(1) 0;
+  line-height: 1.4;
+  color: var(--ui-on-surface-color-light);
+}
+
+/* The parts are fragments that get joined in whichever order the day
+   holds them, so the sentence is capitalized where it starts. */
+.summary::first-letter {
+  text-transform: uppercase;
+}
+
+.dayHeading {
+  display: flex;
+  align-items: center;
+  gap: space(2);
+  margin: space(2) 0 0;
+  font-size: space(3);
+  font-weight: 500;
+  color: var(--ui-on-surface-color-light);
+}
+
+.dayHeading::before,
+.dayHeading::after {
+  content: '';
+  flex: 1;
+  border-bottom: solid 1px var(--ui-on-surface-color-lightest);
+}

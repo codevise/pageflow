@@ -1,9 +1,11 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
+import I18n from 'i18n-js';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {ActivityList} from 'review/ActivityList';
+import styles from 'review/ActivityList.module.css';
 import {renderWithReviewState} from 'support/renderWithReviewState';
 
 // ActivityList resolves its entries from the located threads, so the
@@ -38,6 +40,13 @@ describe('ActivityList', () => {
   useFakeTranslations({
     'pageflow_scrolled.review.activity.no_activity_yet': 'No activity yet',
     'pageflow_scrolled.review.activity.show_more': 'Show more',
+    'pageflow_scrolled.review.activity.summary.topic': 'topic started',
+    'pageflow_scrolled.review.activity.summary.reply_count.one': '1 reply',
+    'pageflow_scrolled.review.activity.summary.reply_count.other': '%{count} replies',
+    'pageflow_scrolled.review.activity.summary.resolution': 'marked as resolved',
+    'pageflow_scrolled.review.activity.summary.and': ' and ',
+    'pageflow_scrolled.review.activity.today': 'Today',
+    'pageflow_scrolled.review.activity.yesterday': 'Yesterday',
     'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element',
     'pageflow_scrolled.review.earlier_reply_count.one': '1 more',
     'pageflow_scrolled.review.earlier_reply_count.other': '%{count} more',
@@ -107,19 +116,97 @@ describe('ActivityList', () => {
     expect(getByText('Refers to a deleted element')).toBeInTheDocument();
   });
 
+  describe('summary', () => {
+    function summaryOf(container) {
+      return container.querySelector(`.${styles.summary}`);
+    }
+
+    it('names a topic started on the day it is listed under', () => {
+      const {container} = renderActivityList(<ActivityList />, {
+        commentThreads: [thread({
+          comments: [comment({body: 'A topic', createdAt: '2026-08-17T09:00:00.000Z'})]
+        })]
+      });
+
+      expect(summaryOf(container)).toHaveTextContent('topic started');
+    });
+
+    it('counts the replies of that day', () => {
+      const {container} = renderActivityList(<ActivityList />, {
+        commentThreads: [thread({
+          comments: [
+            comment({id: 100, body: 'A topic', createdAt: '2026-08-16T12:00:00.000Z'}),
+            comment({id: 101, body: 'First', createdAt: '2026-08-17T12:00:00.000Z'}),
+            comment({id: 102, body: 'Second', createdAt: '2026-08-17T13:00:00.000Z'})
+          ]
+        })]
+      });
+
+      expect(summaryOf(container)).toHaveTextContent('2 replies');
+    });
+
+    it('joins what happened on that day', () => {
+      const {container} = renderActivityList(<ActivityList />, {
+        commentThreads: [thread({
+          comments: [
+            comment({id: 100, body: 'A topic', createdAt: '2026-08-17T09:00:00.000Z'}),
+            comment({id: 101, body: 'A reply', createdAt: '2026-08-17T12:00:00.000Z'})
+          ],
+          resolvedAt: '2026-08-17T13:00:00.000Z',
+          resolvedById: 44,
+          resolverName: 'Carol'
+        })]
+      });
+
+      expect(summaryOf(container))
+        .toHaveTextContent('topic started, 1 reply and marked as resolved');
+    });
+
+    it('leaves out what happened on other days', () => {
+      const {container} = renderActivityList(<ActivityList />, {
+        commentThreads: [thread({
+          comments: [
+            comment({id: 100, body: 'A topic', createdAt: '2026-08-16T12:00:00.000Z'}),
+            comment({id: 101, body: 'A reply', createdAt: '2026-08-17T12:00:00.000Z'})
+          ]
+        })]
+      });
+
+      expect(summaryOf(container).textContent).toEqual('1 reply');
+    });
+  });
+
   describe('embedded thread', () => {
     const threadWithReplies = thread({
       comments: [
         comment({id: 100, body: 'A topic', createdAt: '2026-08-17T09:00:00.000Z'}),
         comment({id: 101, body: 'First reply', createdAt: '2026-08-17T10:00:00.000Z'}),
-        comment({id: 102, body: 'Second reply', createdAt: '2026-08-17T11:00:00.000Z'})
+        comment({id: 102, body: 'Second reply', createdAt: '2026-08-17T12:00:00.000Z'})
       ]
     });
 
-    // The headline names the latest event, so the row has to show it.
-    it('shows the opening comment and the latest reply', () => {
+    const threadAcrossDays = thread({
+      comments: [
+        comment({id: 100, body: 'A topic', createdAt: '2026-08-16T12:00:00.000Z'}),
+        comment({id: 101, body: 'First reply', createdAt: '2026-08-16T13:00:00.000Z'}),
+        comment({id: 102, body: 'Second reply', createdAt: '2026-08-17T12:00:00.000Z'})
+      ]
+    });
+
+    it('shows every reply made on the day it is listed under', () => {
       const {getByText, queryByText} = renderActivityList(<ActivityList />, {
         commentThreads: [threadWithReplies]
+      });
+
+      expect(getByText('A topic')).toBeInTheDocument();
+      expect(getByText('First reply')).toBeInTheDocument();
+      expect(getByText('Second reply')).toBeInTheDocument();
+      expect(queryByText('1 more')).toBeNull();
+    });
+
+    it('folds away replies from earlier days', () => {
+      const {getByText, queryByText} = renderActivityList(<ActivityList />, {
+        commentThreads: [threadAcrossDays]
       });
 
       expect(getByText('A topic')).toBeInTheDocument();
@@ -128,11 +215,27 @@ describe('ActivityList', () => {
       expect(queryByText('First reply')).toBeNull();
     });
 
+    it('shows the latest reply when the day contributed none', () => {
+      const {getByText} = renderActivityList(<ActivityList />, {
+        commentThreads: [thread({
+          comments: [
+            comment({id: 100, body: 'A topic', createdAt: '2026-08-16T12:00:00.000Z'}),
+            comment({id: 101, body: 'Only reply', createdAt: '2026-08-16T13:00:00.000Z'})
+          ],
+          resolvedAt: '2026-08-17T12:00:00.000Z',
+          resolvedById: 44,
+          resolverName: 'Carol'
+        })]
+      });
+
+      expect(getByText('Only reply')).toBeInTheDocument();
+    });
+
     it('expands the discussion in place', async () => {
       const user = userEvent.setup();
 
       const {getByRole, getByText} = renderActivityList(<ActivityList />, {
-        commentThreads: [threadWithReplies]
+        commentThreads: [threadAcrossDays]
       });
 
       await user.click(getByRole('button', {name: '1 more'}));
@@ -145,7 +248,7 @@ describe('ActivityList', () => {
       const user = userEvent.setup();
 
       const {getByRole, getByPlaceholderText, queryByPlaceholderText} =
-        renderActivityList(<ActivityList />, {commentThreads: [threadWithReplies]});
+        renderActivityList(<ActivityList />, {commentThreads: [threadAcrossDays]});
 
       expect(queryByPlaceholderText('Reply...')).toBeNull();
 
@@ -156,7 +259,7 @@ describe('ActivityList', () => {
 
     it('offers no reply count toggle while replies are folded', () => {
       const {queryByRole} = renderActivityList(<ActivityList />, {
-        commentThreads: [threadWithReplies]
+        commentThreads: [threadAcrossDays]
       });
 
       expect(queryByRole('button', {name: /2 replies/})).toBeNull();
@@ -166,7 +269,7 @@ describe('ActivityList', () => {
       const user = userEvent.setup();
 
       const {getByRole, getByText, queryByText} = renderActivityList(<ActivityList />, {
-        commentThreads: [threadWithReplies]
+        commentThreads: [threadAcrossDays]
       });
 
       await user.click(getByRole('button', {name: '1 more'}));
@@ -179,7 +282,7 @@ describe('ActivityList', () => {
 
     it('offers resolving without expanding', () => {
       const {getByRole} = renderActivityList(<ActivityList />, {
-        commentThreads: [threadWithReplies]
+        commentThreads: [threadAcrossDays]
       });
 
       expect(getByRole('button', {name: 'Mark as resolved'})).toBeInTheDocument();
@@ -226,6 +329,105 @@ describe('ActivityList', () => {
 
       expect(getByText('Older topic').closest('[aria-current]')).not.toBeNull();
       expect(getByText('Newer topic').closest('[aria-current]')).toBeNull();
+    });
+  });
+
+  describe('date groups', () => {
+    // Relative labels need a fixed today to be worth asserting.
+    beforeEach(() => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date('2026-08-24T12:00:00.000Z'));
+      I18n.locale = 'en';
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    function dayThread({id, createdAt}) {
+      return thread({
+        id,
+        comments: [comment({id: id * 100, body: `Topic ${id}`, createdAt})]
+      });
+    }
+
+    function renderDays(ui, days) {
+      return renderActivityList(ui, {commentThreads: days.map(dayThread)});
+    }
+
+    it('heads the rows of today with a relative label', () => {
+      const {getByRole} = renderDays(<ActivityList />, [
+        {id: 1, createdAt: '2026-08-24T09:00:00.000Z'}
+      ]);
+
+      expect(getByRole('heading', {name: 'Today'})).toBeInTheDocument();
+    });
+
+    it('heads the rows of the day before with a relative label', () => {
+      const {getByRole} = renderDays(<ActivityList />, [
+        {id: 1, createdAt: '2026-08-23T09:00:00.000Z'}
+      ]);
+
+      expect(getByRole('heading', {name: 'Yesterday'})).toBeInTheDocument();
+    });
+
+    it('heads earlier rows with their date', () => {
+      const {getByRole} = renderDays(<ActivityList />, [
+        {id: 1, createdAt: '2026-08-17T09:00:00.000Z'}
+      ]);
+
+      expect(getByRole('heading', {name: 'Aug 17'})).toBeInTheDocument();
+    });
+
+    it('includes the year for rows of previous years', () => {
+      const {getByRole} = renderDays(<ActivityList />, [
+        {id: 1, createdAt: '2025-08-17T09:00:00.000Z'}
+      ]);
+
+      expect(getByRole('heading', {name: 'Aug 17, 2025'})).toBeInTheDocument();
+    });
+
+    it('heads each day once, in the order of the rows', () => {
+      const {getAllByRole} = renderDays(<ActivityList />, [
+        {id: 1, createdAt: '2026-08-24T09:00:00.000Z'},
+        {id: 2, createdAt: '2026-08-24T11:00:00.000Z'},
+        {id: 3, createdAt: '2026-08-23T09:00:00.000Z'}
+      ]);
+
+      expect(getAllByRole('heading').map(node => node.textContent))
+        .toEqual(['Today', 'Yesterday']);
+    });
+
+    it('groups the rows under the heading of their day', () => {
+      const {getByRole, getByText} = renderDays(<ActivityList />, [
+        {id: 1, createdAt: '2026-08-24T09:00:00.000Z'},
+        {id: 2, createdAt: '2026-08-23T09:00:00.000Z'}
+      ]);
+
+      const yesterday = getByRole('heading', {name: 'Yesterday'});
+
+      expect(yesterday.compareDocumentPosition(getByText('Topic 1')) &
+             Node.DOCUMENT_POSITION_PRECEDING).toBeTruthy();
+      expect(yesterday.compareDocumentPosition(getByText('Topic 2')) &
+             Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
+    it('carries a machine readable date on the heading', () => {
+      const {getByRole} = renderDays(<ActivityList />, [
+        {id: 1, createdAt: '2026-08-17T09:00:00.000Z'}
+      ]);
+
+      expect(getByRole('heading', {name: 'Aug 17'}).querySelector('time'))
+        .toHaveAttribute('dateTime', '2026-08-17');
+    });
+
+    it('heads a day only once when it is split across pages', () => {
+      const {getAllByRole} = renderDays(<ActivityList pageSize={1} />, [
+        {id: 1, createdAt: '2026-08-24T09:00:00.000Z'},
+        {id: 2, createdAt: '2026-08-24T11:00:00.000Z'}
+      ]);
+
+      expect(getAllByRole('heading').map(node => node.textContent)).toEqual(['Today']);
     });
   });
 
