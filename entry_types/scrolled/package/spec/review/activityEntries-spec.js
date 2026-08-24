@@ -1,8 +1,11 @@
+import {act} from '@testing-library/react';
+
 import {
   activityEntries,
   useActivityEntries,
   useUnseenActivityCount
 } from 'review/activityEntries';
+import {postReviewStateThreadChangeMessage} from 'review/postMessage';
 import {renderHookWithReviewState} from 'support/renderWithReviewState';
 
 const currentUser = {id: 42, name: 'Alice'};
@@ -287,6 +290,111 @@ describe('activityEntries', () => {
 
       expect(result.current).toHaveLength(1);
       expect(result.current[0].thread.orphaned).toBe(true);
+    });
+
+    describe('while the feed is displayed', () => {
+      const older = {
+        id: 1, permaId: 5,
+        subjectType: 'ContentElement', subjectId: 10,
+        comments: [{id: 100, creatorId: 43, body: 'Older topic',
+                    createdAt: '2026-08-17T09:00:00.000Z'}]
+      };
+
+      const newer = {
+        id: 2, permaId: 6,
+        subjectType: 'ContentElement', subjectId: 10,
+        comments: [{id: 200, creatorId: 43, body: 'Newer topic',
+                    createdAt: '2026-08-17T11:00:00.000Z'}]
+      };
+
+      function renderEntries() {
+        return renderHookWithReviewState(
+          () => useActivityEntries(),
+          {seed, currentUser, commentThreads: [older, newer]}
+        );
+      }
+
+      // Posting crosses the window boundary, so it has to be flushed
+      // before the hook reflects it.
+      async function postThreadChange(thread) {
+        await act(async () => {
+          postReviewStateThreadChangeMessage(window, thread);
+          await new Promise(resolve => setTimeout(resolve, 0));
+        });
+      }
+
+      function entryFor(entries, threadId) {
+        return entries.find(entry => entry.threadId === threadId);
+      }
+
+      function withReply(thread, at) {
+        return {
+          ...thread,
+          comments: [...thread.comments,
+                     {id: 300, creatorId: currentUser.id, body: 'A reply', createdAt: at}]
+        };
+      }
+
+      it('keeps threads in the place they had when it appeared', async () => {
+        const {result} = renderEntries();
+
+        await postThreadChange(withReply(older, '2026-08-17T12:00:00.000Z'));
+
+        expect(result.current.map(entry => entry.threadId)).toEqual([2, 1]);
+      });
+
+      it('still reflects what was said', async () => {
+        const {result} = renderEntries();
+
+        await postThreadChange(withReply(older, '2026-08-17T12:00:00.000Z'));
+
+        expect(entryFor(result.current, 1).thread.comments).toHaveLength(2);
+      });
+
+      it('keeps the time the place was taken', async () => {
+        const {result} = renderEntries();
+
+        await postThreadChange(withReply(older, '2026-08-17T12:00:00.000Z'));
+
+        expect(entryFor(result.current, 1).at).toEqual('2026-08-17T09:00:00.000Z');
+      });
+
+      it('orders threads that turn up later by their own time', async () => {
+        const {result} = renderEntries();
+
+        await postThreadChange({
+          id: 3, permaId: 7,
+          subjectType: 'ContentElement', subjectId: 10,
+          comments: [{id: 400, creatorId: 43, body: 'Newest topic',
+                      createdAt: '2026-08-17T13:00:00.000Z'}]
+        });
+
+        expect(result.current.map(entry => entry.threadId)).toEqual([3, 2, 1]);
+      });
+
+      it('reflects the new order on the next visit', async () => {
+        const {result: first} = renderEntries();
+
+        await postThreadChange(withReply(older, '2026-08-17T12:00:00.000Z'));
+        expect(first.current.map(entry => entry.threadId)).toEqual([2, 1]);
+
+        const {result} = renderHookWithReviewState(
+          () => useActivityEntries(),
+          {
+            seed,
+            currentUser,
+            commentThreads: [
+              {...older,
+               comments: [...older.comments,
+                          {id: 300, creatorId: currentUser.id, body: 'A reply',
+                           createdAt: '2026-08-17T12:00:00.000Z'}]},
+              newer
+            ]
+          }
+        );
+
+        expect(result.current.map(entry => entry.threadId)).toEqual([1, 2]);
+      });
     });
 
     describe('useUnseenActivityCount', () => {

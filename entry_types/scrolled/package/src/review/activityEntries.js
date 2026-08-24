@@ -1,4 +1,4 @@
-import {useMemo} from 'react';
+import {useMemo, useRef} from 'react';
 
 import {useCommentThreadReads, useCurrentUser} from './ReviewStateProvider';
 import {useDisplayedCommentThreadReads} from './commentThreadReadsSnapshot';
@@ -12,10 +12,33 @@ export function useActivityEntries() {
   const currentUser = useCurrentUser();
   const commentThreadReads = useDisplayedCommentThreadReads();
 
-  return useMemo(
+  const entries = useMemo(
     () => activityEntries({threads, currentUser, commentThreadReads}),
     [threads, currentUser, commentThreadReads]
   );
+
+  return useHeldOrder(entries);
+}
+
+// Replying to a thread or resolving one makes it the most recent again,
+// which would shove it to the top under the reviewer's own hands. Threads
+// keep the place they had when the list appeared, dated by when they took
+// it so they do not change day either; the next visit reflects what
+// happened last.
+function useHeldOrder(entries) {
+  const takenAt = useRef(new Map());
+
+  return useMemo(() => {
+    entries.forEach(entry => {
+      if (!takenAt.current.has(entry.threadId)) {
+        takenAt.current.set(entry.threadId, entry.at);
+      }
+    });
+
+    return entries
+      .map(entry => ({...entry, at: takenAt.current.get(entry.threadId)}))
+      .sort(compareEntries);
+  }, [entries]);
 }
 
 // For the control that opens the feed: reads live state, so that its
