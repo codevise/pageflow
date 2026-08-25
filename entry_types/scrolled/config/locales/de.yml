@@ -2015,7 +2015,6 @@ de:
       save: Speichern
       send: Senden
       enter_for_new_line: Enter für neue Zeile
-      toggle_replies: Antworten umschalten
       comment_actions: Kommentaraktionen
       edit_comment: Bearbeiten
       edited: Bearbeitet %{date}

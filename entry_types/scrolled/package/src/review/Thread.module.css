@@ -31,7 +31,7 @@
 
 /* Locates the new thread among several. Matches the badge dot, which
    carries the same meaning one level up. Straddles the corner so it
-   stays clear of the chevron button inside it. */
+   stays clear of the menu button inside it. */
 .unreadDot {
   position: absolute;
   top: space(-1);
@@ -49,9 +49,20 @@
   gap: space(2);
 }
 
-.unreadReplyCount::before {
+/* Wraps between the counts but never inside one. Holding the chevron
+   outside keeps it off a line of its own. */
+.counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: space(1) space(2);
+  white-space: nowrap;
+}
+
+/* Part of the reply count rather than of what it separates, so that it
+   stays behind on the first line when the two counts stack. */
+.count:has(+ .unreadReplyCount)::after {
   content: '·';
-  margin-right: space(2);
+  margin-left: space(2);
   color: var(--ui-on-surface-color-light);
 }
 
@@ -84,23 +95,9 @@
   color: var(--ui-on-surface-color-light);
 }
 
-.chevronButton {
-  position: absolute;
-  top: space(3);
-  right: space(4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: space(6);
-  color: var(--ui-on-surface-color-light);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-.chevronButton:hover {
-  color: var(--ui-on-surface-color);
+.replyChevron {
+  width: space(3);
+  height: space(3);
 }
 
 .chevronExpanded {
@@ -108,11 +105,14 @@
   transition: transform 0.2s;
 }
 
-.expandButton {
+/* The height of the avatars it holds while collapsed, so that toggling
+   the replies does not shift everything below. */
+.repliesToggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  min-height: space(6);
   gap: space(2);
   padding: 0 0 0 space(8);
   font: inherit;
@@ -123,7 +123,7 @@
   cursor: pointer;
 }
 
-.expandButton:hover {
+.repliesToggle:hover {
   color: var(--ui-primary-color);
 }
 

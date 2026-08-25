@@ -15,7 +15,6 @@ describe('Thread marking read', () => {
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.reply_count.one': '1 reply',
     'pageflow_scrolled.review.reply_count.other': '%{count} replies',
-    'pageflow_scrolled.review.toggle_replies': 'Toggle replies'
   });
 
   const currentUser = {id: 42, name: 'Alice'};

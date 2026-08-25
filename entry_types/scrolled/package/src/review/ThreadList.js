@@ -13,7 +13,7 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, subjectRange, filter, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, expandResolved}) {
+export function ThreadList({subjectType, subjectId, subjectRange, filter, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, expandResolved, startCollapsed}) {
   const {t} = useI18n({locale: 'ui'});
 
   // Threads arrive already located: in display order, with orphans of
@@ -40,7 +40,10 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
   const noThreads = activeThreads.length === 0 && resolvedThreads.length === 0;
 
   const [draft] = useCommentDraft({subjectType, subjectId});
-  const [expandedThreadId, setExpandedThreadId] = useState(null);
+  const [expandedThreadId, setExpandedThreadId] = useState(
+    () => startCollapsed ? undefined :
+          (soleThread(activeThreads) || soleThread(resolvedThreads))?.id
+  );
   const [resolvedToggled, setResolvedToggled] = useState(null);
   const [formToggled, setFormToggled] = useState(
     showNewFormProp !== undefined ? showNewFormProp :
@@ -85,7 +88,7 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
         {activeThreads.map(thread => (
           <Thread key={thread.id}
                   thread={thread}
-                  collapsed={activeThreads.length > 1 && expandedThreadId !== thread.id}
+                  collapsed={expandedThreadId !== thread.id}
                   showUnreadMarker={activeThreads.length > 1}
                   onToggle={() => toggleThread(thread.id)}
                   onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: true})}
@@ -106,7 +109,7 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
             {showResolved && resolvedThreads.map(thread => (
               <Thread key={thread.id}
                       thread={thread}
-                      collapsed={resolvedThreads.length > 1 && expandedThreadId !== thread.id}
+                      collapsed={expandedThreadId !== thread.id}
                       showUnreadMarker={resolvedThreads.length > 1}
                       onToggle={() => toggleThread(thread.id)}
                       onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: false})}
@@ -118,4 +121,8 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
       </div>
     </CommentThreadReadsSnapshot>
   );
+}
+
+function soleThread(threads) {
+  return threads.length === 1 ? threads[0] : undefined;
 }

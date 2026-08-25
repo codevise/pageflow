@@ -10,7 +10,6 @@ describe('Thread unread replies divider', () => {
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.reply_count.one': '1 reply',
     'pageflow_scrolled.review.reply_count.other': '%{count} replies',
-    'pageflow_scrolled.review.toggle_replies': 'Toggle replies',
     'pageflow_scrolled.review.unread_replies': 'Unread replies'
   });
 

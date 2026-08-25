@@ -30,7 +30,35 @@ describe('EntryCommentsView', () => {
     'pageflow_scrolled.editor.comments_view.section': 'Section',
     'pageflow_scrolled.editor.chapter_item.chapter': 'Chapter',
     'pageflow_scrolled.editor.chapter_item.excursion': 'Excursion',
-    'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element'
+    'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element',
+    'pageflow_scrolled.review.reply_count.one': '1 reply',
+    'pageflow_scrolled.review.reply_count.other': '%{count} replies'
+  });
+
+  it('keeps replies of a lone thread collapsed', () => {
+    const entry = createEntry({
+      chapters: [
+        {id: 1, permaId: 10, storylineId: 1000, position: 0, configuration: {title: 'Intro'}}
+      ],
+      sections: [{id: 1, permaId: 100, chapterId: 1, position: 0}],
+      contentElements: [{id: 1, permaId: 1000, sectionId: 1, typeName: 'image'}]
+    });
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [{
+        id: 1, subjectType: 'ContentElement', subjectId: 1000,
+        comments: [
+          {id: 100, body: 'A comment', creatorName: 'Alice'},
+          {id: 101, body: 'A reply', creatorName: 'Bob'}
+        ]
+      }]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText, queryByText} = renderBackboneView(view);
+
+    expect(getByText('A comment')).toBeInTheDocument();
+    expect(getByText('1 reply')).toBeInTheDocument();
+    expect(queryByText('A reply')).not.toBeInTheDocument();
   });
 
   it('renders a chapter heading with number and title above its groups', () => {

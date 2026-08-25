@@ -98,13 +98,6 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
               aria-label={t('pageflow_scrolled.review.unread_comment_count',
                             {count: unreadComments.length})} />}
 
-      {replies.length > 0 &&
-        <button className={styles.chevronButton}
-                onClick={onToggle}
-                aria-label={t('pageflow_scrolled.review.toggle_replies')}>
-          <ChevronIcon className={collapsed ? '' : styles.chevronExpanded} />
-        </button>}
-
       {thread.orphaned &&
         <p className={styles.deletedHint}>
           {t('pageflow_scrolled.review.refers_to_deleted_element')}
@@ -115,16 +108,24 @@ export function Thread({thread, collapsed: collapsedProp, onToggle, onResolve, o
                  showQuote={outdatedQuotes.has(firstComment.id)}
                  {...editProps(firstComment)} />}
 
-      {repliesCollapsed &&
-        <button className={styles.expandButton} onClick={onToggle}>
+      {replies.length > 0 &&
+        <button className={styles.repliesToggle}
+                onClick={onToggle}
+                aria-expanded={!collapsed}>
           <span className={styles.replyCount}>
-            {t('pageflow_scrolled.review.reply_count', {count: replies.length})}
-            {hidesUnreadReplies &&
-              <span className={styles.unreadReplyCount}>
-                {t('pageflow_scrolled.review.unread_reply_count', {count: unreadReplyCount})}
-              </span>}
+            <span className={styles.counts}>
+              <span className={styles.count}>
+                {t('pageflow_scrolled.review.reply_count', {count: replies.length})}
+              </span>
+              {hidesUnreadReplies &&
+                <span className={styles.unreadReplyCount}>
+                  {t('pageflow_scrolled.review.unread_reply_count', {count: unreadReplyCount})}
+                </span>}
+            </span>
+            <ChevronIcon className={classNames(styles.replyChevron,
+                                               {[styles.chevronExpanded]: !collapsed})} />
           </span>
-          <AvatarStack names={replies.map(c => c.creatorName)} />
+          {repliesCollapsed && <AvatarStack names={replies.map(c => c.creatorName)} />}
         </button>}
 
       {!collapsed && replies.map(comment => (

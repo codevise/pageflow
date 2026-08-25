@@ -13,7 +13,6 @@ describe('Thread unread markers', () => {
     'pageflow_scrolled.review.reply_count.other': '%{count} replies',
     'pageflow_scrolled.review.unread_reply_count.one': '1 unread',
     'pageflow_scrolled.review.unread_reply_count.other': '%{count} unread',
-    'pageflow_scrolled.review.toggle_replies': 'Toggle replies',
     'pageflow_scrolled.review.unread_comment_count.one': '1 unread comment',
     'pageflow_scrolled.review.unread_comment_count.other': '%{count} unread comments'
   });

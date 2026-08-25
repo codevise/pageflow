@@ -22,14 +22,15 @@ export function Comment({comment, threadId, showQuote, editing, onEdit, onEditEn
         <Avatar name={comment.creatorName} />
         <div className={styles.headerText}>
           <span className={styles.author}>{comment.creatorName}</span>
-          <span className={styles.meta}>
-            {comment.createdAt &&
-              <time className={styles.timestamp} dateTime={comment.createdAt}>
-                {formatDate(comment.createdAt, locale)}
-              </time>}
-            {editable && <CommentMenu onEdit={onEdit} />}
-          </span>
+          {comment.createdAt &&
+            <time className={styles.timestamp} dateTime={comment.createdAt}>
+              {formatDate(comment.createdAt, locale)}
+            </time>}
         </div>
+        {editable &&
+          <span className={styles.headerMenu}>
+            <CommentMenu onEdit={onEdit} />
+          </span>}
       </div>
       {showQuote &&
         <blockquote className={styles.quote}>{comment.quote}</blockquote>}
