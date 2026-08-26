@@ -200,10 +200,10 @@ export const PreviewMessageController = Object.extend({
         });
 
         if (type === 'contentElementComments' || type === 'sectionComments') {
-          // Stay on the current tab when the user is already on the
-          // comments route — only force the selection tab when arriving
-          // there from elsewhere.
-          if (!Backbone.history.fragment?.startsWith('scrolled/comments')) {
+          // Stay on the current tab when the user is already looking at
+          // the comments view — only force the selection tab when
+          // arriving there from elsewhere.
+          if (!onCommentsView() && message.data.payload.source !== 'editor') {
             this.editor.navigate('/scrolled/comments?tab=selection', {trigger: true})
           }
         }
@@ -343,4 +343,14 @@ function selectedCommentsSubjectFor(entry, payload) {
 function modelForSubject(entry, {subjectType, subjectId}) {
   const collection = subjectType === 'Section' ? entry.sections : entry.contentElements;
   return collection.findWhere({permaId: subjectId});
+}
+
+// The comments view itself, but none of the routes below it: the
+// activity feed lists every subject at once, so a subject picked in the
+// preview has nowhere to appear there.
+function onCommentsView() {
+  const fragment = Backbone.history.fragment || '';
+
+  return fragment === 'scrolled/comments' ||
+         fragment.startsWith('scrolled/comments?');
 }

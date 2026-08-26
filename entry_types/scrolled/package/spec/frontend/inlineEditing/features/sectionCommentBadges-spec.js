@@ -244,7 +244,7 @@ describe('inline editing section comment badges', () => {
     expect(section.scrollIntoView).toHaveBeenCalled();
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',
-      payload: {type: 'sectionComments', id: 1, highlightedThreadId: 1}
+      payload: {type: 'sectionComments', id: 1, highlightedThreadId: 1, source: 'editor'}
     }, expect.anything());
   });
 
@@ -289,7 +289,7 @@ describe('inline editing section comment badges', () => {
     expect(section.scrollIntoView).toHaveBeenCalled();
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',
-      payload: {type: 'sectionComments', id: 1, highlightedThreadId: 3}
+      payload: {type: 'sectionComments', id: 1, highlightedThreadId: 3, source: 'editor'}
     }, expect.anything());
   });
 });

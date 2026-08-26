@@ -663,6 +663,58 @@ describe('PreviewMessageController', () => {
     })).resolves.toBe('/scrolled/comments?tab=selection');
   });
 
+  it('navigates to comments route with tab=selection on SELECTED while on the activity feed', async () => {
+    Backbone.history.fragment = 'scrolled/comments/activity';
+
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    const path = await new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {id: 1, type: 'contentElementComments'}
+      }, '*');
+    });
+
+    expect(path).toBe('/scrolled/comments?tab=selection');
+
+    Backbone.history.fragment = undefined;
+  });
+
+  it('does not navigate on SELECTED for a selection made from a message', async () => {
+    Backbone.history.fragment = 'scrolled/comments/activity';
+
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    const navigate = jest.fn();
+    editor.on('navigate', navigate);
+
+    await new Promise(resolve => {
+      entry.once('change:highlightedThreadId', resolve);
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {
+          id: 1, type: 'contentElementComments', highlightedThreadId: 7,
+          source: 'editor'
+        }
+      }, '*');
+    });
+
+    expect(navigate).not.toHaveBeenCalled();
+
+    Backbone.history.fragment = undefined;
+  });
+
   it('does not navigate on SELECTED contentElementComments while on the comments route', async () => {
     Backbone.history.fragment = 'scrolled/comments';
 

@@ -12,7 +12,10 @@ import {usePostMessageListener} from '../../shared/usePostMessageListener';
 // callers that need to prepare for it (e.g. move the editor cursor into
 // the thread's block). Shared by the content element and section
 // decorators and the EditableText editor so the handling lives in one
-// place instead of inside each badge.
+// place instead of inside each badge. The selection names the editor as
+// its source, which tells the editor it is looking at its own request
+// coming back rather than at the reviewer picking a subject in the
+// preview.
 export function useSelectCommentThreadHandler({
   subjectType, subjectId, getScrollTarget, beforeSelect, selectThread
 }) {
@@ -33,6 +36,6 @@ export function useSelectCommentThreadHandler({
 
     if (beforeSelect) beforeSelect(threadId);
 
-    selectThread(threadId);
+    selectThread(threadId, {source: 'editor'});
   }, [threads, getScrollTarget, beforeSelect, selectThread]));
 }
