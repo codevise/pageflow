@@ -161,7 +161,7 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
                    subjectId={thread.subjectId}
                    subjectRange={thread.subjectRange} />}
 
-      {(thread.resolvedAt || (interactive && onResolve)) && !repliesCollapsed &&
+      {(thread.resolvedAt || (interactive && onResolve && !repliesCollapsed)) &&
         <div className={styles.resolveRow}>
           {thread.resolvedAt ?
            <Resolution thread={thread}

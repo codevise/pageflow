@@ -23,6 +23,19 @@ describe('Thread resolution', () => {
     comments: [{id: 10, body: 'On the pull quote', creatorName: 'Bob', creatorId: 2}]
   };
 
+  const withReply = {
+    ...thread,
+    comments: [...thread.comments,
+               {id: 11, body: 'A reply', creatorName: 'Carol', creatorId: 3}]
+  };
+
+  const resolvedWithReply = {
+    ...withReply,
+    resolvedAt: '2026-08-19T10:00:00.000Z',
+    resolvedById: 3,
+    resolverName: 'Ada'
+  };
+
   const resolved = {
     ...thread,
     resolvedAt: '2026-08-19T10:00:00.000Z',
@@ -81,6 +94,31 @@ describe('Thread resolution', () => {
     );
 
     expect(getByRole('button', {name: 'Mark as resolved'})).toBeInTheDocument();
+  });
+
+  it('says a collapsed thread is resolved', () => {
+    const {getByText} = renderWithReviewState(
+      <Thread thread={resolvedWithReply} collapsed interactive={false} />
+    );
+
+    expect(getByText('Marked as resolved by')).toBeInTheDocument();
+    expect(getByText('Ada')).toBeInTheDocument();
+  });
+
+  it('undoes the resolution of a collapsed thread as well', () => {
+    const {getByRole} = renderWithReviewState(
+      <Thread thread={resolvedWithReply} collapsed onResolve={() => {}} />
+    );
+
+    expect(getByRole('button', {name: 'Thread actions'})).toBeInTheDocument();
+  });
+
+  it('offers no resolve button while collapsed', () => {
+    const {queryByRole} = renderWithReviewState(
+      <Thread thread={withReply} collapsed onResolve={() => {}} />
+    );
+
+    expect(queryByRole('button', {name: 'Mark as resolved'})).toBeNull();
   });
 
   it('undoes the resolution through a menu', async () => {
