@@ -36,7 +36,7 @@ export function SelectedSubjectProvider({children}) {
     setSelectedSubject(null);
   }, []);
 
-  const selectTarget = useCallback(target => {
+  const selectTarget = useCallback((target, options) => {
     // Activate the excursion the target lives in (or leave the current
     // one) before selecting it, so its popover can mount and open. Only
     // needed when moving to a different subject.
@@ -53,7 +53,8 @@ export function SelectedSubjectProvider({children}) {
       subjectType: target.subjectType,
       subjectId: target.subjectId,
       subjectRange: target.subjectRange,
-      highlightedThreadId: target.threadId
+      highlightedThreadId: target.threadId,
+      ...options
     });
   }, [selectedSubject, activateExcursionOfSection, returnFromExcursion]);
 
@@ -74,11 +75,11 @@ export function SelectedSubjectProvider({children}) {
   // resolved thread stays reachable from lists that show it whatever the
   // toolbar filters. Showing it is left to the selection: turning all
   // resolved threads on for the sake of one changes the whole preview.
-  const goToThread = useCallback(threadId => {
+  const goToThread = useCallback((threadId, options) => {
     const target = allTargets.find(target => target.threadId === threadId);
 
     if (target) {
-      selectTarget(target);
+      selectTarget(target, options);
     }
   }, [allTargets, selectTarget]);
 
@@ -127,6 +128,9 @@ export function useSelectedSubject(subjectType, subjectId, subjectRange) {
   }, [setSelectedSubject, subjectType, subjectId, subjectRange]);
 
   return {isSelected, hasSelection: !!selectedSubject, select, clearSelection,
+          // Reveals the subject without opening its popover, for lists
+          // that show the thread themselves.
+          revealOnly: !!(isSelected && selectedSubject.revealOnly),
           showNewForm: isSelected && selectedSubject.showNewForm,
           subjectRange: isSelected ? selectedSubject.subjectRange : undefined,
           highlightedThreadId: isSelected ? selectedSubject.highlightedThreadId ?? null : null};

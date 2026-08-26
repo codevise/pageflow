@@ -15,7 +15,7 @@ export function Popover({
   subjectType, subjectId, subjectRange,
   placement = 'bottom-start', strategy = 'absolute', hideNewTopicButton
 }) {
-  const {isSelected, showNewForm, select, clearSelection, highlightedThreadId} =
+  const {isSelected, revealOnly, showNewForm, select, clearSelection, highlightedThreadId} =
     useSelectedSubject(subjectType, subjectId, subjectRange);
   const {resolution} = useCommentDisplayFilter();
   const [reference, setReference] = useState(null);
@@ -33,17 +33,19 @@ export function Popover({
   }, [isSelected, highlightedThreadId, reference]);
 
   function handleBadgeClick() {
-    if (isSelected) {
+    if (isSelected && !revealOnly) {
       clearSelection();
     }
     else {
-      select();
+      // A revealed subject opens its popover on the thread it was
+      // revealed for rather than starting over.
+      select(revealOnly ? {highlightedThreadId} : undefined);
     }
   }
 
   return (
     <span ref={setReference} className={styles.badge}>
-      <CommentThreadReadsSnapshot enabled={isSelected}>
+      <CommentThreadReadsSnapshot enabled={isSelected && !revealOnly}>
         <ThreadsBadge subjectType={subjectType}
                       subjectId={subjectId}
                       subjectRange={subjectRange}
@@ -51,7 +53,7 @@ export function Popover({
                       revealedThreadId={highlightedThreadId}
                       mode={isSelected ? 'active' : undefined}
                       onClick={handleBadgeClick} />
-        {isSelected &&
+        {isSelected && !revealOnly &&
           <OpenThreadList reference={reference}
                           subjectType={subjectType}
                           subjectId={subjectId}
@@ -97,7 +99,6 @@ function OpenThreadList({
       if (event.target.closest('[data-comment-highlight]')) return;
       if (event.target.closest('[data-comment-toolbar]')) return;
       if (event.target.closest('[data-comment-menu]')) return;
-      if (event.target.closest('[data-comment-activity]')) return;
 
       onDismiss();
     }

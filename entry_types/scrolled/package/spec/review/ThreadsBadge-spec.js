@@ -141,6 +141,37 @@ describe('ThreadsBadge', () => {
     expect(getByRole('status')).toHaveTextContent('2');
   });
 
+  it('does not count a revealed resolved thread', () => {
+    const {getByRole} = renderThreadsBadge(
+      <ThreadsBadge subjectType="ContentElement" subjectId={10} revealedThreadId={3} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, resolvedAt: null, comments: []},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, resolvedAt: null, comments: []},
+          {id: 3, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-04-09T10:00:00Z', comments: []}
+        ]
+      }
+    );
+
+    expect(getByRole('status')).toHaveTextContent('2');
+  });
+
+  it('still shows a badge for a revealed resolved thread on its own', () => {
+    const {getByRole} = renderThreadsBadge(
+      <ThreadsBadge subjectType="ContentElement" subjectId={10} revealedThreadId={3} />,
+      {
+        commentThreads: [
+          {id: 3, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-04-09T10:00:00Z', comments: []}
+        ]
+      }
+    );
+
+    expect(getByRole('status')).toBeInTheDocument();
+    expect(getByRole('status')).toHaveClass(badgeStyles.resolved);
+  });
+
   it('counts a section\'s orphaned threads too', () => {
     const {getByRole} = renderThreadsBadge(
       <ThreadsBadge subjectType="Section" subjectId={1} />,

@@ -5,9 +5,9 @@ import CommentIcon from './images/comment.svg';
 import styles from './Badge.module.css';
 
 export const Badge = forwardRef(function Badge({
-  counter, mode, resolved, unread, label, onClick
+  counter, hasThreads = counter > 0, mode, resolved, unread, label, onClick
 }, ref) {
-  const variant = resolveVariant(mode, counter > 0, unread);
+  const variant = resolveVariant(mode, hasThreads, unread);
 
   if (!variant) {
     return null;

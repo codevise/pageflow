@@ -115,15 +115,36 @@ describe('comment activity', () => {
     expect(entry.queryActivityPanel()).toBeNull();
   });
 
-  it('reveals the thread of a clicked entry and closes the feed', () => {
+  it('reveals the subject of a clicked entry without leaving the feed', () => {
     const entry = renderEntryWithTwoThreads();
 
     fireEvent.click(entry.getActivityButton());
     fireEvent.click(entry.getByText('First topic'));
 
-    expect(entry.queryActivityPanel()).toBeNull();
+    expect(entry.getActivityPanel()).toBeInTheDocument();
     expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
-    expect(entry.getByText('First topic')).toBeInTheDocument();
+  });
+
+  // The row shows the thread already, so a popover would only say it
+  // twice and cover the content just revealed.
+  it('opens no popover for a clicked entry', () => {
+    const entry = renderEntryWithTwoThreads();
+
+    fireEvent.click(entry.getActivityButton());
+    fireEvent.click(entry.getByText('First topic'));
+
+    expect(entry.getAllByText('First topic')).toHaveLength(1);
+  });
+
+  it('opens the popover from the badge of a revealed subject', () => {
+    const entry = renderEntryWithTwoThreads();
+
+    fireEvent.click(entry.getActivityButton());
+    fireEvent.click(entry.getByText('First topic'));
+
+    fireEvent.click(entry.getAllCommentBadges()[0]);
+
+    expect(entry.getAllByText('First topic')).toHaveLength(2);
   });
 
   it('reveals a resolved thread without turning all of them on', () => {
