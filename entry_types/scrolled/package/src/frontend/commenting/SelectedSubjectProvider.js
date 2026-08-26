@@ -33,18 +33,7 @@ export function SelectedSubjectProvider({children}) {
     setSelectedSubject(null);
   }, []);
 
-  const goTo = useCallback(step => {
-    if (targets.length === 0) {
-      return;
-    }
-
-    const current = currentTargetIndex(targets, selectedSubject);
-    const next = current < 0
-      ? (step > 0 ? 0 : targets.length - 1)
-      : (current + step + targets.length) % targets.length;
-
-    const target = targets[next];
-
+  const selectTarget = useCallback(target => {
     // Activate the excursion the target lives in (or leave the current
     // one) before selecting it, so its popover can mount and open. Only
     // needed when moving to a different subject.
@@ -63,7 +52,20 @@ export function SelectedSubjectProvider({children}) {
       subjectRange: target.subjectRange,
       highlightedThreadId: target.threadId
     });
-  }, [targets, selectedSubject, activateExcursionOfSection, returnFromExcursion]);
+  }, [selectedSubject, activateExcursionOfSection, returnFromExcursion]);
+
+  const goTo = useCallback(step => {
+    if (targets.length === 0) {
+      return;
+    }
+
+    const current = currentTargetIndex(targets, selectedSubject);
+    const next = current < 0
+      ? (step > 0 ? 0 : targets.length - 1)
+      : (current + step + targets.length) % targets.length;
+
+    selectTarget(targets[next]);
+  }, [targets, selectedSubject, selectTarget]);
 
   const position = useMemo(
     () => currentTargetIndex(targets, selectedSubject) + 1,
