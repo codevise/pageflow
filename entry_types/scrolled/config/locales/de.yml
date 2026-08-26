@@ -1990,8 +1990,8 @@ de:
       hide_comments: Kommentare ausblenden
       show_comments: Kommentare einblenden
       show_comments_with_unread:
-        one: Kommentare einblenden (1 ungelesener Kommentar)
-        other: Kommentare einblenden (%{count} ungelesene Kommentare)
+        one: Kommentare einblenden (1 Thema mit neuer Aktivität)
+        other: Kommentare einblenden (%{count} Themen mit neuer Aktivität)
       comment_toolbar: Kommentare
       filter:
         label: Kommentare filtern

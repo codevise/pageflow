@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import classNames from 'classnames';
 
-import {useLocatedCommentThreads, useUnreadCommentCount} from 'pageflow-scrolled/review';
+import {useLocatedCommentThreads, useUnseenActivityCount} from 'pageflow-scrolled/review';
 import {useI18n} from '../i18n';
 import {useAddCommentMode} from './AddCommentModeProvider';
 import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
@@ -64,16 +64,15 @@ function HideCommentsButton() {
 function ShowCommentsButton() {
   const {t} = useI18n({locale: 'ui'});
   const {toggle} = useCommentingVisibility();
-  const {threads} = useLocatedCommentThreads();
 
-  const unreadCommentCount = useUnreadCommentCount(threads);
-  const unread = unreadCommentCount > 0;
+  const unseenCount = useUnseenActivityCount();
+  const unread = unseenCount > 0;
 
   // Named rather than only marked, since the dot is the sole cue that
   // comments are waiting behind the collapsed toolbar.
   const label = unread ?
                 t('pageflow_scrolled.review.show_comments_with_unread',
-                  {count: unreadCommentCount}) :
+                  {count: unseenCount}) :
                 t('pageflow_scrolled.review.show_comments');
 
   return (

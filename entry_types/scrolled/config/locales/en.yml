@@ -1818,8 +1818,8 @@ en:
       hide_comments: Hide comments
       show_comments: Show comments
       show_comments_with_unread:
-        one: Show comments (1 unread comment)
-        other: Show comments (%{count} unread comments)
+        one: Show comments (1 topic with new activity)
+        other: Show comments (%{count} topics with new activity)
       comment_toolbar: Comments
       filter:
         label: Filter comments
