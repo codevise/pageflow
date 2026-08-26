@@ -2001,10 +2001,10 @@ de:
       unread_comment_count:
         one: 1 ungelesener Kommentar
         other: '%{count} ungelesene Kommentare'
-      new_reply_count:
-        one: 1 neu
-        other: '%{count} neu'
-      new_replies: Neue Antworten
+      unread_reply_count:
+        one: 1 ungelesen
+        other: '%{count} ungelesen'
+      unread_replies: Ungelesene Antworten
       select_content_element: Zum Kommentieren auswählen
       select_section: Abschnitt zum Kommentieren auswählen
       select_text_to_comment: Text zum Kommentieren auswählen

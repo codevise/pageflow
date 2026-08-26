@@ -32,7 +32,7 @@
 /* Locates the new thread among several. Matches the badge dot, which
    carries the same meaning one level up. Straddles the corner so it
    stays clear of the chevron button inside it. */
-.newDot {
+.unreadDot {
   position: absolute;
   top: space(-1);
   right: space(-1);
@@ -49,18 +49,18 @@
   gap: space(2);
 }
 
-.newReplyCount::before {
+.unreadReplyCount::before {
   content: '·';
   margin-right: space(2);
   color: var(--ui-on-surface-color-light);
 }
 
-.newReplyCount {
+.unreadReplyCount {
   color: var(--ui-warning-color);
   font-weight: 600;
 }
 
-.newRepliesDivider {
+.unreadRepliesDivider {
   display: flex;
   align-items: center;
   gap: space(2);
@@ -68,8 +68,8 @@
   color: var(--ui-warning-color);
 }
 
-.newRepliesDivider::before,
-.newRepliesDivider::after {
+.unreadRepliesDivider::before,
+.unreadRepliesDivider::after {
   content: '';
   flex: 1;
   height: 1px;

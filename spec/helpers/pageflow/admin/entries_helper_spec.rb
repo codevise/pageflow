@@ -73,7 +73,7 @@ module Pageflow
           expect(result).to have_selector('span.entry_comments_indicator', text: '1')
         end
 
-        it 'names new topics and replies in the tooltip' do
+        it 'names unread topics and replies in the tooltip' do
           user = create(:user, unread_comments_since_at: 3.hours.ago)
           entry = create(:entry)
           thread = create(:comment_thread, revision: entry.draft)
@@ -83,7 +83,7 @@ module Pageflow
           result = render_indicator(entry, user)
 
           expect(result).to have_selector(
-            "[data-tooltip='Comments: 1 unresolved topic, 1 new topic, 1 new reply']"
+            "[data-tooltip='Comments: 1 unresolved topic, 1 unread topic, 1 unread reply']"
           )
         end
       end

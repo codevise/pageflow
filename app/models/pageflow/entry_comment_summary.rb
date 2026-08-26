@@ -7,7 +7,7 @@ module Pageflow
   #
   # @api private
   class EntryCommentSummary
-    attr_reader :topic_count, :new_topic_count, :new_reply_count
+    attr_reader :topic_count, :unread_topic_count, :unread_reply_count
 
     def self.for_entries(entries, user:)
       entries = entries.to_a
@@ -23,18 +23,18 @@ module Pageflow
       end
     end
 
-    def initialize(topic_count:, new_topic_count:, new_reply_count:)
+    def initialize(topic_count:, unread_topic_count:, unread_reply_count:)
       @topic_count = topic_count
-      @new_topic_count = new_topic_count
-      @new_reply_count = new_reply_count
+      @unread_topic_count = unread_topic_count
+      @unread_reply_count = unread_reply_count
     end
 
     def any?
       topic_count.positive?
     end
 
-    def new?
-      new_topic_count.positive? || new_reply_count.positive?
+    def unread?
+      unread_topic_count.positive? || unread_reply_count.positive?
     end
 
     # Comment threads live on the draft revision, so entries are reached
@@ -62,18 +62,20 @@ module Pageflow
     private_class_method :read_at_by_entry_id
 
     def self.build(threads, read_at:, user:)
-      new_topics = 0
-      new_replies = 0
+      unread_topics = 0
+      unread_replies = 0
 
       threads.each do |thread|
         first, *replies = thread.comments.sort_by(&:id)
         seen_up_to = [read_at[thread.perma_id], user.unread_comments_since_at].compact.max
 
-        new_topics += 1 if first && unread?(first, seen_up_to, user)
-        new_replies += replies.count { |reply| unread?(reply, seen_up_to, user) }
+        unread_topics += 1 if first && unread?(first, seen_up_to, user)
+        unread_replies += replies.count { |reply| unread?(reply, seen_up_to, user) }
       end
 
-      new(topic_count: threads.size, new_topic_count: new_topics, new_reply_count: new_replies)
+      new(topic_count: threads.size,
+          unread_topic_count: unread_topics,
+          unread_reply_count: unread_replies)
     end
     private_class_method :build
 

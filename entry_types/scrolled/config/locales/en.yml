@@ -1829,10 +1829,10 @@ en:
       unread_comment_count:
         one: 1 unread comment
         other: '%{count} unread comments'
-      new_reply_count:
-        one: 1 new
-        other: '%{count} new'
-      new_replies: New replies
+      unread_reply_count:
+        one: 1 unread
+        other: '%{count} unread'
+      unread_replies: Unread replies
       select_content_element: Select to comment
       select_section: Select section to comment
       select_text_to_comment: Select text to comment

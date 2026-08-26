@@ -5,13 +5,13 @@ import {useFakeTranslations} from 'pageflow/testHelpers';
 import {Thread} from 'review/Thread';
 import {renderWithReviewState} from 'support/renderWithReviewState';
 
-describe('Thread new replies divider', () => {
+describe('Thread unread replies divider', () => {
   useFakeTranslations({
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.reply_count.one': '1 reply',
     'pageflow_scrolled.review.reply_count.other': '%{count} replies',
     'pageflow_scrolled.review.toggle_replies': 'Toggle replies',
-    'pageflow_scrolled.review.new_replies': 'New replies'
+    'pageflow_scrolled.review.unread_replies': 'Unread replies'
   });
 
   const currentUser = {id: 42, name: 'Alice'};
@@ -45,7 +45,7 @@ describe('Thread new replies divider', () => {
   it('separates unseen replies from the ones already seen', () => {
     const {getByText} = render({commentThreadReads: {5: '2026-08-17T10:00:00.000Z'}});
 
-    const divider = getByText('New replies');
+    const divider = getByText('Unread replies');
     const seen = getByText('Older reply');
     const unseen = getByText('Newer reply');
 
@@ -58,14 +58,14 @@ describe('Thread new replies divider', () => {
   it('renders no divider when every reply has been seen', () => {
     const {queryByText} = render({commentThreadReads: {5: '2026-08-17T12:00:00.000Z'}});
 
-    expect(queryByText('New replies')).toBeNull();
+    expect(queryByText('Unread replies')).toBeNull();
   });
 
   // The thread's own marker already says the whole thread is new.
   it('renders no divider when the thread is new all through', () => {
     const {queryByText} = render();
 
-    expect(queryByText('New replies')).toBeNull();
+    expect(queryByText('Unread replies')).toBeNull();
   });
 
   it('renders no divider while replies are collapsed', () => {
@@ -78,7 +78,7 @@ describe('Thread new replies divider', () => {
       }
     );
 
-    expect(queryByText('New replies')).toBeNull();
+    expect(queryByText('Unread replies')).toBeNull();
   });
 
   it('renders no divider before the current user own replies', () => {
@@ -103,6 +103,6 @@ describe('Thread new replies divider', () => {
       }
     );
 
-    expect(queryByText('New replies')).toBeNull();
+    expect(queryByText('Unread replies')).toBeNull();
   });
 });
