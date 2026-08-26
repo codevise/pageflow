@@ -45,12 +45,20 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
           (soleThread(activeThreads) || soleThread(resolvedThreads))?.id
   );
   const [resolvedToggled, setResolvedToggled] = useState(null);
+  // A group highlight covers every thread of the subject; only one naming
+  // a single thread says the reviewer picked it out, which is what brings
+  // a resolved thread out of the fold.
+  const pickedThreadId = Array.isArray(highlightedThreadId) ? null : highlightedThreadId;
+
+  const revealsResolved =
+    !!expandResolved || resolvedThreads.some(thread => thread.id === pickedThreadId);
+
   const [formToggled, setFormToggled] = useState(
     showNewFormProp !== undefined ? showNewFormProp :
-    expandResolved ? noThreads : activeThreads.length === 0
+    revealsResolved ? noThreads : activeThreads.length === 0
   );
 
-  const showResolved = resolvedToggled !== null ? resolvedToggled : !!expandResolved;
+  const showResolved = resolvedToggled !== null ? resolvedToggled : revealsResolved;
 
   // An unsent draft reopens the form and keeps it open while the thread is
   // being created. Callers passing showNewForm={false} suppress the form

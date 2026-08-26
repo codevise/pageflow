@@ -7,6 +7,7 @@ import {useAddCommentMode} from './AddCommentModeProvider';
 import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
 import {useCommentingVisibility} from './CommentingVisibilityProvider';
 import {useCommentNavigation} from './SelectedSubjectProvider';
+import {ActivityButton} from './ActivityButton';
 
 import AddCommentIcon from './images/addComment.svg';
 import CancelCommentIcon from './images/cancelComment.svg';
@@ -38,6 +39,7 @@ export function FloatingToolbar() {
       <PositionIndicator />
       <ResolutionToggleButton />
       <NavigationArrows />
+      <ActivityButton />
       <HideCommentsButton />
       <AddCommentButton />
     </div>

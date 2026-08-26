@@ -48,6 +48,7 @@ export function Popover({
                       subjectId={subjectId}
                       subjectRange={subjectRange}
                       resolution={resolution}
+                      revealedThreadId={highlightedThreadId}
                       mode={isSelected ? 'active' : undefined}
                       onClick={handleBadgeClick} />
         {isSelected &&
@@ -96,6 +97,7 @@ function OpenThreadList({
       if (event.target.closest('[data-comment-highlight]')) return;
       if (event.target.closest('[data-comment-toolbar]')) return;
       if (event.target.closest('[data-comment-menu]')) return;
+      if (event.target.closest('[data-comment-activity]')) return;
 
       onDismiss();
     }

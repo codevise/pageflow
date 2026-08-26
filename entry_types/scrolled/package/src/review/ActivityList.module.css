@@ -54,6 +54,10 @@
   color: var(--ui-on-surface-color-light);
 }
 
+.dayHeading:first-child {
+  margin-top: var(--review-first-day-heading-margin-top, space(2));
+}
+
 .dayHeading::before,
 .dayHeading::after {
   content: '';

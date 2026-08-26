@@ -129,6 +129,25 @@ describe('ThreadList', () => {
     expect(highlighted).not.toContainElement(getByText('first'));
   });
 
+  // Its only thread is resolved, so the list would otherwise read as
+  // empty and offer to start a topic.
+  it('offers no new thread form while a resolved thread is highlighted', () => {
+    const {getByText, queryByPlaceholderText} = renderThreadList(
+      <ThreadList subjectType="ContentElement" subjectId={10} highlightedThreadId={2} />,
+      {
+        commentThreads: [
+          {id: 2, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-08-17T10:00:00.000Z', comments: [
+            {id: 20, body: 'Resolved topic', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    expect(getByText('Resolved topic')).toBeInTheDocument();
+    expect(queryByPlaceholderText('Add a comment...')).toBeNull();
+  });
+
   it('highlights every thread when highlightedThreadId is an array of ids', () => {
     const {container, getByText} = renderThreadList(
       <ThreadList subjectType="ContentElement" subjectId={10} highlightedThreadId={[1, 2]} />,

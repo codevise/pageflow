@@ -42,12 +42,14 @@ function CommentingEditableText({
   const {anchors, registerAnchor} = useRangeAnchors();
   const {contentElementPermaId} = useContentElementAttributes();
   const {active, deactivate, preselect, clearPreselection} = useAddCommentMode();
-  const {subjectRange, select} = useSelectedSubject('ContentElement', contentElementPermaId);
+  const {subjectRange, select, highlightedThreadId} =
+    useSelectedSubject('ContentElement', contentElementPermaId);
   const {resolution} = useCommentDisplayFilter();
   const threads = useCommentThreads({
     subjectType: 'ContentElement',
     subjectId: contentElementPermaId,
-    resolution
+    resolution,
+    revealedThreadId: highlightedThreadId
   });
 
   const highlights = useCommentHighlights(threads, subjectRange);

@@ -336,6 +336,28 @@ describe('EntryCommentsView', () => {
     expect(getByText('on other').closest('[aria-current="true"]')).toBeNull();
   });
 
+  it('keeps resolved threads folded away when an element is selected', () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, permaId: 10, typeName: 'image'}]
+    });
+    entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
+    entry.reviewSession = factories.reviewSession({
+      commentThreads: [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         comments: [{id: 10, body: 'still open', creatorName: 'A'}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 10,
+         resolvedAt: '2026-08-17T10:00:00.000Z',
+         comments: [{id: 20, body: 'already resolved', creatorName: 'B'}]}
+      ]
+    });
+
+    const view = new EntryCommentsView({entry, editor});
+    const {getByText, queryByText} = renderBackboneView(view);
+
+    expect(getByText('still open')).toBeInTheDocument();
+    expect(queryByText('already resolved')).not.toBeInTheDocument();
+  });
+
   it("falls back to highlightedThreadId when the selected element has commentThreadIdsAtSelection", () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'textBlock'}]

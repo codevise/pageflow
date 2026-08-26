@@ -14,7 +14,8 @@ const CommentNavigationContext = createContext({
   count: 0,
   position: 0,
   goToNext: () => {},
-  goToPrevious: () => {}
+  goToPrevious: () => {},
+  goToThread: () => {}
 });
 
 export function SelectedSubjectProvider({children}) {
@@ -24,9 +25,11 @@ export function SelectedSubjectProvider({children}) {
 
   const [selectedSubject, setSelectedSubject] = useState(null);
 
+  const allTargets = useMemo(() => navigableTargets(chapters), [chapters]);
+
   const targets = useMemo(
-    () => navigableTargets(chapters, resolution),
-    [chapters, resolution]
+    () => allTargets.filter(target => matchesResolution(target, resolution)),
+    [allTargets, resolution]
   );
 
   const clearSelection = useCallback(() => {
@@ -67,6 +70,18 @@ export function SelectedSubjectProvider({children}) {
     selectTarget(targets[next]);
   }, [targets, selectedSubject, selectTarget]);
 
+  // Searched among all targets rather than the filtered ones, so that a
+  // resolved thread stays reachable from lists that show it whatever the
+  // toolbar filters. Showing it is left to the selection: turning all
+  // resolved threads on for the sake of one changes the whole preview.
+  const goToThread = useCallback(threadId => {
+    const target = allTargets.find(target => target.threadId === threadId);
+
+    if (target) {
+      selectTarget(target);
+    }
+  }, [allTargets, selectTarget]);
+
   const position = useMemo(
     () => currentTargetIndex(targets, selectedSubject) + 1,
     [targets, selectedSubject]
@@ -82,8 +97,9 @@ export function SelectedSubjectProvider({children}) {
     count: targets.length,
     position,
     goToNext: () => goTo(1),
-    goToPrevious: () => goTo(-1)
-  }), [targets.length, position, goTo]);
+    goToPrevious: () => goTo(-1),
+    goToThread
+  }), [targets.length, position, goTo, goToThread]);
 
   return (
     <SelectedSubjectContext.Provider value={selection}>
@@ -132,7 +148,7 @@ function currentTargetIndex(targets, selectedSubject) {
   return targets.findIndex(target => target.key === key);
 }
 
-function navigableTargets(chapters, resolution) {
+function navigableTargets(chapters) {
   const targets = [];
 
   chapters.forEach(chapter => {
@@ -157,7 +173,7 @@ function navigableTargets(chapters, resolution) {
     });
   });
 
-  return targets.filter(target => matchesResolution(target, resolution));
+  return targets;
 }
 
 function pushTargets(targets, threads, location) {

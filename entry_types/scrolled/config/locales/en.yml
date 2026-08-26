@@ -1868,6 +1868,7 @@ en:
       no_threads_yet: No comments yet
       refers_to_deleted_element: Refers to a deleted element
       activity:
+        toggle: Latest activity
         summary:
           topic: topic started
           reply_count:

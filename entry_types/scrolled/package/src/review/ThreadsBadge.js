@@ -5,11 +5,12 @@ import {useLocatedCommentThreadsForSubject} from './useLocatedCommentThreadsForS
 import {useUnreadCommentCount} from './unreadComments';
 import {Badge} from './Badge';
 
-export function ThreadsBadge({subjectType, subjectId, subjectRange, onClick, mode, resolution = 'unresolved'}) {
+export function ThreadsBadge({subjectType, subjectId, subjectRange, onClick, mode, resolution = 'unresolved', revealedThreadId}) {
   const {t} = useI18n({locale: 'ui'});
 
-  const threads =
-    useLocatedCommentThreadsForSubject({subjectType, subjectId, subjectRange, resolution});
+  const threads = useLocatedCommentThreadsForSubject({
+    subjectType, subjectId, subjectRange, resolution, revealedThreadId
+  });
   const unresolvedThreads =
     useLocatedCommentThreadsForSubject({subjectType, subjectId, subjectRange, resolution: 'unresolved'});
 

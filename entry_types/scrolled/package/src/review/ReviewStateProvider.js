@@ -182,7 +182,9 @@ export function useCommentThread(threadId) {
   return context?.commentThreads.find(t => t.id === threadId);
 }
 
-export function useCommentThreads({subjectType, subjectId, subjectRange, resolution = 'all'} = {}) {
+export function useCommentThreads({
+  subjectType, subjectId, subjectRange, resolution = 'all', revealedThreadId
+} = {}) {
   const context = useContext(ReviewStateContext);
   const commentThreads = context ? context.commentThreads : [];
   const hasSubject = subjectType !== undefined;
@@ -196,9 +198,10 @@ export function useCommentThreads({subjectType, subjectId, subjectRange, resolut
                   thread.subjectId === subjectId &&
                   (!rangeKey ||
                    JSON.stringify(thread.subjectRange) === rangeKey))) &&
-                matchesResolution(thread, resolution)
+                (matchesResolution(thread, resolution) || thread.id === revealedThreadId)
     );
-  }, [commentThreads, hasSubject, subjectType, subjectId, subjectRange, resolution]);
+  }, [commentThreads, hasSubject, subjectType, subjectId, subjectRange, resolution,
+      revealedThreadId]);
 }
 
 export function matchesResolution(thread, resolution) {
