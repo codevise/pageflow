@@ -13,12 +13,14 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, subjectRange, filter, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, expandResolved, startCollapsed, markReadWhenHighlighted}) {
+export function ThreadList({subjectType, subjectId, subjectRange, filter, resolution, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, expandResolved, startCollapsed, markReadWhenHighlighted}) {
   const {t} = useI18n({locale: 'ui'});
 
   // Threads arrive already located: in display order, with orphans of
   // deleted content elements folded into their section on top and flagged.
   // The list only filters by the selection and splits resolved from active.
+  // `resolution` states which threads the surrounding filter lets through;
+  // without it, resolved threads stay listed behind a collapsed pill.
   const allActiveThreads =
     useLocatedCommentThreadsForSubject({subjectType, subjectId, subjectRange, resolution: 'unresolved'});
   const allResolvedThreads =
@@ -28,10 +30,22 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
     () => (filter ? allActiveThreads.filter(filter) : allActiveThreads),
     [allActiveThreads, filter]
   );
-  const resolvedThreads = useMemo(
-    () => (filter ? allResolvedThreads.filter(filter) : allResolvedThreads),
-    [allResolvedThreads, filter]
-  );
+
+  // A group highlight covers every thread of the subject; only one naming
+  // a single thread says the reviewer picked it out, which is what brings
+  // a resolved thread out of the fold.
+  const pickedThreadId = Array.isArray(highlightedThreadId) ? null : highlightedThreadId;
+
+  // A picked thread stays listed even where the filter hides resolved
+  // ones, so that following a comment from the activity feed does not
+  // lead to an empty list.
+  const resolvedThreads = useMemo(() => {
+    const threads = filter ? allResolvedThreads.filter(filter) : allResolvedThreads;
+
+    return resolution === 'unresolved' ?
+           threads.filter(thread => thread.id === pickedThreadId) :
+           threads;
+  }, [allResolvedThreads, filter, resolution, pickedThreadId]);
 
   const isHighlighted = thread => Array.isArray(highlightedThreadId) ?
                                   highlightedThreadId.includes(thread.id) :
@@ -45,13 +59,10 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
           (soleThread(activeThreads) || soleThread(resolvedThreads))?.id
   );
   const [resolvedToggled, setResolvedToggled] = useState(null);
-  // A group highlight covers every thread of the subject; only one naming
-  // a single thread says the reviewer picked it out, which is what brings
-  // a resolved thread out of the fold.
-  const pickedThreadId = Array.isArray(highlightedThreadId) ? null : highlightedThreadId;
 
   const revealsResolved =
-    !!expandResolved || resolvedThreads.some(thread => thread.id === pickedThreadId);
+    !!expandResolved || resolution === 'all' ||
+    resolvedThreads.some(thread => thread.id === pickedThreadId);
 
   const [formToggled, setFormToggled] = useState(
     showNewFormProp !== undefined ? showNewFormProp :

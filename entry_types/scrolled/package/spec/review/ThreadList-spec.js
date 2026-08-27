@@ -1130,6 +1130,63 @@ describe('ThreadList', () => {
       expect(queryByPlaceholderText('Add a comment...')).not.toBeInTheDocument();
     });
 
+    describe('with a resolution', () => {
+      const threads = [
+        {id: 1, subjectType: 'ContentElement', subjectId: 10,
+         resolvedAt: null,
+         comments: [{id: 10, body: 'Active thread', creatorName: 'Alice', creatorId: 1}]},
+        {id: 2, subjectType: 'ContentElement', subjectId: 10,
+         resolvedAt: '2026-04-09T10:00:00Z',
+         comments: [{id: 20, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2}]}
+      ];
+
+      it('omits resolved threads and their pill when listing unresolved ones', () => {
+        const {getByText, queryByText} = renderThreadList(
+          <ThreadList subjectType="ContentElement" subjectId={10} resolution="unresolved" />,
+          {commentThreads: threads}
+        );
+
+        expect(getByText('Active thread')).toBeInTheDocument();
+        expect(queryByText('Resolved thread')).not.toBeInTheDocument();
+        expect(queryByText('1 resolved')).not.toBeInTheDocument();
+      });
+
+      it('expands resolved threads when listing all', () => {
+        const {getByText} = renderThreadList(
+          <ThreadList subjectType="ContentElement" subjectId={10} resolution="all" />,
+          {commentThreads: threads}
+        );
+
+        expect(getByText('Active thread')).toBeInTheDocument();
+        expect(getByText('Resolved thread')).toBeInTheDocument();
+      });
+
+      it('folds resolved threads away again when the pill is clicked', async () => {
+        const user = userEvent.setup();
+
+        const {getByText, queryByText} = renderThreadList(
+          <ThreadList subjectType="ContentElement" subjectId={10} resolution="all" />,
+          {commentThreads: threads}
+        );
+
+        await user.click(getByText('1 resolved'));
+
+        expect(queryByText('Resolved thread')).not.toBeInTheDocument();
+      });
+
+      it('keeps a highlighted resolved thread while listing unresolved ones', () => {
+        const {getByText} = renderThreadList(
+          <ThreadList subjectType="ContentElement"
+                      subjectId={10}
+                      resolution="unresolved"
+                      highlightedThreadId={2} />,
+          {commentThreads: threads}
+        );
+
+        expect(getByText('Resolved thread')).toBeInTheDocument();
+      });
+    });
+
     it('still auto-shows the new form for only-resolved threads without expandResolved', () => {
       const {getByPlaceholderText, queryByText} = renderThreadList(
         <ThreadList subjectType="ContentElement" subjectId={10} />,
