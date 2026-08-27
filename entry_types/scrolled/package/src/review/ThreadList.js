@@ -99,6 +99,7 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
                   collapsed={expandedThreadId !== thread.id}
                   showUnreadMarker={activeThreads.length > 1}
                   onToggle={() => toggleThread(thread.id)}
+                  onReply={() => setExpandedThreadId(thread.id)}
                   onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: true})}
                   onClick={onThreadClick && (() => onThreadClick(thread))}
                   highlighted={isHighlighted(thread)}
@@ -120,6 +121,7 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
                       collapsed={expandedThreadId !== thread.id}
                       showUnreadMarker={resolvedThreads.length > 1}
                       onToggle={() => toggleThread(thread.id)}
+                      onReply={() => setExpandedThreadId(thread.id)}
                       onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: false})}
                       onClick={onThreadClick && (() => onThreadClick(thread))}
                       highlighted={isHighlighted(thread)}

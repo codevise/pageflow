@@ -844,6 +844,45 @@ describe('ThreadList', () => {
       postMessage.mockRestore();
     });
 
+    it('expands the thread that was replied to', async () => {
+      const user = userEvent.setup();
+
+      const {getByPlaceholderText, getByRole} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+              {id: 10, body: 'First topic', creatorName: 'Bob', creatorId: 2},
+              {id: 11, body: 'A reply', creatorName: 'Alice', creatorId: 1},
+              {id: 12, body: 'Another reply', creatorName: 'Bob', creatorId: 2}
+            ]},
+            {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+              {id: 20, body: 'Second topic', creatorName: 'Eve', creatorId: 3}
+            ]}
+          ]
+        }
+      );
+
+      await user.type(getByPlaceholderText('Reply...'), 'My reply');
+      await user.click(getByRole('button', {name: 'Send'}));
+
+      postDraftsChange({});
+      postThreadChange({
+        id: 2,
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        comments: [
+          {id: 20, body: 'Second topic', creatorName: 'Eve', creatorId: 3},
+          {id: 21, body: 'My reply', creatorName: 'Alice', creatorId: 1}
+        ]
+      });
+
+      await waitFor(() =>
+        expect(getByRole('button', {name: /1 reply/}))
+          .toHaveAttribute('aria-expanded', 'true')
+      );
+    });
+
     it('includes the quote of the thread range in create comment message', async () => {
       const user = userEvent.setup();
       const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});

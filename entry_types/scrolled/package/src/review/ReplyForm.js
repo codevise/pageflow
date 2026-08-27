@@ -10,7 +10,7 @@ import SendIcon from './images/send.svg';
 import SpinnerIcon from './images/spinner.svg';
 import styles from './ReplyForm.module.css';
 
-export function ReplyForm({threadId, subjectType, subjectId, subjectRange}) {
+export function ReplyForm({threadId, subjectType, subjectId, subjectRange, onSubmit}) {
   const {t} = useI18n({locale: 'ui'});
 
   const {body, setBody, submitting} = useDraftedBody({threadId});
@@ -41,6 +41,8 @@ export function ReplyForm({threadId, subjectType, subjectId, subjectRange}) {
     if (!hasText || submitting) return;
 
     createComment(body);
+
+    if (onSubmit) onSubmit();
   }
 
   return (

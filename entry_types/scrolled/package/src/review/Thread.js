@@ -19,7 +19,7 @@ import ResolveIcon from './images/resolve.svg';
 import UnresolveIcon from './images/unresolve.svg';
 import styles from './Thread.module.css';
 
-export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onExpandReplies, onToggle, onResolve, onClick, highlighted, showUnreadMarker, interactive = true}) {
+export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onExpandReplies, onToggle, onReply, onResolve, onClick, highlighted, showUnreadMarker, interactive = true}) {
   const {t} = useI18n({locale: 'ui'});
   const firstComment = thread.comments[0];
   const replies = thread.comments.slice(1);
@@ -159,7 +159,8 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
         <ReplyForm threadId={thread.id}
                    subjectType={thread.subjectType}
                    subjectId={thread.subjectId}
-                   subjectRange={thread.subjectRange} />}
+                   subjectRange={thread.subjectRange}
+                   onSubmit={onReply} />}
 
       {(thread.resolvedAt || (interactive && onResolve && !repliesCollapsed)) &&
         <div className={styles.resolveRow}>
