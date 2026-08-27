@@ -93,6 +93,45 @@ describe('Thread unread markers', () => {
     });
   });
 
+  describe('outline on the thread', () => {
+    function outlined(container) {
+      return container.querySelector(`.${styles.unreadTopic}`);
+    }
+
+    it('outlines a thread whose topic is unseen', () => {
+      const {container} = render(<Thread thread={thread} showUnreadMarker />);
+
+      expect(outlined(container)).not.toBeNull();
+    });
+
+    it('leaves a thread whose replies are unseen unoutlined', () => {
+      const {container} = render(
+        <Thread thread={threadWithReplies} showUnreadMarker />,
+        {
+          commentThreads: [threadWithReplies],
+          commentThreadReads: {5: '2026-08-17T10:00:00.000Z'}
+        }
+      );
+
+      expect(outlined(container)).toBeNull();
+    });
+
+    it('leaves a thread without unseen comments unoutlined', () => {
+      const {container} = render(
+        <Thread thread={thread} showUnreadMarker />,
+        {commentThreadReads: {5: '2026-08-17T12:00:00.000Z'}}
+      );
+
+      expect(outlined(container)).toBeNull();
+    });
+
+    it('leaves a thread shown on its own unoutlined', () => {
+      const {container} = render(<Thread thread={thread} />);
+
+      expect(outlined(container)).toBeNull();
+    });
+  });
+
   describe('new reply count', () => {
     it('counts unseen replies hidden by collapsing', () => {
       const {getByText} = render(

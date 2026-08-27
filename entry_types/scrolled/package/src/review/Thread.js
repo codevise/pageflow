@@ -48,6 +48,7 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
 
   const unreadReplyCount = replies.filter(reply => unreadIds.has(reply.id)).length;
   const hidesUnreadReplies = repliesCollapsed && unreadReplyCount > 0;
+  const unreadTopic = !!firstComment && unreadIds.has(firstComment.id);
 
   // Where the unseen part of the thread starts. Only meaningful with
   // seen comments above it: a thread that is new all through says so
@@ -106,6 +107,7 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
     <div ref={ref}
          className={classNames(styles.thread, {
            [styles.highlighted]: highlighted,
+           [styles.unreadTopic]: showUnreadMarker && unreadTopic,
            [styles.clickable]: onClick
          })}
          onClick={onClick}

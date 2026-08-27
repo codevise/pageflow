@@ -30,6 +30,14 @@
   --review-thread-box-shadow: 0 0 0 space(1) var(--ui-accent-color-lighter);
 }
 
+/* Ties the specificity of the hover and highlight borders, so it has to
+   stay below them to win. */
+.thread.unreadTopic,
+.thread.unreadTopic:hover {
+  --thread-border-color: var(--ui-warning-color-lighter);
+  border-color: var(--thread-border-color);
+}
+
 /* Locates the new thread among several. Matches the badge dot, which
    carries the same meaning one level up. Straddles the corner so it
    stays clear of the menu button inside it. */
