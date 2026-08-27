@@ -116,6 +116,54 @@ describe('inline editing EditableText comment badges', () => {
     expect(badge.isActive()).toBe(true);
   });
 
+  it('keeps the badge of an overlapped thread after a resolved thread is revealed', async () => {
+    const value = [{type: 'paragraph', children: [{text: 'Alpha beta gamma delta'}]}];
+
+    function range(start, end) {
+      return {anchor: {path: [0, 0], offset: start}, focus: {path: [0, 0], offset: end}};
+    }
+
+    function selectThread(threadId) {
+      act(() => {
+        window.dispatchEvent(new MessageEvent('message', {
+          data: {type: 'SELECT_COMMENT_THREAD', payload: {threadId}},
+          origin: window.location.origin
+        }));
+      });
+    }
+
+    const entry = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true, customSelectionRect: true}
+      },
+      commenting: {
+        currentUser: null,
+        commentThreads: [
+          {id: 5, subjectType: 'ContentElement', subjectId: 10, subjectRange: range(0, 5),
+           comments: [{id: 1, body: 'a', creatorName: 'Alice', creatorId: 1}]},
+          {id: 6, subjectType: 'ContentElement', subjectId: 10, subjectRange: range(6, 16),
+           comments: [{id: 2, body: 'b', creatorName: 'Bob', creatorId: 2}]},
+          {id: 7, subjectType: 'ContentElement', subjectId: 10, subjectRange: range(17, 22),
+           comments: [{id: 3, body: 'c', creatorName: 'Carol', creatorId: 3}]},
+          {id: 8, subjectType: 'ContentElement', subjectId: 10, subjectRange: range(8, 12),
+           resolvedAt: '2026-06-01T00:00:00Z',
+           comments: [{id: 4, body: 'r', creatorName: 'Dave', creatorId: 4}]}
+        ]
+      }
+    });
+
+    expect(entry.queryAllCommentBadges()).toHaveLength(3);
+
+    selectThread(8);
+    await waitFor(() => expect(entry.queryAllCommentBadges()).toHaveLength(4));
+
+    selectThread(5);
+    await waitFor(() => expect(entry.queryAllCommentBadges()[0].isActive()).toBe(true));
+
+    expect(entry.queryAllCommentBadges()).toHaveLength(3);
+  });
+
   it('renders sibling badge in regular mode when in same block as highlighted thread', () => {
     const value = [
       {type: 'paragraph', children: [{text: 'First paragraph with two threads'}]},

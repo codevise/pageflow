@@ -10,9 +10,19 @@ export function useRangeAnchors() {
   const elements = useRef(new Map());
   const [version, setVersion] = useState(0);
 
-  const registerAnchor = useCallback((rangeKey, el) => {
-    if (el) {
-      elements.current.set(rangeKey, el);
+  // Several elements can carry the same range key: Slate splits a
+  // decorated range wherever another decoration overlaps it, and every
+  // piece keeps the key. Unregistering by key alone would let a piece
+  // going away drop the anchor the remaining pieces still provide.
+  const registerAnchor = useCallback((rangeKey, el, mounted = true) => {
+    if (!el) return;
+
+    const registered = elements.current.get(rangeKey) || [];
+    const remaining = mounted ? [...registered, el] :
+                                registered.filter(other => other !== el);
+
+    if (remaining.length) {
+      elements.current.set(rangeKey, remaining);
     }
     else {
       elements.current.delete(rangeKey);
@@ -33,9 +43,13 @@ export function RangeAnchor({rangeKey, onRegister, children}) {
   const ref = useRef(null);
 
   useEffect(() => {
-    onRegister(rangeKey, ref.current);
+    // Read here rather than in the cleanup, which runs once React has
+    // detached the ref.
+    const el = ref.current;
 
-    return () => onRegister(rangeKey, null);
+    onRegister(rangeKey, el);
+
+    return () => onRegister(rangeKey, el, false);
   }, [rangeKey, onRegister]);
 
   return <span ref={ref}>{children}</span>;
@@ -63,16 +77,24 @@ export function useAnchoredFloating(rangeKey, anchors, {
   });
 
   useEffect(() => {
-    const el = anchors._elements.current.get(rangeKey);
+    const registered = anchors._elements.current.get(rangeKey);
 
-    if (el) {
-      refs.setReference(el);
+    if (registered) {
+      refs.setReference(firstInDocument(registered));
     }
   }, [refs, anchors, rangeKey, anchors._version]);
 
   const fits = middlewareData.alignToContainerEdge?.fits;
 
   return {refs, floatingStyles, placement: resolvedPlacement, isPositioned, hasAnchor, fits};
+}
+
+// The pieces of a split range are all anchors for it, but the badge
+// belongs beside where the range starts.
+function firstInDocument(elements) {
+  return elements.reduce((first, el) =>
+    first.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_PRECEDING ? el : first
+  );
 }
 
 export function alignToContainerEdge(containerRef, {
