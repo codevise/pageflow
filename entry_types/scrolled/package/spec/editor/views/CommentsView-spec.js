@@ -7,7 +7,7 @@ import styles from 'editor/views/CommentsView.module.css';
 
 import {factories, useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
-import {fireEvent} from '@testing-library/dom';
+import {fireEvent, within} from '@testing-library/dom';
 import {act} from '@testing-library/react';
 
 function unselectedEntry(createEntry) {
@@ -30,6 +30,9 @@ describe('CommentsView', () => {
     'pageflow_scrolled.editor.comments_view.tabs.selection': 'For selection',
     'pageflow_scrolled.editor.comments_view.new_thread': 'New topic',
     'pageflow_scrolled.editor.comments_view.activity': 'Latest activity',
+    'pageflow_scrolled.editor.comments_view.filter.label': 'Filter comments',
+    'pageflow_scrolled.editor.comments_view.filter.unresolved': 'Unresolved topics',
+    'pageflow_scrolled.editor.comments_view.filter.all': 'All topics',
     'pageflow.editor.templates.back_button_decorator.outline': 'Outline'
   });
 
@@ -192,6 +195,49 @@ describe('CommentsView', () => {
     expect(listener).toHaveBeenCalledWith({
       subjectId: 50,
       subjectType: 'Section'
+    });
+  });
+
+  describe('resolution filter', () => {
+    let menuContainer;
+
+    beforeEach(() => {
+      menuContainer = document.createElement('div');
+      menuContainer.id = 'editor_menu_container';
+      document.body.appendChild(menuContainer);
+    });
+
+    afterEach(() => {
+      menuContainer.remove();
+    });
+
+    function renderMenu(entry) {
+      renderBackboneView(new CommentsView({entry, editor}));
+
+      return within(menuContainer);
+    }
+
+    it('checks the menu item of the resolution the filter is set to', () => {
+      const entry = setupEntry();
+      entry.commentDisplayFilter.set('resolution', 'all');
+
+      const {getByRole} = renderMenu(entry);
+
+      expect(getByRole('link', {name: 'All topics'}).closest('li'))
+        .toHaveClass('is_checked');
+      expect(getByRole('link', {name: 'Unresolved topics'}).closest('li'))
+        .not.toHaveClass('is_checked');
+    });
+
+    it('sets the resolution when a menu item is clicked', () => {
+      const entry = setupEntry();
+
+      const {getByRole} = renderMenu(entry);
+      fireEvent.click(getByRole('link', {name: 'All topics'}));
+
+      expect(entry.commentDisplayFilter.get('resolution')).toEqual('all');
+      expect(getByRole('link', {name: 'All topics'}).closest('li'))
+        .toHaveClass('is_checked');
     });
   });
 

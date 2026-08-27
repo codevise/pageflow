@@ -1,5 +1,7 @@
 export {review} from './api';
-export {ReviewStateProvider, useCommentThreads, useCommentThread} from './ReviewStateProvider';
+export {
+  ReviewStateProvider, useCommentThreads, useCommentThread, matchesResolution
+} from './ReviewStateProvider';
 export {LocatedCommentThreadsProvider, useLocatedCommentThreads} from './useLocatedCommentThreads';
 export {useLocatedCommentThreadsForSubject} from './useLocatedCommentThreadsForSubject';
 export {

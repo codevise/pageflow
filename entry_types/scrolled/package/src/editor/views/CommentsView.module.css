@@ -26,10 +26,17 @@
 
 /* Rides the tab bar at its far end. The bar is the scroller's containing
    block, and its tab list is absolutely positioned for the same reason. */
-.activityButton {
+.controls {
   position: absolute;
   top: 0;
   right: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.activityButton {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;

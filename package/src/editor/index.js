@@ -10,6 +10,7 @@ export * from './base';
 
 export * from './utils/entryTypeEditorControllerUrls';
 export * from './utils/filesPath';
+export * from './utils/localStorage';
 export * from './utils/formDataUtils';
 export * from './utils/stylesheet';
 

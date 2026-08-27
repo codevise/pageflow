@@ -31,6 +31,10 @@ export function useEditorGlobals({fileTypes = []} = {}) {
 
   beforeEach(() => {
     window.I18n = I18n;
+
+    // Entries read remembered editor settings (e.g. which comment
+    // resolutions to display) from local storage on creation.
+    window.localStorage.clear();
   });
 
   return {

@@ -1643,6 +1643,10 @@ de:
         comments: Kommentare
       comments_view:
         activity: Letzte Aktivität
+        filter:
+          all: Alle Themen
+          label: Kommentare filtern
+          unresolved: Ungelöste Themen
         new_thread: Neues Thema
         section: Abschnitt
         tabs:

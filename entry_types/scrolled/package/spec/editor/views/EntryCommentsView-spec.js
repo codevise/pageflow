@@ -32,6 +32,8 @@ describe('EntryCommentsView', () => {
     'pageflow_scrolled.editor.chapter_item.chapter': 'Chapter',
     'pageflow_scrolled.editor.chapter_item.excursion': 'Excursion',
     'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element',
+    'pageflow_scrolled.review.resolved_count.one': '1 resolved',
+    'pageflow_scrolled.review.resolved_count.other': '%{count} resolved',
     'pageflow_scrolled.review.reply_count.one': '1 reply',
     'pageflow_scrolled.review.reply_count.other': '%{count} replies'
   });
@@ -394,7 +396,7 @@ describe('EntryCommentsView', () => {
     expect(getByText('on other').closest('[aria-current="true"]')).toBeNull();
   });
 
-  it('keeps resolved threads folded away when an element is selected', () => {
+  it('keeps resolved threads out of the list when an element is selected', () => {
     const entry = createEntry({
       contentElements: [{id: 1, permaId: 10, typeName: 'image'}]
     });
@@ -679,6 +681,100 @@ describe('EntryCommentsView', () => {
 
     expect(orphan.compareDocumentPosition(sectionThread) &
            Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  describe('resolution filter', () => {
+    function createEntryWithResolvedThread() {
+      const entry = createEntry({
+        chapters: [
+          {id: 1, permaId: 10, storylineId: 1000, position: 0,
+           configuration: {title: 'Intro'}}
+        ],
+        sections: [{id: 1, permaId: 100, chapterId: 1, position: 0}],
+        contentElements: [
+          {id: 1, permaId: 1000, sectionId: 1, typeName: 'textBlock', position: 0},
+          {id: 2, permaId: 2000, sectionId: 1, typeName: 'image', position: 1}
+        ]
+      });
+      entry.reviewSession = factories.reviewSession({
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 1000,
+           comments: [{id: 10, body: 'still open', creatorName: 'Alice'}]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 2000,
+           resolvedAt: '2026-08-17T10:00:00.000Z',
+           comments: [{id: 20, body: 'already resolved', creatorName: 'Bob'}]}
+        ]
+      });
+
+      return entry;
+    }
+
+    it('omits resolved threads and their pill while showing unresolved ones', () => {
+      const entry = createEntryWithResolvedThread();
+
+      const {getByText, queryByText} = renderBackboneView(
+        new EntryCommentsView({entry, editor})
+      );
+
+      expect(getByText('still open')).toBeInTheDocument();
+      expect(queryByText('already resolved')).not.toBeInTheDocument();
+      expect(queryByText('1 resolved')).not.toBeInTheDocument();
+    });
+
+    it('leaves out the group of an element whose threads are all resolved', () => {
+      const entry = createEntryWithResolvedThread();
+
+      const {getByText, queryByText} = renderBackboneView(
+        new EntryCommentsView({entry, editor})
+      );
+
+      expect(getByText('Text')).toBeInTheDocument();
+      expect(queryByText('Image')).not.toBeInTheDocument();
+    });
+
+    it('leaves out the heading of a chapter whose threads are all resolved', () => {
+      const entry = createEntryWithResolvedThread();
+      entry.reviewSession = factories.reviewSession({
+        commentThreads: [
+          {id: 2, subjectType: 'ContentElement', subjectId: 2000,
+           resolvedAt: '2026-08-17T10:00:00.000Z',
+           comments: [{id: 20, body: 'already resolved', creatorName: 'Bob'}]}
+        ]
+      });
+
+      const {queryByText} = renderBackboneView(
+        new EntryCommentsView({entry, editor})
+      );
+
+      expect(queryByText('Intro')).not.toBeInTheDocument();
+    });
+
+    it('lists resolved threads while showing all', () => {
+      const entry = createEntryWithResolvedThread();
+      entry.commentDisplayFilter.set('resolution', 'all');
+
+      const {getByText} = renderBackboneView(
+        new EntryCommentsView({entry, editor})
+      );
+
+      expect(getByText('still open')).toBeInTheDocument();
+      expect(getByText('already resolved')).toBeInTheDocument();
+      expect(getByText('Image')).toBeInTheDocument();
+    });
+
+    it('follows the filter while the reviewer changes it', () => {
+      const entry = createEntryWithResolvedThread();
+
+      const {getByText, queryByText} = renderBackboneView(
+        new EntryCommentsView({entry, editor})
+      );
+
+      expect(queryByText('already resolved')).not.toBeInTheDocument();
+
+      act(() => { entry.commentDisplayFilter.set('resolution', 'all'); });
+
+      expect(getByText('already resolved')).toBeInTheDocument();
+    });
   });
 
   it('highlights all threads of the selected section', () => {
