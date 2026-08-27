@@ -8,11 +8,13 @@ const CommentThreadReadsSnapshotContext = createContext(null);
 // derived from live read state would disappear from under the reviewer
 // mid-read. Displaying threads therefore freezes read state for as long
 // as they are shown: markers hold still until the list goes away, and
-// the next visit reflects what was read.
+// the next visit reflects what was read. Passing `resetOn` freezes anew
+// whenever the value changes, for scopes that outlive what the reviewer
+// is reading.
 //
 // Nesting reuses the outermost snapshot, so a list rendered inside an
 // already frozen scope keeps that scope's idea of what is new.
-export function CommentThreadReadsSnapshot({enabled = true, children}) {
+export function CommentThreadReadsSnapshot({enabled = true, resetOn, children}) {
   const outerSnapshot = useContext(CommentThreadReadsSnapshotContext);
   const liveReads = useCommentThreadReads();
 
@@ -20,6 +22,13 @@ export function CommentThreadReadsSnapshot({enabled = true, children}) {
   // Freezing before that would keep every thread marked new.
   const currentUser = useCurrentUser();
   const snapshot = useRef(null);
+
+  const lastResetOn = useRef(resetOn);
+
+  if (resetOn !== lastResetOn.current) {
+    lastResetOn.current = resetOn;
+    snapshot.current = null;
+  }
 
   if (!enabled) {
     snapshot.current = null;

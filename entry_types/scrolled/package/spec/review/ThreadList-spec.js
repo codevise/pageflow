@@ -7,6 +7,7 @@ import {useFakeTranslations} from 'pageflow/testHelpers';
 import {ThreadList} from 'review/ThreadList';
 import {
   postReviewStateDraftsChangeMessage,
+  postReviewStateReadsChangeMessage,
   postReviewStateThreadChangeMessage
 } from 'review/postMessage';
 import {review} from 'review/api';
@@ -46,7 +47,9 @@ describe('ThreadList', () => {
     'pageflow_scrolled.review.resolved_count.one': '1 resolved',
     'pageflow_scrolled.review.resolved_count.other': '%{count} resolved',
     'pageflow_scrolled.review.no_threads_yet': 'No comments yet',
-    'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element'
+    'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element',
+    'pageflow_scrolled.review.unread_comment_count.one': '1 unread comment',
+    'pageflow_scrolled.review.unread_comment_count.other': '%{count} unread comments'
   });
 
   afterEach(() => {
@@ -331,6 +334,58 @@ describe('ThreadList', () => {
     );
 
     expect(getByText('B')).toBeInTheDocument();
+  });
+
+  describe('unread markers', () => {
+    const currentUser = {id: 42, name: 'Alice'};
+
+    // The reply is the reviewer's own, so each thread has exactly one
+    // unseen comment and the toggle to expand it.
+    function thread(id, permaId, body) {
+      return {
+        id, permaId, subjectType: 'ContentElement', subjectId: 10,
+        comments: [
+          {id: id * 10, body, creatorName: 'Bob', creatorId: 43,
+           createdAt: '2026-08-17T11:00:00.000Z'},
+          {id: id * 10 + 1, body: 'A reply', creatorName: 'Alice', creatorId: 42,
+           createdAt: '2026-08-17T11:30:00.000Z'}
+        ]
+      };
+    }
+
+    const commentThreads = [thread(1, 5, 'First topic'), thread(2, 6, 'Second topic')];
+
+    async function postReadsChange(reads) {
+      await act(async () => {
+        postReviewStateReadsChangeMessage(window, reads);
+        await new Promise(resolve => setTimeout(resolve, 0));
+      });
+    }
+
+    it('holds a thread marked while the list stays as it is', async () => {
+      const {queryAllByLabelText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {currentUser, commentThreads, commentThreadReads: {}}
+      );
+
+      await postReadsChange({5: '2026-08-17T12:00:00.000Z'});
+
+      expect(queryAllByLabelText('1 unread comment')).toHaveLength(2);
+    });
+
+    it('drops the marker of a thread once another one is expanded', async () => {
+      const user = userEvent.setup();
+
+      const {getAllByRole, queryAllByLabelText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {currentUser, commentThreads, commentThreadReads: {}}
+      );
+
+      await postReadsChange({5: '2026-08-17T12:00:00.000Z'});
+      await user.click(getAllByRole('button', {name: /1 reply/})[1]);
+
+      expect(queryAllByLabelText('1 unread comment')).toHaveLength(1);
+    });
   });
 
   it('collapses threads when more than one exists', () => {

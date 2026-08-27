@@ -71,7 +71,7 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
   }
 
   return (
-    <CommentThreadReadsSnapshot>
+    <CommentThreadReadsSnapshot resetOn={expandedThreadId}>
       <div className={styles.container}>
         {!showNewForm && !hideNewTopicButton &&
           <button className={classNames(styles.newTopicButton,

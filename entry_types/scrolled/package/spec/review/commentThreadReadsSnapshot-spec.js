@@ -90,6 +90,45 @@ describe('CommentThreadReadsSnapshot', () => {
     expect(reads(getByTestId)).toEqual({5: '2026-08-17T10:00:00.000Z'});
   });
 
+  it('freezes anew when resetOn changes', async () => {
+    const {getByTestId, rerender} = renderWithReviewState(
+      <CommentThreadReadsSnapshot resetOn={1}>
+        <DisplayedReads />
+      </CommentThreadReadsSnapshot>,
+      {currentUser, commentThreads, commentThreadReads: {5: '2026-08-17T10:00:00.000Z'}}
+    );
+
+    await postReadsChange({5: '2026-08-17T12:00:00.000Z'});
+    expect(reads(getByTestId)).toEqual({5: '2026-08-17T10:00:00.000Z'});
+
+    rerender(
+      <CommentThreadReadsSnapshot resetOn={2}>
+        <DisplayedReads />
+      </CommentThreadReadsSnapshot>
+    );
+
+    expect(reads(getByTestId)).toEqual({5: '2026-08-17T12:00:00.000Z'});
+  });
+
+  it('holds still while resetOn stays the same', async () => {
+    const {getByTestId, rerender} = renderWithReviewState(
+      <CommentThreadReadsSnapshot resetOn={1}>
+        <DisplayedReads />
+      </CommentThreadReadsSnapshot>,
+      {currentUser, commentThreads, commentThreadReads: {5: '2026-08-17T10:00:00.000Z'}}
+    );
+
+    await postReadsChange({5: '2026-08-17T12:00:00.000Z'});
+
+    rerender(
+      <CommentThreadReadsSnapshot resetOn={1}>
+        <DisplayedReads />
+      </CommentThreadReadsSnapshot>
+    );
+
+    expect(reads(getByTestId)).toEqual({5: '2026-08-17T10:00:00.000Z'});
+  });
+
   it('reuses the outer snapshot when nested', async () => {
     const {getByTestId} = renderWithReviewState(
       <CommentThreadReadsSnapshot>
