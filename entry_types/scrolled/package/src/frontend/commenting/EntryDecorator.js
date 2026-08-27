@@ -5,21 +5,26 @@ import {createReviewSession} from 'pageflow/review';
 import {
   ReviewStateProvider,
   ReviewMessageHandler,
-  LocatedCommentThreadsProvider
+  LocatedCommentThreadsProvider,
+  CommentDisplayFilterProvider,
+  useStoredCommentDisplayFilter
 } from 'pageflow-scrolled/review';
 import {AddCommentModeProvider} from './AddCommentModeProvider';
-import {CommentDisplayFilterProvider} from './CommentDisplayFilterProvider';
 import {CommentingVisibilityProvider} from './CommentingVisibilityProvider';
 import {SelectedSubjectProvider} from './SelectedSubjectProvider';
 import {FloatingToolbar} from './FloatingToolbar';
 
+const resolutionStorageKey = 'pageflow.scrolled.commentsResolution';
+
 export function EntryDecorator({commentingInitialState, children}) {
+  const commentDisplayFilter = useStoredCommentDisplayFilter(resolutionStorageKey);
+
   return (
     <ReviewStateProvider initialState={commentingInitialState}>
       <ReviewSessionSetup initialState={commentingInitialState} />
       <LocatedCommentThreadsProvider>
         <CommentingVisibilityProvider>
-          <CommentDisplayFilterProvider>
+          <CommentDisplayFilterProvider {...commentDisplayFilter}>
             <SelectedSubjectProvider>
               <AddCommentModeProvider>
                 {children}

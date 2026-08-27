@@ -1,10 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import {useLocatedCommentThreadsForSubject} from 'pageflow-scrolled/review';
+import {
+  useCommentDisplayFilter, useLocatedCommentThreadsForSubject
+} from 'pageflow-scrolled/review';
 import {useI18n} from '../i18n';
 import {useAddCommentMode} from './AddCommentModeProvider';
-import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
 import {useCommentingVisibility} from './CommentingVisibilityProvider';
 import {useSelectedSubject} from './SelectedSubjectProvider';
 import {Popover} from './Popover';

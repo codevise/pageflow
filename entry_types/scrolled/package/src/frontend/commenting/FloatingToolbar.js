@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
 import classNames from 'classnames';
 
-import {useLocatedCommentThreads, useUnreadThreadCount} from 'pageflow-scrolled/review';
+import {
+  useCommentDisplayFilter, useLocatedCommentThreads, useUnreadThreadCount
+} from 'pageflow-scrolled/review';
 import {useI18n} from '../i18n';
 import {useAddCommentMode} from './AddCommentModeProvider';
-import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
 import {useCommentingVisibility} from './CommentingVisibilityProvider';
 import {useCommentNavigation} from './SelectedSubjectProvider';
 import {ActivityButton} from './ActivityButton';

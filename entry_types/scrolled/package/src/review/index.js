@@ -2,6 +2,11 @@ export {review} from './api';
 export {ReviewStateProvider, useCommentThreads, useCommentThread} from './ReviewStateProvider';
 export {LocatedCommentThreadsProvider, useLocatedCommentThreads} from './useLocatedCommentThreads';
 export {useLocatedCommentThreadsForSubject} from './useLocatedCommentThreadsForSubject';
+export {
+  CommentDisplayFilterProvider,
+  useCommentDisplayFilter,
+  useStoredCommentDisplayFilter
+} from './CommentDisplayFilterProvider';
 export {ReviewMessageHandler} from './ReviewMessageHandler';
 export {watchUnreadComments} from './watchUnreadComments';
 export {useUnreadActivityCount} from './unreadActivity';
