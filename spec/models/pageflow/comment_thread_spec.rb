@@ -2,6 +2,19 @@ require 'spec_helper'
 
 module Pageflow
   describe CommentThread do
+    describe '#comments' do
+      # Clients read position as meaning: the first comment is the topic
+      # and the rest are replies. Without an order that rests on how the
+      # database happens to return rows.
+      it 'are ordered by id' do
+        thread = create(:comment_thread)
+        second = create(:comment, comment_thread: thread, id: 5)
+        first = create(:comment, comment_thread: thread, id: 3)
+
+        expect(thread.reload.comments.map(&:id)).to eq([first.id, second.id])
+      end
+    end
+
     describe '.migrate_to_subject' do
       it 'updates subject_id of matching threads' do
         revision = create(:revision)

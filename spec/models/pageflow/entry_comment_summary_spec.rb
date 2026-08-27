@@ -36,7 +36,7 @@ module Pageflow
         expect(summary_for(entry, user).topic_count).to eq(0)
       end
 
-      it 'counts threads whose first comment is unseen as new topics' do
+      it 'counts threads whose first comment is unseen as unread topics' do
         user = create(:user, unread_comments_since_at: 3.hours.ago)
         entry = create(:entry)
         thread = create(:comment_thread, revision: entry.draft)
@@ -44,11 +44,44 @@ module Pageflow
 
         summary = summary_for(entry, user)
 
-        expect(summary.new_topic_count).to eq(1)
-        expect(summary.new_reply_count).to eq(0)
+        expect(summary.unread_topic_count).to eq(1)
+        expect(summary.unread_reply_count).to eq(0)
       end
 
-      it 'counts unseen comments after the first as new replies' do
+      it 'counts a resolution by somebody else as unread' do
+        user = create(:user, unread_comments_since_at: 3.hours.ago)
+        entry = create(:entry)
+        thread = create(:comment_thread, revision: entry.draft, resolved_at: 1.hour.ago,
+                                         resolver: create(:user))
+        create(:comment, comment_thread: thread, creator: user, created_at: 2.hours.ago)
+
+        summary = summary_for(entry, user)
+
+        expect(summary.unread_resolution_count).to eq(1)
+        expect(summary).to be_unread
+      end
+
+      it 'does not count the user resolving a thread themselves' do
+        user = create(:user, unread_comments_since_at: 3.hours.ago)
+        entry = create(:entry)
+        thread = create(:comment_thread, revision: entry.draft, resolved_at: 1.hour.ago,
+                                         resolver: user)
+        create(:comment, comment_thread: thread, creator: user, created_at: 2.hours.ago)
+
+        expect(summary_for(entry, user).unread_resolution_count).to eq(0)
+      end
+
+      it 'counts unresolved topics only' do
+        user = create(:user)
+        entry = create(:entry)
+        create(:comment_thread, revision: entry.draft)
+        create(:comment_thread, revision: entry.draft, resolved_at: 1.hour.ago,
+                                resolver: create(:user))
+
+        expect(summary_for(entry, user).topic_count).to eq(1)
+      end
+
+      it 'counts unseen comments after the first as unread replies' do
         user = create(:user, unread_comments_since_at: 3.hours.ago)
         entry = create(:entry)
         thread = create(:comment_thread, revision: entry.draft)
@@ -57,8 +90,8 @@ module Pageflow
 
         summary = summary_for(entry, user)
 
-        expect(summary.new_topic_count).to eq(1)
-        expect(summary.new_reply_count).to eq(1)
+        expect(summary.unread_topic_count).to eq(1)
+        expect(summary.unread_reply_count).to eq(1)
       end
 
       it 'ignores comments the user wrote' do
@@ -67,7 +100,7 @@ module Pageflow
         thread = create(:comment_thread, revision: entry.draft)
         create(:comment, comment_thread: thread, creator: user)
 
-        expect(summary_for(entry, user).new_topic_count).to eq(0)
+        expect(summary_for(entry, user).unread_topic_count).to eq(0)
       end
 
       it 'ignores comments from before the users baseline' do
@@ -79,7 +112,7 @@ module Pageflow
           create(:comment, comment_thread: thread, creator: create(:user))
         end
 
-        expect(summary_for(entry, user).new_topic_count).to eq(0)
+        expect(summary_for(entry, user).unread_topic_count).to eq(0)
       end
 
       it 'ignores comments from before the thread was read' do
@@ -97,7 +130,7 @@ module Pageflow
                comment_thread_perma_id: thread.perma_id,
                read_at: 1.hour.ago)
 
-        expect(summary_for(entry, user).new_topic_count).to eq(0)
+        expect(summary_for(entry, user).unread_topic_count).to eq(0)
       end
 
       it 'keeps read state of other users apart' do
@@ -110,7 +143,7 @@ module Pageflow
                user: create(:user),
                comment_thread_perma_id: thread.perma_id)
 
-        expect(summary_for(entry, user).new_topic_count).to eq(1)
+        expect(summary_for(entry, user).unread_topic_count).to eq(1)
       end
 
       it 'returns a summary per entry' do
@@ -140,15 +173,15 @@ module Pageflow
       end
     end
 
-    describe '#new?' do
-      it 'is true with new topics or new replies' do
-        expect(build_summary(new_topic_count: 1)).to be_new
-        expect(build_summary(new_reply_count: 1)).to be_new
-        expect(build_summary).not_to be_new
+    describe '#unread?' do
+      it 'is true with unread topics or unread replies' do
+        expect(build_summary(unread_topic_count: 1)).to be_unread
+        expect(build_summary(unread_reply_count: 1)).to be_unread
+        expect(build_summary).not_to be_unread
       end
 
-      def build_summary(new_topic_count: 0, new_reply_count: 0)
-        described_class.new(topic_count: 1, new_topic_count:, new_reply_count:)
+      def build_summary(unread_topic_count: 0, unread_reply_count: 0)
+        described_class.new(topic_count: 1, unread_topic_count:, unread_reply_count:)
       end
     end
   end

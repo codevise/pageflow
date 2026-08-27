@@ -15,7 +15,6 @@ describe('Thread marking read', () => {
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.reply_count.one': '1 reply',
     'pageflow_scrolled.review.reply_count.other': '%{count} replies',
-    'pageflow_scrolled.review.toggle_replies': 'Toggle replies'
   });
 
   const currentUser = {id: 42, name: 'Alice'};
@@ -125,6 +124,49 @@ describe('Thread marking read', () => {
     const {container, postMessage} = render(
       <Thread thread={threadWithReply} />,
       {commentThreads: [threadWithReply]}
+    );
+
+    simulateScrollingIntoView(container);
+    passTime(1000);
+
+    expect(markReadMessages(postMessage)).toHaveLength(1);
+  });
+
+  it('does not mark thread read while it is not the highlighted one', () => {
+    const {container, postMessage} = render(
+      <Thread thread={thread} markReadWhenHighlighted />
+    );
+
+    simulateScrollingIntoView(container);
+    passTime(1000);
+
+    expect(markReadMessages(postMessage)).toEqual([]);
+  });
+
+  it('marks thread read once it is the highlighted one', () => {
+    const {container, postMessage} = render(
+      <Thread thread={thread} markReadWhenHighlighted highlighted />
+    );
+
+    simulateScrollingIntoView(container);
+    passTime(1000);
+
+    expect(markReadMessages(postMessage)).toHaveLength(1);
+  });
+
+  it('marks thread read once a resolution by someone else has been seen', () => {
+    const resolved = {
+      ...thread,
+      resolvedAt: '2026-08-17T13:00:00.000Z',
+      resolvedById: 44
+    };
+
+    const {container, postMessage} = render(
+      <Thread thread={resolved} />,
+      {
+        commentThreads: [resolved],
+        commentThreadReads: {5: '2026-08-17T12:00:00.000Z'}
+      }
     );
 
     simulateScrollingIntoView(container);

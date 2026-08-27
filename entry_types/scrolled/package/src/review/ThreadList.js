@@ -13,7 +13,7 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, subjectRange, filter, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, expandResolved}) {
+export function ThreadList({subjectType, subjectId, subjectRange, filter, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, expandResolved, startCollapsed, markReadWhenHighlighted}) {
   const {t} = useI18n({locale: 'ui'});
 
   // Threads arrive already located: in display order, with orphans of
@@ -40,14 +40,25 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
   const noThreads = activeThreads.length === 0 && resolvedThreads.length === 0;
 
   const [draft] = useCommentDraft({subjectType, subjectId});
-  const [expandedThreadId, setExpandedThreadId] = useState(null);
+  const [expandedThreadId, setExpandedThreadId] = useState(
+    () => startCollapsed ? undefined :
+          (soleThread(activeThreads) || soleThread(resolvedThreads))?.id
+  );
   const [resolvedToggled, setResolvedToggled] = useState(null);
+  // A group highlight covers every thread of the subject; only one naming
+  // a single thread says the reviewer picked it out, which is what brings
+  // a resolved thread out of the fold.
+  const pickedThreadId = Array.isArray(highlightedThreadId) ? null : highlightedThreadId;
+
+  const revealsResolved =
+    !!expandResolved || resolvedThreads.some(thread => thread.id === pickedThreadId);
+
   const [formToggled, setFormToggled] = useState(
     showNewFormProp !== undefined ? showNewFormProp :
-    expandResolved ? noThreads : activeThreads.length === 0
+    revealsResolved ? noThreads : activeThreads.length === 0
   );
 
-  const showResolved = resolvedToggled !== null ? resolvedToggled : !!expandResolved;
+  const showResolved = resolvedToggled !== null ? resolvedToggled : revealsResolved;
 
   // An unsent draft reopens the form and keeps it open while the thread is
   // being created. Callers passing showNewForm={false} suppress the form
@@ -60,7 +71,7 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
   }
 
   return (
-    <CommentThreadReadsSnapshot>
+    <CommentThreadReadsSnapshot resetOn={expandedThreadId}>
       <div className={styles.container}>
         {!showNewForm && !hideNewTopicButton &&
           <button className={classNames(styles.newTopicButton,
@@ -85,9 +96,11 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
         {activeThreads.map(thread => (
           <Thread key={thread.id}
                   thread={thread}
-                  collapsed={activeThreads.length > 1 && expandedThreadId !== thread.id}
-                  showNewMarker={activeThreads.length > 1}
+                  collapsed={expandedThreadId !== thread.id}
+                  showUnreadMarker={activeThreads.length > 1}
                   onToggle={() => toggleThread(thread.id)}
+                  onReply={() => setExpandedThreadId(thread.id)}
+                  markReadWhenHighlighted={markReadWhenHighlighted}
                   onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: true})}
                   onClick={onThreadClick && (() => onThreadClick(thread))}
                   highlighted={isHighlighted(thread)}
@@ -106,9 +119,11 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
             {showResolved && resolvedThreads.map(thread => (
               <Thread key={thread.id}
                       thread={thread}
-                      collapsed={resolvedThreads.length > 1 && expandedThreadId !== thread.id}
-                      showNewMarker={resolvedThreads.length > 1}
+                      collapsed={expandedThreadId !== thread.id}
+                      showUnreadMarker={resolvedThreads.length > 1}
                       onToggle={() => toggleThread(thread.id)}
+                      onReply={() => setExpandedThreadId(thread.id)}
+                      markReadWhenHighlighted={markReadWhenHighlighted}
                       onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: false})}
                       onClick={onThreadClick && (() => onThreadClick(thread))}
                       highlighted={isHighlighted(thread)}
@@ -118,4 +133,8 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
       </div>
     </CommentThreadReadsSnapshot>
   );
+}
+
+function soleThread(threads) {
+  return threads.length === 1 ? threads[0] : undefined;
 }

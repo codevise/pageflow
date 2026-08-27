@@ -129,7 +129,7 @@ describe('inline editing content element comment badges', () => {
 
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',
-      payload: {type: 'contentElementComments', id: 1, highlightedThreadId: 7}
+      payload: {type: 'contentElementComments', id: 1, highlightedThreadId: 7, source: 'editor'}
     }, expect.anything());
     expect(scrollIntoView).toHaveBeenCalled();
 
@@ -182,7 +182,7 @@ describe('inline editing content element comment badges', () => {
 
     expect(window.parent.postMessage).toHaveBeenCalledWith({
       type: 'SELECTED',
-      payload: {type: 'contentElementComments', id: 1, highlightedThreadId: 7}
+      payload: {type: 'contentElementComments', id: 1, highlightedThreadId: 7, source: 'editor'}
     }, expect.anything());
     expect(scrollIntoView).toHaveBeenCalled();
 

@@ -5,8 +5,10 @@ import {Avatar} from './Avatar';
 import {CommentMenu} from './CommentMenu';
 import {useCurrentUser, useUpdateComment} from './ReviewStateProvider';
 import {autoGrow, autoResize} from './autoGrow';
+import {formatDate, formatDateTime} from './formatDate';
 import {isSubmitShortcut} from './submitShortcut';
 
+import EditIcon from './images/edit.svg';
 import styles from './Comment.module.css';
 
 export function Comment({comment, threadId, showQuote, editing, onEdit, onEditEnd}) {
@@ -22,14 +24,18 @@ export function Comment({comment, threadId, showQuote, editing, onEdit, onEditEn
         <Avatar name={comment.creatorName} />
         <div className={styles.headerText}>
           <span className={styles.author}>{comment.creatorName}</span>
-          <span className={styles.meta}>
-            {comment.createdAt &&
-              <time className={styles.timestamp} dateTime={comment.createdAt}>
-                {formatDate(comment.createdAt, locale)}
-              </time>}
-            {editable && <CommentMenu onEdit={onEdit} />}
-          </span>
+          {comment.createdAt &&
+            <time className={styles.timestamp} dateTime={comment.createdAt}>
+              {formatDate(comment.createdAt, locale)}
+            </time>}
         </div>
+        {editable &&
+          <span className={styles.headerMenu}>
+            <CommentMenu label={t('pageflow_scrolled.review.comment_actions')}
+                         items={[{icon: EditIcon,
+                                  label: t('pageflow_scrolled.review.edit_comment'),
+                                  onSelect: onEdit}]} />
+          </span>}
       </div>
       {showQuote &&
         <blockquote className={styles.quote}>{comment.quote}</blockquote>}
@@ -106,20 +112,4 @@ function EditForm({comment, threadId, onDone}) {
       </div>
     </form>
   );
-}
-
-function formatDate(isoString, locale, options) {
-  const date = new Date(isoString);
-  const fromCurrentYear = date.getFullYear() === new Date().getFullYear();
-
-  return date.toLocaleString(locale, {
-    month: 'short',
-    day: 'numeric',
-    ...(!fromCurrentYear && {year: 'numeric'}),
-    ...options
-  });
-}
-
-function formatDateTime(isoString, locale) {
-  return formatDate(isoString, locale, {hour: 'numeric', minute: '2-digit'});
 }

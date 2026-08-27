@@ -2,6 +2,7 @@ import 'editor/config';
 
 import {SideBarController} from 'editor/controllers/SideBarController';
 import {CommentsView} from 'editor/views/CommentsView';
+import {CommentActivityView} from 'editor/views/CommentActivityView';
 
 import {factories} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
@@ -34,6 +35,21 @@ describe('SideBarController', () => {
 
       const shown = region.show.mock.calls[0][0];
       expect(shown.options.defaultTab).toBe('selection');
+    });
+  });
+
+  describe('#commentActivity', () => {
+    it('shows a CommentActivityView in the region', () => {
+      const entry = createEntry({});
+      entry.reviewSession = factories.reviewSession();
+
+      const region = {show: jest.fn()};
+      const controller = new SideBarController({region, entry});
+
+      controller.commentActivity();
+
+      const shown = region.show.mock.calls[0][0];
+      expect(shown).toBeInstanceOf(CommentActivityView);
     });
   });
 });

@@ -5,22 +5,16 @@ import {
   offset, flip, shift, autoUpdate
 } from '@floating-ui/react';
 
-import {useI18n, useFloatingPortalRoot} from 'pageflow-scrolled/frontend';
+import {useFloatingPortalRoot} from 'pageflow-scrolled/frontend';
 
 import EllipsisIcon from './images/ellipsis.svg';
-import EditIcon from './images/edit.svg';
 import styles from './CommentMenu.module.css';
 
-export function CommentMenu({onEdit}) {
-  const {t} = useI18n({locale: 'ui'});
+export function CommentMenu({label, items}) {
   const portalRoot = useFloatingPortalRoot();
 
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(null);
-
-  const items = [
-    {icon: EditIcon, label: t('pageflow_scrolled.review.edit_comment'), onSelect: onEdit}
-  ];
 
   const elementsRef = useRef([]);
   const labelsRef = useRef([]);
@@ -84,7 +78,7 @@ export function CommentMenu({onEdit}) {
       <button ref={refs.setReference}
               type="button"
               className={styles.button}
-              aria-label={t('pageflow_scrolled.review.comment_actions')}
+              aria-label={label}
               {...getReferenceProps()}>
         <EllipsisIcon />
       </button>

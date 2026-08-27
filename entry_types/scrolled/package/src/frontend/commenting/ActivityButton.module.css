@@ -1,0 +1,48 @@
+.button {
+  position: relative;
+}
+
+.unseenDot {
+  position: absolute;
+  top: space(0.5);
+  right: space(0.5);
+  width: space(2);
+  height: space(2);
+  border-radius: 50%;
+  background: var(--ui-warning-color);
+  box-shadow: 0 0 0 1px var(--ui-primary-color);
+}
+
+/* Entry typography would otherwise reach in here, since this renders
+   inside the entry's own DOM. */
+.panel {
+  display: flex;
+  flex-direction: column;
+  width: space(96);
+  overflow: hidden;
+  font-family: var(--ui-font-family);
+  font-size: var(--ui-font-size);
+  line-height: normal;
+  text-align: left;
+  color: var(--ui-on-surface-color);
+  background: var(--ui-surface-color);
+  border-radius: rounded(lg);
+  box-shadow: var(--ui-box-shadow-md);
+
+  --review-first-day-heading-margin-top: 0;
+  --review-thread-box-shadow: none;
+  --review-thread-border-color: var(--ui-on-surface-color-lightest);
+  --review-thread-border: 1px solid var(--review-thread-border-color);
+  --review-resolved-threads-pill-align: flex-end;
+  --review-resolved-threads-pill-color: var(--ui-on-surface-color);
+  --review-resolved-threads-pill-background-color: transparent;
+}
+
+/* Scrolls inside the panel rather than the panel itself, so that the
+   scrollbar is clipped by the rounded corners instead of squaring them
+   off. */
+.scroller {
+  min-height: 0;
+  overflow-y: auto;
+  padding: space(3);
+}

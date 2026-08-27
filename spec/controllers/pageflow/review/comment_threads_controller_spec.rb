@@ -96,6 +96,49 @@ module Pageflow
         )
       end
 
+      it 'returns resolver of resolved threads' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        resolver = create(:user, first_name: 'Ada', last_name: 'Lovelace')
+
+        create(:comment_thread,
+               revision: entry.draft,
+               creator: user,
+               resolved_at: Time.current,
+               resolver:)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(
+          commentThreads: [
+            {
+              resolvedById: resolver.id,
+              resolverName: 'Ada Lovelace'
+            }
+          ]
+        )
+      end
+
+      it 'returns no resolver for unresolved threads' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        create(:comment_thread, revision: entry.draft, creator: user)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(
+          commentThreads: [
+            {
+              resolvedById: nil,
+              resolverName: nil
+            }
+          ]
+        )
+      end
+
       it 'does not have N+1 queries' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)
@@ -325,7 +368,9 @@ module Pageflow
         expect(thread.resolver).to eq(user)
         expect(response.body).to include_json(
           id: thread.id,
-          resolvedAt: be_present
+          resolvedAt: be_present,
+          resolvedById: user.id,
+          resolverName: user.full_name
         )
       end
 
@@ -351,7 +396,9 @@ module Pageflow
         expect(thread.resolver).to be_nil
         expect(response.body).to include_json(
           id: thread.id,
-          resolvedAt: nil
+          resolvedAt: nil,
+          resolvedById: nil,
+          resolverName: nil
         )
       end
 

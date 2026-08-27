@@ -62,10 +62,11 @@ function DefaultSelectionRect(props) {
     subjectType: 'ContentElement',
     subjectId: props.permaId,
     getScrollTarget: useCallback(() => selectionRectRef.current, []),
-    selectThread: useCallback(threadId => selectComments({
+    selectThread: useCallback((threadId, options) => selectComments({
       type: 'contentElementComments',
       id: props.id,
-      highlightedThreadId: threadId
+      highlightedThreadId: threadId,
+      ...options
     }), [selectComments, props.id])
   });
 

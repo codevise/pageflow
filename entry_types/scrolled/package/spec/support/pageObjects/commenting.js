@@ -42,7 +42,10 @@ export function renderEntry({
     getCommentFilterButton: resolution =>
       result.getByRole('button', {name: resolution === 'all' ? 'All' : 'Unresolved'}),
     getPreviousCommentButton: () => result.getByRole('button', {name: 'Previous comment'}),
-    getNextCommentButton: () => result.getByRole('button', {name: 'Next comment'})
+    getNextCommentButton: () => result.getByRole('button', {name: 'Next comment'}),
+    getActivityButton: () => result.getByRole('button', {name: 'Latest activity'}),
+    getActivityPanel: () => result.getByRole('dialog', {name: 'Latest activity'}),
+    queryActivityPanel: () => result.queryByRole('dialog', {name: 'Latest activity'})
   };
 }
 
@@ -74,7 +77,20 @@ export function useCommentingPageObjects() {
     'pageflow_scrolled.review.filter.unresolved': 'Unresolved',
     'pageflow_scrolled.review.filter.all': 'All',
     'pageflow_scrolled.review.previous_comment': 'Previous comment',
-    'pageflow_scrolled.review.next_comment': 'Next comment'
+    'pageflow_scrolled.review.next_comment': 'Next comment',
+    'pageflow_scrolled.review.activity.toggle': 'Latest activity',
+    'pageflow_scrolled.review.activity.no_activity_yet': 'No activity yet',
+    'pageflow_scrolled.review.activity.today': 'Today',
+    'pageflow_scrolled.review.activity.yesterday': 'Yesterday',
+    'pageflow_scrolled.review.reply_count.one': '1 reply',
+    'pageflow_scrolled.review.reply_count.other': '%{count} replies',
+    'pageflow_scrolled.review.earlier_reply_count.one': '1 more',
+    'pageflow_scrolled.review.earlier_reply_count.other': '%{count} more',
+    'pageflow_scrolled.review.resolve': 'Mark as resolved',
+    'pageflow_scrolled.review.unresolve': 'Mark as unresolved',
+    'pageflow_scrolled.review.thread_actions': 'Thread actions',
+    'pageflow_scrolled.review.resolution_by': 'Marked as resolved by',
+    'pageflow_scrolled.review.resolution': 'Marked as resolved'
   });
 
   usePageObjects();

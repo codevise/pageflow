@@ -4,7 +4,7 @@ import {
   offset, flip, shift, autoUpdate
 } from '@floating-ui/react';
 
-import {ThreadsBadge, ThreadList, CommentThreadReadsSnapshot} from 'pageflow-scrolled/review';
+import {ThreadsBadge, ThreadList} from 'pageflow-scrolled/review';
 import {useFloatingPortalRoot} from '../FloatingPortalRootProvider';
 import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
 import {useSelectedSubject} from './SelectedSubjectProvider';
@@ -15,7 +15,7 @@ export function Popover({
   subjectType, subjectId, subjectRange,
   placement = 'bottom-start', strategy = 'absolute', hideNewTopicButton
 }) {
-  const {isSelected, showNewForm, select, clearSelection, highlightedThreadId} =
+  const {isSelected, revealOnly, showNewForm, select, clearSelection, highlightedThreadId} =
     useSelectedSubject(subjectType, subjectId, subjectRange);
   const {resolution} = useCommentDisplayFilter();
   const [reference, setReference] = useState(null);
@@ -33,36 +33,38 @@ export function Popover({
   }, [isSelected, highlightedThreadId, reference]);
 
   function handleBadgeClick() {
-    if (isSelected) {
+    if (isSelected && !revealOnly) {
       clearSelection();
     }
     else {
-      select();
+      // A revealed subject opens its popover on the thread it was
+      // revealed for rather than starting over.
+      select(revealOnly ? {highlightedThreadId} : undefined);
     }
   }
 
   return (
     <span ref={setReference} className={styles.badge}>
-      <CommentThreadReadsSnapshot enabled={isSelected}>
-        <ThreadsBadge subjectType={subjectType}
-                      subjectId={subjectId}
-                      subjectRange={subjectRange}
-                      resolution={resolution}
-                      mode={isSelected ? 'active' : undefined}
-                      onClick={handleBadgeClick} />
-        {isSelected &&
-          <OpenThreadList reference={reference}
-                          subjectType={subjectType}
-                          subjectId={subjectId}
-                          subjectRange={subjectRange}
-                          placement={placement}
-                          strategy={strategy}
-                          showNewForm={showNewForm}
-                          hideNewTopicButton={hideNewTopicButton}
-                          highlightedThreadId={highlightedThreadId}
-                          expandResolved={resolution === 'all'}
-                          onDismiss={clearSelection} />}
-      </CommentThreadReadsSnapshot>
+      <ThreadsBadge subjectType={subjectType}
+                    subjectId={subjectId}
+                    subjectRange={subjectRange}
+                    resolution={resolution}
+                    revealedThreadId={highlightedThreadId}
+                    mode={isSelected ? 'active' : undefined}
+                    onClick={handleBadgeClick} />
+
+      {isSelected && !revealOnly &&
+        <OpenThreadList reference={reference}
+                        subjectType={subjectType}
+                        subjectId={subjectId}
+                        subjectRange={subjectRange}
+                        placement={placement}
+                        strategy={strategy}
+                        showNewForm={showNewForm}
+                        hideNewTopicButton={hideNewTopicButton}
+                        highlightedThreadId={highlightedThreadId}
+                        expandResolved={resolution === 'all'}
+                        onDismiss={clearSelection} />}
     </span>
   );
 }

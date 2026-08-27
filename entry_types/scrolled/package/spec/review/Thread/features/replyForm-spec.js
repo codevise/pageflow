@@ -11,7 +11,6 @@ describe('Thread reply form', () => {
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.reply_count.one': '1 reply',
     'pageflow_scrolled.review.reply_count.other': '%{count} replies',
-    'pageflow_scrolled.review.toggle_replies': 'Toggle replies'
   });
 
   const thread = {

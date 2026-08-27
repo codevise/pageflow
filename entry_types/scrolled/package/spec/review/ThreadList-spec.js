@@ -7,6 +7,7 @@ import {useFakeTranslations} from 'pageflow/testHelpers';
 import {ThreadList} from 'review/ThreadList';
 import {
   postReviewStateDraftsChangeMessage,
+  postReviewStateReadsChangeMessage,
   postReviewStateThreadChangeMessage
 } from 'review/postMessage';
 import {review} from 'review/api';
@@ -41,13 +42,14 @@ describe('ThreadList', () => {
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.review.enter_for_new_line': 'Enter for new line',
-    'pageflow_scrolled.review.toggle_replies': 'Toggle replies',
     'pageflow_scrolled.review.resolve': 'Mark as resolved',
     'pageflow_scrolled.review.unresolve': 'Mark as unresolved',
     'pageflow_scrolled.review.resolved_count.one': '1 resolved',
     'pageflow_scrolled.review.resolved_count.other': '%{count} resolved',
     'pageflow_scrolled.review.no_threads_yet': 'No comments yet',
-    'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element'
+    'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element',
+    'pageflow_scrolled.review.unread_count.one': '1 unread',
+    'pageflow_scrolled.review.unread_count.other': '%{count} unread'
   });
 
   afterEach(() => {
@@ -128,6 +130,25 @@ describe('ThreadList', () => {
     const highlighted = container.querySelector('[aria-current="true"]');
     expect(highlighted).toContainElement(getByText('second'));
     expect(highlighted).not.toContainElement(getByText('first'));
+  });
+
+  // Its only thread is resolved, so the list would otherwise read as
+  // empty and offer to start a topic.
+  it('offers no new thread form while a resolved thread is highlighted', () => {
+    const {getByText, queryByPlaceholderText} = renderThreadList(
+      <ThreadList subjectType="ContentElement" subjectId={10} highlightedThreadId={2} />,
+      {
+        commentThreads: [
+          {id: 2, subjectType: 'ContentElement', subjectId: 10,
+           resolvedAt: '2026-08-17T10:00:00.000Z', comments: [
+            {id: 20, body: 'Resolved topic', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    expect(getByText('Resolved topic')).toBeInTheDocument();
+    expect(queryByPlaceholderText('Add a comment...')).toBeNull();
   });
 
   it('highlights every thread when highlightedThreadId is an array of ids', () => {
@@ -315,6 +336,58 @@ describe('ThreadList', () => {
     expect(getByText('B')).toBeInTheDocument();
   });
 
+  describe('unread markers', () => {
+    const currentUser = {id: 42, name: 'Alice'};
+
+    // The reply is the reviewer's own, so each thread has exactly one
+    // unseen comment and the toggle to expand it.
+    function thread(id, permaId, body) {
+      return {
+        id, permaId, subjectType: 'ContentElement', subjectId: 10,
+        comments: [
+          {id: id * 10, body, creatorName: 'Bob', creatorId: 43,
+           createdAt: '2026-08-17T11:00:00.000Z'},
+          {id: id * 10 + 1, body: 'A reply', creatorName: 'Alice', creatorId: 42,
+           createdAt: '2026-08-17T11:30:00.000Z'}
+        ]
+      };
+    }
+
+    const commentThreads = [thread(1, 5, 'First topic'), thread(2, 6, 'Second topic')];
+
+    async function postReadsChange(reads) {
+      await act(async () => {
+        postReviewStateReadsChangeMessage(window, reads);
+        await new Promise(resolve => setTimeout(resolve, 0));
+      });
+    }
+
+    it('holds a thread marked while the list stays as it is', async () => {
+      const {queryAllByLabelText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {currentUser, commentThreads, commentThreadReads: {}}
+      );
+
+      await postReadsChange({5: '2026-08-17T12:00:00.000Z'});
+
+      expect(queryAllByLabelText('1 unread')).toHaveLength(2);
+    });
+
+    it('drops the marker of a thread once another one is expanded', async () => {
+      const user = userEvent.setup();
+
+      const {getAllByRole, queryAllByLabelText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {currentUser, commentThreads, commentThreadReads: {}}
+      );
+
+      await postReadsChange({5: '2026-08-17T12:00:00.000Z'});
+      await user.click(getAllByRole('button', {name: /1 reply/})[1]);
+
+      expect(queryAllByLabelText('1 unread')).toHaveLength(1);
+    });
+  });
+
   it('collapses threads when more than one exists', () => {
     const {queryByText} = renderThreadList(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
@@ -338,7 +411,7 @@ describe('ThreadList', () => {
     expect(queryByText('Second reply')).not.toBeInTheDocument();
   });
 
-  it('does not collapse single thread', () => {
+  it('expands the only thread', () => {
     const {getByText} = renderThreadList(
       <ThreadList subjectType="ContentElement" subjectId={10} />,
       {
@@ -353,6 +426,69 @@ describe('ThreadList', () => {
 
     expect(getByText('First comment')).toBeInTheDocument();
     expect(getByText('A reply')).toBeInTheDocument();
+  });
+
+  it('keeps the only thread collapsed when startCollapsed is set', () => {
+    const {queryByText} = renderThreadList(
+      <ThreadList subjectType="ContentElement" subjectId={10} startCollapsed />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'First comment', creatorName: 'Bob', creatorId: 2},
+            {id: 11, body: 'A reply', creatorName: 'Alice', creatorId: 1}
+          ]}
+        ]
+      }
+    );
+
+    expect(queryByText('First comment')).toBeInTheDocument();
+    expect(queryByText('A reply')).not.toBeInTheDocument();
+  });
+
+  it('collapses the only thread from its reply count', async () => {
+    const user = userEvent.setup();
+
+    const {getByRole, queryByText} = renderThreadList(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'First comment', creatorName: 'Bob', creatorId: 2},
+            {id: 11, body: 'A reply', creatorName: 'Alice', creatorId: 1}
+          ]}
+        ]
+      }
+    );
+
+    await user.click(getByRole('button', {name: /1 reply/}));
+
+    expect(queryByText('A reply')).not.toBeInTheDocument();
+  });
+
+  it('collapses an expanded thread when another one is expanded', async () => {
+    const user = userEvent.setup();
+
+    const {getAllByRole, queryByText} = renderThreadList(
+      <ThreadList subjectType="ContentElement" subjectId={10} />,
+      {
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 10, body: 'First comment', creatorName: 'Bob', creatorId: 2},
+            {id: 11, body: 'First reply', creatorName: 'Alice', creatorId: 1}
+          ]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+            {id: 20, body: 'Second comment', creatorName: 'Eve', creatorId: 3},
+            {id: 21, body: 'Second reply', creatorName: 'Bob', creatorId: 2}
+          ]}
+        ]
+      }
+    );
+
+    await user.click(getAllByRole('button', {name: /1 reply/})[0]);
+    await user.click(getAllByRole('button', {name: /1 reply/})[1]);
+
+    expect(queryByText('First reply')).not.toBeInTheDocument();
+    expect(queryByText('Second reply')).toBeInTheDocument();
   });
 
   describe('orphaned threads', () => {
@@ -763,6 +899,45 @@ describe('ThreadList', () => {
       postMessage.mockRestore();
     });
 
+    it('expands the thread that was replied to', async () => {
+      const user = userEvent.setup();
+
+      const {getByPlaceholderText, getByRole} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10, comments: [
+              {id: 10, body: 'First topic', creatorName: 'Bob', creatorId: 2},
+              {id: 11, body: 'A reply', creatorName: 'Alice', creatorId: 1},
+              {id: 12, body: 'Another reply', creatorName: 'Bob', creatorId: 2}
+            ]},
+            {id: 2, subjectType: 'ContentElement', subjectId: 10, comments: [
+              {id: 20, body: 'Second topic', creatorName: 'Eve', creatorId: 3}
+            ]}
+          ]
+        }
+      );
+
+      await user.type(getByPlaceholderText('Reply...'), 'My reply');
+      await user.click(getByRole('button', {name: 'Send'}));
+
+      postDraftsChange({});
+      postThreadChange({
+        id: 2,
+        subjectType: 'ContentElement',
+        subjectId: 10,
+        comments: [
+          {id: 20, body: 'Second topic', creatorName: 'Eve', creatorId: 3},
+          {id: 21, body: 'My reply', creatorName: 'Alice', creatorId: 1}
+        ]
+      });
+
+      await waitFor(() =>
+        expect(getByRole('button', {name: /1 reply/}))
+          .toHaveAttribute('aria-expanded', 'true')
+      );
+    });
+
     it('includes the quote of the thread range in create comment message', async () => {
       const user = userEvent.setup();
       const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
@@ -894,6 +1069,49 @@ describe('ThreadList', () => {
 
       expect(getByText('Active thread')).toBeInTheDocument();
       expect(getByText('Resolved thread')).toBeInTheDocument();
+    });
+
+    it('leaves resolved threads collapsed while an unresolved one is expanded', () => {
+      const {getByText, queryByText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} expandResolved />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10,
+             resolvedAt: null,
+             comments: [
+               {id: 10, body: 'Active thread', creatorName: 'Alice', creatorId: 1},
+               {id: 11, body: 'Active reply', creatorName: 'Bob', creatorId: 2}
+             ]},
+            {id: 2, subjectType: 'ContentElement', subjectId: 10,
+             resolvedAt: '2026-04-09T10:00:00Z',
+             comments: [
+               {id: 20, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2},
+               {id: 21, body: 'Resolved reply', creatorName: 'Alice', creatorId: 1}
+             ]}
+          ]
+        }
+      );
+
+      expect(getByText('Active reply')).toBeInTheDocument();
+      expect(queryByText('Resolved reply')).not.toBeInTheDocument();
+    });
+
+    it('expands the only resolved thread when none is unresolved', () => {
+      const {getByText} = renderThreadList(
+        <ThreadList subjectType="ContentElement" subjectId={10} expandResolved />,
+        {
+          commentThreads: [
+            {id: 1, subjectType: 'ContentElement', subjectId: 10,
+             resolvedAt: '2026-04-09T10:00:00Z',
+             comments: [
+               {id: 10, body: 'Resolved thread', creatorName: 'Bob', creatorId: 2},
+               {id: 11, body: 'Resolved reply', creatorName: 'Alice', creatorId: 1}
+             ]}
+          ]
+        }
+      );
+
+      expect(getByText('Resolved reply')).toBeInTheDocument();
     });
 
     it('shows resolved threads instead of the new form when all are resolved and expandResolved is set', () => {

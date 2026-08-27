@@ -27,7 +27,8 @@ export function useCommentSelection({type, id, subjectType, subjectId}) {
   ));
 
   const selectThread = useCallback(
-    threadId => selectComments({type, id, highlightedThreadId: threadId}),
+    (threadId, options) =>
+      selectComments({type, id, highlightedThreadId: threadId, ...options}),
     [selectComments, type, id]
   );
 

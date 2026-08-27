@@ -15,12 +15,13 @@ import styles from './SectionDecorator.module.css';
 export function SectionDecorator({section, children}) {
   const {visible} = useCommentingVisibility();
   const {active} = useAddCommentMode();
-  const {isSelected} = useSelectedSubject('Section', section.permaId);
+  const {isSelected, highlightedThreadId} = useSelectedSubject('Section', section.permaId);
   const {resolution} = useCommentDisplayFilter();
   const threads = useLocatedCommentThreadsForSubject({
     subjectType: 'Section',
     subjectId: section.permaId,
-    resolution
+    resolution,
+    revealedThreadId: highlightedThreadId
   });
   const hasThreads = threads.length > 0;
 

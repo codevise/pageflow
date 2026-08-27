@@ -58,6 +58,19 @@ describe('watchUnreadComments', () => {
     expect(entry.get('hasUnreadComments')).toBe(false);
   });
 
+  it('is true while a resolution by someone else is unseen', () => {
+    const {entry} = watch({
+      currentUser,
+      commentThreads: [thread({
+        resolvedAt: '2026-08-17T13:00:00.000Z',
+        resolvedById: 44
+      })],
+      commentThreadReads: {5: '2026-08-17T12:00:00.000Z'}
+    });
+
+    expect(entry.get('hasUnreadComments')).toBe(true);
+  });
+
   it('is false for own comments', () => {
     const {entry} = watch({
       currentUser,

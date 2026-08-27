@@ -42,12 +42,14 @@ function CommentingEditableText({
   const {anchors, registerAnchor} = useRangeAnchors();
   const {contentElementPermaId} = useContentElementAttributes();
   const {active, deactivate, preselect, clearPreselection} = useAddCommentMode();
-  const {subjectRange, select} = useSelectedSubject('ContentElement', contentElementPermaId);
+  const {subjectRange, select, highlightedThreadId} =
+    useSelectedSubject('ContentElement', contentElementPermaId);
   const {resolution} = useCommentDisplayFilter();
   const threads = useCommentThreads({
     subjectType: 'ContentElement',
     subjectId: contentElementPermaId,
-    resolution
+    resolution,
+    revealedThreadId: highlightedThreadId
   });
 
   const highlights = useCommentHighlights(threads, subjectRange);
@@ -110,20 +112,21 @@ function CommentingEditableText({
 function ClickableHighlight({subjectRange, children}) {
   const {contentElementPermaId} = useContentElementAttributes();
   const {deactivate} = useAddCommentMode();
-  const {isSelected, select} = useSelectedSubject('ContentElement', contentElementPermaId, subjectRange);
+  const {isSelected, revealOnly, select, highlightedThreadId} =
+    useSelectedSubject('ContentElement', contentElementPermaId, subjectRange);
 
   function handleClick(event) {
     if (event.target.closest('a')) return;
-    if (isSelected) return;
+    if (isSelected && !revealOnly) return;
 
     deactivate();
-    select();
+    select(revealOnly ? {highlightedThreadId} : undefined);
   }
 
   return (
     <span className={classNames(highlightStyles.highlight,
                                 {[highlightStyles.selected]: isSelected,
-                                 [commentingStyles.clickable]: !isSelected})}
+                                 [commentingStyles.clickable]: !isSelected || revealOnly})}
           data-comment-highlight
           onClick={handleClick}>
       {children}

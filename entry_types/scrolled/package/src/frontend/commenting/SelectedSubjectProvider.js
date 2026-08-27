@@ -14,7 +14,8 @@ const CommentNavigationContext = createContext({
   count: 0,
   position: 0,
   goToNext: () => {},
-  goToPrevious: () => {}
+  goToPrevious: () => {},
+  goToThread: () => {}
 });
 
 export function SelectedSubjectProvider({children}) {
@@ -24,27 +25,18 @@ export function SelectedSubjectProvider({children}) {
 
   const [selectedSubject, setSelectedSubject] = useState(null);
 
+  const allTargets = useMemo(() => navigableTargets(chapters), [chapters]);
+
   const targets = useMemo(
-    () => navigableTargets(chapters, resolution),
-    [chapters, resolution]
+    () => allTargets.filter(target => matchesResolution(target, resolution)),
+    [allTargets, resolution]
   );
 
   const clearSelection = useCallback(() => {
     setSelectedSubject(null);
   }, []);
 
-  const goTo = useCallback(step => {
-    if (targets.length === 0) {
-      return;
-    }
-
-    const current = currentTargetIndex(targets, selectedSubject);
-    const next = current < 0
-      ? (step > 0 ? 0 : targets.length - 1)
-      : (current + step + targets.length) % targets.length;
-
-    const target = targets[next];
-
+  const selectTarget = useCallback((target, options) => {
     // Activate the excursion the target lives in (or leave the current
     // one) before selecting it, so its popover can mount and open. Only
     // needed when moving to a different subject.
@@ -61,9 +53,35 @@ export function SelectedSubjectProvider({children}) {
       subjectType: target.subjectType,
       subjectId: target.subjectId,
       subjectRange: target.subjectRange,
-      highlightedThreadId: target.threadId
+      highlightedThreadId: target.threadId,
+      ...options
     });
-  }, [targets, selectedSubject, activateExcursionOfSection, returnFromExcursion]);
+  }, [selectedSubject, activateExcursionOfSection, returnFromExcursion]);
+
+  const goTo = useCallback(step => {
+    if (targets.length === 0) {
+      return;
+    }
+
+    const current = currentTargetIndex(targets, selectedSubject);
+    const next = current < 0
+      ? (step > 0 ? 0 : targets.length - 1)
+      : (current + step + targets.length) % targets.length;
+
+    selectTarget(targets[next]);
+  }, [targets, selectedSubject, selectTarget]);
+
+  // Searched among all targets rather than the filtered ones, so that a
+  // resolved thread stays reachable from lists that show it whatever the
+  // toolbar filters. Showing it is left to the selection: turning all
+  // resolved threads on for the sake of one changes the whole preview.
+  const goToThread = useCallback((threadId, options) => {
+    const target = allTargets.find(target => target.threadId === threadId);
+
+    if (target) {
+      selectTarget(target, options);
+    }
+  }, [allTargets, selectTarget]);
 
   const position = useMemo(
     () => currentTargetIndex(targets, selectedSubject) + 1,
@@ -79,9 +97,11 @@ export function SelectedSubjectProvider({children}) {
   const navigation = useMemo(() => ({
     count: targets.length,
     position,
+    highlightedThreadId: selectedSubject?.highlightedThreadId ?? null,
     goToNext: () => goTo(1),
-    goToPrevious: () => goTo(-1)
-  }), [targets.length, position, goTo]);
+    goToPrevious: () => goTo(-1),
+    goToThread
+  }), [targets.length, position, selectedSubject, goTo, goToThread]);
 
   return (
     <SelectedSubjectContext.Provider value={selection}>
@@ -109,6 +129,9 @@ export function useSelectedSubject(subjectType, subjectId, subjectRange) {
   }, [setSelectedSubject, subjectType, subjectId, subjectRange]);
 
   return {isSelected, hasSelection: !!selectedSubject, select, clearSelection,
+          // Reveals the subject without opening its popover, for lists
+          // that show the thread themselves.
+          revealOnly: !!(isSelected && selectedSubject.revealOnly),
           showNewForm: isSelected && selectedSubject.showNewForm,
           subjectRange: isSelected ? selectedSubject.subjectRange : undefined,
           highlightedThreadId: isSelected ? selectedSubject.highlightedThreadId ?? null : null};
@@ -130,7 +153,7 @@ function currentTargetIndex(targets, selectedSubject) {
   return targets.findIndex(target => target.key === key);
 }
 
-function navigableTargets(chapters, resolution) {
+function navigableTargets(chapters) {
   const targets = [];
 
   chapters.forEach(chapter => {
@@ -155,7 +178,7 @@ function navigableTargets(chapters, resolution) {
     });
   });
 
-  return targets.filter(target => matchesResolution(target, resolution));
+  return targets;
 }
 
 function pushTargets(targets, threads, location) {

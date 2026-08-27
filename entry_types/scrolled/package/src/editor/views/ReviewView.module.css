@@ -1,10 +1,9 @@
 .container {
   position: relative;
   --review-thread-box-shadow: none;
-  --review-thread-border: 1px solid var(--ui-on-surface-color-lightest);
+  --review-thread-border-color: var(--ui-on-surface-color-lightest);
+  --review-thread-border: 1px solid var(--review-thread-border-color);
   --review-resolved-threads-pill-align: flex-end;
   --review-resolved-threads-pill-color: var(--ui-on-surface-color);
   --review-resolved-threads-pill-background-color: transparent;
-  --review-resolved-thread-opacity: 0.6;
-  --review-resolved-thread-background: var(--ui-on-surface-color-lightest);
 }

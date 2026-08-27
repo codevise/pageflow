@@ -7,6 +7,8 @@ import {cssModulesUtils, TabsView} from 'pageflow/ui';
 import {EntryCommentsView} from './EntryCommentsView';
 import {SelectionCommentsView} from './SelectionCommentsView';
 
+import activityIcon from './images/activity.svg';
+
 import styles from './CommentsView.module.css';
 
 export const CommentsView = Marionette.ItemView.extend({
@@ -25,7 +27,8 @@ export const CommentsView = Marionette.ItemView.extend({
   events: {
     'click a.back': 'goBack',
     ...cssModulesUtils.events(styles, {
-      'click newThreadButton': 'startNewThread'
+      'click newThreadButton': 'startNewThread',
+      'click activityButton': 'showActivity'
     })
   },
 
@@ -33,6 +36,9 @@ export const CommentsView = Marionette.ItemView.extend({
     this.listenTo(this.options.entry,
                   'change:selectedCommentsSubject',
                   this._updateNewThreadButton);
+    this.listenTo(this.options.entry,
+                  'change:hasUnreadComments',
+                  this._updateActivityButton);
   },
 
   onRender: function() {
@@ -49,7 +55,13 @@ export const CommentsView = Marionette.ItemView.extend({
       new SelectionCommentsView({entry, editor: editorApi}));
 
     this.appendSubview(tabsView, {to: this.ui.tabs});
+
+    // Beside the tab list rather than inside it, which is a tablist the
+    // link is not part of.
+    this.$('.tabs_view-scroller').append(activityButton());
+
     this._updateNewThreadButton();
+    this._updateActivityButton();
   },
 
   startNewThread: function() {
@@ -74,6 +86,10 @@ export const CommentsView = Marionette.ItemView.extend({
     }
   },
 
+  showActivity: function() {
+    editor.navigate('/scrolled/comments/activity', {trigger: true});
+  },
+
   goBack: function() {
     editor.navigate('/', {trigger: true});
   },
@@ -82,5 +98,26 @@ export const CommentsView = Marionette.ItemView.extend({
     const enabled = !!this.options.entry.get('selectedCommentsSubject');
     this.$(cssModulesUtils.selector(styles, 'newThreadButton'))
       .prop('disabled', !enabled);
+  },
+
+  _updateActivityButton: function() {
+    this.$(cssModulesUtils.selector(styles, 'activityButton'))
+      .toggleClass(styles.indicator,
+                   !!this.options.entry.get('hasUnreadComments'));
   }
 });
+
+function activityButton() {
+  const label = I18n.t('pageflow_scrolled.editor.comments_view.activity');
+
+  return `
+    <button class="${styles.activityButton}" title="${label}" aria-label="${label}">
+      <span class="${styles.activityIcon}"
+            style="mask-image: url('${escapeCssUrl(activityIcon)}')"></span>
+    </button>
+  `;
+}
+
+function escapeCssUrl(url) {
+  return url.replace(/'/g, "\\'").replace(/\n/g, '');
+}

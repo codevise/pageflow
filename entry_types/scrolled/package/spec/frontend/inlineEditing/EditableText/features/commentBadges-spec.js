@@ -45,6 +45,44 @@ describe('inline editing EditableText comment badges', () => {
     expect(badges[0].isInDotMode()).toBe(true);
   });
 
+  function renderEntryWithUnreadThread() {
+    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+
+    return renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true, customSelectionRect: true}
+      },
+      commenting: {
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [{
+          id: 5,
+          permaId: 5,
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          subjectRange: {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}},
+          comments: [{
+            id: 1, body: 'A comment', creatorName: 'Bob', creatorId: 43,
+            createdAt: '2026-08-17T11:00:00.000Z'
+          }]
+        }],
+        commentThreadReads: {}
+      }
+    });
+  }
+
+  it('marks a badge whose thread has unseen comments', () => {
+    const entry = renderEntryWithUnreadThread();
+
+    expect(entry.queryAllCommentBadges()[0].isUnread()).toBe(true);
+  });
+
+  it('keeps a badge with unseen comments out of dot mode', () => {
+    const entry = renderEntryWithUnreadThread();
+
+    expect(entry.queryAllCommentBadges()[0].isInDotMode()).toBe(false);
+  });
+
   it('renders only the highlighted thread badge in active mode', () => {
     const value = [
       {type: 'paragraph', children: [{text: 'First paragraph thread here'}]},
@@ -114,6 +152,54 @@ describe('inline editing EditableText comment badges', () => {
     const badge = entry.queryAllCommentBadges()[0];
     expect(badge.isResolved()).toBe(true);
     expect(badge.isActive()).toBe(true);
+  });
+
+  it('keeps the badge of an overlapped thread after a resolved thread is revealed', async () => {
+    const value = [{type: 'paragraph', children: [{text: 'Alpha beta gamma delta'}]}];
+
+    function range(start, end) {
+      return {anchor: {path: [0, 0], offset: start}, focus: {path: [0, 0], offset: end}};
+    }
+
+    function selectThread(threadId) {
+      act(() => {
+        window.dispatchEvent(new MessageEvent('message', {
+          data: {type: 'SELECT_COMMENT_THREAD', payload: {threadId}},
+          origin: window.location.origin
+        }));
+      });
+    }
+
+    const entry = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true, customSelectionRect: true}
+      },
+      commenting: {
+        currentUser: null,
+        commentThreads: [
+          {id: 5, subjectType: 'ContentElement', subjectId: 10, subjectRange: range(0, 5),
+           comments: [{id: 1, body: 'a', creatorName: 'Alice', creatorId: 1}]},
+          {id: 6, subjectType: 'ContentElement', subjectId: 10, subjectRange: range(6, 16),
+           comments: [{id: 2, body: 'b', creatorName: 'Bob', creatorId: 2}]},
+          {id: 7, subjectType: 'ContentElement', subjectId: 10, subjectRange: range(17, 22),
+           comments: [{id: 3, body: 'c', creatorName: 'Carol', creatorId: 3}]},
+          {id: 8, subjectType: 'ContentElement', subjectId: 10, subjectRange: range(8, 12),
+           resolvedAt: '2026-06-01T00:00:00Z',
+           comments: [{id: 4, body: 'r', creatorName: 'Dave', creatorId: 4}]}
+        ]
+      }
+    });
+
+    expect(entry.queryAllCommentBadges()).toHaveLength(3);
+
+    selectThread(8);
+    await waitFor(() => expect(entry.queryAllCommentBadges()).toHaveLength(4));
+
+    selectThread(5);
+    await waitFor(() => expect(entry.queryAllCommentBadges()[0].isActive()).toBe(true));
+
+    expect(entry.queryAllCommentBadges()).toHaveLength(3);
   });
 
   it('renders sibling badge in regular mode when in same block as highlighted thread', () => {

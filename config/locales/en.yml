@@ -828,16 +828,19 @@ en:
       entries:
         add_folder: Add folder
         comments:
-          new_reply_count:
-            one: 1 new reply
-            other: "%{count} new replies"
-          new_topic_count:
-            one: 1 new topic
-            other: "%{count} new topics"
           tooltip: "Comments: %{summary}"
           topic_count:
             one: 1 unresolved topic
             other: "%{count} unresolved topics"
+          unread_reply_count:
+            one: 1 unread reply
+            other: "%{count} unread replies"
+          unread_resolution_count:
+            one: 1 newly resolved topic
+            other: "%{count} newly resolved topics"
+          unread_topic_count:
+            one: 1 unread topic
+            other: "%{count} unread topics"
         confirm_depublish: Depublish this story?
         confirm_duplicate: Duplicate this story?
         confirm_restore: Restore story to the selected version? A snapshot will be created, so that you can roll back later.

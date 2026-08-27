@@ -27,7 +27,7 @@ feature 'as account previewer, seeing comment activity in the entries table' do
     expect(indicator).to have_text('1')
     expect(indicator).to have_selector('.unread_dot')
     expect(indicator['data-tooltip'])
-      .to eq('Comments: 1 unresolved topic, 1 new topic, 1 new reply')
+      .to eq('Comments: 1 unresolved topic, 1 unread topic, 1 unread reply')
   end
 
   scenario 'entry with comments predating the user shows unmarked indicator' do

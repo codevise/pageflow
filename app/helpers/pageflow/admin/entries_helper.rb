@@ -27,7 +27,7 @@ module Pageflow
                     class: 'entry_comments_indicator',
                     data: {tooltip: entry_comments_tooltip(summary)}) do
           safe_join([summary.topic_count.to_s,
-                     (content_tag(:span, '', class: 'unread_dot') if summary.new?)].compact)
+                     (content_tag(:span, '', class: 'unread_dot') if summary.unread?)].compact)
         end
       end
 
@@ -44,12 +44,16 @@ module Pageflow
 
         parts = [t("#{scope}.topic_count", count: summary.topic_count)]
 
-        if summary.new_topic_count.positive?
-          parts << t("#{scope}.new_topic_count", count: summary.new_topic_count)
+        if summary.unread_topic_count.positive?
+          parts << t("#{scope}.unread_topic_count", count: summary.unread_topic_count)
         end
 
-        if summary.new_reply_count.positive?
-          parts << t("#{scope}.new_reply_count", count: summary.new_reply_count)
+        if summary.unread_reply_count.positive?
+          parts << t("#{scope}.unread_reply_count", count: summary.unread_reply_count)
+        end
+
+        if summary.unread_resolution_count.positive?
+          parts << t("#{scope}.unread_resolution_count", count: summary.unread_resolution_count)
         end
 
         t("#{scope}.tooltip", summary: parts.join(', '))

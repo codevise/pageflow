@@ -9,7 +9,7 @@ module Pageflow
         entry = DraftEntry.find(params[:entry_id])
         authorize!(:read, entry.to_model)
 
-        @comment_threads = entry.comment_threads.includes(comments: :creator)
+        @comment_threads = entry.comment_threads.includes(:resolver, comments: :creator)
         @read_at_by_perma_id =
           CommentThreadRead.read_at_by_perma_id(entry: entry.to_model, user: current_user)
       end

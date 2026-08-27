@@ -3,8 +3,6 @@
   align-items: center;
   gap: space(2);
   margin-bottom: space(1);
-  /* Keep clear of the chevron button the thread places in its corner. */
-  padding-right: space(6);
 }
 
 /* Wraps as a block below the avatar, aligning with quote and body. */
@@ -22,11 +20,8 @@
   color: var(--ui-on-surface-color);
 }
 
-/* Keeps the menu button from ever wrapping onto a line of its own. */
-.meta {
-  display: flex;
-  align-items: center;
-  gap: space(1);
+.headerMenu {
+  margin-left: auto;
 }
 
 .timestamp {

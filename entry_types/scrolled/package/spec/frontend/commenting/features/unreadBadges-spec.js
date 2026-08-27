@@ -11,8 +11,8 @@ describe('unread badges', () => {
 
   useFakeTranslations({
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
-    'pageflow_scrolled.review.unread_comment_count.one': '1 unread comment',
-    'pageflow_scrolled.review.unread_comment_count.other': '%{count} unread comments'
+    'pageflow_scrolled.review.unread_count.one': '1 unread',
+    'pageflow_scrolled.review.unread_count.other': '%{count} unread'
   });
 
   function renderEntryWithUnreadThread() {
@@ -51,23 +51,13 @@ describe('unread badges', () => {
     expect(entry.queryAllUnreadCommentBadges()).toHaveLength(1);
   });
 
-  it('keeps badge marked while the thread list is open', async () => {
+  it('clears badge once its threads have been read', async () => {
     const entry = renderEntryWithUnreadThread();
 
     fireEvent.click(entry.getAllCommentBadges()[0]);
     await markThreadRead();
 
     expect(entry.getByText('Nice work')).toBeInTheDocument();
-    expect(entry.queryAllUnreadCommentBadges()).toHaveLength(1);
-  });
-
-  it('clears badge once the thread list is closed', async () => {
-    const entry = renderEntryWithUnreadThread();
-
-    fireEvent.click(entry.getAllCommentBadges()[0]);
-    await markThreadRead();
-    fireEvent.click(entry.getAllCommentBadges()[0]);
-
     expect(entry.queryAllUnreadCommentBadges()).toEqual([]);
   });
 });

@@ -4,10 +4,12 @@ export {LocatedCommentThreadsProvider, useLocatedCommentThreads} from './useLoca
 export {useLocatedCommentThreadsForSubject} from './useLocatedCommentThreadsForSubject';
 export {ReviewMessageHandler} from './ReviewMessageHandler';
 export {watchUnreadComments} from './watchUnreadComments';
-export {useUnreadCommentCount} from './unreadComments';
+export {useUnreadActivityCount} from './unreadActivity';
 export {ThreadsBadge} from './ThreadsBadge';
 export {Badge} from './Badge';
 export {ThreadList} from './ThreadList';
+export {activityEntries, useActivityEntries, useUnreadThreadCount} from './activityEntries';
+export {ActivityList} from './ActivityList';
 export {CommentThreadReadsSnapshot} from './commentThreadReadsSnapshot';
 export {Thread} from './Thread';
 export {ScrollHighlightedThreadIntoViewProvider} from './scrollHighlightedThreadIntoView';

@@ -1624,11 +1624,16 @@ en:
       main_menu:
         comments: Comments
       comments_view:
+        activity: Latest activity
         new_thread: New topic
         section: Section
         tabs:
-          comments: All comments
+          comments: All
           selection: For selection
+      comment_activity_view:
+        back: Comments
+        tabs:
+          activity: Latest activity
       new_thread_view:
         back: Comments
         tabs:
@@ -1813,8 +1818,8 @@ en:
       hide_comments: Hide comments
       show_comments: Show comments
       show_comments_with_unread:
-        one: Show comments (1 unread comment)
-        other: Show comments (%{count} unread comments)
+        one: Show comments (1 topic with new activity)
+        other: Show comments (%{count} topics with new activity)
       comment_toolbar: Comments
       filter:
         label: Filter comments
@@ -1826,13 +1831,13 @@ en:
         zero: No comments
         one: 1 comment
         other: '%{count} comments'
-      unread_comment_count:
-        one: 1 unread comment
-        other: '%{count} unread comments'
-      new_reply_count:
-        one: 1 new
-        other: '%{count} new'
-      new_replies: New replies
+      unread_count:
+        one: 1 unread
+        other: '%{count} unread'
+      unread_reply_count:
+        one: 1 unread
+        other: '%{count} unread'
+      unread_replies: Unread replies
       select_content_element: Select to comment
       select_section: Select section to comment
       select_text_to_comment: Select text to comment
@@ -1843,17 +1848,35 @@ en:
       save: Save
       send: Send
       enter_for_new_line: Enter for new line
-      toggle_replies: Toggle replies
       comment_actions: Comment actions
       edit_comment: Edit
       edited: Edited %{date}
       resolve: Mark as resolved
       unresolve: Mark as unresolved
+      resolution: Marked as resolved
+      resolution_by: Marked as resolved by
+      thread_actions: Thread actions
       resolved_count:
         one: 1 resolved
         other: '%{count} resolved'
       reply_count:
         one: 1 reply
         other: '%{count} replies'
+      earlier_reply_count:
+        one: 1 more
+        other: '%{count} more'
       no_threads_yet: No comments yet
       refers_to_deleted_element: Refers to a deleted element
+      activity:
+        toggle: Latest activity
+        summary:
+          topic: topic started
+          reply_count:
+            one: 1 reply
+            other: '%{count} replies'
+          resolution: marked as resolved
+          and: ' and '
+        today: Today
+        yesterday: Yesterday
+        no_activity_yet: No activity yet
+        show_more: Show more

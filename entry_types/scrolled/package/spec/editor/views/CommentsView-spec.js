@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {editor} from 'pageflow-scrolled/editor';
 
 import {CommentsView} from 'editor/views/CommentsView';
+import styles from 'editor/views/CommentsView.module.css';
 
 import {factories, useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
@@ -25,9 +26,10 @@ describe('CommentsView', () => {
     'pageflow_scrolled.review.add_comment_placeholder': 'Add a comment...',
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.editor.content_elements.textBlock.name': 'Text',
-    'pageflow_scrolled.editor.comments_view.tabs.comments': 'All comments',
+    'pageflow_scrolled.editor.comments_view.tabs.comments': 'All',
     'pageflow_scrolled.editor.comments_view.tabs.selection': 'For selection',
     'pageflow_scrolled.editor.comments_view.new_thread': 'New topic',
+    'pageflow_scrolled.editor.comments_view.activity': 'Latest activity',
     'pageflow.editor.templates.back_button_decorator.outline': 'Outline'
   });
 
@@ -54,7 +56,7 @@ describe('CommentsView', () => {
     const {getAllByRole} = renderBackboneView(view);
 
     const labels = getAllByRole('tab').map(t => t.textContent);
-    expect(labels).toEqual(['All comments', 'For selection']);
+    expect(labels).toEqual(['All', 'For selection']);
   });
 
   it('shows the all-comments tab by default', () => {
@@ -190,6 +192,63 @@ describe('CommentsView', () => {
     expect(listener).toHaveBeenCalledWith({
       subjectId: 50,
       subjectType: 'Section'
+    });
+  });
+
+  describe('activity link', () => {
+    it('navigates to the activity route when clicked', () => {
+      const entry = setupEntry();
+
+      const view = new CommentsView({entry, editor});
+      const {getByRole} = renderBackboneView(view);
+
+      const navigate = jest.spyOn(editor, 'navigate').mockImplementation(() => {});
+
+      fireEvent.click(getByRole('button', {name: 'Latest activity'}));
+
+      expect(navigate).toHaveBeenCalledWith(
+        '/scrolled/comments/activity', {trigger: true}
+      );
+
+      navigate.mockRestore();
+    });
+
+    it('points at unseen comments while the entry holds some', () => {
+      const entry = setupEntry();
+      entry.set('hasUnreadComments', true);
+
+      const view = new CommentsView({entry, editor});
+      const {getByRole} = renderBackboneView(view);
+
+      expect(getByRole('button', {name: 'Latest activity'}))
+        .toHaveClass(styles.indicator);
+    });
+
+    it('does not point at unseen comments without any', () => {
+      const entry = setupEntry();
+
+      const view = new CommentsView({entry, editor});
+      const {getByRole} = renderBackboneView(view);
+
+      expect(getByRole('button', {name: 'Latest activity'}))
+        .not.toHaveClass(styles.indicator);
+    });
+
+    it('follows entry.hasUnreadComments while it changes', () => {
+      const entry = setupEntry();
+
+      const view = new CommentsView({entry, editor});
+      const {getByRole} = renderBackboneView(view);
+
+      act(() => { entry.set('hasUnreadComments', true); });
+
+      expect(getByRole('button', {name: 'Latest activity'}))
+        .toHaveClass(styles.indicator);
+
+      act(() => { entry.set('hasUnreadComments', false); });
+
+      expect(getByRole('button', {name: 'Latest activity'}))
+        .not.toHaveClass(styles.indicator);
     });
   });
 

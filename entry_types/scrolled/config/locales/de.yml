@@ -1642,11 +1642,16 @@ de:
       main_menu:
         comments: Kommentare
       comments_view:
+        activity: Letzte Aktivität
         new_thread: Neues Thema
         section: Abschnitt
         tabs:
-          comments: Alle Kommentare
+          comments: Alle
           selection: Für Auswahl
+      comment_activity_view:
+        back: Kommentare
+        tabs:
+          activity: Letzte Aktivität
       new_thread_view:
         back: Kommentare
         tabs:
@@ -1985,8 +1990,8 @@ de:
       hide_comments: Kommentare ausblenden
       show_comments: Kommentare einblenden
       show_comments_with_unread:
-        one: Kommentare einblenden (1 ungelesener Kommentar)
-        other: Kommentare einblenden (%{count} ungelesene Kommentare)
+        one: Kommentare einblenden (1 Thema mit neuer Aktivität)
+        other: Kommentare einblenden (%{count} Themen mit neuer Aktivität)
       comment_toolbar: Kommentare
       filter:
         label: Kommentare filtern
@@ -1998,13 +2003,13 @@ de:
         zero: Keine Kommentare
         one: 1 Kommentar
         other: '%{count} Kommentare'
-      unread_comment_count:
-        one: 1 ungelesener Kommentar
-        other: '%{count} ungelesene Kommentare'
-      new_reply_count:
-        one: 1 neu
-        other: '%{count} neu'
-      new_replies: Neue Antworten
+      unread_count:
+        one: 1 ungelesen
+        other: '%{count} ungelesen'
+      unread_reply_count:
+        one: 1 ungelesen
+        other: '%{count} ungelesen'
+      unread_replies: Ungelesene Antworten
       select_content_element: Zum Kommentieren auswählen
       select_section: Abschnitt zum Kommentieren auswählen
       select_text_to_comment: Text zum Kommentieren auswählen
@@ -2015,17 +2020,35 @@ de:
       save: Speichern
       send: Senden
       enter_for_new_line: Enter für neue Zeile
-      toggle_replies: Antworten umschalten
       comment_actions: Kommentaraktionen
       edit_comment: Bearbeiten
       edited: Bearbeitet %{date}
       resolve: Als gelöst markieren
       unresolve: Als ungelöst markieren
+      resolution: Als gelöst markiert
+      resolution_by: Als gelöst markiert von
+      thread_actions: Aktionen für Thema
       resolved_count:
         one: 1 erledigt
         other: '%{count} erledigt'
       reply_count:
         one: 1 Antwort
         other: '%{count} Antworten'
+      earlier_reply_count:
+        one: 1 weitere Antwort
+        other: '%{count} weitere Antworten'
       no_threads_yet: Noch keine Kommentare
       refers_to_deleted_element: Bezieht sich auf ein gelöschtes Element
+      activity:
+        toggle: Neueste Aktivität
+        summary:
+          topic: Thema begonnen
+          reply_count:
+            one: 1 Antwort
+            other: '%{count} Antworten'
+          resolution: als gelöst markiert
+          and: ' und '
+        today: Heute
+        yesterday: Gestern
+        no_activity_yet: Noch keine Aktivität
+        show_more: Mehr anzeigen
