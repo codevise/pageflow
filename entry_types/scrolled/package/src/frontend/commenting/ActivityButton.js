@@ -76,7 +76,7 @@ export function ActivityButton() {
 
 const ActivityPanel = React.forwardRef(function ActivityPanel({style, onClose}, ref) {
   const {t} = useI18n({locale: 'ui'});
-  const {goToThread} = useCommentNavigation();
+  const {goToThread, highlightedThreadId} = useCommentNavigation();
 
   const panelRef = useRef();
 
@@ -119,7 +119,8 @@ const ActivityPanel = React.forwardRef(function ActivityPanel({style, onClose}, 
          aria-label={t('pageflow_scrolled.review.activity.toggle')}
          data-comment-activity>
       <div className={styles.scroller}>
-        <ActivityList onEntryClick={entry => goToThread(entry.threadId,
+        <ActivityList highlightedThreadId={highlightedThreadId}
+                      onEntryClick={entry => goToThread(entry.threadId,
                                                         {revealOnly: true})} />
       </div>
     </div>

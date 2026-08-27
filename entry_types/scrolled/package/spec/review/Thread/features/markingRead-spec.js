@@ -132,6 +132,28 @@ describe('Thread marking read', () => {
     expect(markReadMessages(postMessage)).toHaveLength(1);
   });
 
+  it('does not mark thread read while it is not the highlighted one', () => {
+    const {container, postMessage} = render(
+      <Thread thread={thread} markReadWhenHighlighted />
+    );
+
+    simulateScrollingIntoView(container);
+    passTime(1000);
+
+    expect(markReadMessages(postMessage)).toEqual([]);
+  });
+
+  it('marks thread read once it is the highlighted one', () => {
+    const {container, postMessage} = render(
+      <Thread thread={thread} markReadWhenHighlighted highlighted />
+    );
+
+    simulateScrollingIntoView(container);
+    passTime(1000);
+
+    expect(markReadMessages(postMessage)).toHaveLength(1);
+  });
+
   it('does not mark thread read again once all comments have been read', () => {
     const {container, postMessage} = render(
       <Thread thread={thread} />,

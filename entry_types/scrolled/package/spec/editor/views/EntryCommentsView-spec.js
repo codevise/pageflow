@@ -10,6 +10,7 @@ import styles from 'editor/views/EntryCommentsView.module.css';
 
 import {factories, useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
+import {simulateScrollingIntoView} from 'support/fakeIntersectionObserver';
 
 describe('EntryCommentsView', () => {
   const {createEntry} = useEditorGlobals();
@@ -33,6 +34,63 @@ describe('EntryCommentsView', () => {
     'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element',
     'pageflow_scrolled.review.reply_count.one': '1 reply',
     'pageflow_scrolled.review.reply_count.other': '%{count} replies'
+  });
+
+  describe('marking read', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+      jest.restoreAllMocks();
+    });
+
+    function renderList({highlightedThreadId} = {}) {
+      const entry = createEntry({
+        chapters: [
+          {id: 1, permaId: 10, storylineId: 1000, position: 0, configuration: {title: 'Intro'}}
+        ],
+        sections: [{id: 1, permaId: 100, chapterId: 1, position: 0}],
+        contentElements: [{id: 1, permaId: 1000, sectionId: 1, typeName: 'image'}]
+      });
+      entry.reviewSession = factories.reviewSession({
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [{
+          id: 1, permaId: 5, subjectType: 'ContentElement', subjectId: 1000,
+          comments: [{id: 100, body: 'A comment', creatorId: 43, creatorName: 'Bob',
+                      createdAt: '2026-08-17T11:00:00.000Z'}]
+        }]
+      });
+      entry.set('highlightedThreadId', highlightedThreadId);
+
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+      const view = new EntryCommentsView({entry, editor});
+
+      return {...renderBackboneView(view), element: view.el, postMessage};
+    }
+
+    function markReadMessages(postMessage) {
+      return postMessage.mock.calls.filter(([message]) => message.type === 'MARK_THREADS_READ');
+    }
+
+    it('leaves a thread the reviewer only scrolled past unread', () => {
+      const {element, postMessage} = renderList();
+
+      simulateScrollingIntoView(element);
+      act(() => jest.advanceTimersByTime(1000));
+
+      expect(markReadMessages(postMessage)).toEqual([]);
+    });
+
+    it('marks a highlighted thread read', () => {
+      const {element, postMessage} = renderList({highlightedThreadId: 1});
+
+      simulateScrollingIntoView(element);
+      act(() => jest.advanceTimersByTime(1000));
+
+      expect(markReadMessages(postMessage)).toHaveLength(1);
+    });
   });
 
   it('keeps replies of a lone thread collapsed', () => {

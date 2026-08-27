@@ -179,10 +179,10 @@ describe('Thread folded replies', () => {
       jest.restoreAllMocks();
     });
 
-    function renderWithPostMessage(ui) {
+    function renderWithPostMessage(ui, options) {
       const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
 
-      return {...render(ui), postMessage};
+      return {...render(ui, options), postMessage};
     }
 
     function markReadMessages(postMessage) {
@@ -198,6 +198,18 @@ describe('Thread folded replies', () => {
       act(() => jest.advanceTimersByTime(1000));
 
       expect(markReadMessages(postMessage)).toEqual([]);
+    });
+
+    it('marks the thread read when the replies folded away have been read', () => {
+      const {container, postMessage} = renderWithPostMessage(
+        <Thread thread={thread} visibleReplyCount={1} />,
+        {commentThreadReads: {5: '2026-08-17T10:15:00.000Z'}}
+      );
+
+      simulateScrollingIntoView(container);
+      act(() => jest.advanceTimersByTime(1000));
+
+      expect(markReadMessages(postMessage)).toHaveLength(1);
     });
 
     it('marks the thread read once nothing is folded away', () => {

@@ -97,10 +97,11 @@ export function SelectedSubjectProvider({children}) {
   const navigation = useMemo(() => ({
     count: targets.length,
     position,
+    highlightedThreadId: selectedSubject?.highlightedThreadId ?? null,
     goToNext: () => goTo(1),
     goToPrevious: () => goTo(-1),
     goToThread
-  }), [targets.length, position, goTo, goToThread]);
+  }), [targets.length, position, selectedSubject, goTo, goToThread]);
 
   return (
     <SelectedSubjectContext.Provider value={selection}>

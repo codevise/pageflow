@@ -73,6 +73,7 @@ function Entry({entry, day, highlighted, onClick}) {
               collapsed={collapsed}
               onToggle={() => setCollapsed(!collapsed)}
               showUnreadMarker
+              markReadWhenHighlighted
               onClick={onClick}
               highlighted={highlighted}
               onResolve={() => postUpdateThreadMessage({

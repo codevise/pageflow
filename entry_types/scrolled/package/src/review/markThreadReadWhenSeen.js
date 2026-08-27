@@ -14,8 +14,9 @@ const ROOT_MARGIN = '-10% 0px -10% 0px';
 // A thread counts as read once it has been on screen long enough to
 // actually read it. Scrolling past it therefore leaves it unread.
 //
-// Callers pass `enabled: false` while the thread hides part of itself,
-// so collapsed replies do not get marked as read unseen.
+// Callers pass `enabled: false` while the thread keeps an unread comment
+// out of sight, and in lists that survey many threads at once, where
+// being on screen is not the reviewer choosing to read one.
 export function useMarkThreadReadWhenSeen({thread, ref, enabled}) {
   const unreadComments = useLiveUnreadComments(thread);
   const markThreadRead = useMarkThreadRead();

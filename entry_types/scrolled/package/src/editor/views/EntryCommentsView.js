@@ -153,6 +153,7 @@ function ContentElementGroup({
                   onThreadClick={onThreadClick}
                   restrictInteractionsToHighlighted
                   startCollapsed
+                  markReadWhenHighlighted
                   showNewForm={false}
                   hideNewTopicButton />
     </div>
@@ -178,6 +179,7 @@ function SectionGroup({section, selectedSubject, highlightedThreadId, onThreadCl
                   onThreadClick={onThreadClick}
                   restrictInteractionsToHighlighted
                   startCollapsed
+                  markReadWhenHighlighted
                   showNewForm={false}
                   hideNewTopicButton />
     </div>

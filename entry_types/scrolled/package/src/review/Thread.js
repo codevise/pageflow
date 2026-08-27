@@ -19,7 +19,7 @@ import ResolveIcon from './images/resolve.svg';
 import UnresolveIcon from './images/unresolve.svg';
 import styles from './Thread.module.css';
 
-export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onExpandReplies, onToggle, onReply, onResolve, onClick, highlighted, showUnreadMarker, interactive = true}) {
+export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onExpandReplies, onToggle, onReply, onResolve, onClick, highlighted, showUnreadMarker, markReadWhenHighlighted, interactive = true}) {
   const {t} = useI18n({locale: 'ui'});
   const firstComment = thread.comments[0];
   const replies = thread.comments.slice(1);
@@ -31,9 +31,7 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
 
   const repliesCollapsed = collapsed && replies.length > 0;
 
-  // A partial view is not a read thread: read state is one timestamp per
-  // thread, so marking it read would cover comments never shown. A
-  // collapsed thread has nothing folded - hiding both the fold and the
+  // A collapsed thread has nothing folded - hiding both the fold and the
   // count would leave no way back into it.
   const foldedReplyCount = visibleReplyCount === undefined || repliesCollapsed ?
                            0 :
@@ -43,11 +41,12 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
                        replies;
 
   const unreadComments = useUnreadComments(thread);
-  const unreadReplyCount = useMemo(() => {
-    const ids = new Set(unreadComments.map(comment => comment.id));
-    return replies.filter(reply => ids.has(reply.id)).length;
-  }, [unreadComments, replies]);
+  const unreadIds = useMemo(
+    () => new Set(unreadComments.map(comment => comment.id)),
+    [unreadComments]
+  );
 
+  const unreadReplyCount = replies.filter(reply => unreadIds.has(reply.id)).length;
   const hidesUnreadReplies = repliesCollapsed && unreadReplyCount > 0;
 
   // Where the unseen part of the thread starts. Only meaningful with
@@ -58,9 +57,8 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
       return null;
     }
 
-    const ids = new Set(unreadComments.map(comment => comment.id));
-    return replies.find(reply => ids.has(reply.id))?.id;
-  }, [unreadComments, replies, firstComment]);
+    return replies.find(reply => unreadIds.has(reply.id))?.id;
+  }, [unreadComments, unreadIds, replies, firstComment]);
 
   // Kept here rather than per comment so that a thread never shows two
   // textareas at once: neither two comments being edited, nor an edit next
@@ -86,7 +84,17 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
   const ref = useRef();
   const scrollHighlightedIntoView = useScrollHighlightedThreadIntoView();
 
-  useMarkThreadReadWhenSeen({thread, ref, enabled: !repliesCollapsed && !foldedReplyCount});
+  // Read state is one timestamp per thread, so a thread still keeping an
+  // unread comment out of sight would be marked read over comments never
+  // shown. Replies folded away for having been seen hide nothing.
+  const hiddenReplies = repliesCollapsed ? replies : replies.slice(0, foldedReplyCount);
+  const hidesUnread = hiddenReplies.some(reply => unreadIds.has(reply.id));
+
+  useMarkThreadReadWhenSeen({
+    thread,
+    ref,
+    enabled: !hidesUnread && (highlighted || !markReadWhenHighlighted)
+  });
 
   useEffect(() => {
     if (scrollHighlightedIntoView && highlighted && ref.current) {

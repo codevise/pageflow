@@ -13,7 +13,7 @@ import ChevronIcon from './images/chevron.svg';
 import NewTopicIcon from './images/newTopic.svg';
 import styles from './ThreadList.module.css';
 
-export function ThreadList({subjectType, subjectId, subjectRange, filter, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, expandResolved, startCollapsed}) {
+export function ThreadList({subjectType, subjectId, subjectRange, filter, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, expandResolved, startCollapsed, markReadWhenHighlighted}) {
   const {t} = useI18n({locale: 'ui'});
 
   // Threads arrive already located: in display order, with orphans of
@@ -100,6 +100,7 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
                   showUnreadMarker={activeThreads.length > 1}
                   onToggle={() => toggleThread(thread.id)}
                   onReply={() => setExpandedThreadId(thread.id)}
+                  markReadWhenHighlighted={markReadWhenHighlighted}
                   onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: true})}
                   onClick={onThreadClick && (() => onThreadClick(thread))}
                   highlighted={isHighlighted(thread)}
@@ -122,6 +123,7 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, highli
                       showUnreadMarker={resolvedThreads.length > 1}
                       onToggle={() => toggleThread(thread.id)}
                       onReply={() => setExpandedThreadId(thread.id)}
+                      markReadWhenHighlighted={markReadWhenHighlighted}
                       onResolve={() => postUpdateThreadMessage({threadId: thread.id, resolved: false})}
                       onClick={onThreadClick && (() => onThreadClick(thread))}
                       highlighted={isHighlighted(thread)}

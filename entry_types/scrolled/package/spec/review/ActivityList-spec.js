@@ -4,9 +4,12 @@ import userEvent from '@testing-library/user-event';
 import I18n from 'i18n-js';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
+import {act} from '@testing-library/react';
+
 import {ActivityList} from 'review/ActivityList';
 import styles from 'review/ActivityList.module.css';
 import {renderWithReviewState} from 'support/renderWithReviewState';
+import {simulateScrollingIntoView} from 'support/fakeIntersectionObserver';
 
 // ActivityList resolves its entries from the located threads, so the
 // subjects the threads hang off have to exist in the entry structure.
@@ -555,6 +558,54 @@ describe('ActivityList', () => {
       const {queryByRole} = renderPagedEntries(<ActivityList pageSize={3} />);
 
       expect(queryByRole('button', {name: 'Show more'})).toBeNull();
+    });
+  });
+  describe('marking read', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+      jest.restoreAllMocks();
+    });
+
+    const unreadThread = thread({
+      id: 1,
+      comments: [comment({id: 100, body: 'A topic', createdAt: '2026-08-17T09:00:00.000Z'})]
+    });
+
+    function renderWithPostMessage(ui) {
+      const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
+
+      return {
+        ...renderActivityList(ui, {commentThreads: [unreadThread]}),
+        postMessage
+      };
+    }
+
+    function markReadMessages(postMessage) {
+      return postMessage.mock.calls.filter(([message]) => message.type === 'MARK_THREADS_READ');
+    }
+
+    it('leaves a row the reviewer only scrolled past unread', () => {
+      const {container, postMessage} = renderWithPostMessage(<ActivityList />);
+
+      simulateScrollingIntoView(container);
+      act(() => jest.advanceTimersByTime(1000));
+
+      expect(markReadMessages(postMessage)).toEqual([]);
+    });
+
+    it('marks a highlighted row read', () => {
+      const {container, postMessage} = renderWithPostMessage(
+        <ActivityList highlightedThreadId={1} />
+      );
+
+      simulateScrollingIntoView(container);
+      act(() => jest.advanceTimersByTime(1000));
+
+      expect(markReadMessages(postMessage)).toHaveLength(1);
     });
   });
 });

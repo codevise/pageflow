@@ -125,6 +125,16 @@ describe('comment activity', () => {
     expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
   });
 
+  it('highlights the entry that was clicked', () => {
+    const entry = renderEntryWithTwoThreads();
+
+    fireEvent.click(entry.getActivityButton());
+    fireEvent.click(entry.getByText('First topic'));
+
+    expect(entry.getByText('First topic').closest('[aria-current="true"]'))
+      .not.toBeNull();
+  });
+
   // The row shows the thread already, so a popover would only say it
   // twice and cover the content just revealed.
   it('opens no popover for a clicked entry', () => {
