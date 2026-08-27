@@ -53,7 +53,7 @@ export function SectionDecorator({backdrop, section, contentElements, transition
   // section and the sidebar comment panel stay visually in sync.
   const isSelected = isSectionSelected || isPaddingSelected || commentsSelected;
 
-  const {resolution} = useCommentDisplayFilter();
+  const {resolution, alwaysShowComments} = useCommentDisplayFilter();
   const threads = useLocatedCommentThreadsForSubject({
     subjectType: 'Section',
     subjectId: section.permaId,
@@ -139,7 +139,8 @@ export function SectionDecorator({backdrop, section, contentElements, transition
                        subjectId={section.permaId}
                        resolution={resolution}
                        mode={commentsSelected ? 'active' :
-                             isSelected ? 'icon' : 'dot'}
+                             isSelected ? 'icon' :
+                             alwaysShowComments ? 'dot' : 'none'}
                        onClick={() => hasThreads ? selectComments() : selectNewThread()} />
        </div>}
     </div>

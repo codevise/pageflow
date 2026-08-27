@@ -1625,9 +1625,10 @@ en:
         comments: Comments
       comments_view:
         activity: Latest activity
+        always_show_comments: Always show comments
+        display_options: Comment display
         filter:
           all: All topics
-          label: Filter comments
           unresolved: Unresolved topics
         new_thread: New topic
         section: Section

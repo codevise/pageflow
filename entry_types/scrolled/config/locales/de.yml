@@ -1643,9 +1643,10 @@ de:
         comments: Kommentare
       comments_view:
         activity: Letzte Aktivität
+        always_show_comments: Kommentare immer anzeigen
+        display_options: Kommentaranzeige
         filter:
           all: Alle Themen
-          label: Kommentare filtern
           unresolved: Ungelöste Themen
         new_thread: Neues Thema
         section: Abschnitt

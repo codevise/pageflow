@@ -35,16 +35,19 @@ export function EntryDecorator({commentingInitialState, children}) {
 // The reviewer picks which resolutions to see in the editor's sidebar
 // menu, so the preview only follows what the editor tells it.
 function CommentDisplayFilterFromEditor({children}) {
-  const [resolution, setResolution] = useState('unresolved');
+  const [filter, setFilter] = useState(
+    {resolution: 'unresolved', alwaysShowComments: true}
+  );
 
   usePostMessageListener(useCallback(data => {
     if (data.type === 'CHANGE_COMMENT_DISPLAY_FILTER') {
-      setResolution(data.payload.resolution);
+      setFilter(data.payload);
     }
   }, []));
 
   return (
-    <CommentDisplayFilterProvider resolution={resolution}>
+    <CommentDisplayFilterProvider resolution={filter.resolution}
+                                  alwaysShowComments={filter.alwaysShowComments}>
       {children}
     </CommentDisplayFilterProvider>
   );

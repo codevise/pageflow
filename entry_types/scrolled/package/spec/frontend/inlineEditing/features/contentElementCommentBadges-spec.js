@@ -189,6 +189,70 @@ describe('inline editing content element comment badges', () => {
     delete Element.prototype.scrollIntoView;
   });
 
+  describe('with the editor displaying comments only for the selection', () => {
+    function renderEntryWithThread() {
+      const result = renderEntry({
+        seed: {
+          contentElements: [{
+            id: 1,
+            typeName: 'withTestId',
+            permaId: 10,
+            configuration: {testId: 5}
+          }]
+        }
+      });
+
+      act(() => {
+        window.dispatchEvent(new MessageEvent('message', {
+          data: {
+            type: 'REVIEW_STATE_RESET',
+            payload: {
+              currentUser: {id: 1},
+              commentThreads: [{
+                id: 1,
+                subjectType: 'ContentElement',
+                subjectId: 10,
+                comments: [{id: 100, body: 'Review this'}]
+              }]
+            }
+          },
+          origin: window.location.origin
+        }));
+      });
+
+      act(() => {
+        window.dispatchEvent(new MessageEvent('message', {
+          data: {
+            type: 'CHANGE_COMMENT_DISPLAY_FILTER',
+            payload: {resolution: 'unresolved', alwaysShowComments: false}
+          },
+          origin: window.location.origin
+        }));
+      });
+
+      return result;
+    }
+
+    it('hides the dot badge of an unselected element', async () => {
+      const {queryByRole} = renderEntryWithThread();
+
+      await waitFor(() => expect(queryByRole('status')).not.toBeInTheDocument());
+    });
+
+    it('keeps the badge of the selected element', async () => {
+      const {getByRole} = renderEntryWithThread();
+
+      act(() => {
+        window.dispatchEvent(new MessageEvent('message', {
+          data: {type: 'SELECT', payload: {type: 'contentElement', id: 1}},
+          origin: window.location.origin
+        }));
+      });
+
+      await waitFor(() => expect(getByRole('status')).toBeInTheDocument());
+    });
+  });
+
   describe('with the editor showing all resolutions', () => {
     function renderEntryWithResolvedThread() {
       const result = renderEntry({

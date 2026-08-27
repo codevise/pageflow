@@ -14,9 +14,13 @@ describe('comment display filter', () => {
   });
 
   function Probe() {
-    const {resolution, setResolution} = useCommentDisplayFilter();
+    const {resolution, alwaysShowComments, setResolution} = useCommentDisplayFilter();
 
-    return <button onClick={() => setResolution('all')}>{resolution}</button>;
+    return (
+      <button onClick={() => setResolution('all')}>
+        {resolution} {alwaysShowComments ? 'everywhere' : 'for the selection'}
+      </button>
+    );
   }
 
   function Remembered({storageKey}) {
@@ -71,5 +75,21 @@ describe('comment display filter', () => {
     );
 
     expect(getByRole('button')).toHaveTextContent('all');
+  });
+
+  it('displays comments everywhere by default', () => {
+    const {getByRole} = render(<Remembered storageKey="editor" />);
+
+    expect(getByRole('button')).toHaveTextContent('everywhere');
+  });
+
+  it('takes displaying comments for the selection only from outside', () => {
+    const {getByRole} = render(
+      <CommentDisplayFilterProvider alwaysShowComments={false}>
+        <Probe />
+      </CommentDisplayFilterProvider>
+    );
+
+    expect(getByRole('button')).toHaveTextContent('for the selection');
   });
 });

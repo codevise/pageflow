@@ -64,15 +64,12 @@ export const CommentsView = Marionette.ItemView.extend({
     `);
 
     this.appendSubview(new DropDownButtonView({
-      title: I18n.t('pageflow_scrolled.editor.comments_view.filter.label'),
+      title: I18n.t('pageflow_scrolled.editor.comments_view.display_options'),
       alignMenu: 'right',
       ellipsisIcon: true,
       borderless: true,
       openOnClick: true,
-      items: new ResolutionMenuItems(
-        [{name: 'unresolved'}, {name: 'all'}],
-        {commentDisplayFilter: entry.commentDisplayFilter}
-      )
+      items: displayOptions(entry.commentDisplayFilter)
     }), {to: this.$(cssModulesUtils.selector(styles, 'controls'))});
 
     this._updateNewThreadButton();
@@ -122,6 +119,17 @@ export const CommentsView = Marionette.ItemView.extend({
   }
 });
 
+function displayOptions(commentDisplayFilter) {
+  const items = new ResolutionMenuItems(
+    [{name: 'unresolved'}, {name: 'all'}],
+    {commentDisplayFilter}
+  );
+
+  items.add(new AlwaysShowCommentsMenuItem({}, {commentDisplayFilter}));
+
+  return items;
+}
+
 const ResolutionMenuItem = Backbone.Model.extend({
   initialize(attributes, options) {
     this.commentDisplayFilter = options.commentDisplayFilter;
@@ -146,6 +154,29 @@ const ResolutionMenuItem = Backbone.Model.extend({
 
 const ResolutionMenuItems = Backbone.Collection.extend({
   model: ResolutionMenuItem
+});
+
+const AlwaysShowCommentsMenuItem = Backbone.Model.extend({
+  initialize(attributes, options) {
+    this.commentDisplayFilter = options.commentDisplayFilter;
+
+    this.set('label',
+             I18n.t('pageflow_scrolled.editor.comments_view.always_show_comments'));
+    this.set('kind', 'checkBox');
+    this.set('separated', true);
+
+    const updateChecked = () => {
+      this.set('checked', this.commentDisplayFilter.get('alwaysShowComments'));
+    };
+
+    this.listenTo(this.commentDisplayFilter, 'change:alwaysShowComments', updateChecked);
+    updateChecked();
+  },
+
+  selected() {
+    this.commentDisplayFilter.set('alwaysShowComments',
+                                  !this.commentDisplayFilter.get('alwaysShowComments'));
+  }
 });
 
 function activityButton() {

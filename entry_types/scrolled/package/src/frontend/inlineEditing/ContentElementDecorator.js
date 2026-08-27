@@ -54,7 +54,7 @@ function DefaultSelectionRect(props) {
   const {isSelected, type, select, selectComments, selectNewThread} =
     useContentElementEditorState();
   const commentsSelected = type === 'contentElementComments' || type === 'newThread';
-  const {resolution} = useCommentDisplayFilter();
+  const {resolution, alwaysShowComments} = useCommentDisplayFilter();
   const {t} = useI18n({locale: 'ui'});
 
   const selectionRectRef = useRef();
@@ -88,7 +88,9 @@ function DefaultSelectionRect(props) {
                      <ThreadsBadge subjectType="ContentElement"
                                    subjectId={props.permaId}
                                    resolution={resolution}
-                                   mode={commentsSelected ? 'active' : isSelected ? 'icon' : 'dot'}
+                                   mode={commentsSelected ? 'active' :
+                                         isSelected ? 'icon' :
+                                         alwaysShowComments ? 'dot' : 'none'}
                                    onClick={threads => threads.length === 0 ?
                                                        selectNewThread() :
                                                        selectComments()} />}

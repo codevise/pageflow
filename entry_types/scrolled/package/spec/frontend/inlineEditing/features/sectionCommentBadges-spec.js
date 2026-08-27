@@ -83,6 +83,61 @@ describe('inline editing section comment badges', () => {
     });
   });
 
+  describe('with the editor displaying comments only for the selection', () => {
+    function renderEntryWithThread() {
+      const result = renderEntry({
+        seed: {
+          sections: [{id: 1, permaId: 10}],
+          contentElements: [{sectionId: 1, permaId: 100}]
+        }
+      });
+
+      act(() => {
+        window.dispatchEvent(new MessageEvent('message', {
+          data: {
+            type: 'REVIEW_STATE_RESET',
+            payload: {
+              currentUser: {id: 1},
+              commentThreads: [{
+                id: 1,
+                subjectType: 'Section',
+                subjectId: 10,
+                comments: [{id: 100, body: 'Review this'}]
+              }]
+            }
+          },
+          origin: window.location.origin
+        }));
+      });
+
+      act(() => {
+        window.dispatchEvent(new MessageEvent('message', {
+          data: {
+            type: 'CHANGE_COMMENT_DISPLAY_FILTER',
+            payload: {resolution: 'unresolved', alwaysShowComments: false}
+          },
+          origin: window.location.origin
+        }));
+      });
+
+      return result;
+    }
+
+    it('hides the dot badge of an unselected section', async () => {
+      const {queryByRole} = renderEntryWithThread();
+
+      await waitFor(() => expect(queryByRole('status')).not.toBeInTheDocument());
+    });
+
+    it('keeps the badge of the selected section', async () => {
+      const {getByRole, getSectionByPermaId} = renderEntryWithThread();
+
+      getSectionByPermaId(10).select();
+
+      await waitFor(() => expect(getByRole('status')).toBeInTheDocument());
+    });
+  });
+
   describe('with the editor showing all resolutions', () => {
     function renderEntryWithResolvedThread() {
       const result = renderEntry({

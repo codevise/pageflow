@@ -167,10 +167,12 @@ export const PreviewMessageController = Object.extend({
             })
           );
 
-          this.listenTo(this.entry.commentDisplayFilter, 'change:resolution', filter =>
+          this.listenTo(this.entry.commentDisplayFilter,
+                        'change:resolution change:alwaysShowComments',
+                        filter =>
             postMessage({
               type: 'CHANGE_COMMENT_DISPLAY_FILTER',
-              payload: {resolution: filter.get('resolution')}
+              payload: commentDisplayFilterPayload(filter)
             })
           );
 
@@ -185,11 +187,11 @@ export const PreviewMessageController = Object.extend({
         postMessage({type: 'ACK'})
 
         if (this.entry.reviewSession) {
-          // A reloaded iframe starts out showing unresolved threads only,
-          // so the filter has to be handed over again.
+          // A reloaded iframe starts out displaying unresolved threads
+          // everywhere, so the filter has to be handed over again.
           postMessage({
             type: 'CHANGE_COMMENT_DISPLAY_FILTER',
-            payload: {resolution: this.entry.commentDisplayFilter.get('resolution')}
+            payload: commentDisplayFilterPayload(this.entry.commentDisplayFilter)
           });
 
           this.entry.reviewSession.fetch();
@@ -352,6 +354,13 @@ function selectedCommentsSubjectFor(entry, payload) {
   }
 
   return undefined;
+}
+
+function commentDisplayFilterPayload(filter) {
+  return {
+    resolution: filter.get('resolution'),
+    alwaysShowComments: filter.get('alwaysShowComments')
+  };
 }
 
 function modelForSubject(entry, {subjectType, subjectId}) {

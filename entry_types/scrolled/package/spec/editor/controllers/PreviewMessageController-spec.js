@@ -1187,31 +1187,31 @@ describe('PreviewMessageController', () => {
       return factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
     }
 
-    function recordResolutions(iframeWindow) {
-      const resolutions = [];
+    function recordPayloads(iframeWindow) {
+      const payloads = [];
 
       iframeWindow.addEventListener('message', event => {
         if (event.data.type === 'CHANGE_COMMENT_DISPLAY_FILTER') {
-          resolutions.push(event.data.payload.resolution);
+          payloads.push(event.data.payload);
         }
       });
 
-      return resolutions;
+      return payloads;
     }
 
-    // The iframe starts out showing unresolved threads only, so a filter
-    // set to all has to be handed over again on every reload.
-    it('sends the resolution the editor displays after READY', async () => {
+    // The iframe starts out displaying unresolved threads everywhere, so
+    // anything else has to be handed over again on every reload.
+    it('sends what the editor displays after READY', async () => {
       const entry = createEntry();
-      entry.commentDisplayFilter.set('resolution', 'all');
+      entry.commentDisplayFilter.set({resolution: 'all', alwaysShowComments: false});
       const iframeWindow = createIframeWindow();
       controller = new PreviewMessageController({entry, iframeWindow});
 
-      const resolutions = recordResolutions(iframeWindow);
+      const payloads = recordPayloads(iframeWindow);
       await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
       await tick();
 
-      expect(resolutions).toEqual(['all']);
+      expect(payloads).toEqual([{resolution: 'all', alwaysShowComments: false}]);
     });
 
     it('sends the resolution when the reviewer changes the filter', async () => {
@@ -1219,12 +1219,27 @@ describe('PreviewMessageController', () => {
       const iframeWindow = createIframeWindow();
       controller = new PreviewMessageController({entry, iframeWindow});
 
-      const resolutions = recordResolutions(iframeWindow);
+      const payloads = recordPayloads(iframeWindow);
       await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
       entry.commentDisplayFilter.set('resolution', 'all');
       await tick();
 
-      expect(resolutions).toEqual(['unresolved', 'all']);
+      expect(payloads.map(payload => payload.resolution))
+        .toEqual(['unresolved', 'all']);
+    });
+
+    it('sends along that comments only show for the selection', async () => {
+      const entry = createEntry();
+      const iframeWindow = createIframeWindow();
+      controller = new PreviewMessageController({entry, iframeWindow});
+
+      const payloads = recordPayloads(iframeWindow);
+      await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+      entry.commentDisplayFilter.set('alwaysShowComments', false);
+      await tick();
+
+      expect(payloads.map(payload => payload.alwaysShowComments))
+        .toEqual([true, false]);
     });
   });
 
