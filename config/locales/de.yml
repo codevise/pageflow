@@ -836,6 +836,9 @@ de:
           unread_reply_count:
             one: 1 ungelesene Antwort
             other: "%{count} ungelesene Antworten"
+          unread_resolution_count:
+            one: 1 neu gelöstes Thema
+            other: "%{count} neu gelöste Themen"
           unread_topic_count:
             one: 1 ungelesenes Thema
             other: "%{count} ungelesene Themen"

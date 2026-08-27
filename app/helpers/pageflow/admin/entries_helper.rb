@@ -52,6 +52,10 @@ module Pageflow
           parts << t("#{scope}.unread_reply_count", count: summary.unread_reply_count)
         end
 
+        if summary.unread_resolution_count.positive?
+          parts << t("#{scope}.unread_resolution_count", count: summary.unread_resolution_count)
+        end
+
         t("#{scope}.tooltip", summary: parts.join(', '))
       end
 

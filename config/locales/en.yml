@@ -835,6 +835,9 @@ en:
           unread_reply_count:
             one: 1 unread reply
             other: "%{count} unread replies"
+          unread_resolution_count:
+            one: 1 newly resolved topic
+            other: "%{count} newly resolved topics"
           unread_topic_count:
             one: 1 unread topic
             other: "%{count} unread topics"

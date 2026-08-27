@@ -86,6 +86,20 @@ module Pageflow
             "[data-tooltip='Comments: 1 unresolved topic, 1 unread topic, 1 unread reply']"
           )
         end
+
+        it 'names a newly resolved topic in the tooltip' do
+          user = create(:user, unread_comments_since_at: 3.hours.ago)
+          entry = create(:entry)
+          thread = create(:comment_thread, revision: entry.draft, resolved_at: 1.hour.ago,
+                                           resolver: create(:user))
+          create(:comment, comment_thread: thread, creator: user, created_at: 2.hours.ago)
+
+          result = render_indicator(entry, user)
+
+          expect(result).to have_selector(
+            "[data-tooltip='Comments: 0 unresolved topics, 1 newly resolved topic']"
+          )
+        end
       end
 
       describe '#entry_type_collection' do

@@ -48,6 +48,39 @@ module Pageflow
         expect(summary.unread_reply_count).to eq(0)
       end
 
+      it 'counts a resolution by somebody else as unread' do
+        user = create(:user, unread_comments_since_at: 3.hours.ago)
+        entry = create(:entry)
+        thread = create(:comment_thread, revision: entry.draft, resolved_at: 1.hour.ago,
+                                         resolver: create(:user))
+        create(:comment, comment_thread: thread, creator: user, created_at: 2.hours.ago)
+
+        summary = summary_for(entry, user)
+
+        expect(summary.unread_resolution_count).to eq(1)
+        expect(summary).to be_unread
+      end
+
+      it 'does not count the user resolving a thread themselves' do
+        user = create(:user, unread_comments_since_at: 3.hours.ago)
+        entry = create(:entry)
+        thread = create(:comment_thread, revision: entry.draft, resolved_at: 1.hour.ago,
+                                         resolver: user)
+        create(:comment, comment_thread: thread, creator: user, created_at: 2.hours.ago)
+
+        expect(summary_for(entry, user).unread_resolution_count).to eq(0)
+      end
+
+      it 'counts unresolved topics only' do
+        user = create(:user)
+        entry = create(:entry)
+        create(:comment_thread, revision: entry.draft)
+        create(:comment_thread, revision: entry.draft, resolved_at: 1.hour.ago,
+                                resolver: create(:user))
+
+        expect(summary_for(entry, user).topic_count).to eq(1)
+      end
+
       it 'counts unseen comments after the first as unread replies' do
         user = create(:user, unread_comments_since_at: 3.hours.ago)
         entry = create(:entry)
