@@ -57,6 +57,7 @@ export function threadActivity(thread) {
 
   if (thread.resolvedAt) {
     activity.push({
+      resolution: true,
       at: thread.resolvedAt,
       createdAt: thread.resolvedAt,
       creatorId: thread.resolvedById

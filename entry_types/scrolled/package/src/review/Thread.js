@@ -46,6 +46,7 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
     [unread]
   );
 
+  const unreadResolution = unread.some(event => event.resolution);
   const unreadReplyCount = replies.filter(reply => unreadIds.has(reply.id)).length;
   const hidesUnreadReplies = repliesCollapsed && unreadReplyCount > 0;
   const unreadTopic = !!firstComment && unreadIds.has(firstComment.id);
@@ -173,7 +174,8 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
                    onSubmit={onReply} />}
 
       {(thread.resolvedAt || (interactive && onResolve && !repliesCollapsed)) &&
-        <div className={styles.resolveRow}>
+        <div className={classNames(styles.resolveRow,
+                                   {[styles.unreadResolution]: unreadResolution})}>
           {thread.resolvedAt ?
            <Resolution thread={thread}
                        onUnresolve={interactive ? onResolve : undefined} /> :

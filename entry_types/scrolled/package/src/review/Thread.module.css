@@ -180,6 +180,12 @@
   color: inherit;
 }
 
+.unreadResolution .resolutionIcon,
+.unreadResolution .resolution,
+.unreadResolution .resolver {
+  color: var(--ui-warning-color);
+}
+
 .resolution {
   display: flex;
   flex-direction: column;

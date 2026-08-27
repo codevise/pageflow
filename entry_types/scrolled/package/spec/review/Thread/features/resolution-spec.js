@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {Thread} from 'review/Thread';
+import styles from 'review/Thread.module.css';
 import {renderWithReviewState} from 'support/renderWithReviewState';
 
 describe('Thread resolution', () => {
@@ -42,6 +43,47 @@ describe('Thread resolution', () => {
     resolvedById: 3,
     resolverName: 'Ada'
   };
+
+  describe('unread', () => {
+    const currentUser = {id: 42, name: 'Alice'};
+
+    // Read state is looked up by perma id, so the thread needs one.
+    const tracked = {...resolved, permaId: 5};
+
+    function renderResolved(thread, options) {
+      return renderWithReviewState(
+        <Thread thread={thread} interactive={false} />,
+        {currentUser, commentThreads: [thread], ...options}
+      );
+    }
+
+    function resolveRow(container) {
+      return container.querySelector(`.${styles.resolveRow}`);
+    }
+
+    it('marks the line while the resolution has not been seen', () => {
+      const {container} = renderResolved(tracked, {commentThreadReads: {}});
+
+      expect(resolveRow(container)).toHaveClass(styles.unreadResolution);
+    });
+
+    it('leaves the line alone once the resolution has been seen', () => {
+      const {container} = renderResolved(tracked, {
+        commentThreadReads: {5: '2026-08-19T11:00:00.000Z'}
+      });
+
+      expect(resolveRow(container)).not.toHaveClass(styles.unreadResolution);
+    });
+
+    it('leaves the line alone for the reviewer resolving it themselves', () => {
+      const {container} = renderResolved(
+        {...tracked, resolvedById: currentUser.id},
+        {commentThreadReads: {}}
+      );
+
+      expect(resolveRow(container)).not.toHaveClass(styles.unreadResolution);
+    });
+  });
 
   it('names the user who resolved the thread', () => {
     const {getByText} = renderWithReviewState(
