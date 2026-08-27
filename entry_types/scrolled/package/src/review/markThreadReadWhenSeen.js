@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 
 import {useMarkThreadRead} from './ReviewStateProvider';
-import {useLiveUnreadComments} from './unreadComments';
+import {useLiveUnreadActivity} from './unreadActivity';
 
 const DWELL_TIME = 800;
 
@@ -18,16 +18,16 @@ const ROOT_MARGIN = '-10% 0px -10% 0px';
 // out of sight, and in lists that survey many threads at once, where
 // being on screen is not the reviewer choosing to read one.
 export function useMarkThreadReadWhenSeen({thread, ref, enabled}) {
-  const unreadComments = useLiveUnreadComments(thread);
+  const unread = useLiveUnreadActivity(thread);
   const markThreadRead = useMarkThreadRead();
 
   const {permaId} = thread;
-  const hasUnreadComments = unreadComments.length > 0;
+  const hasUnread = unread.length > 0;
 
   useEffect(() => {
     const element = ref.current;
 
-    if (!enabled || !hasUnreadComments || !markThreadRead || !element) return;
+    if (!enabled || !hasUnread || !markThreadRead || !element) return;
 
     let timeout;
 
@@ -45,5 +45,5 @@ export function useMarkThreadReadWhenSeen({thread, ref, enabled}) {
       clearTimeout(timeout);
       observer.disconnect();
     };
-  }, [enabled, hasUnreadComments, markThreadRead, permaId, ref]);
+  }, [enabled, hasUnread, markThreadRead, permaId, ref]);
 }

@@ -48,8 +48,8 @@ describe('ThreadList', () => {
     'pageflow_scrolled.review.resolved_count.other': '%{count} resolved',
     'pageflow_scrolled.review.no_threads_yet': 'No comments yet',
     'pageflow_scrolled.review.refers_to_deleted_element': 'Refers to a deleted element',
-    'pageflow_scrolled.review.unread_comment_count.one': '1 unread comment',
-    'pageflow_scrolled.review.unread_comment_count.other': '%{count} unread comments'
+    'pageflow_scrolled.review.unread_count.one': '1 unread',
+    'pageflow_scrolled.review.unread_count.other': '%{count} unread'
   });
 
   afterEach(() => {
@@ -370,7 +370,7 @@ describe('ThreadList', () => {
 
       await postReadsChange({5: '2026-08-17T12:00:00.000Z'});
 
-      expect(queryAllByLabelText('1 unread comment')).toHaveLength(2);
+      expect(queryAllByLabelText('1 unread')).toHaveLength(2);
     });
 
     it('drops the marker of a thread once another one is expanded', async () => {
@@ -384,7 +384,7 @@ describe('ThreadList', () => {
       await postReadsChange({5: '2026-08-17T12:00:00.000Z'});
       await user.click(getAllByRole('button', {name: /1 reply/})[1]);
 
-      expect(queryAllByLabelText('1 unread comment')).toHaveLength(1);
+      expect(queryAllByLabelText('1 unread')).toHaveLength(1);
     });
   });
 

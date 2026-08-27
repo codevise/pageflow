@@ -1831,9 +1831,9 @@ en:
         zero: No comments
         one: 1 comment
         other: '%{count} comments'
-      unread_comment_count:
-        one: 1 unread comment
-        other: '%{count} unread comments'
+      unread_count:
+        one: 1 unread
+        other: '%{count} unread'
       unread_reply_count:
         one: 1 unread
         other: '%{count} unread'

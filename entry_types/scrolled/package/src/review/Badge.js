@@ -21,7 +21,7 @@ export const Badge = forwardRef(function Badge({
     <button ref={ref}
             role="status"
             aria-label={unread ?
-                        t('pageflow_scrolled.review.unread_comment_count',
+                        t('pageflow_scrolled.review.unread_count',
                           {count: unreadCount}) :
                         undefined}
             className={classNames(styles.badge, styles[variant],

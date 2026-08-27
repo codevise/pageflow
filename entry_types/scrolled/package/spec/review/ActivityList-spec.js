@@ -58,8 +58,8 @@ describe('ActivityList', () => {
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.review.toggle_replies': 'Toggle replies',
-    'pageflow_scrolled.review.unread_comment_count.one': '1 unread comment',
-    'pageflow_scrolled.review.unread_comment_count.other': '%{count} unread comments',
+    'pageflow_scrolled.review.unread_count.one': '1 unread',
+    'pageflow_scrolled.review.unread_count.other': '%{count} unread',
     'pageflow_scrolled.review.resolution_by': 'Marked as resolved by',
     'pageflow_scrolled.review.resolve': 'Mark as resolved',
     'pageflow_scrolled.review.unresolve': 'Mark as unresolved'
@@ -348,7 +348,7 @@ describe('ActivityList', () => {
         commentThreadReads: {}
       });
 
-      expect(getByLabelText('3 unread comments')).toBeInTheDocument();
+      expect(getByLabelText('3 unread')).toBeInTheDocument();
     });
 
     it('does not mark a thread the reviewer has seen', () => {
@@ -357,8 +357,8 @@ describe('ActivityList', () => {
         commentThreadReads: {7: '2026-08-18T12:00:00.000Z'}
       });
 
-      expect(queryByLabelText('1 unread comment')).toBeNull();
-      expect(queryByLabelText('2 unread comments')).toBeNull();
+      expect(queryByLabelText('1 unread')).toBeNull();
+      expect(queryByLabelText('2 unread')).toBeNull();
     });
 
     it('shows unseen replies from earlier days', () => {

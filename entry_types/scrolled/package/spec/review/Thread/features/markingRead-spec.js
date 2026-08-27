@@ -154,6 +154,27 @@ describe('Thread marking read', () => {
     expect(markReadMessages(postMessage)).toHaveLength(1);
   });
 
+  it('marks thread read once a resolution by someone else has been seen', () => {
+    const resolved = {
+      ...thread,
+      resolvedAt: '2026-08-17T13:00:00.000Z',
+      resolvedById: 44
+    };
+
+    const {container, postMessage} = render(
+      <Thread thread={resolved} />,
+      {
+        commentThreads: [resolved],
+        commentThreadReads: {5: '2026-08-17T12:00:00.000Z'}
+      }
+    );
+
+    simulateScrollingIntoView(container);
+    passTime(1000);
+
+    expect(markReadMessages(postMessage)).toHaveLength(1);
+  });
+
   it('does not mark thread read again once all comments have been read', () => {
     const {container, postMessage} = render(
       <Thread thread={thread} />,

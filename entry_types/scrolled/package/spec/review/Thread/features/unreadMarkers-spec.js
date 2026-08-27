@@ -13,8 +13,8 @@ describe('Thread unread markers', () => {
     'pageflow_scrolled.review.reply_count.other': '%{count} replies',
     'pageflow_scrolled.review.unread_reply_count.one': '1 unread',
     'pageflow_scrolled.review.unread_reply_count.other': '%{count} unread',
-    'pageflow_scrolled.review.unread_comment_count.one': '1 unread comment',
-    'pageflow_scrolled.review.unread_comment_count.other': '%{count} unread comments'
+    'pageflow_scrolled.review.unread_count.one': '1 unread',
+    'pageflow_scrolled.review.unread_count.other': '%{count} unread'
   });
 
   const currentUser = {id: 42, name: 'Alice'};
@@ -61,7 +61,7 @@ describe('Thread unread markers', () => {
       );
 
       expect(unreadDot(container)).not.toBeNull();
-      expect(getByLabelText('1 unread comment')).toBeInTheDocument();
+      expect(getByLabelText('1 unread')).toBeInTheDocument();
     });
 
     it('marks a thread whose replies are unseen', () => {
@@ -70,6 +70,24 @@ describe('Thread unread markers', () => {
         {
           commentThreads: [threadWithReplies],
           commentThreadReads: {5: '2026-08-17T10:00:00.000Z'}
+        }
+      );
+
+      expect(unreadDot(container)).not.toBeNull();
+    });
+
+    it('marks a thread somebody else has resolved', () => {
+      const resolved = {
+        ...thread,
+        resolvedAt: '2026-08-17T13:00:00.000Z',
+        resolvedById: 44
+      };
+
+      const {container} = render(
+        <Thread thread={resolved} showUnreadMarker />,
+        {
+          commentThreads: [resolved],
+          commentThreadReads: {5: '2026-08-17T12:00:00.000Z'}
         }
       );
 

@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 
 import {useLocatedCommentThreadsForSubject} from './useLocatedCommentThreadsForSubject';
-import {useUnreadCommentCount} from './unreadComments';
+import {useUnreadActivityCount} from './unreadActivity';
 import {Badge} from './Badge';
 
 export function ThreadsBadge({subjectType, subjectId, subjectRange, onClick, mode, resolution = 'unresolved', revealedThreadId}) {
@@ -16,7 +16,7 @@ export function ThreadsBadge({subjectType, subjectId, subjectRange, onClick, mod
   // stands for what the filter itself holds.
   const counted = threads.filter(thread => thread.id !== revealedThreadId);
 
-  const unreadCommentCount = useUnreadCommentCount(threads);
+  const unreadCount = useUnreadActivityCount(threads);
 
   const handleClick = useCallback(() => {
     if (onClick) onClick(threads);
@@ -28,6 +28,6 @@ export function ThreadsBadge({subjectType, subjectId, subjectRange, onClick, mod
                 hasThreads={threads.length > 0}
                 mode={mode}
                 resolved={resolved}
-                unreadCount={unreadCommentCount}
+                unreadCount={unreadCount}
                 onClick={handleClick} />;
 }

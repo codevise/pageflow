@@ -11,8 +11,8 @@ describe('unread badges', () => {
 
   useFakeTranslations({
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
-    'pageflow_scrolled.review.unread_comment_count.one': '1 unread comment',
-    'pageflow_scrolled.review.unread_comment_count.other': '%{count} unread comments'
+    'pageflow_scrolled.review.unread_count.one': '1 unread',
+    'pageflow_scrolled.review.unread_count.other': '%{count} unread'
   });
 
   function renderEntryWithUnreadThread() {

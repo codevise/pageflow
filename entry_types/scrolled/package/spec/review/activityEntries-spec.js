@@ -3,7 +3,7 @@ import {act} from '@testing-library/react';
 import {
   activityEntries,
   useActivityEntries,
-  useUnseenActivityCount
+  useUnreadThreadCount
 } from 'review/activityEntries';
 import {postReviewStateThreadChangeMessage} from 'review/postMessage';
 import {renderHookWithReviewState} from 'support/renderWithReviewState';
@@ -168,8 +168,8 @@ describe('activityEntries', () => {
       });
 
       expect(entries[0]).toMatchObject({
-        unseenCount: 2,
-        unseenCommentIds: [101, 102]
+        unreadCount: 2,
+        unreadCommentIds: [101, 102]
       });
     });
 
@@ -182,7 +182,7 @@ describe('activityEntries', () => {
         commentThreadReads: {}
       });
 
-      expect(entries[0]).toMatchObject({unseenCount: 0, unseenCommentIds: []});
+      expect(entries[0]).toMatchObject({unreadCount: 0, unreadCommentIds: []});
     });
 
     // A resolution has no read record of its own, so it goes by the
@@ -206,8 +206,8 @@ describe('activityEntries', () => {
         commentThreadReads: {6: '2026-08-17T12:00:00.000Z'}
       });
 
-      expect(unread[0].unseenCount).toEqual(1);
-      expect(read[0].unseenCount).toEqual(0);
+      expect(unread[0].unreadCount).toEqual(1);
+      expect(read[0].unreadCount).toEqual(0);
     });
 
     it('leaves the resolution out of the unseen comment ids', () => {
@@ -225,7 +225,7 @@ describe('activityEntries', () => {
         commentThreadReads: {5: '2026-08-17T10:00:00.000Z'}
       });
 
-      expect(entries[0]).toMatchObject({unseenCount: 2, unseenCommentIds: [101]});
+      expect(entries[0]).toMatchObject({unreadCount: 2, unreadCommentIds: [101]});
     });
 
     it('counts nothing while the current user is unknown', () => {
@@ -237,7 +237,7 @@ describe('activityEntries', () => {
         commentThreadReads: {}
       });
 
-      expect(entries[0].unseenCount).toEqual(0);
+      expect(entries[0].unreadCount).toEqual(0);
     });
   });
 
@@ -270,8 +270,8 @@ describe('activityEntries', () => {
       expect(result.current).toHaveLength(1);
       expect(result.current[0]).toMatchObject({
         threadId: 1,
-        unseenCount: 1,
-        unseenCommentIds: [101]
+        unreadCount: 1,
+        unreadCommentIds: [101]
       });
     });
 
@@ -397,10 +397,10 @@ describe('activityEntries', () => {
       });
     });
 
-    describe('useUnseenActivityCount', () => {
+    describe('useUnreadThreadCount', () => {
       it('counts the threads carrying something new', () => {
         const {result} = renderHookWithReviewState(
-          () => useUnseenActivityCount(),
+          () => useUnreadThreadCount(),
           {
             seed,
             currentUser,
@@ -414,7 +414,7 @@ describe('activityEntries', () => {
 
       it('counts nothing once the thread has been read', () => {
         const {result} = renderHookWithReviewState(
-          () => useUnseenActivityCount(),
+          () => useUnreadThreadCount(),
           {
             seed,
             currentUser,

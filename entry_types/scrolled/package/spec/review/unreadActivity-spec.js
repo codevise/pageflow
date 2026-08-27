@@ -1,7 +1,7 @@
-import {isUnseen, unreadComments, useUnreadComments} from 'review/unreadComments';
+import {isUnread, unreadActivity, useUnreadActivity} from 'review/unreadActivity';
 import {renderHookWithReviewState} from 'support/renderWithReviewState';
 
-describe('unreadComments', () => {
+describe('unreadActivity', () => {
   const currentUser = {id: 42, name: 'Alice'};
 
   function thread(comments) {
@@ -9,7 +9,7 @@ describe('unreadComments', () => {
   }
 
   it('returns comments created after read timestamp', () => {
-    const result = unreadComments(
+    const result = unreadActivity(
       thread([
         {id: 100, creatorId: 43, createdAt: '2026-08-17T09:00:00.000Z'},
         {id: 101, creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'}
@@ -20,8 +20,48 @@ describe('unreadComments', () => {
     expect(result.map(comment => comment.id)).toEqual([101]);
   });
 
+  it('counts a resolution by someone else', () => {
+    const result = unreadActivity(
+      {
+        ...thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T09:00:00.000Z'}]),
+        resolvedAt: '2026-08-17T13:00:00.000Z',
+        resolvedById: 44
+      },
+      {currentUser, readAt: '2026-08-17T10:00:00.000Z'}
+    );
+
+    expect(result).toHaveLength(1);
+    expect(result[0].createdAt).toEqual('2026-08-17T13:00:00.000Z');
+  });
+
+  it('does not count the reviewer resolving a thread themselves', () => {
+    const result = unreadActivity(
+      {
+        ...thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T09:00:00.000Z'}]),
+        resolvedAt: '2026-08-17T13:00:00.000Z',
+        resolvedById: currentUser.id
+      },
+      {currentUser, readAt: '2026-08-17T10:00:00.000Z'}
+    );
+
+    expect(result).toEqual([]);
+  });
+
+  it('does not count a resolution the reviewer has seen', () => {
+    const result = unreadActivity(
+      {
+        ...thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T09:00:00.000Z'}]),
+        resolvedAt: '2026-08-17T13:00:00.000Z',
+        resolvedById: 44
+      },
+      {currentUser, readAt: '2026-08-17T14:00:00.000Z'}
+    );
+
+    expect(result).toEqual([]);
+  });
+
   it('returns all comments of never read thread', () => {
-    const result = unreadComments(
+    const result = unreadActivity(
       thread([
         {id: 100, creatorId: 43, createdAt: '2026-08-17T09:00:00.000Z'},
         {id: 101, creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'}
@@ -33,7 +73,7 @@ describe('unreadComments', () => {
   });
 
   it('excludes comments of current user', () => {
-    const result = unreadComments(
+    const result = unreadActivity(
       thread([
         {id: 100, creatorId: 42, createdAt: '2026-08-17T11:00:00.000Z'},
         {id: 101, creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'}
@@ -45,7 +85,7 @@ describe('unreadComments', () => {
   });
 
   it('returns nothing while current user is unknown', () => {
-    const result = unreadComments(
+    const result = unreadActivity(
       thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'}]),
       {currentUser: null, readAt: undefined}
     );
@@ -57,7 +97,7 @@ describe('unreadComments', () => {
     const joinedUser = {...currentUser, unreadCommentsSinceAt: '2026-08-17T10:00:00.000Z'};
 
     it('ignores comments from before the baseline', () => {
-      const result = unreadComments(
+      const result = unreadActivity(
         thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T09:00:00.000Z'}]),
         {currentUser: joinedUser, readAt: undefined}
       );
@@ -66,7 +106,7 @@ describe('unreadComments', () => {
     });
 
     it('returns comments from after the baseline', () => {
-      const result = unreadComments(
+      const result = unreadActivity(
         thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'}]),
         {currentUser: joinedUser, readAt: undefined}
       );
@@ -76,7 +116,7 @@ describe('unreadComments', () => {
 
     // A thread read after the baseline has moved past it.
     it('prefers a later read timestamp over the baseline', () => {
-      const result = unreadComments(
+      const result = unreadActivity(
         thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'}]),
         {currentUser: joinedUser, readAt: '2026-08-17T12:00:00.000Z'}
       );
@@ -86,7 +126,7 @@ describe('unreadComments', () => {
 
     // A thread last read before the baseline says nothing newer than it.
     it('prefers the baseline over an earlier read timestamp', () => {
-      const result = unreadComments(
+      const result = unreadActivity(
         thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T09:30:00.000Z'}]),
         {currentUser: joinedUser, readAt: '2026-08-17T09:00:00.000Z'}
       );
@@ -96,7 +136,7 @@ describe('unreadComments', () => {
   });
 
   it('compares timestamps of different time zone offsets', () => {
-    const result = unreadComments(
+    const result = unreadActivity(
       thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T12:00:00.000+02:00'}]),
       {currentUser, readAt: '2026-08-17T11:00:00.000Z'}
     );
@@ -104,9 +144,9 @@ describe('unreadComments', () => {
     expect(result).toEqual([]);
   });
 
-  describe('isUnseen', () => {
+  describe('isUnread', () => {
     it('is true for a comment created after the read timestamp', () => {
-      const result = isUnseen(
+      const result = isUnread(
         {creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'},
         {currentUser, readAt: '2026-08-17T10:00:00.000Z'}
       );
@@ -115,7 +155,7 @@ describe('unreadComments', () => {
     });
 
     it('is false for a comment created before the read timestamp', () => {
-      const result = isUnseen(
+      const result = isUnread(
         {creatorId: 43, createdAt: '2026-08-17T09:00:00.000Z'},
         {currentUser, readAt: '2026-08-17T10:00:00.000Z'}
       );
@@ -124,7 +164,7 @@ describe('unreadComments', () => {
     });
 
     it('is true for a comment in a never read thread', () => {
-      const result = isUnseen(
+      const result = isUnread(
         {creatorId: 43, createdAt: '2026-08-17T09:00:00.000Z'},
         {currentUser, readAt: undefined}
       );
@@ -133,7 +173,7 @@ describe('unreadComments', () => {
     });
 
     it('is false for an event of the current user', () => {
-      const result = isUnseen(
+      const result = isUnread(
         {creatorId: 42, createdAt: '2026-08-17T11:00:00.000Z'},
         {currentUser, readAt: undefined}
       );
@@ -142,7 +182,7 @@ describe('unreadComments', () => {
     });
 
     it('is false while the current user is unknown', () => {
-      const result = isUnseen(
+      const result = isUnread(
         {creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'},
         {currentUser: null, readAt: undefined}
       );
@@ -154,7 +194,7 @@ describe('unreadComments', () => {
       const joinedUser = {...currentUser, unreadCommentsSinceAt: '2026-08-17T10:00:00.000Z'};
 
       it('is false for an event from before the baseline', () => {
-        const result = isUnseen(
+        const result = isUnread(
           {creatorId: 43, createdAt: '2026-08-17T09:00:00.000Z'},
           {currentUser: joinedUser, readAt: undefined}
         );
@@ -163,7 +203,7 @@ describe('unreadComments', () => {
       });
 
       it('is true for an event from after the baseline', () => {
-        const result = isUnseen(
+        const result = isUnread(
           {creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'},
           {currentUser: joinedUser, readAt: undefined}
         );
@@ -187,7 +227,7 @@ describe('unreadComments', () => {
       };
 
       const {result} = renderHookWithReviewState(
-        () => useUnreadComments(commentThread),
+        () => useUnreadActivity(commentThread),
         {
           currentUser,
           commentThreads: [commentThread],
@@ -208,7 +248,7 @@ describe('unreadComments', () => {
       };
 
       const {result} = renderHookWithReviewState(
-        () => useUnreadComments(commentThread),
+        () => useUnreadActivity(commentThread),
         {commentThreads: [commentThread]}
       );
 

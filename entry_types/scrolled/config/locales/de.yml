@@ -2003,9 +2003,9 @@ de:
         zero: Keine Kommentare
         one: 1 Kommentar
         other: '%{count} Kommentare'
-      unread_comment_count:
-        one: 1 ungelesener Kommentar
-        other: '%{count} ungelesene Kommentare'
+      unread_count:
+        one: 1 ungelesen
+        other: '%{count} ungelesen'
       unread_reply_count:
         one: 1 ungelesen
         other: '%{count} ungelesen'

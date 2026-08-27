@@ -122,11 +122,11 @@ function joinParts(t, parts) {
 // unseen from before it - folding that away would hide what the feed
 // exists to surface. Falls back to the latest reply, so that a row never
 // shows a thread without the comment it is listed for.
-function visibleReplyCount({thread, unseenCommentIds}, day) {
+function visibleReplyCount({thread, unreadCommentIds}, day) {
   const replies = thread.comments.slice(1);
 
   const starts = [
-    replies.findIndex(reply => unseenCommentIds.includes(reply.id)),
+    replies.findIndex(reply => unreadCommentIds.includes(reply.id)),
     replies.findIndex(reply => dayOf(reply.createdAt) === day)
   ].filter(index => index >= 0);
 

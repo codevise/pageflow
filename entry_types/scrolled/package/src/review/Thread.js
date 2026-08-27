@@ -11,7 +11,7 @@ import {useCommentDraft} from './ReviewStateProvider';
 import {useSubjectQuote} from './subjectQuote';
 import {commentsWithOutdatedQuote} from './outdatedQuotes';
 import {useMarkThreadReadWhenSeen} from './markThreadReadWhenSeen';
-import {useUnreadComments} from './unreadComments';
+import {useUnreadActivity} from './unreadActivity';
 import {useScrollHighlightedThreadIntoView} from './scrollHighlightedThreadIntoView';
 
 import ChevronIcon from './images/chevron.svg';
@@ -40,10 +40,10 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
                        replies.slice(foldedReplyCount) :
                        replies;
 
-  const unreadComments = useUnreadComments(thread);
+  const unread = useUnreadActivity(thread);
   const unreadIds = useMemo(
-    () => new Set(unreadComments.map(comment => comment.id)),
-    [unreadComments]
+    () => new Set(unread.map(event => event.id)),
+    [unread]
   );
 
   const unreadReplyCount = replies.filter(reply => unreadIds.has(reply.id)).length;
@@ -54,12 +54,12 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
   // seen comments above it: a thread that is new all through says so
   // through its dot instead of repeating it at the very top.
   const firstUnreadReplyId = useMemo(() => {
-    if (!unreadComments.length || unreadComments[0].id === firstComment?.id) {
+    if (!unread.length || unread[0].id === firstComment?.id) {
       return null;
     }
 
     return replies.find(reply => unreadIds.has(reply.id))?.id;
-  }, [unreadComments, unreadIds, replies, firstComment]);
+  }, [unread, unreadIds, replies, firstComment]);
 
   // Kept here rather than per comment so that a thread never shows two
   // textareas at once: neither two comments being edited, nor an edit next
@@ -114,11 +114,11 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
          aria-current={highlighted ? 'true' : undefined}>
       {/* A lone thread needs no marker of its own: the badge that opened
           the list already says the same thing right next to it. */}
-      {showUnreadMarker && unreadComments.length > 0 &&
+      {showUnreadMarker && unread.length > 0 &&
         <span role="img"
               className={styles.unreadDot}
-              aria-label={t('pageflow_scrolled.review.unread_comment_count',
-                            {count: unreadComments.length})} />}
+              aria-label={t('pageflow_scrolled.review.unread_count',
+                            {count: unread.length})} />}
 
       {thread.orphaned &&
         <p className={styles.deletedHint}>

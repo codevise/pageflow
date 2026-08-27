@@ -20,8 +20,8 @@ function renderThreadsBadge(ui, {commentThreads = [], ...options} = {}) {
 describe('ThreadsBadge', () => {
   describe('unread comments', () => {
     useFakeTranslations({
-      'pageflow_scrolled.review.unread_comment_count.one': '1 unread comment',
-      'pageflow_scrolled.review.unread_comment_count.other': '%{count} unread comments'
+      'pageflow_scrolled.review.unread_count.one': '1 unread',
+      'pageflow_scrolled.review.unread_count.other': '%{count} unread'
     });
 
     const currentUser = {id: 42, name: 'Alice'};
@@ -48,7 +48,7 @@ describe('ThreadsBadge', () => {
       );
 
       expect(getByRole('status')).toHaveClass(badgeStyles.unread);
-      expect(getByRole('status')).toHaveAttribute('aria-label', '1 unread comment');
+      expect(getByRole('status')).toHaveAttribute('aria-label', '1 unread');
     });
 
     it('counts unread comments across threads of the subject', () => {
@@ -63,7 +63,26 @@ describe('ThreadsBadge', () => {
         }
       );
 
-      expect(getByRole('status')).toHaveAttribute('aria-label', '2 unread comments');
+      expect(getByRole('status')).toHaveAttribute('aria-label', '2 unread');
+    });
+
+    it('counts a resolution where resolved threads are shown', () => {
+      const resolved = {
+        ...threadWithComment(),
+        resolvedAt: '2026-08-17T13:00:00.000Z',
+        resolvedById: 44
+      };
+
+      const {getByRole} = renderThreadsBadge(
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} resolution="all" />,
+        {
+          currentUser,
+          commentThreads: [resolved],
+          commentThreadReads: {5: '2026-08-17T12:00:00.000Z'}
+        }
+      );
+
+      expect(getByRole('status')).toHaveAttribute('aria-label', '1 unread');
     });
 
     it('does not mark badge as unread once comments have been read', () => {

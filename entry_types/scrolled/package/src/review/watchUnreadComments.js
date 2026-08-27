@@ -1,4 +1,4 @@
-import {unreadComments} from './unreadComments';
+import {unreadActivity} from './unreadActivity';
 
 // Keeps an entry attribute in sync with whether the review session holds
 // comments the user has not seen, so that the comments main menu item can
@@ -23,7 +23,7 @@ function hasUnreadComments(state) {
   const {currentUser, commentThreads, commentThreadReads = {}} = state;
 
   return commentThreads.some(
-    thread => unreadComments(thread, {
+    thread => unreadActivity(thread, {
       currentUser,
       readAt: commentThreadReads[thread.permaId]
     }).length > 0

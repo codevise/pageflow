@@ -3,13 +3,13 @@ import {useMemo} from 'react';
 import {useCommentThreadReads, useCurrentUser} from './ReviewStateProvider';
 import {useDisplayedCommentThreadReads} from './commentThreadReadsSnapshot';
 
-export function useUnreadCommentCount(threads) {
+export function useUnreadActivityCount(threads) {
   const currentUser = useCurrentUser();
   const commentThreadReads = useDisplayedCommentThreadReads();
 
   return useMemo(
     () => threads.reduce(
-      (count, thread) => count + unreadComments(thread, {
+      (count, thread) => count + unreadActivity(thread, {
         currentUser,
         readAt: commentThreadReads[thread.permaId]
       }).length,
@@ -19,12 +19,12 @@ export function useUnreadCommentCount(threads) {
   );
 }
 
-export function useUnreadComments(thread) {
+export function useUnreadActivity(thread) {
   const currentUser = useCurrentUser();
   const commentThreadReads = useDisplayedCommentThreadReads();
 
   return useMemo(
-    () => unreadComments(thread, {
+    () => unreadActivity(thread, {
       currentUser,
       readAt: commentThreadReads[thread.permaId]
     }),
@@ -32,16 +32,16 @@ export function useUnreadComments(thread) {
   );
 }
 
-// Counterpart of useUnreadComments for deciding whether a thread still
+// Counterpart of useUnreadActivity for deciding whether a thread still
 // needs to be marked read. Reading frozen state here would keep the
 // thread unread no matter how often it was marked, leaving the read
 // signal firing forever.
-export function useLiveUnreadComments(thread) {
+export function useLiveUnreadActivity(thread) {
   const currentUser = useCurrentUser();
   const commentThreadReads = useCommentThreadReads();
 
   return useMemo(
-    () => unreadComments(thread, {
+    () => unreadActivity(thread, {
       currentUser,
       readAt: commentThreadReads[thread.permaId]
     }),
@@ -49,9 +49,26 @@ export function useLiveUnreadComments(thread) {
   );
 }
 
-// Comments the reviewer has not seen yet.
-export function unreadComments(thread, {currentUser, readAt}) {
-  return thread.comments.filter(comment => isUnseen(comment, {currentUser, readAt}));
+// Everything that has happened in a thread: what was said, and its
+// resolution. A resolution leaves no read mark of its own, so it goes by
+// the thread's - seeing the thread clears it.
+export function threadActivity(thread) {
+  const activity = thread.comments.map(comment => ({...comment, at: comment.createdAt}));
+
+  if (thread.resolvedAt) {
+    activity.push({
+      at: thread.resolvedAt,
+      createdAt: thread.resolvedAt,
+      creatorId: thread.resolvedById
+    });
+  }
+
+  return activity;
+}
+
+// What of it the reviewer has not seen yet.
+export function unreadActivity(thread, {currentUser, readAt}) {
+  return threadActivity(thread).filter(event => isUnread(event, {currentUser, readAt}));
 }
 
 // Whether an event in a thread is new to the reviewer. Own events never
@@ -63,12 +80,12 @@ export function unreadComments(thread, {currentUser, readAt}) {
 // - or when the reviewer joined - from all turning up as unread at once.
 //
 // Read state is only known once the current user has been fetched. Until
-// then nothing counts as unseen, so lists do not briefly show every
+// then nothing counts as unread, so lists do not briefly show every
 // thread as new.
 //
 // Kept in sync with Pageflow::EntryCommentSummary, which applies the same
 // rule server side to summarize entries in the admin.
-export function isUnseen({creatorId, createdAt}, {currentUser, readAt}) {
+export function isUnread({creatorId, createdAt}, {currentUser, readAt}) {
   if (!currentUser || creatorId === currentUser.id) return false;
 
   const seenUpTo = latestTime([readAt, currentUser.unreadCommentsSinceAt]);
