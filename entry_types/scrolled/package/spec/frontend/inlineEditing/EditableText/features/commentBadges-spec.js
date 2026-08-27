@@ -154,6 +154,48 @@ describe('inline editing EditableText comment badges', () => {
     expect(badge.isActive()).toBe(true);
   });
 
+  it('renders the badge of a resolved thread while the editor shows all resolutions', async () => {
+    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+
+    const entry = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true, customSelectionRect: true}
+      },
+      commenting: {
+        currentUser: null,
+        commentThreads: [{
+          id: 7,
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          subjectRange: {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}},
+          resolvedAt: '2026-06-01T00:00:00Z',
+          comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
+        }]
+      }
+    });
+
+    expect(entry.queryAllCommentBadges()).toHaveLength(0);
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {
+          type: 'CHANGE_COMMENT_DISPLAY_FILTER',
+          payload: {resolution: 'all'}
+        },
+        origin: window.location.origin
+      }));
+    });
+
+    await waitFor(() => {
+      expect(entry.queryAllCommentBadges()).toHaveLength(1);
+    });
+
+    const badge = entry.queryAllCommentBadges()[0];
+    expect(badge.isResolved()).toBe(true);
+    expect(badge.isActive()).toBe(false);
+  });
+
   it('keeps the badge of an overlapped thread after a resolved thread is revealed', async () => {
     const value = [{type: 'paragraph', children: [{text: 'Alpha beta gamma delta'}]}];
 

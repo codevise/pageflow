@@ -120,6 +120,41 @@ describe('inline editing EditableText comment highlights', () => {
     expect(highlight).not.toHaveClass(highlightStyles.selected);
   });
 
+  it('highlights a resolved thread while the editor shows all resolutions', async () => {
+    const entry = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true, customSelectionRect: true}
+      },
+      commenting: {
+        currentUser: null,
+        commentThreads: [{
+          id: 7,
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          subjectRange,
+          resolvedAt: '2026-06-01T00:00:00Z',
+          comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
+        }]
+      }
+    });
+
+    act(() => {
+      window.postMessage({
+        type: 'CHANGE_COMMENT_DISPLAY_FILTER',
+        payload: {resolution: 'all'}
+      }, '*');
+    });
+
+    await waitFor(() => {
+      expect(entry.container.querySelector(`.${highlightStyles.highlight}`))
+        .toBeInTheDocument();
+    });
+
+    expect(entry.container.querySelector(`.${highlightStyles.highlight}`))
+      .toHaveClass(highlightStyles.resolved);
+  });
+
   it('keeps the resolved thread highlighted when a cursor sits in another block', () => {
     const multiBlockValue = [
       {type: 'paragraph', children: [{text: 'First paragraph'}]},

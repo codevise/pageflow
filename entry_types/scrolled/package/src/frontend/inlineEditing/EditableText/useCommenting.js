@@ -5,6 +5,7 @@ import {ReactEditor} from 'slate-react';
 
 import {features} from 'pageflow/frontend';
 import {
+  useCommentDisplayFilter,
   useCommentThreads,
   useCommentHighlights,
   decorateCommentHighlights,
@@ -41,6 +42,7 @@ export function useCommenting(editor) {
   const {trackedThreads, resetRangeRefs, getTrackedSubjectRanges} =
     useCommentRangeRefs(editor, threads);
   const {anchors, registerAnchor} = useRangeAnchors();
+  const {resolution} = useCommentDisplayFilter();
   const {highlightedThreadId, newThreadRange, selectThread} =
     useContentElementCommentSelection();
 
@@ -70,15 +72,17 @@ export function useCommenting(editor) {
   // Build highlights for all tracked threads, resolved included, so the
   // thread ids at the cursor (which scope the comments sidebar) cover
   // resolved threads too. Only `visibleHighlights` get a text overlay and
-  // a badge; a resolved thread stays hidden until it is the highlighted
-  // thread.
+  // a badge; a resolved thread stays hidden unless the editor's filter
+  // shows resolved threads or it is the highlighted thread.
   const highlights = useCommentHighlights(trackedThreads, newThreadRange);
 
   const visibleHighlights = useMemo(
     () => highlights.filter(
-      h => !h.thread?.resolvedAt || h.thread.id === highlightedThreadId
+      h => !h.thread?.resolvedAt ||
+           resolution === 'all' ||
+           h.thread.id === highlightedThreadId
     ),
-    [highlights, highlightedThreadId]
+    [highlights, highlightedThreadId, resolution]
   );
 
   const decorate = useMemo(
@@ -110,7 +114,8 @@ export function useCommenting(editor) {
   // re-rendering leaves whose decorations changed because its memo
   // equality function does not compare `decorations`.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [registerAnchor, contentElementPermaId, threads, newThreadRange, highlightedThreadId]);
+  }, [registerAnchor, contentElementPermaId, threads, newThreadRange, highlightedThreadId,
+      resolution]);
 
   return {
     enabled,
