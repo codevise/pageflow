@@ -45,6 +45,44 @@ describe('inline editing EditableText comment badges', () => {
     expect(badges[0].isInDotMode()).toBe(true);
   });
 
+  function renderEntryWithUnreadThread() {
+    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+
+    return renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true, customSelectionRect: true}
+      },
+      commenting: {
+        currentUser: {id: 42, name: 'Alice'},
+        commentThreads: [{
+          id: 5,
+          permaId: 5,
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          subjectRange: {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}},
+          comments: [{
+            id: 1, body: 'A comment', creatorName: 'Bob', creatorId: 43,
+            createdAt: '2026-08-17T11:00:00.000Z'
+          }]
+        }],
+        commentThreadReads: {}
+      }
+    });
+  }
+
+  it('marks a badge whose thread has unseen comments', () => {
+    const entry = renderEntryWithUnreadThread();
+
+    expect(entry.queryAllCommentBadges()[0].isUnread()).toBe(true);
+  });
+
+  it('keeps a badge with unseen comments out of dot mode', () => {
+    const entry = renderEntryWithUnreadThread();
+
+    expect(entry.queryAllCommentBadges()[0].isInDotMode()).toBe(false);
+  });
+
   it('renders only the highlighted thread badge in active mode', () => {
     const value = [
       {type: 'paragraph', children: [{text: 'First paragraph thread here'}]},

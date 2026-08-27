@@ -1,12 +1,16 @@
 import React, {forwardRef} from 'react';
 import classNames from 'classnames';
 
+import {useI18n} from 'pageflow-scrolled/frontend';
 import CommentIcon from './images/comment.svg';
 import styles from './Badge.module.css';
 
 export const Badge = forwardRef(function Badge({
-  counter, hasThreads = counter > 0, mode, resolved, unread, label, onClick
+  counter, hasThreads = counter > 0, mode, resolved, unreadCount = 0, onClick
 }, ref) {
+  const {t} = useI18n({locale: 'ui'});
+
+  const unread = unreadCount > 0;
   const variant = resolveVariant(mode, hasThreads, unread);
 
   if (!variant) {
@@ -16,7 +20,10 @@ export const Badge = forwardRef(function Badge({
   return (
     <button ref={ref}
             role="status"
-            aria-label={label}
+            aria-label={unread ?
+                        t('pageflow_scrolled.review.unread_comment_count',
+                          {count: unreadCount}) :
+                        undefined}
             className={classNames(styles.badge, styles[variant],
                                   {[styles.resolved]: resolved,
                                    [styles.unread]: unread})}

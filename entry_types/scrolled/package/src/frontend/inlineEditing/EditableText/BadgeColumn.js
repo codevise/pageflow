@@ -1,13 +1,15 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 
 import {Range, Transforms} from 'slate';
 import {useSlate, ReactEditor} from 'slate-react';
 
-import {Badge, useAnchoredFloating} from 'pageflow-scrolled/review';
+import {Badge, useAnchoredFloating, useUnreadCommentCount} from 'pageflow-scrolled/review';
 import {useContentElementCommentSelection} from '../useCommentSelection';
 import {highlightOverlapsSelection} from './highlightOverlapsSelection';
 
 import styles from './BadgeColumn.module.css';
+
+const noThreads = [];
 
 export function BadgeColumn({highlights, anchors}) {
   const editor = useSlate();
@@ -52,6 +54,12 @@ function PositionedBadge({editor, highlight, overlapSelection, anchors}) {
   const {refs, floatingStyles, hasAnchor} =
     useAnchoredFloating(highlight.key, anchors, {placement: 'left-start'});
 
+  const threads = useMemo(
+    () => (highlight.thread ? [highlight.thread] : noThreads),
+    [highlight.thread]
+  );
+  const unreadCommentCount = useUnreadCommentCount(threads);
+
   const handleClick = useCallback(() => {
     if (highlight.key === 'selection') {
       selectComments();
@@ -86,6 +94,7 @@ function PositionedBadge({editor, highlight, overlapSelection, anchors}) {
       <Badge counter={1}
              mode={mode}
              resolved={!!highlight.thread?.resolvedAt}
+             unreadCount={unreadCommentCount}
              onClick={handleClick} />
     </div>
   );
