@@ -189,6 +189,76 @@ describe('inline editing content element comment badges', () => {
     delete Element.prototype.scrollIntoView;
   });
 
+  describe('with the editor showing all resolutions', () => {
+    function renderEntryWithResolvedThread() {
+      const result = renderEntry({
+        seed: {
+          contentElements: [{
+            id: 1,
+            typeName: 'withTestId',
+            permaId: 10,
+            configuration: {testId: 5}
+          }]
+        }
+      });
+
+      act(() => {
+        window.dispatchEvent(new MessageEvent('message', {
+          data: {
+            type: 'REVIEW_STATE_RESET',
+            payload: {
+              currentUser: {id: 1},
+              commentThreads: [{
+                id: 7,
+                subjectType: 'ContentElement',
+                subjectId: 10,
+                resolvedAt: '2026-06-01T00:00:00Z',
+                comments: [{id: 100, body: 'Resolved'}]
+              }]
+            }
+          },
+          origin: window.location.origin
+        }));
+      });
+
+      return result;
+    }
+
+    function changeCommentDisplayFilter(resolution) {
+      act(() => {
+        window.dispatchEvent(new MessageEvent('message', {
+          data: {
+            type: 'CHANGE_COMMENT_DISPLAY_FILTER',
+            payload: {resolution}
+          },
+          origin: window.location.origin
+        }));
+      });
+    }
+
+    it('displays the badge of a resolved thread', async () => {
+      const {getByRole} = renderEntryWithResolvedThread();
+
+      changeCommentDisplayFilter('all');
+
+      await waitFor(() => {
+        expect(getByRole('status')).toBeInTheDocument();
+        expect(getByRole('status')).toHaveClass(badgeStyles.resolved);
+      });
+    });
+
+    it('hides the badge again once only unresolved threads are shown', async () => {
+      const {getByRole, queryByRole} = renderEntryWithResolvedThread();
+
+      changeCommentDisplayFilter('all');
+      await waitFor(() => expect(getByRole('status')).toBeInTheDocument());
+
+      changeCommentDisplayFilter('unresolved');
+
+      await waitFor(() => expect(queryByRole('status')).not.toBeInTheDocument());
+    });
+  });
+
   it('ignores SELECT_COMMENT_THREAD for a thread of another subject', () => {
     renderEntry({
       seed: {

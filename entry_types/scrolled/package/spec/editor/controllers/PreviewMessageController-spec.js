@@ -14,7 +14,7 @@ import {
   postSelectLinkDestinationMessage
 } from 'frontend/inlineEditing/postMessage';
 import {setupGlobals} from 'pageflow/testHelpers';
-import {normalizeSeed, factories, createIframeWindow, useFakeXhr} from 'support';
+import {normalizeSeed, factories, createIframeWindow, tick, useFakeXhr} from 'support';
 import {enableFetchMocks} from 'jest-fetch-mock';
 
 enableFetchMocks();
@@ -1174,6 +1174,58 @@ describe('PreviewMessageController', () => {
     return expect(new Promise(resolve => {
       setTimeout(() => resolve(actions.length), 100);
     })).resolves.toEqual(1);
+  });
+
+  describe('comment display filter', () => {
+    beforeEach(() => {
+      features.enable('frontend', ['commenting']);
+      fetch.mockResponse(JSON.stringify({currentUser: {id: 1}, commentThreads: []}));
+      window.localStorage.clear();
+    });
+
+    function createEntry() {
+      return factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    }
+
+    function recordResolutions(iframeWindow) {
+      const resolutions = [];
+
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'CHANGE_COMMENT_DISPLAY_FILTER') {
+          resolutions.push(event.data.payload.resolution);
+        }
+      });
+
+      return resolutions;
+    }
+
+    // The iframe starts out showing unresolved threads only, so a filter
+    // set to all has to be handed over again on every reload.
+    it('sends the resolution the editor displays after READY', async () => {
+      const entry = createEntry();
+      entry.commentDisplayFilter.set('resolution', 'all');
+      const iframeWindow = createIframeWindow();
+      controller = new PreviewMessageController({entry, iframeWindow});
+
+      const resolutions = recordResolutions(iframeWindow);
+      await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+      await tick();
+
+      expect(resolutions).toEqual(['all']);
+    });
+
+    it('sends the resolution when the reviewer changes the filter', async () => {
+      const entry = createEntry();
+      const iframeWindow = createIframeWindow();
+      controller = new PreviewMessageController({entry, iframeWindow});
+
+      const resolutions = recordResolutions(iframeWindow);
+      await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+      entry.commentDisplayFilter.set('resolution', 'all');
+      await tick();
+
+      expect(resolutions).toEqual(['unresolved', 'all']);
+    });
   });
 
   it('sends CHANGE_EMULATION_MODE message to iframe on change:emulation_mode event on model', async () => {

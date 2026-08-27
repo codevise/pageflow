@@ -167,6 +167,13 @@ export const PreviewMessageController = Object.extend({
             })
           );
 
+          this.listenTo(this.entry.commentDisplayFilter, 'change:resolution', filter =>
+            postMessage({
+              type: 'CHANGE_COMMENT_DISPLAY_FILTER',
+              payload: {resolution: filter.get('resolution')}
+            })
+          );
+
           this.listenTo(this.entry, 'change:emulation_mode', entry =>
             postMessage({
               type: 'CHANGE_EMULATION_MODE',
@@ -178,6 +185,13 @@ export const PreviewMessageController = Object.extend({
         postMessage({type: 'ACK'})
 
         if (this.entry.reviewSession) {
+          // A reloaded iframe starts out showing unresolved threads only,
+          // so the filter has to be handed over again.
+          postMessage({
+            type: 'CHANGE_COMMENT_DISPLAY_FILTER',
+            payload: {resolution: this.entry.commentDisplayFilter.get('resolution')}
+          });
+
           this.entry.reviewSession.fetch();
         }
       }

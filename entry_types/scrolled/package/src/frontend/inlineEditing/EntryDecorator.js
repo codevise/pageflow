@@ -1,6 +1,10 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback, useState} from 'react';
 
-import {ReviewStateProvider, LocatedCommentThreadsProvider} from 'pageflow-scrolled/review';
+import {
+  ReviewStateProvider,
+  LocatedCommentThreadsProvider,
+  CommentDisplayFilterProvider
+} from 'pageflow-scrolled/review';
 import {useEntryStateDispatch} from 'pageflow-scrolled/entryState';
 import {usePostMessageListener} from '../../shared/usePostMessageListener';
 import {EditorStateProvider, useEditorSelection} from './EditorState';
@@ -17,12 +21,32 @@ export function EntryDecorator({commentingInitialState, children}) {
       <ReviewStateProvider initialState={commentingInitialState}>
         <MessageHandler contentElementEditorCommandEmitter={contentElementEditorCommandEmitter} />
         <LocatedCommentThreadsProvider>
-          <ContentElementEditorCommandSubscriptionProvider emitter={contentElementEditorCommandEmitter}>
-            {children}
-          </ContentElementEditorCommandSubscriptionProvider>
+          <CommentDisplayFilterFromEditor>
+            <ContentElementEditorCommandSubscriptionProvider emitter={contentElementEditorCommandEmitter}>
+              {children}
+            </ContentElementEditorCommandSubscriptionProvider>
+          </CommentDisplayFilterFromEditor>
         </LocatedCommentThreadsProvider>
       </ReviewStateProvider>
     </EditorStateProvider>
+  );
+}
+
+// The reviewer picks which resolutions to see in the editor's sidebar
+// menu, so the preview only follows what the editor tells it.
+function CommentDisplayFilterFromEditor({children}) {
+  const [resolution, setResolution] = useState('unresolved');
+
+  usePostMessageListener(useCallback(data => {
+    if (data.type === 'CHANGE_COMMENT_DISPLAY_FILTER') {
+      setResolution(data.payload.resolution);
+    }
+  }, []));
+
+  return (
+    <CommentDisplayFilterProvider resolution={resolution}>
+      {children}
+    </CommentDisplayFilterProvider>
   );
 }
 
