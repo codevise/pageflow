@@ -263,6 +263,68 @@ describe('SelectionCommentsView', () => {
     expect(getByText('Resolved comment')).toBeInTheDocument();
   });
 
+  describe('resolution filter', () => {
+    function createEntryWithResolvedThread({scoped} = {}) {
+      const entry = createEntry({
+        contentElements: [{id: 1, permaId: 10, typeName: 'fixture'}]
+      });
+      entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 1});
+
+      if (scoped) {
+        entry.contentElements.get(1).transientState
+          .set('commentThreadIdsAtSelection', [7]);
+      }
+
+      entry.reviewSession = factories.reviewSession({
+        commentThreads: [{
+          id: 7,
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          resolvedAt: '2026-06-01T00:00:00Z',
+          comments: [{id: 100, body: 'Resolved comment', creatorName: 'Alice'}]
+        }]
+      });
+
+      return entry;
+    }
+
+    it('expands resolved threads of the selection while showing all', () => {
+      const entry = createEntryWithResolvedThread({scoped: true});
+      entry.commentDisplayFilter.set('resolution', 'all');
+
+      const {getByText} = renderBackboneView(
+        new SelectionCommentsView({entry, editor})
+      );
+
+      expect(getByText('Resolved comment')).toBeInTheDocument();
+    });
+
+    it('expands resolved threads of an unscoped subject while showing all', () => {
+      const entry = createEntryWithResolvedThread();
+      entry.commentDisplayFilter.set('resolution', 'all');
+
+      const {getByText} = renderBackboneView(
+        new SelectionCommentsView({entry, editor})
+      );
+
+      expect(getByText('Resolved comment')).toBeInTheDocument();
+    });
+
+    it('expands resolved threads once the reviewer changes the filter', () => {
+      const entry = createEntryWithResolvedThread({scoped: true});
+
+      const {getByText, queryByText} = renderBackboneView(
+        new SelectionCommentsView({entry, editor})
+      );
+
+      expect(queryByText('Resolved comment')).not.toBeInTheDocument();
+
+      act(() => { entry.commentDisplayFilter.set('resolution', 'all'); });
+
+      expect(getByText('Resolved comment')).toBeInTheDocument();
+    });
+  });
+
   it('does not highlight or trigger selectCommentThread when not scoped', async () => {
     const user = userEvent.setup();
 
