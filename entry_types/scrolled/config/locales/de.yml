@@ -2040,7 +2040,7 @@ de:
       no_threads_yet: Noch keine Kommentare
       refers_to_deleted_element: Bezieht sich auf ein gelöschtes Element
       activity:
-        toggle: Neueste Aktivität
+        toggle: Letzte Aktivität
         summary:
           topic: Thema begonnen
           reply_count:
