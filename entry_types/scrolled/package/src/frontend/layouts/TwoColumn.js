@@ -1,4 +1,4 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import classNames from 'classnames';
 
 import {api} from '../api';
@@ -97,6 +97,8 @@ function renderItemGroup(props, box, key) {
 function Box({box, children}) {
   const ref = useRef();
 
+  useStickyBoxHeight(ref, box.position === 'sticky');
+
   return (
     <div ref={ref}
          className={classNames(styles.box,
@@ -108,6 +110,28 @@ function Box({box, children}) {
        children}
     </div>
   );
+}
+
+function useStickyBoxHeight(ref, sticky) {
+  useEffect(() => {
+    if (!sticky || typeof ResizeObserver === 'undefined') {
+      return;
+    }
+
+    const box = ref.current;
+
+    const observer = new ResizeObserver(entries =>
+      box.style.setProperty('--sticky-box-height',
+                            `${entries[entries.length - 1].contentRect.height}px`)
+    );
+
+    observer.observe(box);
+
+    return () => {
+      observer.disconnect();
+      box.style.removeProperty('--sticky-box-height');
+    };
+  }, [ref, sticky]);
 }
 
 // Sticky boxes stay pinned while the rest of their group scrolls past.

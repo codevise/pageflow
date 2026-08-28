@@ -117,7 +117,6 @@
   --content-max-width: min(var(--content-width), var(--two-column-sticky-content-max-width, 600px));
   float: right;
   clear: both;
-  top: 33%;
   width: var(--content-width);
 }
 
@@ -132,9 +131,23 @@
   --side-offset-left: var(--side-offset);
 }
 
+/*
+  cssnano strips units from zero lengths, turning `0px` into `0`. That
+  would invalidate `initial-value` as well as any zero inside a math
+  function, so the property uses the universal syntax and the box
+  height is clamped to the viewport height instead of the result.
+*/
+@property --sticky-box-height {
+  syntax: '*';
+  inherits: false;
+}
+
 .sticky {
   composes: side;
   position: sticky;
+  --sticky-box-height: 0px;
+  top: min(33%,
+           (100 * var(--vh) - min(var(--sticky-box-height), 100 * var(--vh))) / 2);
 }
 
 .right .side {

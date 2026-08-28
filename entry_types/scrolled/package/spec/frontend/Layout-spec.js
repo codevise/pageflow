@@ -10,6 +10,7 @@ import twoColumnStyles from 'frontend/layouts/TwoColumn.module.css';
 import {widthName} from 'frontend/layouts/widths';
 
 import {renderInEntry} from 'testHelpers';
+import {fakeResizeObserver} from 'support/fakeResizeObserver';
 
 describe('Layout', () => {
   describe('placeholder', () => {
@@ -1601,6 +1602,45 @@ describe('Layout', () => {
       );
 
       expect(findParentWithClass(getByTestId('probe'), twoColumnStyles['align-right'])).toBeNull();
+    });
+  });
+
+  describe('sticky box height in two column variant', () => {
+    beforeAll(() => {
+      frontend.contentElementTypes.register('probe', {
+        component: function Probe() {
+          return <div data-testid="probe" />;
+        }
+      });
+    });
+
+    it('exposes observed height of sticky box as custom property', () => {
+      fakeResizeObserver.contentRect = {width: 300, height: 600};
+      const items = [
+        {id: 2, type: 'probe', position: 'sticky'}
+      ];
+      const {getByTestId} = renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      const box = findParentWithClass(getByTestId('probe'), twoColumnStyles.box);
+
+      expect(box.style.getPropertyValue('--sticky-box-height')).toEqual('600px');
+    });
+
+    it('does not observe inline boxes', () => {
+      const items = [
+        {id: 2, type: 'probe', position: 'inline'}
+      ];
+      renderInEntry(
+        <Layout sectionProps={{layout: 'left'}} items={items}>
+          {children => children}
+        </Layout>
+      );
+
+      expect(fakeResizeObserver.observe).not.toHaveBeenCalled();
     });
   });
 
