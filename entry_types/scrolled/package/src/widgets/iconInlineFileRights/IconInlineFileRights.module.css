@@ -1,8 +1,10 @@
 @value (
-  darkContentSurfaceColor, lightContentSurfaceColor
+  darkContentSurfaceColor, lightContentSurfaceColor,
+  contentColorScope
 ) from "pageflow-scrolled/values/colors.module.css";
 
 .wrapper {
+  composes: contentColorScope;
   --ai-indicator-letter-color: darkContentSurfaceColor;
 }
 
