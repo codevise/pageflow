@@ -9,19 +9,25 @@
   position: relative;
   z-index: 2;
   color: var(--content-text-color);
+  --ai-indicator-letter-color: lightContentSurfaceColor;
+}
+
+.text.darkBackground {
+  --ai-indicator-letter-color: darkContentSurfaceColor;
 }
 
 .text li {
   text-align: right;
+  justify-content: flex-end;
   padding-top: 0.2em;
 }
 
-.text li::before {
+.text li[data-rights] [data-part="rights"]::before {
   content: "© ";
   opacity: 0.7;
 }
 
-.text:not(:has(li:nth-child(2))) span {
+.text li:only-child [data-label] {
   display: none;
 }
 
@@ -54,6 +60,6 @@
   text-decoration-color: color-mix(in srgb, currentColor, transparent);
 }
 
-.text span {
+.text [data-label] {
   opacity: 0.7;
 }
