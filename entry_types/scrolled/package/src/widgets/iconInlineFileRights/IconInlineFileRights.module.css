@@ -1,3 +1,15 @@
+@value (
+  darkContentSurfaceColor, lightContentSurfaceColor
+) from "pageflow-scrolled/values/colors.module.css";
+
+.wrapper {
+  --ai-indicator-letter-color: darkContentSurfaceColor;
+}
+
+.onLightBackground .button {
+  --ai-indicator-letter-color: lightContentSurfaceColor;
+}
+
 .standAlone {
   color: #fff;
   position: absolute;
@@ -23,14 +35,16 @@
 
 .button {
   border: 0;
-  padding: 0;
+  padding: 0 10px;
   background-color: transparent;
-  width: 44px;
+  box-sizing: border-box;
+  min-width: 44px;
   height: 40px;
   margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 4px;
   color: currentColor;
   cursor: pointer;
   position: relative;
@@ -55,6 +69,11 @@
 .button svg {
   width: 23px;
   height: 23px;
+}
+
+.button .aiIcon {
+  width: 19px;
+  height: 19px;
 }
 
 .standAlone .button svg {
@@ -111,11 +130,11 @@
   text-decoration-color: rgba(255, 255, 255, 0.3);
 }
 
-.tooltip li {
+.tooltip [data-part] {
   white-space: nowrap;
 }
 
-.tooltip span {
+.tooltip [data-label] {
   color: rgba(255, 255, 255, 0.7);
 }
 

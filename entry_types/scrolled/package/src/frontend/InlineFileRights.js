@@ -1,5 +1,6 @@
 import React from 'react';
 
+import {AiIndicatorIcon} from './AiIndicatorIcon';
 import {useI18n} from './i18n';
 import {isBlank} from './utils/blank';
 import {Widget} from './Widget';
@@ -12,9 +13,8 @@ export function InlineFileRights({items = [],
                                   playerControlsFadedOut,
                                   playerControlsStandAlone,
                                   configuration = {}}) {
-  const {t} = useI18n();
   const filteredItems = items.filter(item =>
-    item.file && item.file.inlineRights && !isBlank(item.file.rights)
+    item.file && (hasRights(item.file) || hasAiIndicator(item.file))
   );
 
   if (!filteredItems.length) {
@@ -25,20 +25,42 @@ export function InlineFileRights({items = [],
     <Widget role="inlineFileRights"
             props={{context, position,
                     playerControlsFadedOut, playerControlsStandAlone,
-                    configuration}}>
+                    configuration,
+                    hasRights: filteredItems.some(({file}) => hasRights(file)),
+                    hasAiIndicators: filteredItems.some(({file}) => hasAiIndicator(file))}}>
       <ul className={styles.list}>
         {filteredItems.map(({label, file}) =>
-          <li key={`${label}-${file.id}`}>
-
-            {label &&
-              <span>{t(label, {scope: 'pageflow_scrolled.public.inline_file_rights_labels'})}: </span>}
-            {renderRights(file)}
-            {renderLicense(file)}
-          </li>
+          <Item key={`${label}-${file.id}`} label={label} file={file} />
         )}
       </ul>
     </Widget>
   );
+}
+
+function Item({label, file}) {
+  const {t} = useI18n();
+
+  return (
+    <li data-rights={hasRights(file) ? '' : undefined}>
+      {(label || hasRights(file)) &&
+       <span data-part="rights">
+         {label &&
+           <span data-label>{t(label, {scope: 'pageflow_scrolled.public.inline_file_rights_labels'})}: </span>}
+         {hasRights(file) && renderRights(file)}
+         {hasRights(file) && renderLicense(file)}
+       </span>}
+      {hasAiIndicator(file) && ' '}
+      {renderAiIndicator(file)}
+    </li>
+  );
+}
+
+function hasRights(file) {
+  return file.inlineRights && !isBlank(file.rights);
+}
+
+function hasAiIndicator(file) {
+  return !!file.configuration.ai_indicator;
 }
 
 function renderRights(file) {
@@ -63,5 +85,19 @@ function renderLicense(file) {
     <>
       {' '}(<a href={file.license.url} target="_blank" rel="noopener noreferrer">{file.license.name}</a>)
     </>
+  );
+}
+
+function renderAiIndicator(file) {
+  if (!hasAiIndicator(file)) {
+    return null;
+  }
+
+  return (
+    <span data-part="ai-indicator">
+      <AiIndicatorIcon kind={file.configuration.ai_indicator} className={styles.aiIcon} />
+      {!isBlank(file.configuration.ai_indicator_text) &&
+       ` ${file.configuration.ai_indicator_text}`}
+    </span>
   );
 }

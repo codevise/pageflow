@@ -36,6 +36,8 @@ export const EditFileView = Marionette.ItemView.extend({
       required: true
     });
 
+    tab.view(SeparatorView);
+
     tab.input('rights', TextInputView, {
       model: this.model,
       placeholder: entry.get('default_file_rights')
@@ -52,6 +54,16 @@ export const EditFileView = Marionette.ItemView.extend({
       });
       tab.input('rights_display', SelectInputView, {
         values: ['credits', 'inline']
+      });
+
+      tab.view(SeparatorView);
+
+      tab.input('ai_indicator', SelectInputView, {
+        includeBlank: true,
+        values: ['ai_modified', 'ai_generated']
+      });
+      tab.input('ai_indicator_text', TextInputView, {
+        visibleBinding: 'ai_indicator'
       });
     }
 
