@@ -38,6 +38,12 @@ let seedFixture = seedFixtureFromFile;
  * @param {boolean} [consent=false] -
  *   Set to true, to include a story which renders the content element
  *   in a state where consent has not yet been given.
+ * @param {boolean} [inlineFileRights=false] -
+ *   Set to true, to include stories which render the content element
+ *   with file rights displayed inline.
+ * @param {boolean} [aiIndicators=false] -
+ *   Set to true, to add further inline file rights stories in which
+ *   files are marked as AI generated or AI modified.
  *
  * @example
  *
@@ -175,6 +181,13 @@ const inlineFileRightsCollectionNames = [
   'audioFiles', 'imageFiles', 'lottieFiles', 'videoFiles'
 ];
 
+const aiIndicatorsByCollectionName = {
+  audioFiles: {kind: 'ai_generated', text: 'Voices cloned'},
+  imageFiles: {kind: 'ai_modified', text: 'Sky replaced'},
+  lottieFiles: {kind: 'ai_generated', text: 'Shapes generated'},
+  videoFiles: {kind: 'ai_generated', text: 'Scene generated'}
+};
+
 export function exampleStories(options) {
   return [
     ...variantsExampleStories(options),
@@ -287,7 +300,7 @@ function consentOptInStories({typeName, consent, baseConfiguration}) {
   });
 }
 
-function inlineFileRightsStories({typeName, inlineFileRights, baseConfiguration}) {
+function inlineFileRightsStories({typeName, inlineFileRights, aiIndicators, baseConfiguration}) {
   if (!inlineFileRights) {
     return [];
   }
@@ -297,20 +310,28 @@ function inlineFileRightsStories({typeName, inlineFileRights, baseConfiguration}
     name: 'Inline File Rights',
     inlineFileRightsFor: inlineFileRightsCollectionNames,
     examples: [
-      ['Icon', 'iconInlineFileRights'], ['Text', 'textInlineFileRights']
-    ].map(([name, typeName]) => (
-      {
-        name,
-        widgets: [{
-          role: 'inlineFileRights',
-          typeName
-        }],
-        contentElementConfiguration: {
-          ...baseConfiguration
-        }
-      }
-    ))
+      ...inlineFileRightsExamples({baseConfiguration}),
+      ...(aiIndicators ? inlineFileRightsExamples({baseConfiguration, aiIndicators: true}) : [])
+    ]
   });
+}
+
+function inlineFileRightsExamples({baseConfiguration, aiIndicators}) {
+  return [
+    ['Icon', 'iconInlineFileRights'], ['Text', 'textInlineFileRights']
+  ].map(([name, typeName]) => (
+    {
+      name: aiIndicators ? `${name} with AI Indicators` : name,
+      aiIndicators,
+      widgets: [{
+        role: 'inlineFileRights',
+        typeName
+      }],
+      contentElementConfiguration: {
+        ...baseConfiguration
+      }
+    }
+  ));
 }
 
 function exampleStoryGroup({
@@ -347,6 +368,7 @@ function exampleStoryGroup({
         themeOptions: examples[index].themeOptions,
         consentVendors: exampleConsentVendors,
         inlineFileRightsFor: inlineFileRightsFor || examples[index].inlineFileRightsFor,
+        aiIndicators: examples[index].aiIndicators,
         contentElementConsentVendors: exampleConsentVendors &&
                                       contentElements
                                         .filter(({id}) => id)
@@ -401,7 +423,7 @@ function dasherize(text) {
   );
 }
 
-export function normalizeAndMergeFixture({inlineFileRightsFor = [], ...options} = {}) {
+export function normalizeAndMergeFixture({inlineFileRightsFor = [], aiIndicators, ...options} = {}) {
   const seed = normalizeSeed(options);
 
   return {
@@ -420,7 +442,10 @@ export function normalizeAndMergeFixture({inlineFileRightsFor = [], ...options} 
       ...seedFixture.collections,
       ...inlineFileRightsFor.reduce((memo, collectionName) => ({
         ...memo,
-        [collectionName]: applyInlineFileRights(seedFixture.collections[collectionName])
+        [collectionName]: applyInlineFileRights(
+          seedFixture.collections[collectionName],
+          aiIndicators && aiIndicatorsByCollectionName[collectionName]
+        )
       }), {}),
       storylines: seed.collections.storylines,
       chapters: seed.collections.chapters,
@@ -431,14 +456,18 @@ export function normalizeAndMergeFixture({inlineFileRightsFor = [], ...options} 
   };
 }
 
-function applyInlineFileRights(files = []) {
+function applyInlineFileRights(files = [], aiIndicator) {
   return files.map(file => ({
     ...file,
     rights: 'Jane Doe',
     configuration: {
       ...file.configuration,
       rights_display: 'inline',
-      source_url: 'https://example.com/jane-doe/image'
+      source_url: 'https://example.com/jane-doe/image',
+      ...(aiIndicator && {
+        ai_indicator: aiIndicator.kind,
+        ai_indicator_text: aiIndicator.text
+      })
     }
   }));
 }

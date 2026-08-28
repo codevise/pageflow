@@ -218,6 +218,79 @@ describe('exampleStories', () => {
     }));
   });
 
+  it('supports adding stories with AI indicators', () => {
+    stubSeedFixture(normalizeSeed({
+      imageFiles: [
+        {id: 10, permaId: 1}
+      ],
+      videoFiles: [
+        {id: 20, permaId: 2}
+      ]
+    }));
+
+    const stories = exampleStories({
+      typeName: 'test',
+      inlineFileRights: true,
+      aiIndicators: true,
+      baseConfiguration: {}
+    });
+
+    expect(stories).toContainEqual(expect.objectContaining({
+      title: 'Inline File Rights - Icon with AI Indicators',
+      seed: expect.objectContaining({
+        collections: expect.objectContaining({
+          imageFiles: [
+            expect.objectContaining({
+              configuration: expect.objectContaining({ai_indicator: 'ai_modified'})
+            })
+          ],
+          videoFiles: [
+            expect.objectContaining({
+              configuration: expect.objectContaining({ai_indicator: 'ai_generated'})
+            })
+          ]
+        })
+      })
+    }));
+  });
+
+  it('keeps stories without AI indicators when adding stories with them', () => {
+    stubSeedFixture(normalizeSeed({
+      imageFiles: [
+        {id: 10, permaId: 1}
+      ]
+    }));
+
+    const stories = exampleStories({
+      typeName: 'test',
+      inlineFileRights: true,
+      aiIndicators: true,
+      baseConfiguration: {}
+    });
+
+    const story = stories.find(story => story.title === 'Inline File Rights - Icon');
+
+    expect(story.seed.collections.imageFiles[0].configuration)
+      .not.toHaveProperty('ai_indicator');
+  });
+
+  it('does not add stories with AI indicators by default', () => {
+    stubSeedFixture(normalizeSeed({
+      imageFiles: [
+        {id: 10, permaId: 1}
+      ]
+    }));
+
+    const stories = exampleStories({
+      typeName: 'test',
+      inlineFileRights: true,
+      baseConfiguration: {}
+    });
+
+    expect(stories.map(story => story.title))
+      .not.toContain('Inline File Rights - Icon with AI Indicators');
+  });
+
   it('supports adding story for inline file rights', () => {
     stubSeedFixture(normalizeSeed({
       imageFiles: [
@@ -310,6 +383,26 @@ describe('normalizeAndMergeFixture', () => {
       configuration: {
         rights_display: 'inline',
         source_url: 'https://example.com/jane-doe/image'
+      }
+    })
+  });
+
+  it('supports AI indicators for inline file rights', () => {
+    stubSeedFixture(normalizeSeed({
+      imageFiles: [
+        {id: 10, permaId: 1}
+      ]
+    }));
+
+    const seed = normalizeAndMergeFixture({
+      inlineFileRightsFor: ['imageFiles'],
+      aiIndicators: true
+    });
+
+    expect(seed.collections.imageFiles[0]).toMatchObject({
+      configuration: {
+        ai_indicator: 'ai_modified',
+        ai_indicator_text: expect.any(String)
       }
     })
   });

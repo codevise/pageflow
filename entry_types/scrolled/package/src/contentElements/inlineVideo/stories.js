@@ -42,5 +42,6 @@ storiesOfContentElement(module, {
       }
     }
   ],
-  inlineFileRights: true
+  inlineFileRights: true,
+  aiIndicators: true
 });
