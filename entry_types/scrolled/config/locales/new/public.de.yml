@@ -1,6 +1,10 @@
 de:
   pageflow_scrolled:
     public:
+      ai_indicators:
+        ai: KI
+        ai_generated: KI-generiert
+        ai_modified: KI-modifiziert
       enter_fullscreen: Vollbildmodus öffnen
       exit_fullscreen: Vollbildmodus verlassen
       flip_card: Karte wenden

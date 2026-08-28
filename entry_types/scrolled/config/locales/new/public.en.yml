@@ -1,6 +1,10 @@
 en:
   pageflow_scrolled:
     public:
+      ai_indicators:
+        ai: AI
+        ai_generated: AI generated
+        ai_modified: AI modified
       enter_fullscreen: Enter fullscreen
       exit_fullscreen: Exit fullscreen
       flip_card: Flip card

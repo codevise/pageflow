@@ -1,0 +1,5 @@
+/* The view boxes are cropped to the mark, so its antialiased edges
+   would be clipped. */
+.icon {
+  overflow: visible;
+}

@@ -133,6 +133,7 @@ export {
 export {FitViewport} from './FitViewport';
 export {Tooltip} from './Tooltip';
 export {ThemeIcon} from './ThemeIcon';
+export {AiIndicatorIcon, useAiIndicatorLabel} from './AiIndicatorIcon';
 export {InlineFileRights} from './InlineFileRights';
 export {useFloatingPortalRoot, FloatingPortalRootProvider} from './FloatingPortalRootProvider';
 export {SectionIntersectionObserver} from './SectionIntersectionObserver';
