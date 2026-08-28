@@ -1217,6 +1217,22 @@ de:
           video_settings_tab: Video-Details
       files:
         common_attributes:
+          ai_indicator:
+            blank: "(Nicht angegeben)"
+            inline_help: |-
+              Kennzeichne, dass die Datei mit künstlicher Intelligenz
+              erzeugt oder verändert wurde. Wird als EU-KI-Label an
+              der Stelle im Beitrag angezeigt, wo die Datei verwendet
+              wird.
+            label: KI-Kennzeichnung
+            values:
+              ai_generated: Vollständig KI-generiert
+              ai_modified: Teilweise KI-modifiziert
+          ai_indicator_text:
+            inline_help: |-
+              Erläutert, welche Teile der Datei mit künstlicher
+              Intelligenz erzeugt oder verändert wurden.
+            label: Text der KI-Kennzeichnung
           alt:
             inline_help: Ein Hinweis darauf, was in dem dargestellten Element zum Ausdruck kommt. Der Text ist im Beitrag nicht sichtbar, kann aber von Screen-Readern verarbeitet werden und trägt somit zur barrierearmen Gestaltung der Inhalte bei.
             label: Alt-Text

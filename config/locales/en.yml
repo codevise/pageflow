@@ -1210,6 +1210,21 @@ en:
           video_settings_tab: Video Details
       files:
         common_attributes:
+          ai_indicator:
+            blank: "(Not specified)"
+            inline_help: |-
+              Indicate that the file has been generated or modified
+              using artificial intelligence. Displayed as EU AI label
+              at the element where the file is used.
+            label: AI label
+            values:
+              ai_generated: Fully AI generated
+              ai_modified: Partially AI modified
+          ai_indicator_text:
+            inline_help: |-
+              Explains which parts of the file have been generated or
+              modified using artificial intelligence.
+            label: AI label text
           alt:
             inline_help: A hint describing the contents of the displayed element. Not displayed in the story, but can be used by screen reader software. Improves accessibility of the content.
             label: Alt-Text

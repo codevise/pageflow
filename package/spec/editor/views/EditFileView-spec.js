@@ -1,4 +1,5 @@
 import Backbone from 'backbone';
+import $ from 'jquery';
 
 import {TextInputView} from 'pageflow/ui';
 
@@ -17,6 +18,10 @@ describe('EditFileView', () => {
   useFakeTranslations({
     'pageflow.editor.files.common_attributes.source_url.label': 'Source URL',
     'pageflow.editor.files.common_attributes.license.label': 'License',
+    'pageflow.editor.files.common_attributes.ai_indicator.label': 'AI indicator',
+    'pageflow.editor.files.common_attributes.ai_indicator.values.ai_modified': 'AI modified',
+    'pageflow.editor.files.common_attributes.ai_indicator.values.ai_generated': 'AI generated',
+    'pageflow.editor.files.common_attributes.ai_indicator_text.label': 'AI indicator text',
     'pageflow.file_licenses.cc0.name': 'CC0',
     'pageflow.entry_types.strange.editor.files.attributes.image_files.custom.label': 'Entry Label',
     'pageflow.editor.files.attributes.image_files.custom.label': 'Fallback Label',
@@ -144,6 +149,79 @@ describe('EditFileView', () => {
     const {getByRole} = within(getByLabelText('License'))
 
     expect(getByRole('option', {name: 'CC0'})).not.toBeNull();
+  });
+
+  it('renders ai indicator options', () => {
+    editor.registerEntryType('test', {
+      supportsExtendedFileRights: true
+    });
+    var view = new EditFileView({
+      model: f.file(),
+      entry: new Backbone.Model()
+    });
+
+    const {getByLabelText} = render(view);
+    const {getAllByRole} = within(getByLabelText('AI indicator'));
+    const options = getAllByRole('option').map(option => option.textContent);
+
+    expect(options).toEqual(expect.arrayContaining(['AI modified', 'AI generated']));
+    expect(options).not.toContain('AI');
+  });
+
+  it('groups inputs with separators', () => {
+    editor.registerEntryType('test', {
+      supportsExtendedFileRights: true
+    });
+    var view = new EditFileView({
+      model: f.file(),
+      entry: new Backbone.Model()
+    });
+
+    render(view);
+    const sequence = view.$el.find('.input, .separator').toArray().map(element =>
+      $(element).data('inputPropertyName') || 'separator'
+    );
+
+    expect(sequence).toEqual([
+      'display_name',
+      'separator',
+      'rights', 'source_url', 'license', 'rights_display',
+      'separator',
+      'ai_indicator', 'ai_indicator_text',
+      'separator',
+      'download_url'
+    ]);
+  });
+
+  it('hides ai indicator text input if no ai indicator is selected', () => {
+    editor.registerEntryType('test', {
+      supportsExtendedFileRights: true
+    });
+    var view = new EditFileView({
+      model: f.file(),
+      entry: new Backbone.Model()
+    });
+
+    render(view);
+    const configurationEditor = ConfigurationEditorTab.find(view);
+
+    expect(configurationEditor.inputPropertyNames()).toContain('ai_indicator_text');
+    expect(configurationEditor.visibleInputPropertyNames()).not.toContain('ai_indicator_text');
+  });
+
+  it('displays ai indicator text input if ai indicator is selected', () => {
+    editor.registerEntryType('test', {
+      supportsExtendedFileRights: true
+    });
+    var view = new EditFileView({
+      model: f.file({configuration: {ai_indicator: 'ai_generated'}}),
+      entry: new Backbone.Model()
+    });
+
+    render(view);
+    const configurationEditor = ConfigurationEditorTab.find(view);
+
+    expect(configurationEditor.visibleInputPropertyNames()).toContain('ai_indicator_text');
   });
 
   it('does not render extended file rights fields if non supported by file type', () => {
