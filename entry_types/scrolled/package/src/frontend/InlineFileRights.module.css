@@ -5,3 +5,22 @@
   margin: 0;
   list-style: none;
 }
+
+.list > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.5em;
+}
+
+/* 1.08em renders the "AI" glyphs at the height they have in the round
+   badge of the icon variant, which encloses them with more padding
+   than the pills do. The vertical align value centers the pill on the
+   cap height of the text, which sits above the x-height center that
+   `middle` uses. */
+.aiIcon {
+  height: 1.08em;
+  width: auto;
+  vertical-align: -0.19em;
+  margin-right: space(0.5);
+}
