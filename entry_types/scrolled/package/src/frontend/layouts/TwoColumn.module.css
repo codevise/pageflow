@@ -22,6 +22,8 @@
 
 .box {
   max-width: var(--content-max-width);
+  margin-left: calc(var(--side-offset-left, 0px) - var(--margin-to-undo, 0px));
+  margin-right: calc(var(--side-offset-right, 0px) - var(--margin-to-undo, 0px));
 }
 
 .inline {
@@ -103,8 +105,6 @@
   --f: calc(1 / (1 - 2 * var(--content-margin-fraction)));
   --margin-to-undo: var(--theme-content-margin,
                         calc(100% * var(--content-margin-fraction) * var(--f)));
-  margin-left: calc(-1 * var(--margin-to-undo));
-  margin-right: calc(-1 * var(--margin-to-undo));
   max-width: calc(var(--margin-to-undo) * 2 + var(--content-max-width));
 }
 
@@ -122,15 +122,14 @@
 }
 
 .constrainContentWidth .side {
-  position: relative;
   --side-offset: calc((min(var(--layout-inline-content-max-width), var(--constrained-content-max-width, 9999px)) -
                        var(--content-max-width)) / 2);
-  right: var(--side-offset);
+  --side-offset-right: var(--side-offset);
 }
 
 .constrainContentWidth.right .side {
-  right: auto;
-  left: var(--side-offset);
+  --side-offset-right: 0px;
+  --side-offset-left: var(--side-offset);
 }
 
 .sticky {
