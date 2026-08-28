@@ -22,6 +22,8 @@
 
 .box {
   max-width: var(--content-max-width);
+  margin-left: calc(var(--side-offset-left, 0px) - var(--margin-to-undo, 0px));
+  margin-right: calc(var(--side-offset-right, 0px) - var(--margin-to-undo, 0px));
 }
 
 .inline {
@@ -103,8 +105,6 @@
   --f: calc(1 / (1 - 2 * var(--content-margin-fraction)));
   --margin-to-undo: var(--theme-content-margin,
                         calc(100% * var(--content-margin-fraction) * var(--f)));
-  margin-left: calc(-1 * var(--margin-to-undo));
-  margin-right: calc(-1 * var(--margin-to-undo));
   max-width: calc(var(--margin-to-undo) * 2 + var(--content-max-width));
 }
 
@@ -117,25 +117,37 @@
   --content-max-width: min(var(--content-width), var(--two-column-sticky-content-max-width, 600px));
   float: right;
   clear: both;
-  top: 33%;
   width: var(--content-width);
 }
 
 .constrainContentWidth .side {
-  position: relative;
   --side-offset: calc((min(var(--layout-inline-content-max-width), var(--constrained-content-max-width, 9999px)) -
                        var(--content-max-width)) / 2);
-  right: var(--side-offset);
+  --side-offset-right: var(--side-offset);
 }
 
 .constrainContentWidth.right .side {
-  right: auto;
-  left: var(--side-offset);
+  --side-offset-right: 0px;
+  --side-offset-left: var(--side-offset);
+}
+
+/*
+  cssnano strips units from zero lengths, turning `0px` into `0`. That
+  would invalidate `initial-value` as well as any zero inside a math
+  function, so the property uses the universal syntax and the box
+  height is clamped to the viewport height instead of the result.
+*/
+@property --sticky-box-height {
+  syntax: '*';
+  inherits: false;
 }
 
 .sticky {
   composes: side;
   position: sticky;
+  --sticky-box-height: 0px;
+  top: min(33%,
+           (100 * var(--vh) - min(var(--sticky-box-height), 100 * var(--vh))) / 2);
 }
 
 .right .side {
