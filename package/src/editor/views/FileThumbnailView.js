@@ -56,7 +56,7 @@ export const FileThumbnailView = Marionette.ItemView.extend({
       return;
     }
 
-    this.customThumbnailView = this.model.createThumbnailView();
+    this.customThumbnailView = this.model.createThumbnailView?.();
 
     if (this.customThumbnailView) {
       this.appendSubview(this.customThumbnailView, {to: this.ui.custom});

@@ -1,6 +1,7 @@
+import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 
-import {AudioFile, FileThumbnailView} from 'pageflow/editor';
+import {AudioFile, FileThumbnailView, stageProvider} from 'pageflow/editor';
 
 import * as support from '$support';
 import {renderBackboneView as render} from 'pageflow/testHelpers';
@@ -81,6 +82,31 @@ describe('FileThumbnailView', () => {
     render(view);
 
     expect(view.$el.find('.thumbnail_stand_in').length).toBe(0);
+  });
+
+  it('renders files that do not have a file type', () => {
+    const view = new FileThumbnailView({model: new AudioFile({state: 'encoded'})});
+
+    render(view);
+
+    expect(view.$el.find('.pictogram').hasClass('audio')).toEqual(true);
+  });
+
+  it('renders models that do not support thumbnail views of file types', () => {
+    const Thumbnail = Backbone.Model.extend({
+      mixins: [stageProvider],
+      thumbnailPictogram: 'mask',
+
+      isReady: function() {
+        return true;
+      }
+    });
+
+    const view = new FileThumbnailView({model: new Thumbnail()});
+
+    render(view);
+
+    expect(view.$el.find('.pictogram').hasClass('mask')).toEqual(true);
   });
 
   it('closes thumbnail view of file type when closed', () => {
