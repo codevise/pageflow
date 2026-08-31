@@ -1,0 +1,4 @@
+en:
+  pageflow:
+    file_rights_from_references:
+      feature_name: "Credits only for referenced files"

@@ -26,6 +26,14 @@ module PageflowScrolled
       end
     end
 
+    describe 'file_rights_from_references feature' do
+      it 'is enabled by default' do
+        entry = build(:entry, type_name: 'scrolled', features_configuration: {})
+
+        expect(entry.enabled_feature_names).to include('file_rights_from_references')
+      end
+    end
+
     describe 'configuration schemas' do
       it 'reads schemas shipped by the engine' do
         entry = create(:published_entry, type_name: 'scrolled')

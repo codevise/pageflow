@@ -13,9 +13,12 @@ module PageflowScrolled
     def content_element_locations
       content_element_type_names.each_with_object({}) do |type_name, result|
         schema = schemas.find(model: 'contentElement', type_name:)
-        next unless schema
 
-        result[type_name] = locations.for(schema)
+        if schema
+          result[type_name] = locations.for(schema)
+        else
+          log_missing_schema(type_name)
+        end
       end
     end
 
@@ -41,6 +44,12 @@ module PageflowScrolled
       else
         @content_elements.map(&:type_name).uniq
       end
+    end
+
+    def log_missing_schema(type_name)
+      return unless @entry_config.features.enabled?('file_rights_from_references')
+
+      Rails.logger.warn("Missing configuration schema for content element type '#{type_name}'")
     end
 
     def schemas

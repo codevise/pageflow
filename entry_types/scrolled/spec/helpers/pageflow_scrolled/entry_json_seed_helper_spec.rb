@@ -576,6 +576,40 @@ module PageflowScrolled
           expect { render(helper, entry) }.to raise_error(/schema for section/)
         end
 
+        it 'logs content element types without schema' do
+          register_schema(
+            'x-subject' => {'model' => 'contentElement', 'typeName' => 'someType'},
+            'properties' => {}
+          )
+
+          entry = create(:published_entry, type_name: 'scrolled')
+          chapter = create(:scrolled_chapter, revision: entry.revision)
+          section = create(:section, chapter:)
+          create(:content_element, section:, type_name: 'otherType')
+
+          expect(Rails.logger).to receive(:warn).with(/otherType/)
+
+          render(helper, entry)
+        end
+
+        it 'does not log content element types without schema when feature is disabled' do
+          register_schema(
+            'x-subject' => {'model' => 'contentElement', 'typeName' => 'someType'},
+            'properties' => {}
+          )
+
+          entry = create(:published_entry,
+                         type_name: 'scrolled',
+                         without_feature: 'file_rights_from_references')
+          chapter = create(:scrolled_chapter, revision: entry.revision)
+          section = create(:section, chapter:)
+          create(:content_element, section:, type_name: 'otherType')
+
+          expect(Rails.logger).not_to receive(:warn).with(/otherType/)
+
+          render(helper, entry)
+        end
+
         def register_schema(schema)
           dir = Dir.mktmpdir
           File.write(File.join(dir, 'schema.json'), JSON.generate(schema))

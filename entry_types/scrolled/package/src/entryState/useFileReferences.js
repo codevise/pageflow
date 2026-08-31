@@ -1,5 +1,7 @@
 import {useMemo} from 'react';
 
+import {features} from 'pageflow/frontend';
+
 import {
   useEntryStateCollectionItems,
   useEntryStateConfig,
@@ -33,4 +35,31 @@ export function useFileReferences() {
     }),
     [config, sections, contentElements, files]
   );
+}
+
+/**
+ * Returns a function telling whether a file is referenced in the entry.
+ *
+ * Considers every file referenced unless the file_rights_from_references
+ * feature is enabled, since schemas do not cover all content element
+ * types yet.
+ *
+ * @example
+ *
+ * const isFileReferenced = useIsFileReferenced();
+ * isFileReferenced('imageFiles', 5) // => true
+ *
+ * @private
+ */
+export function useIsFileReferenced() {
+  const references = useFileReferences();
+
+  return useMemo(() => {
+    if (!features.isEnabled('file_rights_from_references')) {
+      return () => true;
+    }
+
+    return (collectionName, permaId) =>
+      references.of(collectionName, permaId).some(({active}) => active);
+  }, [references]);
 }
