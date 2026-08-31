@@ -1,7 +1,9 @@
 import React from 'react';
 import I18n from 'i18n-js';
 
-import {ThreadList, useLocatedCommentThreads} from 'pageflow-scrolled/review';
+import {
+  ThreadList, matchesResolution, useLocatedCommentThreads
+} from 'pageflow-scrolled/review';
 
 import {ReviewView} from './ReviewView';
 import defaultPictogram from './images/defaultPictogram.svg';
@@ -17,6 +19,9 @@ export const EntryCommentsView = ReviewView.extend({
     this.listenTo(entry,
                   'change:selectedCommentsSubject',
                   this._onSelectedChange);
+    this.listenTo(entry.commentDisplayFilter,
+                  'change:resolution',
+                  () => this.rerender());
     this._observeSelectedElement();
   },
 
@@ -30,6 +35,7 @@ export const EntryCommentsView = ReviewView.extend({
       transientThreadIds:
         this._selectedElement?.transientState.get('commentThreadIdsAtSelection'),
       highlightedThreadId: entry.get('highlightedThreadId'),
+      resolution: entry.commentDisplayFilter.get('resolution'),
       onThreadClick: thread => entry.trigger('selectCommentThread', thread.id),
       editor
     };
@@ -63,8 +69,15 @@ export const EntryCommentsView = ReviewView.extend({
   }
 });
 
-function CommentsList({selectedSubject, transientThreadIds, highlightedThreadId, onThreadClick, editor}) {
+function CommentsList({selectedSubject, transientThreadIds, highlightedThreadId, resolution, onThreadClick, editor}) {
   const {chapters} = useLocatedCommentThreads();
+
+  // Threads the filter hides must not leave their chapter heading and
+  // type separator behind. A thread the reviewer picked in the preview
+  // stays listed even where the filter hides resolved ones, just as it
+  // does within a group.
+  const isListed = thread => matchesResolution(thread, resolution) ||
+                             thread.id === highlightedThreadId;
 
   return (
     <div className={styles.list}>
@@ -72,9 +85,11 @@ function CommentsList({selectedSubject, transientThreadIds, highlightedThreadId,
         <ChapterGroup key={`chapter-${chapter.permaId}`}
                       chapter={chapter}
                       number={chapter.isExcursion ? null : index + 1}
+                      isListed={isListed}
                       selectedSubject={selectedSubject}
                       transientThreadIds={transientThreadIds}
                       highlightedThreadId={highlightedThreadId}
+                      resolution={resolution}
                       onThreadClick={onThreadClick}
                       editor={editor} />
       )}
@@ -82,8 +97,8 @@ function CommentsList({selectedSubject, transientThreadIds, highlightedThreadId,
   );
 }
 
-function ChapterGroup({chapter, number, ...groupProps}) {
-  if (chapter.threadCount === 0) {
+function ChapterGroup({chapter, number, isListed, ...groupProps}) {
+  if (!chapter.sections.some(section => hasListedThreads(section, isListed))) {
     return null;
   }
 
@@ -95,18 +110,28 @@ function ChapterGroup({chapter, number, ...groupProps}) {
           as a whole above feedback on its individual elements. */}
       {chapter.sections.map(section => (
         <React.Fragment key={`section-${section.permaId}`}>
-          {section.threads.length > 0 &&
-           <SectionGroup section={section} {...groupProps} />}
+          {section.threads.some(isListed) &&
+           <SectionGroup section={section}
+                         threads={section.threads.filter(isListed)}
+                         {...groupProps} />}
           {section.contentElements.map(contentElement =>
-            contentElement.threads.length > 0 &&
+            contentElement.threads.some(isListed) &&
             <ContentElementGroup key={`element-${contentElement.permaId}`}
                                  contentElement={contentElement}
+                                 threads={contentElement.threads.filter(isListed)}
                                  {...groupProps} />
           )}
         </React.Fragment>
       ))}
     </div>
   );
+}
+
+function hasListedThreads(section, isListed) {
+  return section.threads.some(isListed) ||
+         section.contentElements.some(
+           contentElement => contentElement.threads.some(isListed)
+         );
 }
 
 function ChapterHeading({number, title}) {
@@ -127,10 +152,10 @@ function ChapterHeading({number, title}) {
 }
 
 function ContentElementGroup({
-  contentElement, selectedSubject, transientThreadIds,
-  highlightedThreadId, onThreadClick, editor
+  contentElement, threads, selectedSubject, transientThreadIds,
+  highlightedThreadId, resolution, onThreadClick, editor
 }) {
-  const {permaId, type, threads} = contentElement;
+  const {permaId, type} = contentElement;
   const label = I18n.t(`pageflow_scrolled.editor.content_elements.${type}.name`);
   const pictogram = editor.contentElementTypes.findPictogram(type) || defaultPictogram;
 
@@ -149,6 +174,7 @@ function ContentElementGroup({
       <Separator label={label} pictogram={pictogram} />
       <ThreadList subjectType="ContentElement"
                   subjectId={permaId}
+                  resolution={resolution}
                   highlightedThreadId={groupHighlight}
                   onThreadClick={onThreadClick}
                   restrictInteractionsToHighlighted
@@ -160,8 +186,8 @@ function ContentElementGroup({
   );
 }
 
-function SectionGroup({section, selectedSubject, highlightedThreadId, onThreadClick}) {
-  const {permaId, threads} = section;
+function SectionGroup({section, threads, selectedSubject, highlightedThreadId, resolution, onThreadClick}) {
+  const {permaId} = section;
 
   const isSelected = selectedSubject?.subjectType === 'Section' &&
                      selectedSubject.id === section.id;
@@ -175,6 +201,7 @@ function SectionGroup({section, selectedSubject, highlightedThreadId, onThreadCl
       <Separator label={I18n.t('pageflow_scrolled.editor.comments_view.section')} />
       <ThreadList subjectType="Section"
                   subjectId={permaId}
+                  resolution={resolution}
                   highlightedThreadId={groupHighlight}
                   onThreadClick={onThreadClick}
                   restrictInteractionsToHighlighted

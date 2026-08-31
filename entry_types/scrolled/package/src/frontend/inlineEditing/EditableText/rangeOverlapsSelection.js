@@ -1,7 +1,7 @@
 import {Range} from 'slate';
 
-export function highlightOverlapsSelection(highlight, selection) {
-  if (!highlight?.range || !selection) return false;
+export function rangeOverlapsSelection(range, selection) {
+  if (!range || !selection) return false;
 
   const selStart = Range.start(selection);
   const selEnd = Range.end(selection);
@@ -12,7 +12,7 @@ export function highlightOverlapsSelection(highlight, selection) {
     selEndBlock -= 1;
   }
 
-  const hlStartBlock = Range.start(highlight.range).path[0];
+  const startBlock = Range.start(range).path[0];
 
-  return selStartBlock <= hlStartBlock && hlStartBlock <= selEndBlock;
+  return selStartBlock <= startBlock && startBlock <= selEndBlock;
 }

@@ -7,7 +7,9 @@ import widgetSelectionRectStyles from './WidgetSelectionRect.module.css';
 import paddingIndicatorStyles from './PaddingIndicator.module.css';
 
 import {features} from 'pageflow/frontend';
-import {ThreadsBadge, useLocatedCommentThreadsForSubject} from 'pageflow-scrolled/review';
+import {
+  ThreadsBadge, useCommentDisplayFilter, useLocatedCommentThreadsForSubject
+} from 'pageflow-scrolled/review';
 import {Toolbar} from './Toolbar';
 import {ForcePaddingContext} from '../Foreground';
 import {useEditorSelection} from './EditorState';
@@ -51,10 +53,11 @@ export function SectionDecorator({backdrop, section, contentElements, transition
   // section and the sidebar comment panel stay visually in sync.
   const isSelected = isSectionSelected || isPaddingSelected || commentsSelected;
 
+  const {resolution, alwaysShowComments} = useCommentDisplayFilter();
   const threads = useLocatedCommentThreadsForSubject({
     subjectType: 'Section',
     subjectId: section.permaId,
-    resolution: 'unresolved'
+    resolution
   });
   const hasThreads = threads.length > 0;
 
@@ -134,8 +137,10 @@ export function SectionDecorator({backdrop, section, contentElements, transition
        <div className={classNames(styles.commentBadge, {[styles.sticky]: hasThreads || commentsSelected})}>
          <ThreadsBadge subjectType="Section"
                        subjectId={section.permaId}
+                       resolution={resolution}
                        mode={commentsSelected ? 'active' :
-                             isSelected ? 'icon' : 'dot'}
+                             isSelected ? 'icon' :
+                             alwaysShowComments ? 'dot' : 'none'}
                        onClick={() => hasThreads ? selectComments() : selectNewThread()} />
        </div>}
     </div>

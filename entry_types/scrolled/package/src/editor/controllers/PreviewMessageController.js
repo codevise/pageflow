@@ -167,6 +167,15 @@ export const PreviewMessageController = Object.extend({
             })
           );
 
+          this.listenTo(this.entry.commentDisplayFilter,
+                        'change:resolution change:alwaysShowComments',
+                        filter =>
+            postMessage({
+              type: 'CHANGE_COMMENT_DISPLAY_FILTER',
+              payload: commentDisplayFilterPayload(filter)
+            })
+          );
+
           this.listenTo(this.entry, 'change:emulation_mode', entry =>
             postMessage({
               type: 'CHANGE_EMULATION_MODE',
@@ -178,6 +187,13 @@ export const PreviewMessageController = Object.extend({
         postMessage({type: 'ACK'})
 
         if (this.entry.reviewSession) {
+          // A reloaded iframe starts out displaying unresolved threads
+          // everywhere, so the filter has to be handed over again.
+          postMessage({
+            type: 'CHANGE_COMMENT_DISPLAY_FILTER',
+            payload: commentDisplayFilterPayload(this.entry.commentDisplayFilter)
+          });
+
           this.entry.reviewSession.fetch();
         }
       }
@@ -338,6 +354,13 @@ function selectedCommentsSubjectFor(entry, payload) {
   }
 
   return undefined;
+}
+
+function commentDisplayFilterPayload(filter) {
+  return {
+    resolution: filter.get('resolution'),
+    alwaysShowComments: filter.get('alwaysShowComments')
+  };
 }
 
 function modelForSubject(entry, {subjectType, subjectId}) {

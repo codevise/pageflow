@@ -103,6 +103,18 @@ describe('comment display filter', () => {
     expect(entry.queryAllCommentBadges()).toHaveLength(2);
   });
 
+  it('remembers showing all comments across reloads', () => {
+    const entry = renderEntryWithResolvedThread();
+    fireEvent.click(entry.getCommentFilterButton('all'));
+    entry.unmount();
+
+    const reloadedEntry = renderEntryWithResolvedThread();
+
+    expect(reloadedEntry.getCommentFilterButton('all'))
+      .toHaveAttribute('aria-pressed', 'true');
+    expect(reloadedEntry.queryAllCommentBadges()).toHaveLength(1);
+  });
+
   it('hides resolved comments again when selecting unresolved', () => {
     const entry = renderEntryWithResolvedThread();
 

@@ -5,6 +5,7 @@ import {ReactEditor} from 'slate-react';
 
 import {features} from 'pageflow/frontend';
 import {
+  useCommentDisplayFilter,
   useCommentThreads,
   useCommentHighlights,
   decorateCommentHighlights,
@@ -17,6 +18,8 @@ import {useContentElementAttributes} from '../../useContentElementAttributes';
 import {useContentElementCommentSelection} from '../useCommentSelection';
 import {useSelectCommentThreadHandler} from '../useSelectCommentThreadHandler';
 import {useCommentRangeRefs} from './useCommentRangeRefs';
+import {rangeOverlapsSelection} from './rangeOverlapsSelection';
+import {useOverlapSelection} from './useOverlapSelection';
 
 const noThreads = [];
 
@@ -41,6 +44,7 @@ export function useCommenting(editor) {
   const {trackedThreads, resetRangeRefs, getTrackedSubjectRanges} =
     useCommentRangeRefs(editor, threads);
   const {anchors, registerAnchor} = useRangeAnchors();
+  const {resolution} = useCommentDisplayFilter();
   const {highlightedThreadId, newThreadRange, selectThread} =
     useContentElementCommentSelection();
 
@@ -67,18 +71,25 @@ export function useCommenting(editor) {
     selectThread
   });
 
-  // Build highlights for all tracked threads, resolved included, so the
-  // thread ids at the cursor (which scope the comments sidebar) cover
-  // resolved threads too. Only `visibleHighlights` get a text overlay and
-  // a badge; a resolved thread stays hidden until it is the highlighted
-  // thread.
+  // Build highlights for all tracked threads, resolved ones included, so
+  // the thread ids at the cursor (which scope the comments sidebar) cover
+  // them too. Only `visibleHighlights` get a text overlay and a badge.
   const highlights = useCommentHighlights(trackedThreads, newThreadRange);
 
   const visibleHighlights = useMemo(
-    () => highlights.filter(
-      h => !h.thread?.resolvedAt || h.thread.id === highlightedThreadId
-    ),
-    [highlights, highlightedThreadId]
+    () => highlights.filter(highlight => isVisible(highlight, {
+      resolution, highlightedThreadId
+    })),
+    [highlights, resolution, highlightedThreadId]
+  );
+
+  // Stands in for the cursor once focus has left the editor, for the
+  // badges as much as for the overlay.
+  const highlightedRange = useMemo(
+    () => visibleHighlights.find(
+      highlight => highlight.thread?.id === highlightedThreadId
+    )?.range,
+    [visibleHighlights, highlightedThreadId]
   );
 
   const decorate = useMemo(
@@ -89,7 +100,10 @@ export function useCommenting(editor) {
   const withCommentHighlightDecoration = useCallback(({attributes, children, leaf}) => {
     if (leaf.commentHighlight) {
       children = (
-        <HighlightSpan rangeKey={leaf.rangeKey} resolved={leaf.resolved}>
+        <HighlightSpan rangeKey={leaf.rangeKey}
+                       subjectRange={leaf.subjectRange}
+                       highlightedRange={highlightedRange}
+                       resolved={leaf.resolved}>
           {children}
         </HighlightSpan>
       );
@@ -110,18 +124,29 @@ export function useCommenting(editor) {
   // re-rendering leaves whose decorations changed because its memo
   // equality function does not compare `decorations`.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [registerAnchor, contentElementPermaId, threads, newThreadRange, highlightedThreadId]);
+  }, [registerAnchor, contentElementPermaId, threads, newThreadRange, highlightedThreadId,
+      highlightedRange, resolution]);
 
   return {
     enabled,
     highlights,
     visibleHighlights,
+    highlightedRange,
     anchors,
     decorate,
     withCommentHighlightDecoration,
     resetRangeRefs,
     getTrackedSubjectRanges
   };
+}
+
+// The range of a thread being composed and the thread the reviewer picked
+// show even where the resolution filter would hide them.
+function isVisible({thread}, {resolution, highlightedThreadId}) {
+  return !thread ||
+         thread.id === highlightedThreadId ||
+         resolution === 'all' ||
+         !thread.resolvedAt;
 }
 
 // A resolved thread has no badge yet to scroll itself into view, so the
@@ -143,11 +168,25 @@ function domElementAtRangeStart(editor, range) {
   }
 }
 
-function HighlightSpan({rangeKey, resolved, children}) {
+function HighlightSpan({rangeKey, subjectRange, highlightedRange, resolved, children}) {
   const threadId = parseInt(rangeKey, 10);
   const {selected, highlightedThreadId} = useContentElementCommentSelection();
+  const {alwaysShowComments} = useCommentDisplayFilter();
+
+  // Comes through the slate context, which reaches this span on every
+  // selection change even though the memoized leaf around it does not
+  // re-render for one.
+  const overlapSelection = useOverlapSelection(highlightedRange);
+
   const isSelected = (selected === 'comments' && highlightedThreadId === threadId) ||
                      (rangeKey === 'selection' && selected === 'newThread');
+
+  // The question the badge column asks as well: what the reviewer has not
+  // selected is what an uncluttered view leaves out.
+  if (!alwaysShowComments && !isSelected &&
+      !rangeOverlapsSelection(subjectRange, overlapSelection)) {
+    return children;
+  }
 
   return (
     <span className={classNames(highlightStyles.highlight, {

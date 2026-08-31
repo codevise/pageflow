@@ -4,11 +4,10 @@ import {createEditor, Editor} from 'slate';
 import {Slate, Editable, ReactEditor, withReact} from 'slate-react';
 
 import {Text} from '../Text';
-import {useCommentThreads, useCommentHighlights, decorateCommentHighlights, useRangeAnchors, RangeAnchor, commentHighlightStyles as highlightStyles} from 'pageflow-scrolled/review';
+import {useCommentDisplayFilter, useCommentThreads, useCommentHighlights, decorateCommentHighlights, useRangeAnchors, RangeAnchor, commentHighlightStyles as highlightStyles} from 'pageflow-scrolled/review';
 import {PlainEditableText, renderElement, renderLeaf} from '../EditableText';
 import {useContentElementAttributes} from '../useContentElementAttributes';
 import {useAddCommentMode} from './AddCommentModeProvider';
-import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
 import {useCommentingVisibility} from './CommentingVisibilityProvider';
 import {useSelectedSubject} from './SelectedSubjectProvider';
 import {AddCommentHint} from './AddCommentHint';

@@ -40,6 +40,8 @@ function resolveVariant(mode, hasThreads, unread) {
     return 'active';
   case 'icon':
     return hasThreads ? 'expanded' : 'iconOnly';
+  case 'none':
+    return null;
   case 'dot':
     // Collapsing to a dot would leave the unread dot sitting on a dot.
     // Unseen comments are worth the space of the full badge anyway.

@@ -1,7 +1,8 @@
+import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
-import {editor} from 'pageflow/editor';
+import {DropDownButtonView, editor} from 'pageflow/editor';
 import {cssModulesUtils, TabsView} from 'pageflow/ui';
 
 import {EntryCommentsView} from './EntryCommentsView';
@@ -57,8 +58,19 @@ export const CommentsView = Marionette.ItemView.extend({
     this.appendSubview(tabsView, {to: this.ui.tabs});
 
     // Beside the tab list rather than inside it, which is a tablist the
-    // link is not part of.
-    this.$('.tabs_view-scroller').append(activityButton());
+    // controls are not part of.
+    this.$('.tabs_view-scroller').append(`
+      <div class="${styles.controls}">${activityButton()}</div>
+    `);
+
+    this.appendSubview(new DropDownButtonView({
+      title: I18n.t('pageflow_scrolled.editor.comments_view.display_options'),
+      alignMenu: 'right',
+      ellipsisIcon: true,
+      borderless: true,
+      openOnClick: true,
+      items: displayOptions(entry.commentDisplayFilter)
+    }), {to: this.$(cssModulesUtils.selector(styles, 'controls'))});
 
     this._updateNewThreadButton();
     this._updateActivityButton();
@@ -104,6 +116,66 @@ export const CommentsView = Marionette.ItemView.extend({
     this.$(cssModulesUtils.selector(styles, 'activityButton'))
       .toggleClass(styles.indicator,
                    !!this.options.entry.get('hasUnreadComments'));
+  }
+});
+
+function displayOptions(commentDisplayFilter) {
+  const items = new ResolutionMenuItems(
+    [{name: 'unresolved'}, {name: 'all'}],
+    {commentDisplayFilter}
+  );
+
+  items.add(new AlwaysShowCommentsMenuItem({}, {commentDisplayFilter}));
+
+  return items;
+}
+
+const ResolutionMenuItem = Backbone.Model.extend({
+  initialize(attributes, options) {
+    this.commentDisplayFilter = options.commentDisplayFilter;
+
+    this.set('label', I18n.t('pageflow_scrolled.editor.comments_view.filter.' +
+                             this.get('name')));
+    this.set('kind', 'radio');
+
+    const updateChecked = () => {
+      this.set('checked',
+               this.commentDisplayFilter.get('resolution') === this.get('name'));
+    };
+
+    this.listenTo(this.commentDisplayFilter, 'change:resolution', updateChecked);
+    updateChecked();
+  },
+
+  selected() {
+    this.commentDisplayFilter.set('resolution', this.get('name'));
+  }
+});
+
+const ResolutionMenuItems = Backbone.Collection.extend({
+  model: ResolutionMenuItem
+});
+
+const AlwaysShowCommentsMenuItem = Backbone.Model.extend({
+  initialize(attributes, options) {
+    this.commentDisplayFilter = options.commentDisplayFilter;
+
+    this.set('label',
+             I18n.t('pageflow_scrolled.editor.comments_view.always_show_comments'));
+    this.set('kind', 'checkBox');
+    this.set('separated', true);
+
+    const updateChecked = () => {
+      this.set('checked', this.commentDisplayFilter.get('alwaysShowComments'));
+    };
+
+    this.listenTo(this.commentDisplayFilter, 'change:alwaysShowComments', updateChecked);
+    updateChecked();
+  },
+
+  selected() {
+    this.commentDisplayFilter.set('alwaysShowComments',
+                                  !this.commentDisplayFilter.get('alwaysShowComments'));
   }
 });
 

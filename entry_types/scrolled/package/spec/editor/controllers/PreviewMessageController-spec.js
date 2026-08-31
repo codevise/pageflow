@@ -14,7 +14,7 @@ import {
   postSelectLinkDestinationMessage
 } from 'frontend/inlineEditing/postMessage';
 import {setupGlobals} from 'pageflow/testHelpers';
-import {normalizeSeed, factories, createIframeWindow, useFakeXhr} from 'support';
+import {normalizeSeed, factories, createIframeWindow, tick, useFakeXhr} from 'support';
 import {enableFetchMocks} from 'jest-fetch-mock';
 
 enableFetchMocks();
@@ -1174,6 +1174,73 @@ describe('PreviewMessageController', () => {
     return expect(new Promise(resolve => {
       setTimeout(() => resolve(actions.length), 100);
     })).resolves.toEqual(1);
+  });
+
+  describe('comment display filter', () => {
+    beforeEach(() => {
+      features.enable('frontend', ['commenting']);
+      fetch.mockResponse(JSON.stringify({currentUser: {id: 1}, commentThreads: []}));
+      window.localStorage.clear();
+    });
+
+    function createEntry() {
+      return factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    }
+
+    function recordPayloads(iframeWindow) {
+      const payloads = [];
+
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'CHANGE_COMMENT_DISPLAY_FILTER') {
+          payloads.push(event.data.payload);
+        }
+      });
+
+      return payloads;
+    }
+
+    // The iframe starts out displaying unresolved threads everywhere, so
+    // anything else has to be handed over again on every reload.
+    it('sends what the editor displays after READY', async () => {
+      const entry = createEntry();
+      entry.commentDisplayFilter.set({resolution: 'all', alwaysShowComments: false});
+      const iframeWindow = createIframeWindow();
+      controller = new PreviewMessageController({entry, iframeWindow});
+
+      const payloads = recordPayloads(iframeWindow);
+      await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+      await tick();
+
+      expect(payloads).toEqual([{resolution: 'all', alwaysShowComments: false}]);
+    });
+
+    it('sends the resolution when the reviewer changes the filter', async () => {
+      const entry = createEntry();
+      const iframeWindow = createIframeWindow();
+      controller = new PreviewMessageController({entry, iframeWindow});
+
+      const payloads = recordPayloads(iframeWindow);
+      await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+      entry.commentDisplayFilter.set('resolution', 'all');
+      await tick();
+
+      expect(payloads.map(payload => payload.resolution))
+        .toEqual(['unresolved', 'all']);
+    });
+
+    it('sends along that comments only show for the selection', async () => {
+      const entry = createEntry();
+      const iframeWindow = createIframeWindow();
+      controller = new PreviewMessageController({entry, iframeWindow});
+
+      const payloads = recordPayloads(iframeWindow);
+      await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+      entry.commentDisplayFilter.set('alwaysShowComments', false);
+      await tick();
+
+      expect(payloads.map(payload => payload.alwaysShowComments))
+        .toEqual([true, false]);
+    });
   });
 
   it('sends CHANGE_EMULATION_MODE message to iframe on change:emulation_mode event on model', async () => {

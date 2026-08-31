@@ -17,6 +17,9 @@ export const SelectionCommentsView = ReviewView.extend({
     this.listenTo(entry,
                   'change:highlightedThreadId',
                   () => this.rerender());
+    this.listenTo(entry.commentDisplayFilter,
+                  'change:resolution',
+                  () => this.rerender());
     this._observeSubject();
   },
 
@@ -35,19 +38,26 @@ export const SelectionCommentsView = ReviewView.extend({
       return {};
     }
 
+    // The fold stays, so that the reviewer can peek at resolved threads
+    // of the selection without turning them on everywhere; the filter
+    // only decides whether it starts out open.
+    const expandResolved = entry.commentDisplayFilter.showsResolved();
+
     if (subject.subjectType === 'ContentElement') {
       return {
         subjectType: 'ContentElement',
         subjectId: model.get('permaId'),
         threadIds: model.transientState.get('commentThreadIdsAtSelection'),
         highlightedThreadId: entry.get('highlightedThreadId'),
+        expandResolved,
         onThreadClick: thread => entry.trigger('selectCommentThread', thread.id)
       };
     }
 
     return {
       subjectType: subject.subjectType,
-      subjectId: model.get('permaId')
+      subjectId: model.get('permaId'),
+      expandResolved
     };
   },
 
@@ -58,13 +68,14 @@ export const SelectionCommentsView = ReviewView.extend({
   // in the list would have no counterpart in the preview. A section's
   // list also surfaces the threads of its deleted content elements,
   // since ThreadList resolves them from the located threads.
-  renderContent({subjectType, subjectId, threadIds, highlightedThreadId, onThreadClick}) {
+  renderContent({subjectType, subjectId, threadIds, highlightedThreadId, expandResolved, onThreadClick}) {
     if (!subjectType) return null;
 
     if (threadIds === undefined) {
       return (
         <ThreadList subjectType={subjectType}
                     subjectId={subjectId}
+                    expandResolved={expandResolved}
                     showNewForm={false}
                     hideNewTopicButton />
       );
@@ -75,6 +86,7 @@ export const SelectionCommentsView = ReviewView.extend({
                   subjectId={subjectId}
                   filter={thread => threadIds.includes(thread.id)}
                   highlightedThreadId={highlightedThreadId}
+                  expandResolved={expandResolved}
                   onThreadClick={onThreadClick}
                   showNewForm={false}
                   hideNewTopicButton />

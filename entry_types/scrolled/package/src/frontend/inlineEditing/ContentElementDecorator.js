@@ -2,7 +2,7 @@ import React, {useCallback, useRef} from 'react';
 import {useDrag} from 'react-dnd';
 
 import {features} from 'pageflow/frontend';
-import {ThreadsBadge} from 'pageflow-scrolled/review';
+import {ThreadsBadge, useCommentDisplayFilter} from 'pageflow-scrolled/review';
 import {useContentElementEditorState} from '../useContentElementEditorState';
 import {useSelectCommentThreadHandler} from './useSelectCommentThreadHandler';
 import {useI18n} from '../i18n';
@@ -54,6 +54,7 @@ function DefaultSelectionRect(props) {
   const {isSelected, type, select, selectComments, selectNewThread} =
     useContentElementEditorState();
   const commentsSelected = type === 'contentElementComments' || type === 'newThread';
+  const {resolution, alwaysShowComments} = useCommentDisplayFilter();
   const {t} = useI18n({locale: 'ui'});
 
   const selectionRectRef = useRef();
@@ -86,7 +87,10 @@ function DefaultSelectionRect(props) {
                    commentBadge={features.isEnabled('commenting') &&
                      <ThreadsBadge subjectType="ContentElement"
                                    subjectId={props.permaId}
-                                   mode={commentsSelected ? 'active' : isSelected ? 'icon' : 'dot'}
+                                   resolution={resolution}
+                                   mode={commentsSelected ? 'active' :
+                                         isSelected ? 'icon' :
+                                         alwaysShowComments ? 'dot' : 'none'}
                                    onClick={threads => threads.length === 0 ?
                                                        selectNewThread() :
                                                        selectComments()} />}

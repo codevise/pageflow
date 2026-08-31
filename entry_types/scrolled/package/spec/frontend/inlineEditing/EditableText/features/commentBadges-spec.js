@@ -154,6 +154,137 @@ describe('inline editing EditableText comment badges', () => {
     expect(badge.isActive()).toBe(true);
   });
 
+  it('hides the badge of a thread while comments show only for the selection', async () => {
+    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+
+    const entry = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true, customSelectionRect: true}
+      },
+      commenting: {
+        currentUser: null,
+        commentThreads: [{
+          id: 5,
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          subjectRange: {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}},
+          comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
+        }]
+      }
+    });
+
+    expect(entry.queryAllCommentBadges()).toHaveLength(1);
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {
+          type: 'CHANGE_COMMENT_DISPLAY_FILTER',
+          payload: {resolution: 'unresolved', alwaysShowComments: false}
+        },
+        origin: window.location.origin
+      }));
+    });
+
+    await waitFor(() => {
+      expect(entry.queryAllCommentBadges()).toHaveLength(0);
+    });
+  });
+
+  it('shows the badge within the selection rect once the text is selected', async () => {
+    const entry = renderEntry({
+      contentElement: {
+        ui: <EditableText value={[
+          {type: 'paragraph', children: [{text: 'First paragraph'}]},
+          {type: 'paragraph', children: [{text: 'Second paragraph'}]}
+        ]} contentElementId={1} selectionRect={true} />,
+        typeOptions: {inlineComments: true, customSelectionRect: true}
+      },
+      commenting: {
+        currentUser: null,
+        commentThreads: [
+          {id: 1, subjectType: 'ContentElement', subjectId: 10,
+           subjectRange: {anchor: {path: [0, 0], offset: 0},
+                          focus: {path: [0, 0], offset: 5}},
+           comments: [{id: 10, body: 'On the first', creatorName: 'Alice', creatorId: 1}]},
+          {id: 2, subjectType: 'ContentElement', subjectId: 10,
+           subjectRange: {anchor: {path: [1, 0], offset: 0},
+                          focus: {path: [1, 0], offset: 6}},
+           comments: [{id: 20, body: 'On the second', creatorName: 'Bob', creatorId: 2}]}
+        ]
+      }
+    });
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {
+          type: 'CHANGE_COMMENT_DISPLAY_FILTER',
+          payload: {resolution: 'unresolved', alwaysShowComments: false}
+        },
+        origin: window.location.origin
+      }));
+    });
+
+    await waitFor(() => {
+      expect(entry.queryAllCommentBadges()).toHaveLength(0);
+    });
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {type: 'SELECT', payload: {type: 'contentElement', id: 1, range: [0, 1]}},
+        origin: window.location.origin
+      }));
+    });
+
+    await waitFor(() => {
+      expect(entry.queryAllCommentBadges()).toHaveLength(1);
+    });
+
+    expect(entry.queryAllCommentBadges()[0].isInDotMode()).toBe(false);
+  });
+
+  it('renders the badge of a resolved thread while the editor shows all resolutions', async () => {
+    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+
+    const entry = renderEntry({
+      contentElement: {
+        ui: <EditableText value={value} />,
+        typeOptions: {inlineComments: true, customSelectionRect: true}
+      },
+      commenting: {
+        currentUser: null,
+        commentThreads: [{
+          id: 7,
+          subjectType: 'ContentElement',
+          subjectId: 10,
+          subjectRange: {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}},
+          resolvedAt: '2026-06-01T00:00:00Z',
+          comments: [{id: 1, body: 'A comment', creatorName: 'Alice', creatorId: 1}]
+        }]
+      }
+    });
+
+    expect(entry.queryAllCommentBadges()).toHaveLength(0);
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data: {
+          type: 'CHANGE_COMMENT_DISPLAY_FILTER',
+          payload: {resolution: 'all'}
+        },
+        origin: window.location.origin
+      }));
+    });
+
+    await waitFor(() => {
+      expect(entry.queryAllCommentBadges()).toHaveLength(1);
+    });
+
+    const badge = entry.queryAllCommentBadges()[0];
+    expect(badge.isResolved()).toBe(true);
+    expect(badge.isActive()).toBe(false);
+  });
+
   it('keeps the badge of an overlapped thread after a resolved thread is revealed', async () => {
     const value = [{type: 'paragraph', children: [{text: 'Alpha beta gamma delta'}]}];
 

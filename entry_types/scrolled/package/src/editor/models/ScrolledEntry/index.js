@@ -13,6 +13,7 @@ import {
   ContentElementsCollection
 } from '../../collections';
 
+import {CommentDisplayFilter} from '../CommentDisplayFilter';
 import {ContentElement} from '../ContentElement';
 import {Cutoff} from '../Cutoff';
 
@@ -79,6 +80,8 @@ export const ScrolledEntry = Entry.extend({
     editor.savingRecords.watch(this.chapters);
 
     this.scrolledSeed = seed;
+
+    this.commentDisplayFilter = new CommentDisplayFilter();
 
     if (features.isEnabled('commenting')) {
       this.reviewSession = createReviewSession({entryId: this.id});

@@ -4,9 +4,8 @@ import {
   offset, flip, shift, autoUpdate
 } from '@floating-ui/react';
 
-import {ThreadsBadge, ThreadList} from 'pageflow-scrolled/review';
+import {ThreadsBadge, ThreadList, useCommentDisplayFilter} from 'pageflow-scrolled/review';
 import {useFloatingPortalRoot} from '../FloatingPortalRootProvider';
-import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
 import {useSelectedSubject} from './SelectedSubjectProvider';
 
 import styles from './Popover.module.css';

@@ -1,8 +1,7 @@
 import React, {createContext, useCallback, useContext, useMemo, useState} from 'react';
 
-import {useLocatedCommentThreads} from 'pageflow-scrolled/review';
+import {useCommentDisplayFilter, useLocatedCommentThreads} from 'pageflow-scrolled/review';
 import {useActiveExcursion} from '../useActiveExcursion';
-import {useCommentDisplayFilter} from './CommentDisplayFilterProvider';
 
 const SelectedSubjectContext = createContext({
   selectedSubject: null,
