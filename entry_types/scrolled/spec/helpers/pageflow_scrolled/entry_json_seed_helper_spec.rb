@@ -550,6 +550,32 @@ module PageflowScrolled
             .to eq('someType' => [])
         end
 
+        it 'renders references of sections' do
+          register_schema(
+            'x-subject' => {'model' => 'section'},
+            'properties' => {'someFile' => {'x-fileCollection' => 'image_files'}}
+          )
+
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry)
+
+          expect(json_config(result)['fileReferenceLocations']['sections'])
+            .to include('path' => ['someFile'], 'collection' => 'imageFiles')
+        end
+
+        it 'raises if schema for sections is missing' do
+          pageflow_configure do |config|
+            config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+              entry_type_config.configuration_schema_load_path = []
+            end
+          end
+
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          expect { render(helper, entry) }.to raise_error(/schema for section/)
+        end
+
         def register_schema(schema)
           dir = Dir.mktmpdir
           File.write(File.join(dir, 'schema.json'), JSON.generate(schema))

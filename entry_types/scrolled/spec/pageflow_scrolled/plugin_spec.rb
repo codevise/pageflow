@@ -34,6 +34,18 @@ module PageflowScrolled
 
         expect(schemas.find(model: 'contentElement', type_name: 'hotspots')).to be_present
       end
+
+      it 'describes file references of sections' do
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        schemas = Pageflow.config_for(entry).configuration_schemas
+        locations = FileReferenceLocations.new(schemas).for(schemas.find(model: 'section'))
+
+        expect(locations.map { |location| location['path'] })
+          .to contain_exactly(%w[backdrop image], %w[backdrop imageMobile],
+                              %w[backdrop video], %w[backdrop videoMobile],
+                              ['atmoAudioFileId'])
+      end
     end
 
     describe 'IFRAME_EMBED_CONSENT_VENDOR' do

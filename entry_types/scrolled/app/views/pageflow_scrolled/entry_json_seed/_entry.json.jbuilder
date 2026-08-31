@@ -10,6 +10,7 @@ json.config do
 
   json.file_reference_locations do
     json.content_elements file_reference_locations.content_element_locations
+    json.sections file_reference_locations.section_locations
   end
 
   json.pretty_url pretty_entry_url(entry)

@@ -9,7 +9,7 @@
  */
 export function collectFileReferences({locations, configuration}) {
   return locations.flatMap(location =>
-    permaIdsAt(configuration, location.path).map(permaId => ({
+    valuesAt(configuration, location.path).map(toPermaId).filter(Boolean).map(permaId => ({
       collectionName: location.collection,
       permaId,
       active: isActive(location.activeIf, configuration)
@@ -17,7 +17,15 @@ export function collectFileReferences({locations, configuration}) {
   );
 }
 
-function permaIdsAt(value, path) {
+// Backdrops of legacy sections store a color in the property that
+// otherwise holds an image perma id.
+function toPermaId(value) {
+  const permaId = Number(value);
+
+  return Number.isInteger(permaId) && permaId > 0 ? permaId : null;
+}
+
+function valuesAt(value, path) {
   if (value === null || value === undefined) {
     return [];
   }
@@ -29,10 +37,10 @@ function permaIdsAt(value, path) {
   const [segment, ...rest] = path;
 
   if (segment === '*') {
-    return Object.values(value).flatMap(item => permaIdsAt(item, rest));
+    return Object.values(value).flatMap(item => valuesAt(item, rest));
   }
 
-  return permaIdsAt(value[segment], rest);
+  return valuesAt(value[segment], rest);
 }
 
 function isActive(activeIf, configuration) {

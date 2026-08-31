@@ -21,6 +21,13 @@ describe('collectFileReferences', () => {
     expect(collectFileReferences({locations, configuration: {image: null}})).toEqual([]);
   });
 
+  it('skips value that is not a perma id', () => {
+    const locations = [{path: ['backdrop', 'image'], collection: 'imageFiles'}];
+    const configuration = {backdrop: {image: '#ff0000'}};
+
+    expect(collectFileReferences({locations, configuration})).toEqual([]);
+  });
+
   it('returns empty array without references', () => {
     expect(collectFileReferences({locations: [], configuration: {image: 5}})).toEqual([]);
   });
