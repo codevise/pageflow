@@ -14,8 +14,6 @@ import {review} from 'review/api';
 import {ScrollHighlightedThreadIntoViewProvider} from 'review/scrollHighlightedThreadIntoView';
 import {renderWithReviewState} from 'support/renderWithReviewState';
 
-// ThreadList resolves its threads from the located threads by subject, so
-// the subject must exist in the entry structure.
 const seed = {
   sections: [{id: 1, permaId: 1}],
   contentElements: [{id: 1, permaId: 10, sectionId: 1, typeName: 'textBlock'}]
@@ -132,8 +130,6 @@ describe('ThreadList', () => {
     expect(highlighted).not.toContainElement(getByText('first'));
   });
 
-  // Its only thread is resolved, so the list would otherwise read as
-  // empty and offer to start a topic.
   it('offers no new thread form while a resolved thread is highlighted', () => {
     const {getByText, queryByPlaceholderText} = renderThreadList(
       <ThreadList subjectType="ContentElement" subjectId={10} highlightedThreadId={2} />,
@@ -339,8 +335,6 @@ describe('ThreadList', () => {
   describe('unread markers', () => {
     const currentUser = {id: 42, name: 'Alice'};
 
-    // The reply is the reviewer's own, so each thread has exactly one
-    // unseen comment and the toggle to expand it.
     function thread(id, permaId, body) {
       return {
         id, permaId, subjectType: 'ContentElement', subjectId: 10,
@@ -657,8 +651,6 @@ describe('ThreadList', () => {
       expect(getByPlaceholderText('Add a comment...')).toBeInTheDocument();
     });
 
-    // Whether the list starts out with a form is decided when it mounts,
-    // so resolving the last thread does not invite a new one.
     it('does not open the form when the last thread becomes resolved', async () => {
       const thread = {
         id: 1,
@@ -796,8 +788,6 @@ describe('ThreadList', () => {
       expect(getByPlaceholderText('Add a comment...')).toBeDisabled();
     });
 
-    // The editor sidebar lists opt out of the form entirely, since new
-    // threads are composed in a view of their own there.
     it('does not show the form for a draft when showNewForm is false', () => {
       const {queryByPlaceholderText} = renderThreadList(
         <ThreadList subjectType="ContentElement" subjectId={10} showNewForm={false} />,
@@ -827,8 +817,6 @@ describe('ThreadList', () => {
       expect(getByPlaceholderText('Add a comment...')).toHaveValue('New thread');
     });
 
-    // Storing the text on the way out would bring back the draft the
-    // session has just dropped and reopen the form.
     it('closes the form for good after the thread has been created', async () => {
       const user = userEvent.setup();
       const setDraft = jest.fn();

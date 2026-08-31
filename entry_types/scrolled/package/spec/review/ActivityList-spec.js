@@ -11,8 +11,6 @@ import styles from 'review/ActivityList.module.css';
 import {renderWithReviewState} from 'support/renderWithReviewState';
 import {simulateScrollingIntoView} from 'support/fakeIntersectionObserver';
 
-// ActivityList resolves its entries from the located threads, so the
-// subjects the threads hang off have to exist in the entry structure.
 const seed = {
   sections: [{id: 1, permaId: 100}],
   contentElements: [{id: 1, permaId: 10, sectionId: 1, typeName: 'textBlock'}]
@@ -126,8 +124,6 @@ describe('ActivityList', () => {
       return container.querySelector(`.${styles.summary}`);
     }
 
-    // Everything counts as new without a read mark, so the tests about
-    // the plain wording have to say the thread was read.
     const seen = {5: '2026-08-18T12:00:00.000Z'};
 
     it('names a topic started on the day it is listed under', () => {
@@ -214,8 +210,6 @@ describe('ActivityList', () => {
       ]
     });
 
-    // Unseen comments show whatever day they are from, so the tests about
-    // folding have to say the thread was read.
     const seenAll = {5: '2026-08-18T12:00:00.000Z'};
 
     const threadAcrossDays = thread({
@@ -330,9 +324,6 @@ describe('ActivityList', () => {
   });
 
   describe('unseen activity', () => {
-    // Read state is per thread, so a reply left unread days ago sits above
-    // the day the row is listed under. Folding it away would hide the very
-    // thing the feed exists to surface.
     const threadWithUnseenReplyFromEarlierDay = thread({
       permaId: 7,
       comments: [
@@ -426,7 +417,6 @@ describe('ActivityList', () => {
   });
 
   describe('date groups', () => {
-    // Relative labels need a fixed today to be worth asserting.
     beforeEach(() => {
       jest.useFakeTimers();
       jest.setSystemTime(new Date('2026-08-24T12:00:00.000Z'));

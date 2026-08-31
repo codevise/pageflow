@@ -28,8 +28,6 @@
   padding-top: space(16);
 }
 
-/* Content text area */
-
 .content {
   position: relative;
   z-index: 1;
@@ -67,8 +65,6 @@
 .gap {
   height: space(3);
 }
-
-/* Shadow appearance: gradient overlay on content side */
 
 .shadowOverlay {
   position: absolute;
@@ -133,8 +129,6 @@
   margin-right: auto;
 }
 
-/* Cards appearance: box behind content */
-
 .cardBox {
   position: absolute;
   top: space(4);
@@ -167,8 +161,6 @@
 .cardBox.padded {
   top: calc(space(8) + space(4));
 }
-
-/* Split appearance: 50% overlay with reduced content width */
 
 .split {
   --content-width: calc(50% - space(8) * 2);

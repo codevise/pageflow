@@ -47,7 +47,6 @@ describe('Thread resolution', () => {
   describe('unread', () => {
     const currentUser = {id: 42, name: 'Alice'};
 
-    // Read state is looked up by perma id, so the thread needs one.
     const tracked = {...resolved, permaId: 5};
 
     function renderResolved(thread, options) {

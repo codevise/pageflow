@@ -1,8 +1,5 @@
 import {unreadActivity} from './unreadActivity';
 
-// Keeps an entry attribute in sync with whether the review session holds
-// comments the user has not seen, so that the comments main menu item can
-// point at them from the root of the sidebar.
 export function watchUnreadComments({entry, session}) {
   function update() {
     entry.set('hasUnreadComments', hasUnreadComments(session.state));

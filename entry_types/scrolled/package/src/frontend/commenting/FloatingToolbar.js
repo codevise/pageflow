@@ -69,8 +69,6 @@ function ShowCommentsButton() {
   const unreadCount = useUnreadThreadCount();
   const unread = unreadCount > 0;
 
-  // Named rather than only marked, since the dot is the sole cue that
-  // comments are waiting behind the collapsed toolbar.
   const label = unread ?
                 t('pageflow_scrolled.review.show_comments_with_unread',
                   {count: unreadCount}) :

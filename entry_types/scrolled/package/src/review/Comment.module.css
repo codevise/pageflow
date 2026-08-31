@@ -5,7 +5,6 @@
   margin-bottom: space(1);
 }
 
-/* Wraps as a block below the avatar, aligning with quote and body. */
 .headerText {
   display: flex;
   flex-wrap: wrap;

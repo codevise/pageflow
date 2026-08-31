@@ -38,8 +38,6 @@
   color: var(--ui-on-surface-color-light);
 }
 
-/* The parts are fragments that get joined in whichever order the day
-   holds them, so the sentence is capitalized where it starts. */
 .summary::first-letter {
   text-transform: uppercase;
 }

@@ -38,9 +38,6 @@
   --review-resolved-threads-pill-background-color: transparent;
 }
 
-/* Scrolls inside the panel rather than the panel itself, so that the
-   scrollbar is clipped by the rounded corners instead of squaring them
-   off. */
 .scroller {
   min-height: 0;
   overflow-y: auto;

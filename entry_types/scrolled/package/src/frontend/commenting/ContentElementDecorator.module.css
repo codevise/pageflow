@@ -15,9 +15,7 @@
   z-index: 5;
 }
 
-/* Full-bleed elements reach the viewport edge, so keep the badge flush to the
-   left rather than overhanging it (mirrors the .tug treatment in inline
-   editing's SelectionRect). */
+/* Mirrors the .tug treatment in inline editing's SelectionRect. */
 .badgeFlush {
   left: 0;
   transform: translate(0, 50%);

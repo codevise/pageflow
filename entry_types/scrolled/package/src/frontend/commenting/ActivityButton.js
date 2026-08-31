@@ -13,8 +13,7 @@ import ActivityIcon from './images/activity.svg';
 import toolbarStyles from './FloatingToolbar.module.css';
 import styles from './ActivityButton.module.css';
 
-// The default navigation sits across the top of the viewport - a 50px bar
-// with an 8px progress bar under it - and the panel grows up into it.
+// Clears the default navigation: a 50px bar with an 8px progress bar.
 const viewportPadding = {top: 74, right: 16, bottom: 16, left: 16};
 
 export function ActivityButton() {
@@ -93,8 +92,7 @@ const ActivityPanel = React.forwardRef(function ActivityPanel({style, onClose}, 
       onClose();
     }
 
-    // Claimed in the capture phase so that an open popover does not close
-    // itself on the same key.
+    // An open popover would otherwise close itself on the same key.
     function handleKeyDown(event) {
       if (event.key === 'Escape') {
         event.stopPropagation();

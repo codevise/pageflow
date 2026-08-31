@@ -114,7 +114,6 @@ describe('unreadActivity', () => {
       expect(result.map(comment => comment.id)).toEqual([100]);
     });
 
-    // A thread read after the baseline has moved past it.
     it('prefers a later read timestamp over the baseline', () => {
       const result = unreadActivity(
         thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'}]),
@@ -124,7 +123,6 @@ describe('unreadActivity', () => {
       expect(result).toEqual([]);
     });
 
-    // A thread last read before the baseline says nothing newer than it.
     it('prefers the baseline over an earlier read timestamp', () => {
       const result = unreadActivity(
         thread([{id: 100, creatorId: 43, createdAt: '2026-08-17T09:30:00.000Z'}]),

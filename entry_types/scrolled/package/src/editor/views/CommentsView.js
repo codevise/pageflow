@@ -57,8 +57,7 @@ export const CommentsView = Marionette.ItemView.extend({
 
     this.appendSubview(tabsView, {to: this.ui.tabs});
 
-    // Beside the tab list rather than inside it, which is a tablist the
-    // controls are not part of.
+    // The controls are not part of the tablist.
     this.$('.tabs_view-scroller').append(`
       <div class="${styles.controls}">${activityButton()}</div>
     `);

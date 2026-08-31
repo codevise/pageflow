@@ -29,9 +29,8 @@ export const EntryCommentsView = ReviewView.extend({
     const {entry, editor} = this.options;
     return {
       selectedSubject: entry.get('selectedCommentsSubject') || null,
-      // Undefined for elements without a slate cursor (e.g. images);
-      // an array (possibly empty) for textBlocks where Selection.js
-      // has reported the cursor's overlapping threads.
+      // Undefined for elements without a slate cursor, an array
+      // (possibly empty) where one reports overlapping threads.
       transientThreadIds:
         this._selectedElement?.transientState.get('commentThreadIdsAtSelection'),
       highlightedThreadId: entry.get('highlightedThreadId'),
@@ -72,10 +71,6 @@ export const EntryCommentsView = ReviewView.extend({
 function CommentsList({selectedSubject, transientThreadIds, highlightedThreadId, resolution, onThreadClick, editor}) {
   const {chapters} = useLocatedCommentThreads();
 
-  // Threads the filter hides must not leave their chapter heading and
-  // type separator behind. A thread the reviewer picked in the preview
-  // stays listed even where the filter hides resolved ones, just as it
-  // does within a group.
   const isListed = thread => matchesResolution(thread, resolution) ||
                              thread.id === highlightedThreadId;
 
@@ -162,9 +157,6 @@ function ContentElementGroup({
   const isSelected = selectedSubject?.subjectType === 'ContentElement' &&
                      selectedSubject.id === contentElement.id;
 
-  // Element-level badges (e.g. on images) have no per-thread anchor in
-  // the iframe, so clicking such a badge highlights every thread of
-  // the element rather than just one.
   const groupHighlight = isSelected && transientThreadIds === undefined ?
                          threads.map(t => t.id) :
                          highlightedThreadId;
@@ -192,8 +184,6 @@ function SectionGroup({section, threads, selectedSubject, highlightedThreadId, r
   const isSelected = selectedSubject?.subjectType === 'Section' &&
                      selectedSubject.id === section.id;
 
-  // A section has no per-thread anchor in the preview, so selecting it
-  // highlights all its threads at once, like a whole-element image badge.
   const groupHighlight = isSelected ? threads.map(t => t.id) : highlightedThreadId;
 
   return (

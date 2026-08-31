@@ -128,10 +128,8 @@ export const PreviewMessageController = Object.extend({
             })
           });
 
-          // Passing the thread id here rather than posting
-          // SELECT_COMMENT_THREAD avoids depending on the preview having
-          // processed the new thread already: that message is dropped for
-          // threads the iframe does not know yet.
+          // SELECT_COMMENT_THREAD is dropped for threads the iframe does
+          // not know yet.
           if (this.entry.reviewSession) {
             this.listenTo(this.entry.reviewSession, 'create:thread', thread => {
               const model = modelForSubject(this.entry, thread);
@@ -188,7 +186,7 @@ export const PreviewMessageController = Object.extend({
 
         if (this.entry.reviewSession) {
           // A reloaded iframe starts out displaying unresolved threads
-          // everywhere, so the filter has to be handed over again.
+          // everywhere.
           postMessage({
             type: 'CHANGE_COMMENT_DISPLAY_FILTER',
             payload: commentDisplayFilterPayload(this.entry.commentDisplayFilter)
@@ -216,9 +214,6 @@ export const PreviewMessageController = Object.extend({
         });
 
         if (type === 'contentElementComments' || type === 'sectionComments') {
-          // Stay on the current tab when the user is already looking at
-          // the comments view — only force the selection tab when
-          // arriving there from elsewhere.
           if (!onCommentsView() && message.data.payload.source !== 'editor') {
             this.editor.navigate('/scrolled/comments?tab=selection', {trigger: true})
           }
@@ -368,9 +363,6 @@ function modelForSubject(entry, {subjectType, subjectId}) {
   return collection.findWhere({permaId: subjectId});
 }
 
-// The comments view itself, but none of the routes below it: the
-// activity feed lists every subject at once, so a subject picked in the
-// preview has nowhere to appear there.
 function onCommentsView() {
   const fragment = Backbone.history.fragment || '';
 

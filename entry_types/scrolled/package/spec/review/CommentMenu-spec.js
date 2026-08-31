@@ -26,8 +26,6 @@ describe('CommentMenu', () => {
     expect(getByRole('menuitem', {name: 'Edit'})).toBeInTheDocument();
   });
 
-  // The form styles in pageflow/ui/forms.scss turn buttons announcing a
-  // popup into full width select lookalikes, but spare this value.
   it('announces a menu rather than a generic popup', () => {
     const {getByRole} = renderWithReviewState(menu());
 
@@ -74,9 +72,6 @@ describe('CommentMenu', () => {
     expect(queryByRole('menu')).toBeNull();
   });
 
-  // Enclosing popovers close themselves on Escape from a document
-  // listener. React 16 dispatches from there too, so the menu has to claim
-  // the key in the capture phase to still be the one that handles it.
   it('keeps Escape from reaching document listeners', async () => {
     const user = userEvent.setup();
     const listener = jest.fn();
@@ -109,7 +104,6 @@ describe('CommentMenu', () => {
     expect(getByRole('menuitem', {name: 'Edit'})).toHaveFocus();
   });
 
-  // Threads act as a single click target for selecting their subject.
   it('does not let clicks reach enclosing click handlers', async () => {
     const user = userEvent.setup();
     const onClick = jest.fn();

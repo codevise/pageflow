@@ -4,9 +4,6 @@ import {getViewTimelineProgress} from 'pageflow-scrolled/frontend';
 
 import styles from './ContentElementVisualization.module.css';
 
-// Illustrates how a content element behaves while the page scrolls,
-// by rendering a miniature of the section it sits in. Children are
-// rendered inside the rectangle representing the content element.
 export const ContentElementVisualization = forwardRef(function ContentElementVisualization(
   {position, layout, narrowBlock, scrollRoom, viewportCenter, children}, ref
 ) {
@@ -54,10 +51,6 @@ function TextBlock({words}) {
   );
 }
 
-// Elements are pinned inside the visualization just like they are in
-// the entry, so their bounding rects can drive the same view timeline
-// computations. The visualization itself acts as the viewport.
-// Positions that keep the element in place while the page scrolls.
 export function pinsElement(position) {
   return position === 'sticky' || position === 'standAlone';
 }
@@ -86,10 +79,6 @@ export function measureElementTop({scroller, position}) {
   return relativeRect(element, scrollerRect).top / scrollerRect.height;
 }
 
-// Scroll positions of the visualization at which the element starts
-// entering the viewport and at which it has completely left it again.
-// Pass until to end the timeline once the top edge of the element has
-// reached that offset instead.
 export function measureScrollTimeline({scroller, position, until}) {
   const scrollerRect = scroller.getBoundingClientRect();
   const {subject} = findViewTimelineElements(scroller, position);
@@ -110,8 +99,6 @@ function findViewTimelineElements(scroller, position) {
   if (position === 'sticky') {
     const wrapper = scroller.querySelector(`.${styles.wrapper}`);
 
-    // The group of boxes the wrapper is a child of constrains it, just
-    // like in the two column layout of the entry.
     return {subject: wrapper.parentElement, element: wrapper};
   }
   else if (position === 'standAlone') {

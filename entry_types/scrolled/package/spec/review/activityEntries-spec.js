@@ -185,8 +185,6 @@ describe('activityEntries', () => {
       expect(entries[0]).toMatchObject({unreadCount: 0, unreadCommentIds: []});
     });
 
-    // A resolution has no read record of its own, so it goes by the
-    // thread's: opening the thread clears it.
     it('counts a resolution by the read state of its thread', () => {
       const threads = permaId => [thread({
         permaId,
@@ -314,8 +312,6 @@ describe('activityEntries', () => {
         );
       }
 
-      // Posting crosses the window boundary, so it has to be flushed
-      // before the hook reflects it.
       async function postThreadChange(thread) {
         await act(async () => {
           postReviewStateThreadChangeMessage(window, thread);

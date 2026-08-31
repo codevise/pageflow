@@ -25,8 +25,6 @@
   opacity: 1;
 }
 
-/* Badge of a resolved thread shown only because it is the highlighted
-   thread - muted to grey instead of the accent color. */
 .resolved {
   background: var(--ui-accent-grey-color);
   color: var(--ui-on-accent-grey-color);
@@ -64,9 +62,6 @@
   height: var(--icon-size);
 }
 
-/* Marks subjects with comments the reviewer has not seen yet. Sits on
-   the badge corner rather than changing its color, so it reads the same
-   on every badge variant. */
 .unread::after {
   content: '';
   position: absolute;

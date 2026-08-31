@@ -16,36 +16,11 @@ import styles from './ThreadList.module.css';
 export function ThreadList({subjectType, subjectId, subjectRange, filter, resolution, highlightedThreadId, onThreadClick, restrictInteractionsToHighlighted, showNewForm: showNewFormProp, hideNewTopicButton, reversed, expandResolved, startCollapsed, markReadWhenHighlighted}) {
   const {t} = useI18n({locale: 'ui'});
 
-  // Threads arrive already located: in display order, with orphans of
-  // deleted content elements folded into their section on top and flagged.
-  // The list only filters by the selection and splits resolved from active.
-  // `resolution` states which threads the surrounding filter lets through;
-  // without it, resolved threads stay listed behind a collapsed pill.
-  const allActiveThreads =
-    useLocatedCommentThreadsForSubject({subjectType, subjectId, subjectRange, resolution: 'unresolved'});
-  const allResolvedThreads =
-    useLocatedCommentThreadsForSubject({subjectType, subjectId, subjectRange, resolution: 'resolved'});
-
-  const activeThreads = useMemo(
-    () => (filter ? allActiveThreads.filter(filter) : allActiveThreads),
-    [allActiveThreads, filter]
-  );
-
-  // A group highlight covers every thread of the subject; only one naming
-  // a single thread says the reviewer picked it out, which is what brings
-  // a resolved thread out of the fold.
   const pickedThreadId = Array.isArray(highlightedThreadId) ? null : highlightedThreadId;
 
-  // A picked thread stays listed even where the filter hides resolved
-  // ones, so that following a comment from the activity feed does not
-  // lead to an empty list.
-  const resolvedThreads = useMemo(() => {
-    const threads = filter ? allResolvedThreads.filter(filter) : allResolvedThreads;
-
-    return resolution === 'unresolved' ?
-           threads.filter(thread => thread.id === pickedThreadId) :
-           threads;
-  }, [allResolvedThreads, filter, resolution, pickedThreadId]);
+  const {activeThreads, resolvedThreads} = useThreadsByResolution({
+    subjectType, subjectId, subjectRange, filter, resolution, pickedThreadId
+  });
 
   const isHighlighted = thread => Array.isArray(highlightedThreadId) ?
                                   highlightedThreadId.includes(thread.id) :
@@ -71,10 +46,6 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, resolu
 
   const showResolved = resolvedToggled !== null ? resolvedToggled : revealsResolved;
 
-  // An unsent draft reopens the form and keeps it open while the thread is
-  // being created. Callers passing showNewForm={false} suppress the form
-  // entirely: the editor sidebar lists compose new threads in a view of
-  // their own.
   const showNewForm = showNewFormProp !== false && (!!draft || formToggled);
 
   function toggleThread(threadId) {
@@ -144,6 +115,30 @@ export function ThreadList({subjectType, subjectId, subjectRange, filter, resolu
       </div>
     </CommentThreadReadsSnapshot>
   );
+}
+
+function useThreadsByResolution({
+  subjectType, subjectId, subjectRange, filter, resolution, pickedThreadId
+}) {
+  const allActiveThreads =
+    useLocatedCommentThreadsForSubject({subjectType, subjectId, subjectRange, resolution: 'unresolved'});
+  const allResolvedThreads =
+    useLocatedCommentThreadsForSubject({subjectType, subjectId, subjectRange, resolution: 'resolved'});
+
+  const activeThreads = useMemo(
+    () => (filter ? allActiveThreads.filter(filter) : allActiveThreads),
+    [allActiveThreads, filter]
+  );
+
+  const resolvedThreads = useMemo(() => {
+    const threads = filter ? allResolvedThreads.filter(filter) : allResolvedThreads;
+
+    return resolution === 'unresolved' ?
+           threads.filter(thread => thread.id === pickedThreadId) :
+           threads;
+  }, [allResolvedThreads, filter, resolution, pickedThreadId]);
+
+  return {activeThreads, resolvedThreads};
 }
 
 function soleThread(threads) {

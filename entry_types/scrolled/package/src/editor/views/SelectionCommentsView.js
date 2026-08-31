@@ -27,20 +27,14 @@ export const SelectionCommentsView = ReviewView.extend({
     const {entry} = this.options;
     const subject = entry.get('selectedCommentsSubject');
 
-    // Resolve the model from the current subject rather than the cached
-    // `this._model`: a `change:highlightedThreadId` rerender can run
-    // before `change:selectedCommentsSubject` refreshes `this._model`,
-    // leaving a stale Section model paired with a new ContentElement
-    // subject.
+    // A `change:highlightedThreadId` rerender can run before
+    // `change:selectedCommentsSubject` has refreshed `this._model`.
     const model = this._resolveModel();
 
     if (!subject || !model) {
       return {};
     }
 
-    // The fold stays, so that the reviewer can peek at resolved threads
-    // of the selection without turning them on everywhere; the filter
-    // only decides whether it starts out open.
     const expandResolved = entry.commentDisplayFilter.showsResolved();
 
     if (subject.subjectType === 'ContentElement') {
@@ -61,13 +55,6 @@ export const SelectionCommentsView = ReviewView.extend({
     };
   },
 
-  // Highlight and per-thread click are only wired when the view is
-  // scoped to a list of thread ids. For unscoped subjects (whole
-  // content elements such as images, or whole sections) there is no
-  // anchor for an individual thread in the iframe, so highlighting one
-  // in the list would have no counterpart in the preview. A section's
-  // list also surfaces the threads of its deleted content elements,
-  // since ThreadList resolves them from the located threads.
   renderContent({subjectType, subjectId, threadIds, highlightedThreadId, expandResolved, onThreadClick}) {
     if (!subjectType) return null;
 

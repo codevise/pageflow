@@ -29,8 +29,6 @@ function postDraftsChange(drafts) {
 }
 
 describe('ReplyForm', () => {
-  // A spy left behind by a failing spec would swallow the simulated
-  // review state messages of the ones after it.
   afterEach(() => jest.restoreAllMocks());
 
   useFakeTranslations({
@@ -80,7 +78,6 @@ describe('ReplyForm', () => {
     expect(container.querySelector('[data-file-name="SvgSpinner"]')).not.toBeNull();
   });
 
-  // The form stays around for the next reply, unlike the new thread form.
   it('clears the input once the reply has been created', async () => {
     const user = userEvent.setup();
 

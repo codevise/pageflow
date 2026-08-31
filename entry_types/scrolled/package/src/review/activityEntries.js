@@ -5,8 +5,6 @@ import {useDisplayedCommentThreadReads} from './commentThreadReadsSnapshot';
 import {useLocatedCommentThreads} from './useLocatedCommentThreads';
 import {isUnread, threadActivity} from './unreadActivity';
 
-// Reads frozen read state, so that unseen markers hold still while the
-// reviewer works through the list.
 export function useActivityEntries() {
   const {threads} = useLocatedCommentThreads();
   const currentUser = useCurrentUser();
@@ -20,11 +18,6 @@ export function useActivityEntries() {
   return useHeldOrder(entries);
 }
 
-// Replying to a thread or resolving one makes it the most recent again,
-// which would shove it to the top under the reviewer's own hands. Threads
-// keep the place they had when the list appeared, dated by when they took
-// it so they do not change day either; the next visit reflects what
-// happened last.
 function useHeldOrder(entries) {
   const takenAt = useRef(new Map());
 
@@ -41,8 +34,6 @@ function useHeldOrder(entries) {
   }, [entries]);
 }
 
-// For the control that opens the feed: reads live state, so that its
-// indicator clears as threads are read.
 export function useUnreadThreadCount() {
   const {threads} = useLocatedCommentThreads();
   const currentUser = useCurrentUser();

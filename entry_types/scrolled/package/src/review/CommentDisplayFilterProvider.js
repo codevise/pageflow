@@ -8,11 +8,6 @@ const CommentDisplayFilterContext = createContext({
   setResolution: noop
 });
 
-// Which comments the reviewer wants to see: the resolutions of a thread,
-// and whether comments show anywhere or only on what is selected. The
-// editor and the preview each run their own filter: the preview drives it
-// from the toolbar via `useStoredCommentDisplayFilter`, while the editor's
-// preview iframe is handed what its sidebar menu holds.
 export function CommentDisplayFilterProvider({
   resolution = 'unresolved', alwaysShowComments = true, setResolution = noop, children
 }) {
@@ -32,9 +27,6 @@ export function useCommentDisplayFilter() {
   return useContext(CommentDisplayFilterContext);
 }
 
-// Keeps the resolution in local storage under the given key, so that the
-// editor and the preview remember what they were last set to without
-// inheriting each other's setting.
 export function useStoredCommentDisplayFilter(storageKey) {
   const [resolution, setResolution] = useState(() => readResolution(storageKey));
 

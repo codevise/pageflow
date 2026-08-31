@@ -60,7 +60,6 @@ describe('Thread unread replies divider', () => {
     expect(queryByText('Unread replies')).toBeNull();
   });
 
-  // The thread's own marker already says the whole thread is new.
   it('renders no divider when the thread is new all through', () => {
     const {queryByText} = render();
 

@@ -12,9 +12,6 @@ import {
 import {PlaybackProgress} from './visualizations/PlaybackProgress';
 
 export const ScrollRangeSelectInputView = ListboxInputView.extend({
-  // Options are rendered when the dropdown is opened, so passing
-  // position and layout as functions ensures the illustration matches
-  // what the element looks like by then.
   renderItem(item) {
     return (
       <Preview item={item}
@@ -43,9 +40,6 @@ function Preview({item, position, layout}) {
   );
 }
 
-// Only ranges that are measured relative to the center of the viewport
-// benefit from marking it. The inFocus range measures the pinned phase
-// of elements that stay in place instead.
 function measuresViewportCenter(range, position) {
   return range === 'center' || (range === 'inFocus' && !pinsElement(position));
 }

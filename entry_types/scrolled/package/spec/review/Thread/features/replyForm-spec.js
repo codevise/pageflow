@@ -18,8 +18,6 @@ describe('Thread reply form', () => {
     comments: [{id: 10, body: 'On the pull quote', creatorName: 'Bob', creatorId: 2}]
   };
 
-  // The reply form is hidden while a thread with replies is collapsed,
-  // which would leave a drafted reply out of reach.
   it('expands a collapsed thread that has a drafted reply', () => {
     const threadWithReply = {
       ...thread,
@@ -41,7 +39,6 @@ describe('Thread reply form', () => {
     expect(getByPlaceholderText('Reply...')).toHaveValue('Half a reply');
   });
 
-  // Two textareas in one card leave it ambiguous which one typing lands in.
   describe('while editing a comment', () => {
     useFakeTranslations({
       'pageflow_scrolled.review.comment_actions': 'Comment actions',

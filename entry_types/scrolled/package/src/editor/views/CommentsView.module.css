@@ -1,12 +1,4 @@
-/*
- * Pin the tab bar to the top of the sidebar's scrolling area so it
- * stays visible while the active tab's thread list scrolls past
- * underneath. The outer sidebar scroller does the scrolling. The
- * negative top offset cancels the scroller's 10px padding so the bar
- * meets the sidebar edge cleanly. The box-shadow extends the surface
- * color sideways to hide highlighted threads' accent halo as they
- * scroll past underneath.
- */
+/* The negative top offset cancels the scroller's 10px padding. */
 .root > div {
   margin: space(2.5) 0;
 }
@@ -24,8 +16,7 @@
   float: right;
 }
 
-/* Rides the tab bar at its far end. The bar is the scroller's containing
-   block, and its tab list is absolutely positioned for the same reason. */
+/* The tab bar is the scroller's containing block. */
 .controls {
   position: absolute;
   top: 0;
@@ -60,8 +51,7 @@
   background: var(--ui-primary-color);
 }
 
-/* Matches a.indicator::after in app/assets/stylesheets/pageflow/editor/menu.scss,
-   which points at the same unseen comments from the sidebar root. */
+/* Matches a.indicator::after in app/assets/stylesheets/pageflow/editor/menu.scss. */
 .indicator::after {
   content: "";
   position: absolute;

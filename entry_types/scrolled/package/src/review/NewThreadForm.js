@@ -20,8 +20,8 @@ export function NewThreadForm({subjectType, subjectId, subjectRange, onSubmit}) 
     subjectType, subjectId, subjectRange
   });
 
-  // preventScroll keeps focus from yanking the page to the top before the
-  // portaled popover has been positioned by floating-ui.
+  // Focusing without preventScroll yanks the page to the top before
+  // floating-ui has positioned the portaled popover.
   const setInputRef = useCallback(node => {
     autoResize(node);
     node?.focus({preventScroll: true});

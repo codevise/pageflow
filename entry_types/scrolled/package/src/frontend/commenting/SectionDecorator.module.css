@@ -5,8 +5,8 @@
 .commentBadge {
   box-sizing: border-box;
   position: relative;
-  /* Sit above the section Foreground (z-index 3) so the badge stays
-     reachable; the section establishes no stacking context of its own. */
+  /* The section Foreground is z-index 3, and the section establishes no
+     stacking context of its own. */
   z-index: 4;
   display: flex;
   align-items: flex-end;
@@ -24,7 +24,6 @@
   bottom: 0;
 }
 
-/* Absorb the badge box's height; on the section, not the sticky badge. */
 .wrapper > section {
   margin-bottom: -44px;
 }

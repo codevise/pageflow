@@ -29,8 +29,6 @@
   margin-top: space(1.5);
 }
 
-/* Pushed left by its own margin rather than by space-between, so that the
-   send button stays in place while submitting hides the hint. */
 .hint {
   margin-right: auto;
   color: var(--ui-on-surface-color-light);

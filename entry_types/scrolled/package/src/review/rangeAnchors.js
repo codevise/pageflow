@@ -10,10 +10,8 @@ export function useRangeAnchors() {
   const elements = useRef(new Map());
   const [version, setVersion] = useState(0);
 
-  // Several elements can carry the same range key: Slate splits a
-  // decorated range wherever another decoration overlaps it, and every
-  // piece keeps the key. Unregistering by key alone would let a piece
-  // going away drop the anchor the remaining pieces still provide.
+  // Slate splits a decorated range wherever another decoration overlaps
+  // it, so several elements can carry the same range key.
   const registerAnchor = useCallback((rangeKey, el, mounted = true) => {
     if (!el) return;
 
@@ -43,8 +41,7 @@ export function RangeAnchor({rangeKey, onRegister, children}) {
   const ref = useRef(null);
 
   useEffect(() => {
-    // Read here rather than in the cleanup, which runs once React has
-    // detached the ref.
+    // The cleanup runs once React has detached the ref.
     const el = ref.current;
 
     onRegister(rangeKey, el);
@@ -89,8 +86,6 @@ export function useAnchoredFloating(rangeKey, anchors, {
   return {refs, floatingStyles, placement: resolvedPlacement, isPositioned, hasAnchor, fits};
 }
 
-// The pieces of a split range are all anchors for it, but the badge
-// belongs beside where the range starts.
 function firstInDocument(elements) {
   return elements.reduce((first, el) =>
     first.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_PRECEDING ? el : first
@@ -155,14 +150,9 @@ function clampXToViewport({viewportPadding = 8} = {}) {
   };
 }
 
-// Floating UI applies `x`/`y` relative to the floating element's offsetParent
-// and reports `rects.reference` in that same (unscaled) space, while
-// getBoundingClientRect speaks viewport coordinates. As long as the badges
-// were portaled to the document root those spaces coincided, but rendered
-// inside the (relatively positioned, transform-scaled) main storyline sheet
-// they no longer do. Derive the offsetParent's current scale from the
-// reference and build a converter from viewport into the local space the
-// middleware must return.
+// Floating UI applies `x`/`y` in the offsetParent's unscaled space, which
+// getBoundingClientRect's viewport coordinates only match while the
+// offsetParent is unscaled.
 function viewportToLocalX({rects, elements}) {
   const referenceRect = elements.reference.getBoundingClientRect();
   const scale = rects.reference.width ?

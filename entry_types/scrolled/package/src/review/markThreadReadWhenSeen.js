@@ -5,18 +5,9 @@ import {useLiveUnreadActivity} from './unreadActivity';
 
 const DWELL_TIME = 800;
 
-// Threads that only peek in at the very edge of the viewport have not
-// been read, but anything substantially on screen has. Expressed as a
-// margin rather than a visibility ratio, which a thread taller than the
-// viewport could never reach.
+// A thread taller than the viewport could never reach a visibility ratio.
 const ROOT_MARGIN = '-10% 0px -10% 0px';
 
-// A thread counts as read once it has been on screen long enough to
-// actually read it. Scrolling past it therefore leaves it unread.
-//
-// Callers pass `enabled: false` while the thread keeps an unread comment
-// out of sight, and in lists that survey many threads at once, where
-// being on screen is not the reviewer choosing to read one.
 export function useMarkThreadReadWhenSeen({thread, ref, enabled}) {
   const unread = useLiveUnreadActivity(thread);
   const markThreadRead = useMarkThreadRead();

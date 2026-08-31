@@ -22,9 +22,6 @@ export const EditDefaultsView = EditConfigurationView.extend({
   }
 });
 
-// Also used for per-site entry template defaults in the admin, via
-// defineEntryDefaultsInputsFromSeed. `model` lets the tabs bind to a
-// configuration model other than the editor's default.
 export function defineEntryDefaultsInputs(configurationEditor, {
   entry,
   model,
@@ -114,8 +111,6 @@ export function defineEntryDefaultsInputs(configurationEditor, {
   });
 }
 
-// For consumers without a full entry (e.g. the admin): builds a theme-only
-// stand-in entry from a scrolled entry seed.
 export function defineEntryDefaultsInputsFromSeed(configurationEditor, {
   seed,
   themeName,

@@ -10,10 +10,6 @@ const EMPTY = {chapters: [], threads: [], bySubject: new Map()};
 
 const LocatedCommentThreadsContext = createContext(EMPTY);
 
-// Computes the located threads once and shares them through context. The
-// navigator, the toolbar and the many per-section decorators all read the
-// same result instead of each re-running the (entry structure × threads)
-// join.
 export function LocatedCommentThreadsProvider({children}) {
   const located = useComputeLocatedCommentThreads();
 
@@ -31,79 +27,85 @@ export function useLocatedCommentThreads() {
   return useContext(LocatedCommentThreadsContext);
 }
 
-// Joins the review state's threads with the entry structure. Each section
-// and content element carries its threads in final display order; threads
-// whose content element was deleted ("orphans", matched via the persisted
-// `sectionPermaId`) lead their section flagged with `orphaned`, and orphans
-// whose section is gone too lead the first section so they stay reachable.
-// Also returns a flat document-order `threads` list and a `bySubject` index
-// keyed by `${subjectType}:${subjectId}` for useLocatedCommentThreadsForSubject.
 function useComputeLocatedCommentThreads() {
   const structure = useEntryStructureWithContentElements();
   const allThreads = useCommentThreads();
 
-  return useMemo(() => {
-    const threadsBySubject = groupBySubject(allThreads);
-    const threadsBySection = groupBySection(allThreads);
+  return useMemo(
+    () => locateThreads(structure, allThreads),
+    [structure, allThreads]
+  );
+}
 
-    // Placing a thread on its (live) subject removes it from its section
-    // bucket; whatever remains once every subject is visited are orphans.
-    const take = (subjectType, subjectId, compareRanges) => {
-      const subjectThreads = sortByRange(
-        threadsBySubject[subjectKey(subjectType, subjectId)] || [],
-        compareRanges
-      );
-      subjectThreads.forEach(thread =>
-        threadsBySection.get(thread.sectionPermaId)?.delete(thread)
-      );
-      return subjectThreads;
-    };
+function locateThreads(structure, allThreads) {
+  const threadsBySection = groupBySection(allThreads);
 
-    const chapters = [...structure.main, ...structure.excursions].map(chapter => ({
-      ...chapter,
-      sections: chapter.sections.map(section => ({
-        ...section,
-        threads: take('Section', section.permaId),
-        contentElements: section.contentElements.map(contentElement => ({
-          ...contentElement,
-          threads: take(
-            'ContentElement',
-            contentElement.permaId,
-            review.contentElementTypes.findCompareRanges(contentElement.type)
-          )
-        }))
-      }))
-    }));
+  const chapters = placeThreadsOnSubjects(structure,
+                                          groupBySubject(allThreads),
+                                          threadsBySection);
 
-    // The section buckets now hold only orphans. Lead each section with its
-    // own orphans; orphans whose section is gone too lead the first section
-    // so they surface at the top of the list instead of vanishing.
-    chapters.forEach(chapter =>
-      chapter.sections.forEach(section => {
-        section.threads = [...drainSection(threadsBySection, section.permaId),
-                           ...section.threads];
-      })
+  prependOrphans(chapters, threadsBySection);
+
+  chapters.forEach(chapter => {
+    chapter.threadCount = countThreads(chapter.sections);
+  });
+
+  return {
+    chapters,
+    threads: flatten(chapters),
+    bySubject: buildSubjectIndex(chapters)
+  };
+}
+
+function placeThreadsOnSubjects(structure, threadsBySubject, threadsBySection) {
+  function take(subjectType, subjectId, compareRanges) {
+    const subjectThreads = sortByRange(
+      threadsBySubject[subjectKey(subjectType, subjectId)] || [],
+      compareRanges
     );
+    subjectThreads.forEach(thread =>
+      threadsBySection.get(thread.sectionPermaId)?.delete(thread)
+    );
+    return subjectThreads;
+  }
 
-    const firstSection = chapters[0]?.sections[0];
-    const homelessOrphans = [...threadsBySection.values()]
-      .flatMap(set => [...set])
-      .map(markOrphan);
+  return [...structure.main, ...structure.excursions].map(chapter => ({
+    ...chapter,
+    sections: chapter.sections.map(section => ({
+      ...section,
+      threads: take('Section', section.permaId),
+      contentElements: section.contentElements.map(contentElement => ({
+        ...contentElement,
+        threads: take(
+          'ContentElement',
+          contentElement.permaId,
+          review.contentElementTypes.findCompareRanges(contentElement.type)
+        )
+      }))
+    }))
+  }));
+}
 
-    if (firstSection && homelessOrphans.length > 0) {
-      firstSection.threads = [...homelessOrphans, ...firstSection.threads];
-    }
+function prependOrphans(chapters, threadsBySection) {
+  chapters.forEach(chapter =>
+    chapter.sections.forEach(section => {
+      section.threads = [...drainSection(threadsBySection, section.permaId),
+                         ...section.threads];
+    })
+  );
 
-    chapters.forEach(chapter => {
-      chapter.threadCount = countThreads(chapter.sections);
-    });
+  prependHomelessOrphans(chapters, threadsBySection);
+}
 
-    return {
-      chapters,
-      threads: flatten(chapters),
-      bySubject: buildSubjectIndex(chapters)
-    };
-  }, [structure, allThreads]);
+function prependHomelessOrphans(chapters, threadsBySection) {
+  const firstSection = chapters[0]?.sections[0];
+  const homelessOrphans = [...threadsBySection.values()]
+    .flatMap(set => [...set])
+    .map(markOrphan);
+
+  if (firstSection && homelessOrphans.length > 0) {
+    firstSection.threads = [...homelessOrphans, ...firstSection.threads];
+  }
 }
 
 function drainSection(threadsBySection, sectionPermaId) {

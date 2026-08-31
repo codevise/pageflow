@@ -19,7 +19,6 @@ describe('Comment', () => {
 
   const originalLocale = I18n.locale;
 
-  // Whether the year is rendered depends on the current date.
   beforeEach(() => {
     MockDate.set('2026-06-01');
   });
@@ -29,8 +28,6 @@ describe('Comment', () => {
     I18n.locale = originalLocale;
   });
 
-  // The day rendered depends on the timezone of the machine running
-  // the specs. Only assert on the conventions of the formatted date.
   it('formats the timestamp in the interface locale', () => {
     I18n.locale = 'de';
 
@@ -73,8 +70,6 @@ describe('Comment', () => {
 
     const editedComment = {...comment, editedAt: '2026-03-16T09:00:00Z'};
 
-    // Day and time depend on the timezone of the machine running the
-    // specs. Only assert on the conventions of the formatted date.
     it('is rendered below the body of edited comments', () => {
       I18n.locale = 'en';
 

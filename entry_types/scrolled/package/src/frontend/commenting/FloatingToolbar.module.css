@@ -1,13 +1,7 @@
-/* Collapsing/expanding is animated with a view transition (see
-   CommentingVisibilityProvider). The toolbar and the puck share
-   `comment-toolbar`, so the toolbar surface and its content morph into the
-   puck together (the content deforms and cross-fades along with the rect,
-   having no counterpart in the puck). The toggle icons (eye and bubble) share
-   `comment-toolbar-icon` and morph on their own — naming them lifts them out
-   of the surface snapshot so the icon swap stays crisp, and the unread dot is
-   named for the same reason. The ::view-transition old/new overrides below
-   stretch the surface snapshots to fill the animating box, so it reshapes into
-   the puck rather than scaling down with a fixed aspect ratio. */
+/* Naming an element lifts it out of the surface snapshot, so the icons and
+   the dot stay crisp instead of deforming with the rect. The
+   ::view-transition overrides below stretch the surface snapshots to fill
+   the animating box, which otherwise scales at a fixed aspect ratio. */
 .toolbar {
   position: fixed;
   bottom: space(3);
@@ -35,17 +29,9 @@
   object-fit: fill;
 }
 
-/* Collapsed state: a small tab docked flush to the bottom viewport edge,
-   roughly below where the hide button sits in the expanded toolbar (away from
-   the corner where custom floating buttons tend to live).
-
-   Idle opacity is driven by an animation rather than a transition so it plays
-   nicely with the collapse morph: `puckIdle` holds full opacity through its
-   delay, which spans both the view-transition snapshot capture and the reveal,
-   so the puck morphs in fully opaque (nothing flips), lingers, then fades to
-   its semi-transparent rest state. Hovering or focusing cancels the animation
-   for an instant opaque state; leaving re-runs it, so it only dims again a
-   moment after the cursor leaves. */
+/* Idle opacity is animated, not transitioned: the delay of `puckIdle` spans
+   the view-transition snapshot capture, so the puck morphs in fully opaque
+   before fading to its rest state. */
 .puck {
   position: fixed;
   bottom: 0;
@@ -84,8 +70,6 @@
   background: var(--ui-warning-color);
   box-shadow: 0 0 0 1px var(--ui-on-surface-color-lighter);
 
-  /* Naming the dot lifts it out of the puck's surface snapshot, so it
-     does not deform along with the rect while the toolbar expands. */
   view-transition-name: comment-toolbar-unread-dot;
 }
 

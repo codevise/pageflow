@@ -1,8 +1,5 @@
-// Holds per content element type behavior needed to display comment
-// threads. Available both in the editor and in the frontend commenting
-// mode. Kept separate from the editor and frontend registries so subject
-// range logic (ordering ranges, reading the text they cover) can be shared
-// by both without pulling Slate into the always-on frontend bundle.
+// Kept out of the editor and frontend registries to keep Slate out of the
+// always-on frontend bundle.
 export class ContentElementTypeRegistry {
   constructor() {
     this.types = {};

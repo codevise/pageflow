@@ -6,8 +6,6 @@ import {ThreadsBadge} from 'review/ThreadsBadge';
 import {renderWithReviewState} from 'support/renderWithReviewState';
 import badgeStyles from 'review/Badge.module.css';
 
-// ThreadsBadge counts the located threads of its subject, so the subject
-// must exist in the entry structure.
 const seed = {
   sections: [{id: 1, permaId: 1}],
   contentElements: [{id: 1, permaId: 10, sectionId: 1, typeName: 'textBlock'}]
@@ -318,8 +316,6 @@ describe('ThreadsBadge', () => {
       expect(getByRole('status')).not.toHaveTextContent(/\d/);
     });
 
-    // Two dots on one badge say less than one, so unseen comments keep
-    // the badge from collapsing.
     it('renders full badge when comments are unread', () => {
       const {container, getByRole} = renderThreadsBadge(
         <ThreadsBadge subjectType="ContentElement" subjectId={10} mode="dot" />,

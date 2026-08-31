@@ -19,8 +19,7 @@ export function ActivityList({onEntryClick, highlightedThreadId, pageSize = 30})
   );
 }
 
-// Reading the entries has to happen inside the snapshot for the freeze to
-// apply.
+// The entries have to be read inside the snapshot for the freeze to apply.
 function Entries({onEntryClick, highlightedThreadId, pageSize}) {
   const {t} = useI18n({locale: 'ui'});
   const entries = useActivityEntries();
@@ -84,8 +83,6 @@ function Entry({entry, day, highlighted, onClick}) {
   );
 }
 
-// What happened to the thread on the day the row is listed under, which
-// is what puts it there.
 function summary(t, {thread}, day) {
   const replies = thread.comments.slice(1);
 
@@ -118,10 +115,6 @@ function joinParts(t, parts) {
     .join(t('pageflow_scrolled.review.activity.summary.and'));
 }
 
-// Everything said on the day the row is listed under, plus anything
-// unseen from before it - folding that away would hide what the feed
-// exists to surface. Falls back to the latest reply, so that a row never
-// shows a thread without the comment it is listed for.
 function visibleReplyCount({thread, unreadCommentIds}, day) {
   const replies = thread.comments.slice(1);
 
@@ -145,8 +138,6 @@ function DayHeading({day, at}) {
   );
 }
 
-// Grouping the shown slice rather than every entry keeps a day that spans
-// the "show more" boundary from being headed twice.
 function dayGroups(entries) {
   const groups = [];
 

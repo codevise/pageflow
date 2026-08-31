@@ -4,12 +4,6 @@ import Backbone from 'backbone';
 // Allows recording changes to a section's content elements,
 // persisting the changes to the server in a single request and
 // applying them to the section once the requests succeeds.
-//
-// When a `reviewSession` is passed, structural ops that go through
-// `split`/`maybeMerge` also collect the resulting comment-thread range
-// updates and subject_id migrations so both the payload and the
-// post-save `ReviewSession` state stay in sync with the new
-// Slate coordinate system.
 export function Batch(entry, section, {reviewSession} = {}) {
   // Shallow copy of the section's list of content elements to store
   // ordering changes and newly inserted content elements.
@@ -23,17 +17,12 @@ export function Batch(entry, section, {reviewSession} = {}) {
   // and shall be deleted on the server.
   const markedForDeletion = [];
 
-  // New ranges for comment threads, keyed by threadId. Holds both
-  // updates for threads that stay on their content element and the
-  // post-shift range for threads being migrated (the latter also
-  // appear in `threadMigrations`).
+  // New ranges for comment threads, keyed by threadId. Includes the
+  // post-shift range of threads being migrated.
   const threadRangeUpdates = {};
 
-  // Comment threads migrating to a different content element.
-  // Shape: {threadId: targetContentElement}. The target reference is
-  // resolved to an id (for existing) or to the newly-assigned
-  // perma_id (for new, via applyAdditions) at payload-assembly /
-  // success time.
+  // Target content elements of migrating comment threads, keyed by
+  // threadId. Resolved to a perma id once the batch succeeds.
   const threadMigrations = {};
 
   // Track whether changes have been recorded which need to be
@@ -183,9 +172,8 @@ export function Batch(entry, section, {reviewSession} = {}) {
       markForDeletion(removed);
     }
 
-    // The type's merge is expected to preserve every input thread id
-    // in `mergedRanges` (with shifted offsets where appropriate), so
-    // splitting `mergedRanges` along the input range maps is exhaustive.
+    // A type's merge has to preserve every input thread id for
+    // splitting `mergedRanges` along the input range maps to be exhaustive.
     recordThreadMigrations(pickRanges(mergedRanges, removedRanges), survivor);
     recordRangeUpdates(pickRanges(mergedRanges, survivorRanges));
 
@@ -230,12 +218,6 @@ export function Batch(entry, section, {reviewSession} = {}) {
     return changedConfigurations[contentElement.id] || contentElement.configuration.attributes;
   }
 
-  // Bookkeeping for comment thread range updates and subject_id
-  // migrations recorded by structural ops above. `reviewSession` is
-  // only mutated in the post-save `applyThreadUpdates`, so callers
-  // that read live ranges mid-batch must go through `collectRanges`
-  // to see pending migrations.
-
   function collectRanges(contentElement) {
     if (!reviewSession) return {};
 
@@ -248,10 +230,8 @@ export function Batch(entry, section, {reviewSession} = {}) {
       });
 
       threads.forEach(thread => {
-        // Threads with a pending migration away from this element are
-        // excluded — `findThreadsFor` reads `reviewSession` state which
-        // has not yet been updated for in-batch migrations, so it
-        // would otherwise still return them.
+        // `findThreadsFor` reads `reviewSession`, which is only updated
+        // once the batch succeeds.
         const migratedAway = thread.id in threadMigrations &&
                              threadMigrations[thread.id] !== contentElement;
 
@@ -261,9 +241,6 @@ export function Batch(entry, section, {reviewSession} = {}) {
       });
     }
 
-    // Threads migrated to this element earlier in the batch are not
-    // yet reflected in reviewSession — include their pending ranges so
-    // later ops on this element see them.
     Object.entries(threadMigrations).forEach(([threadId, target]) => {
       if (target === contentElement) {
         result[Number(threadId)] = threadRangeUpdates[threadId];
@@ -314,22 +291,18 @@ export function Batch(entry, section, {reviewSession} = {}) {
       },
 
       success(response) {
-        // Each step's intermediate state is observable in the iframe
-        // (Backbone change events propagate as separate postMessages
-        // and re-render React without batching), so the order
-        // resolves these dependencies:
+        // Each step's intermediate state is observable in the iframe, so
+        // the order resolves these dependencies:
         //
-        // - permaIds before thread updates: thread migrations
-        //   resolve `target.get('permaId')`.
-        // - Thread updates before configuration changes: the
-        //   value-flip render in `useCachedValue` clears rangeRefs
-        //   and falls back to `thread.subjectRange`, which must
-        //   already be migrated.
-        // - Positions before additions: Backbone's collection
-        //   comparator drops new elements into their sorted slot.
+        // - permaIds before thread updates: thread migrations resolve
+        //   `target.get('permaId')`.
+        // - Thread updates before configuration changes: the value-flip
+        //   render in `useCachedValue` clears rangeRefs and falls back
+        //   to `thread.subjectRange`, which must already be migrated.
+        // - Positions before additions: Backbone's collection comparator
+        //   drops new elements into their sorted slot.
         // - Configuration changes before deletions: a delete-merge
-        //   survivor grows before its sibling disappears (no
-        //   brief collapse).
+        //   survivor grows before its sibling disappears.
         applyPermaIds(response);
         applyThreadUpdates();
         reconcileSectionPermaIds();
@@ -373,11 +346,6 @@ export function Batch(entry, section, {reviewSession} = {}) {
   }
 
   function createCommentThreadSubjectRanges() {
-    // Migrations whose new range matches the thread's current range
-    // are filtered out by `diffSubjectRangeUpdates` here — that's
-    // fine, the per-element `migrate_comment_threads` array still
-    // moves the thread, and the unchanged range stays as-is on the
-    // server.
     return reviewSession ?
            reviewSession.diffSubjectRangeUpdates(threadRangeUpdates) :
            {};
@@ -455,12 +423,8 @@ export function Batch(entry, section, {reviewSession} = {}) {
     reviewSession.applyThreadUpdates(updates);
   }
 
-  // A thread's section follows its content element. Runs after
-  // applyThreadUpdates so migrated threads already carry their new
-  // subjectId and are found on this section's content elements. Keeps
-  // the in-memory state in sync with the server-side reconcile so a
-  // thread relocates to the right section once its content element is
-  // deleted in the same session.
+  // Runs after applyThreadUpdates so migrated threads are found on this
+  // section's content elements.
   function reconcileSectionPermaIds() {
     if (!reviewSession) return;
 
@@ -482,9 +446,8 @@ export function Batch(entry, section, {reviewSession} = {}) {
   }
 }
 
-// Types can still return the plain [cBefore, cAfter] shape from
-// split() and a bare configuration object from merge(). Normalize both
-// to the range-aware object shape for Batch internals.
+// Types may still return the plain [cBefore, cAfter] shape from split()
+// and a bare configuration object from merge().
 function normalizeSplitResult(result) {
   if (Array.isArray(result)) {
     return {

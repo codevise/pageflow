@@ -33,8 +33,6 @@ function postDraftsChange(drafts) {
 }
 
 describe('NewThreadForm', () => {
-  // A spy left behind by a failing spec would swallow the simulated
-  // review state messages of the ones after it.
   afterEach(() => jest.restoreAllMocks());
 
   useFakeTranslations({
@@ -76,7 +74,6 @@ describe('NewThreadForm', () => {
       });
     });
 
-    // Blank bodies make the session drop the draft.
     it('stores a blank text once the input has been cleared', async () => {
       const user = userEvent.setup();
       const setDraft = jest.fn();
@@ -93,9 +90,6 @@ describe('NewThreadForm', () => {
       );
     });
 
-    // The form does not render again between the draft being dropped and
-    // the list taking it off screen, so the pending draft is the last one
-    // it saw.
     it('does not store the text while the session is creating the thread', () => {
       const setDraft = jest.fn();
 

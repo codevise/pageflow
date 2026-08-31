@@ -11,9 +11,6 @@ export function ThreadsBadge({subjectType, subjectId, subjectRange, onClick, mod
   const unresolvedThreads =
     useLocatedCommentThreadsForSubject({subjectType, subjectId, subjectRange, resolution: 'unresolved'});
 
-  // A thread revealed from the feed is a guest: it brings the badge back
-  // where the filter hides every thread of the subject, but the count
-  // stands for what the filter itself holds.
   const counted = threads.filter(thread => thread.id !== revealedThreadId);
 
   const unreadCount = useUnreadActivityCount(threads);

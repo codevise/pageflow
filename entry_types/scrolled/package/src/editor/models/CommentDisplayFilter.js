@@ -5,11 +5,6 @@ import {getLocalStorage} from 'pageflow/editor';
 const resolutionStorageKey = 'pageflow.scrolled.editor.commentsResolution';
 const alwaysShowStorageKey = 'pageflow.scrolled.editor.alwaysShowComments';
 
-// Which comments the editor displays, in its sidebar lists as well as in
-// the preview: the resolutions of a thread, and whether comments show
-// anywhere or only on what is selected. Remembered under keys of its own,
-// so that the editor and the published entry's preview mode do not
-// inherit each other's setting.
 export const CommentDisplayFilter = Backbone.Model.extend({
   defaults: {
     resolution: 'unresolved',

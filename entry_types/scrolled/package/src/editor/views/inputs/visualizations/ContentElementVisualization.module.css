@@ -1,6 +1,4 @@
 .visualization {
-  /* Lets children refer to the height of the visualization, which
-     acts as the viewport of the illustration. */
   container-type: size;
   aspect-ratio: 16 / 9;
   border: solid 1px var(--ui-on-surface-color-lightest);
@@ -127,9 +125,7 @@
   top: 10%;
 
   /* Sticky elements are constrained by their margin box, so a bottom
-     margin would keep the element from sliding all the way down to the
-     bottom of its scroll space. Progress along the pinned range would
-     stop short of the end. */
+     margin would stop progress short of the end of the pinned range. */
   margin-bottom: 0;
 }
 
@@ -137,31 +133,21 @@
   display: none;
 }
 
-/* Elements that are not placed next to the text fill most of the
-   visualization, which makes it hard to tell ranges apart. */
 .narrowBlock:not(.sidePosition) .block {
   width: 40%;
 }
 
-/* Room to scroll above and below the section content, so the element
-   can start out below the viewport and the visualization can be
-   scrolled far enough for the element to leave it completely. The
-   latter requires more than a viewport height of room below the
-   content: Container query units refer to the content box of the
-   visualization, which is shorter than the area it scrolls. */
+/* Container query units refer to the content box, which is shorter than
+   the area the visualization scrolls. */
 .scrollRoom .section {
   padding-block: 200cqh;
 }
 
-/* Sticky instead of absolute, so the line stays in place while the
-   content of the visualization scrolls past it. */
 .viewportCenter {
   position: sticky;
   top: 50cqh;
   z-index: 1;
 
-  /* Span the full width of the visualization, not only its content
-     box. */
   margin-inline: space(-8);
   border-top: dotted 1px var(--ui-on-primary-color-lighter);
 }

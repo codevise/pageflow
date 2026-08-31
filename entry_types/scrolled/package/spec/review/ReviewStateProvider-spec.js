@@ -445,8 +445,6 @@ describe('ReviewStateProvider', () => {
       postMessage.mockRestore();
     });
 
-    // Edits are not drafted, so nothing may end up in the reply draft of
-    // the thread the edited comment belongs to.
     it('leaves the draft of the thread untouched', () => {
       jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
 
@@ -482,7 +480,6 @@ describe('ReviewStateProvider', () => {
     });
   });
 
-  // Assembling the payload needs the entry structure the subject lives in.
   describe('useCreateCommentThread', () => {
     const seed = {
       sections: [{id: 1, permaId: 7}],

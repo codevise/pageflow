@@ -36,10 +36,7 @@ export function SelectedSubjectProvider({children}) {
   }, []);
 
   const selectTarget = useCallback((target, options) => {
-    // Activate the excursion the target lives in (or leave the current
-    // one) before selecting it, so its popover can mount and open. Only
-    // needed when moving to a different subject.
-    if (!selectedSubject || subjectKey(selectedSubject) !== target.key) {
+    if (movesToDifferentSubject(selectedSubject, target)) {
       if (target.excursion) {
         activateExcursionOfSection({id: target.sectionId});
       }
@@ -70,10 +67,6 @@ export function SelectedSubjectProvider({children}) {
     selectTarget(targets[next]);
   }, [targets, selectedSubject, selectTarget]);
 
-  // Searched among all targets rather than the filtered ones, so that a
-  // resolved thread stays reachable from lists that show it whatever the
-  // toolbar filters. Showing it is left to the selection: turning all
-  // resolved threads on for the sake of one changes the whole preview.
   const goToThread = useCallback((threadId, options) => {
     const target = allTargets.find(target => target.threadId === threadId);
 
@@ -128,17 +121,16 @@ export function useSelectedSubject(subjectType, subjectId, subjectRange) {
   }, [setSelectedSubject, subjectType, subjectId, subjectRange]);
 
   return {isSelected, hasSelection: !!selectedSubject, select, clearSelection,
-          // Reveals the subject without opening its popover, for lists
-          // that show the thread themselves.
           revealOnly: !!(isSelected && selectedSubject.revealOnly),
           showNewForm: isSelected && selectedSubject.showNewForm,
           subjectRange: isSelected ? selectedSubject.subjectRange : undefined,
           highlightedThreadId: isSelected ? selectedSubject.highlightedThreadId ?? null : null};
 }
 
-// The cursor the arrows step from: the highlighted thread when one is
-// set by navigation, otherwise the selected subject's first thread (so
-// arrows continue from a clicked badge), otherwise nothing.
+function movesToDifferentSubject(selectedSubject, target) {
+  return !selectedSubject || subjectKey(selectedSubject) !== target.key;
+}
+
 function currentTargetIndex(targets, selectedSubject) {
   if (!selectedSubject) {
     return -1;
@@ -159,9 +151,6 @@ function navigableTargets(chapters) {
     chapter.sections.forEach(section => {
       const location = {sectionId: section.id, excursion: chapter.isExcursion};
 
-      // A section's list also holds the orphaned threads of its deleted
-      // content elements; all of them navigate to the section, since an
-      // orphan's own subject no longer exists in the preview.
       section.threads.forEach(thread => targets.push({
         key: subjectKey({subjectType: 'Section', subjectId: section.permaId}),
         subjectType: 'Section',

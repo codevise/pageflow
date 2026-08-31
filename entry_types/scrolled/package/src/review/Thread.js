@@ -24,47 +24,24 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
   const firstComment = thread.comments[0];
   const replies = thread.comments.slice(1);
 
-  // Collapsing hides the reply form, which would leave a drafted reply
-  // out of reach.
   const [replyDraft] = useCommentDraft({threadId: thread.id});
   const collapsed = collapsedProp && !replyDraft;
 
   const repliesCollapsed = collapsed && replies.length > 0;
 
-  // A collapsed thread has nothing folded - hiding both the fold and the
-  // count would leave no way back into it.
-  const foldedReplyCount = visibleReplyCount === undefined || repliesCollapsed ?
-                           0 :
-                           Math.max(replies.length - visibleReplyCount, 0);
-  const shownReplies = foldedReplyCount > 0 ?
-                       replies.slice(foldedReplyCount) :
-                       replies;
+  const {shownReplies, foldedReplyCount} = foldReplies(replies, {
+    visibleReplyCount,
+    collapsed: repliesCollapsed
+  });
 
-  const unread = useUnreadActivity(thread);
-  const unreadIds = useMemo(
-    () => new Set(unread.map(event => event.id)),
-    [unread]
-  );
+  const hiddenReplies = repliesCollapsed ? replies : replies.slice(0, foldedReplyCount);
 
-  const unreadResolution = unread.some(event => event.resolution);
-  const unreadReplyCount = replies.filter(reply => unreadIds.has(reply.id)).length;
+  const {
+    unread, unreadTopic, unreadReplyCount, unreadResolution, firstUnreadReplyId, hidesUnread
+  } = useUnreadMarkers({thread, firstComment, replies, hiddenReplies});
+
   const hidesUnreadReplies = repliesCollapsed && unreadReplyCount > 0;
-  const unreadTopic = !!firstComment && unreadIds.has(firstComment.id);
 
-  // Where the unseen part of the thread starts. Only meaningful with
-  // seen comments above it: a thread that is new all through says so
-  // through its dot instead of repeating it at the very top.
-  const firstUnreadReplyId = useMemo(() => {
-    if (!unread.length || unread[0].id === firstComment?.id) {
-      return null;
-    }
-
-    return replies.find(reply => unreadIds.has(reply.id))?.id;
-  }, [unread, unreadIds, replies, firstComment]);
-
-  // Kept here rather than per comment so that a thread never shows two
-  // textareas at once: neither two comments being edited, nor an edit next
-  // to the reply form.
   const [editingCommentId, setEditingCommentId] = useState(null);
   const editing = editingCommentId !== null;
 
@@ -85,12 +62,6 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
 
   const ref = useRef();
   const scrollHighlightedIntoView = useScrollHighlightedThreadIntoView();
-
-  // Read state is one timestamp per thread, so a thread still keeping an
-  // unread comment out of sight would be marked read over comments never
-  // shown. Replies folded away for having been seen hide nothing.
-  const hiddenReplies = repliesCollapsed ? replies : replies.slice(0, foldedReplyCount);
-  const hidesUnread = hiddenReplies.some(reply => unreadIds.has(reply.id));
 
   useMarkThreadReadWhenSeen({
     thread,
@@ -113,8 +84,6 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
          })}
          onClick={onClick}
          aria-current={highlighted ? 'true' : undefined}>
-      {/* A lone thread needs no marker of its own: the badge that opened
-          the list already says the same thing right next to it. */}
       {showUnreadMarker && unread.length > 0 &&
         <span role="img"
               className={styles.unreadDot}
@@ -188,6 +157,42 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
   );
 }
 
+function foldReplies(replies, {visibleReplyCount, collapsed}) {
+  const foldedReplyCount = collapsed || visibleReplyCount === undefined ?
+                           0 :
+                           Math.max(replies.length - visibleReplyCount, 0);
+
+  return {
+    foldedReplyCount,
+    shownReplies: foldedReplyCount > 0 ? replies.slice(foldedReplyCount) : replies
+  };
+}
+
+function useUnreadMarkers({thread, firstComment, replies, hiddenReplies}) {
+  const unread = useUnreadActivity(thread);
+
+  const unreadIds = useMemo(
+    () => new Set(unread.map(event => event.id)),
+    [unread]
+  );
+
+  const firstUnreadReplyId = useMemo(() => {
+    if (!unread.length || unread[0].id === firstComment?.id) {
+      return null;
+    }
+
+    return replies.find(reply => unreadIds.has(reply.id))?.id;
+  }, [unread, unreadIds, replies, firstComment]);
+
+  return {
+    unread,
+    firstUnreadReplyId,
+    unreadTopic: !!firstComment && unreadIds.has(firstComment.id),
+    unreadReplyCount: replies.filter(reply => unreadIds.has(reply.id)).length,
+    unreadResolution: unread.some(event => event.resolution),
+    hidesUnread: hiddenReplies.some(reply => unreadIds.has(reply.id))
+  };
+}
 
 function Resolution({thread, onUnresolve}) {
   const {t} = useI18n({locale: 'ui'});

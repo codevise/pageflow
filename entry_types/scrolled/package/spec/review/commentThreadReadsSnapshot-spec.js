@@ -18,8 +18,6 @@ describe('CommentThreadReadsSnapshot', () => {
     return <span data-testid="reads">{JSON.stringify(useDisplayedCommentThreadReads())}</span>;
   }
 
-  // Messages are delivered in a later task, so posting has to be
-  // flushed before the rendered output reflects them.
   async function post(postMessage) {
     await act(async () => {
       postMessage();
@@ -142,8 +140,6 @@ describe('CommentThreadReadsSnapshot', () => {
     expect(reads(getByTestId)).toEqual({5: '2026-08-17T10:00:00.000Z'});
   });
 
-  // Mounted after the outer snapshot froze, as a thread list opening
-  // inside an already frozen scope does.
   function NestedSnapshot() {
     return (
       <CommentThreadReadsSnapshot>

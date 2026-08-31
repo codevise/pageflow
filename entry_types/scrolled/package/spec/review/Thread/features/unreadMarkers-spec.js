@@ -103,7 +103,6 @@ describe('Thread unread markers', () => {
       expect(unreadDot(container)).toBeNull();
     });
 
-    // The badge that opened the list already carries the same information.
     it('does not mark a thread shown on its own', () => {
       const {container} = render(<Thread thread={thread} />);
 
@@ -164,8 +163,6 @@ describe('Thread unread markers', () => {
       expect(getByText('1 unread')).toBeInTheDocument();
     });
 
-    // An unread first comment must not be counted among the replies it
-    // is collapsed above, and own replies are never new.
     it('counts neither the first comment nor own replies', () => {
       const threadWithOwnReply = {
         ...thread,

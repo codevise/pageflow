@@ -151,8 +151,6 @@ describe('Thread folded replies', () => {
     expect(queryByRole('button', {name: '2 more'})).toBeNull();
   });
 
-  // Replying to a discussion you have only partly seen invites talking
-  // past what was already said.
   it('hides the reply form while replies are folded away', () => {
     const {queryByPlaceholderText} = render(
       <Thread thread={thread} visibleReplyCount={1} />

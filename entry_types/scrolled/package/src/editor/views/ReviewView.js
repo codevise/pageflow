@@ -16,16 +16,6 @@ import {
 
 import styles from './ReviewView.module.css';
 
-// Base Marionette view for comment-related sidebar panels. Provides the
-// shared wiring: a container div, a ReviewMessageHandler bridging the
-// session to the preview iframe, a ReviewStateProvider seeded from the
-// current session state and its drafts, and an EntryStateProvider so the
-// rendered tree can resolve entry structure (e.g. the section a comment
-// subject lives in). Subclasses implement `renderContent(props)` to
-// return the React subtree. Props are produced by `props()` (default:
-// empty) and re-evaluated whenever the subclass calls `rerender()` —
-// useful for re-rendering on backbone change events without requiring
-// React subscription hooks inside the rendered tree.
 export const ReviewView = Marionette.ItemView.extend({
   template: () => `<div class="${styles.container}"></div>`,
 

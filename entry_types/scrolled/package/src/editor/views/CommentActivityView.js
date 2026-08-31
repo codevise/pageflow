@@ -49,9 +49,6 @@ const ActivityListView = ReviewView.extend({
   initialize() {
     this._trackHighlight();
 
-    // Structure changes reach React through WatchEntryCollections and
-    // review state through the ReviewMessageHandler, so only the
-    // highlight needs a rerender here.
     this.listenTo(this.options.entry, 'change:highlightedThreadId', () => {
       this._trackHighlight();
       this.rerender();
@@ -75,8 +72,7 @@ const ActivityListView = ReviewView.extend({
     this.rerender();
   },
 
-  // The preview reports selected section threads without a highlighted id,
-  // so the id of the clicked row is kept here to survive the round trip.
+  // The preview reports selected section threads without a highlighted id.
   _trackHighlight() {
     const highlightedThreadId = this.options.entry.get('highlightedThreadId');
 

@@ -4,15 +4,9 @@ import {useContentElement} from 'pageflow-scrolled/entryState';
 
 import {review} from './api';
 
-// Matches Pageflow::Comment::QUOTE_LIMIT. Capping here rather than only on
-// the server keeps a recorded quote comparable to the text as it reads later
-// on: a quote the server had cut would differ from the full text forever and
-// count as outdated even while the wording was untouched.
+// Matches Pageflow::Comment::QUOTE_LIMIT.
 const QUOTE_LIMIT = 4000;
 
-// The range is passed on as is, including when there is none: types with
-// ranged comments quote the selection and skip range-less subjects, types
-// whose comments always cover the whole element quote its text either way.
 /**
  * @private
  */

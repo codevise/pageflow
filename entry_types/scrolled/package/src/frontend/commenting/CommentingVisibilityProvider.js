@@ -15,9 +15,7 @@ export function CommentingVisibilityProvider({children}) {
     const next = !visible;
     const flip = () => setVisible(next);
 
-    // Morph the toolbar and its collapsed puck into each other where the
-    // browser supports it. flushSync forces React to commit synchronously so
-    // the transition captures the post-toggle DOM.
+    // Without flushSync the transition captures the pre-toggle DOM.
     if (document.startViewTransition) {
       document.startViewTransition(() => flushSync(flip));
     }

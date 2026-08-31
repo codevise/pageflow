@@ -19,12 +19,6 @@ export function Popover({
   const {resolution} = useCommentDisplayFilter();
   const [reference, setReference] = useState(null);
 
-  // Scroll into view when navigation lands on this subject. Only
-  // navigation sets a highlighted thread (clicking a badge does not), so
-  // this never fires on plain selection. Re-firing while stepping
-  // between a subject's threads targets the same badge, so it is a
-  // no-op; a popover mounting late (after its excursion is activated)
-  // scrolls once its reference becomes available.
   useEffect(() => {
     if (isSelected && highlightedThreadId != null) {
       reference?.scrollIntoView({block: 'center', behavior: 'smooth'});
@@ -36,8 +30,6 @@ export function Popover({
       clearSelection();
     }
     else {
-      // A revealed subject opens its popover on the thread it was
-      // revealed for rather than starting over.
       select(revealOnly ? {highlightedThreadId} : undefined);
     }
   }

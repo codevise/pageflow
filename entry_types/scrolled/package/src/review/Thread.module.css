@@ -7,9 +7,8 @@
   background: var(--ui-surface-color);
   border-radius: rounded(lg);
   box-shadow: var(--review-thread-box-shadow, var(--ui-box-shadow));
-  /* The folded seam is drawn in this too. Hosts restyling the border set
-     the color here as well, since a shorthand leaves nothing to read it
-     back out of. */
+  /* A shorthand would leave hosts restyling the border nothing to read
+     the color back out of. */
   --thread-border-color: var(--review-thread-border-color, var(--ui-surface-color));
   border: var(--review-thread-border, solid 1px var(--thread-border-color));
   scroll-margin-top: space(11);
@@ -38,9 +37,6 @@
   border-color: var(--thread-border-color);
 }
 
-/* Locates the new thread among several. Matches the badge dot, which
-   carries the same meaning one level up. Straddles the corner so it
-   stays clear of the menu button inside it. */
 .unreadDot {
   position: absolute;
   top: space(-1);
@@ -58,8 +54,6 @@
   gap: space(2);
 }
 
-/* Wraps between the counts but never inside one. Holding the chevron
-   outside keeps it off a line of its own. */
 .counts {
   display: flex;
   flex-wrap: wrap;
@@ -67,8 +61,6 @@
   white-space: nowrap;
 }
 
-/* Part of the reply count rather than of what it separates, so that it
-   stays behind on the first line when the two counts stack. */
 .count:has(+ .unreadReplyCount)::after {
   content: '·';
   margin-left: space(2);
@@ -114,8 +106,7 @@
   transition: transform 0.2s;
 }
 
-/* The height of the avatars it holds while collapsed, so that toggling
-   the replies does not shift everything below. */
+/* min-height is the height of the avatars it holds while collapsed. */
 .repliesToggle {
   display: flex;
   align-items: center;
@@ -163,8 +154,6 @@
   color: var(--ui-primary-color);
 }
 
-/* Takes the width of an avatar, so that icon and text line up with the
-   comments above. */
 .resolveRowIcon {
   flex-shrink: 0;
   margin: 0 space(1);

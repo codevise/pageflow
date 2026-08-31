@@ -50,10 +50,8 @@ export function CommentMenu({label, items}) {
     click, dismiss, role, listNavigation, typeahead
   ]);
 
-  // Claim Escape before it reaches the document, where enclosing popovers
-  // listen for it to close themselves. React 16 dispatches all events from
-  // there, so by the time such a listener runs, closing the menu has already
-  // removed every trace that Escape was meant for it.
+  // React 16 dispatches all events from the document, so enclosing popovers
+  // listening there for Escape would close along with the menu.
   useEffect(() => {
     if (!open) return;
 
@@ -68,7 +66,6 @@ export function CommentMenu({label, items}) {
     return () => document.removeEventListener('keydown', closeOnEscape, true);
   }, [open]);
 
-  // Threads act as a single click target for selecting their subject.
   function stopPropagation(event) {
     event.stopPropagation();
   }

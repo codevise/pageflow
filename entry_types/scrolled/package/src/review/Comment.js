@@ -61,8 +61,8 @@ function EditForm({comment, threadId, onDone}) {
 
   const updateComment = useUpdateComment({threadId, commentId: comment.id});
 
-  // preventScroll keeps focus from yanking the page to the top before the
-  // portaled popover has been positioned by floating-ui.
+  // Focusing without preventScroll yanks the page to the top before
+  // floating-ui has positioned the portaled popover.
   const setInputRef = useCallback(node => {
     autoResize(node);
     node?.focus({preventScroll: true});
@@ -85,8 +85,6 @@ function EditForm({comment, threadId, onDone}) {
     }
   }
 
-  // The thread keeps showing the previous text until the session reports
-  // the comment back, so there is nothing to restore on failure.
   function save() {
     if (!hasText) return;
 

@@ -1,11 +1,5 @@
 import {useEffect, useRef} from 'react';
 
-// Scrolls the referenced element back and forth to demonstrate how a
-// content element behaves while the page scrolls. Since the position
-// to scroll to often depends on the size of the rendered preview,
-// scrollTop is passed as a function receiving the scroller and the
-// eased progress of the animation. Pass rest to hold the end position
-// for a while before scrolling back.
 export function useScrollAnimation(ref, {scrollTop, duration = 3000, rest = 0, onScroll}) {
   const callbacksRef = useRef();
   callbacksRef.current = {scrollTop, onScroll};
@@ -30,8 +24,8 @@ export function useScrollAnimation(ref, {scrollTop, duration = 3000, rest = 0, o
       }
     }
 
-    // Update once to prevent displaying the unscrolled preview until
-    // the first interval elapses.
+    // Without this the unscrolled preview shows until the first
+    // interval elapses.
     update();
 
     const interval = setInterval(update, 10);
