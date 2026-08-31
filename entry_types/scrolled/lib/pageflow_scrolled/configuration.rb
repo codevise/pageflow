@@ -55,6 +55,26 @@ module PageflowScrolled
     # @since 17.1
     attr_reader :additional_theme_assets
 
+    # Paths or globs of JSON files to read configuration schemas
+    # from. Schemas describe the shape of configuration data of content
+    # elements, sections and other models. Used to find file references
+    # without going through the editor.
+    #
+    # @example
+    #
+    #     config.configuration_schema_load_path += Dir[
+    #       MyEngine.root.join('config', 'configuration_schemas', '*.json').to_s
+    #     ]
+    #
+    # @return [Array<String>]
+    # @since edge
+    attr_accessor :configuration_schema_load_path
+
+    # @api private
+    def configuration_schemas
+      @configuration_schemas ||= ConfigurationSchemas.load(configuration_schema_load_path)
+    end
+
     # Determine which vendors a content element will require consent
     # for. Based on the vendor name returned here, the following
     # translations will be used in consent UI components.
@@ -176,6 +196,7 @@ module PageflowScrolled
 
       @additional_frontend_seed_data = AdditionalSeedData.new
       @additional_theme_assets = AdditionalThemeAssets.new
+      @configuration_schema_load_path = []
       @content_element_consent_vendors = ContentElementConsentVendors.new
       @consent_vendor_url_matchers = {}
 
