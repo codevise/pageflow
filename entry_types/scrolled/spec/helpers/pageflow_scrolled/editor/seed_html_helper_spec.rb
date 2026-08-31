@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tmpdir'
 require 'pageflow/shared_contexts/fake_translations'
 require 'pageflow/test_widget_type'
 
@@ -53,6 +54,30 @@ module PageflowScrolled
           expect(result).to have_selector('script',
                                           text: 'fileUrlTemplates',
                                           visible: false)
+        end
+
+        it 'renders file reference locations of content element types not used in entry' do
+          dir = Dir.mktmpdir
+          File.write(
+            File.join(dir, 'schema.json'),
+            JSON.generate('x-subject' => {'model' => 'contentElement',
+                                          'typeName' => 'someType'},
+                          'properties' => {'image' => {'x-fileCollection' => 'image_files'}})
+          )
+
+          pageflow_configure do |config|
+            config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+              entry_type_config.configuration_schema_load_path << File.join(dir, '*.json')
+            end
+          end
+
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = helper.scrolled_editor_iframe_seed_html_script_tag(entry)
+
+          expect(result).to have_selector('script', text: 'someType', visible: false)
+        ensure
+          FileUtils.remove_entry(dir)
         end
 
         it 'does not server side render entry' do

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tmpdir'
 require 'pageflow/used_file_test_helper'
 require 'pageflow/shared_contexts/fake_translations'
 
@@ -12,6 +13,38 @@ module PageflowScrolled
           helper.render_json do |json|
             helper.scrolled_entry_editor_json_seed(json, entry)
           end
+        end
+
+        it 'renders file references of content element types not used in entry' do
+          dir = Dir.mktmpdir
+          File.write(
+            File.join(dir, 'schema.json'),
+            JSON.generate('x-subject' => {'model' => 'contentElement',
+                                          'typeName' => 'someType'},
+                          'properties' => {'image' => {'x-fileCollection' => 'image_files'}})
+          )
+
+          pageflow_configure do |config|
+            config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+              entry_type_config.configuration_schema_load_path << File.join(dir, '*.json')
+            end
+          end
+
+          entry = create(:draft_entry, type_name: 'scrolled')
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(
+            config: {
+              fileReferenceLocations: {
+                contentElements: {
+                  someType: [{path: ['image'], collection: 'imageFiles'}]
+                }
+              }
+            }
+          )
+        ensure
+          FileUtils.remove_entry(dir)
         end
 
         it 'renders common entry seed data' do

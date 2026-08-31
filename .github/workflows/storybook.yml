@@ -92,6 +92,11 @@ jobs:
 
     # Build
 
+    - name: Build configuration schemas
+      working-directory: entry_types/scrolled/package
+      run: |
+        yarn run build-configuration-schemas
+
     - name: Generate dummy app
       working-directory: entry_types/scrolled
       env:

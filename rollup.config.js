@@ -9,6 +9,9 @@ import reactSvg from "rollup-plugin-react-svg";
 import image from '@rollup/plugin-image';
 import path from 'path'
 
+import {configurationSchemas} from 'pageflow-scrolled/config/rollup/configurationSchemas';
+import {pageflowScrolledSchemas} from 'pageflow-scrolled/config/configurationSchemas';
+
 const pageflowPackageRoot = 'package';
 const pageflowPagedEngineRoot = 'entry_types/paged';
 const pageflowPagedPackageRoot = pageflowPagedEngineRoot + '/packages/pageflow-paged';
@@ -291,13 +294,16 @@ const pageflowScrolled = [
       format: 'esm',
     },
     external,
-    plugins: plugins({
-      extractCss: true,
-      splitCss: {
-        '**/inlineEditing/**': pageflowScrolledPackageRoot + '/frontend/inlineEditing.css',
-        '**/commenting/**': pageflowScrolledPackageRoot + '/frontend/commenting.css'
-      }
-    }),
+    plugins: [
+      configurationSchemas(pageflowScrolledSchemas),
+      ...plugins({
+        extractCss: true,
+        splitCss: {
+          '**/inlineEditing/**': pageflowScrolledPackageRoot + '/frontend/inlineEditing.css',
+          '**/commenting/**': pageflowScrolledPackageRoot + '/frontend/commenting.css'
+        }
+      })
+    ],
     ...ignoreJSXWarning
   },
   {

@@ -26,6 +26,16 @@ module PageflowScrolled
       end
     end
 
+    describe 'configuration schemas' do
+      it 'reads schemas shipped by the engine' do
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        schemas = Pageflow.config_for(entry).configuration_schemas
+
+        expect(schemas.find(model: 'contentElement', type_name: 'hotspots')).to be_present
+      end
+    end
+
     describe 'IFRAME_EMBED_CONSENT_VENDOR' do
       it 'returns nil if consent not required' do
         pageflow_configure do |config|

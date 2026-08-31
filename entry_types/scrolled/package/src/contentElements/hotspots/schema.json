@@ -1,0 +1,39 @@
+{
+  "$id": "pageflow-scrolled/contentElements/hotspots",
+  "x-subject": {"model": "contentElement", "typeName": "hotspots"},
+  "type": "object",
+  "properties": {
+    "image": {
+      "type": "integer",
+      "x-fileCollection": "image_files"
+    },
+    "portraitImage": {
+      "type": "integer",
+      "x-fileCollection": "image_files"
+    },
+    "areas": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/area"}
+    }
+  },
+  "$defs": {
+    "area": {
+      "type": "object",
+      "properties": {
+        "activeImage": {
+          "type": "integer",
+          "x-fileCollection": "image_files"
+        },
+        "tooltipImage": {
+          "type": "integer",
+          "x-fileCollection": "image_files"
+        },
+        "portraitActiveImage": {
+          "type": "integer",
+          "x-fileCollection": "image_files",
+          "x-activeIf": {"path": ["portraitImage"], "present": true}
+        }
+      }
+    }
+  }
+}
