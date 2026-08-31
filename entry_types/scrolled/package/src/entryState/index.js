@@ -28,6 +28,7 @@ export {useDownloadableFile} from './useDownloadableFile';
 export {useNestedFiles} from './useNestedFiles';
 export {getFileUrlTemplateHost} from './getFileUrlTemplateHost';
 export {useFileRights, useLegalInfo, useCredits} from './legalInfo';
+export {useFileReferences} from './useFileReferences';
 export {useAvailableQualities} from './useAvailableQualities';
 export {useTheme} from './theme';
 export {useWidget, useActiveWidgets} from './widgets';

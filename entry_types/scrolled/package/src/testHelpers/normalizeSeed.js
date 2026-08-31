@@ -60,6 +60,7 @@ export function normalizeSeed({
   originUrl,
   fileLicenses,
   entryTranslations,
+  fileReferenceLocations,
   ...customFiles
 } = {}) {
   const customFileCollectionNames = [...new Set([
@@ -114,7 +115,8 @@ export function normalizeSeed({
       embed,
       originUrl,
       fileLicenses: fileLicenses || {},
-      entryTranslations: entryTranslations || []
+      entryTranslations: entryTranslations || [],
+      fileReferenceLocations: normalizeFileReferenceLocations(fileReferenceLocations)
     },
     collections: {
       entries: normalizedEntries,
@@ -301,4 +303,12 @@ function normalizeCollection(collection = [], defaults = {}) {
     ...defaults,
     ...item
   }));
+}
+
+function normalizeFileReferenceLocations(fileReferenceLocations) {
+  return {
+    contentElements: {},
+    sections: [],
+    ...fileReferenceLocations
+  };
 }
