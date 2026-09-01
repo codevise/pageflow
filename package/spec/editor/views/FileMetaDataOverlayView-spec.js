@@ -1,6 +1,6 @@
 import Marionette from 'backbone.marionette';
 
-import {FileMetaDataItemValueView, FileMetaDataOverlayView} from 'pageflow/editor';
+import {editor, FileMetaDataItemValueView, FileMetaDataOverlayView} from 'pageflow/editor';
 
 import * as support from '$support';
 import {FileMetaDataTable, FileStageItem} from '$support/dominos/editor';
@@ -18,7 +18,8 @@ describe('FileMetaDataOverlayView', () => {
 
   support.useFakeTranslations({
     'pageflow.editor.templates.file_item.source': 'Source',
-    'pageflow.editor.templates.file_item.download': 'Download'
+    'pageflow.editor.templates.file_item.download': 'Download',
+    'pageflow.editor.views.file_references.header': 'Referenced by'
   });
 
   function overlayView(file, options) {
@@ -31,6 +32,44 @@ describe('FileMetaDataOverlayView', () => {
       ...options
     });
   }
+
+  describe('with entry type supporting file references', () => {
+    const {setGlobals} = support.setupGlobals({});
+
+    let previousEntryType;
+
+    beforeEach(() => {
+      previousEntryType = editor.entryType;
+      editor.entryType = {supportsFileReferences: true};
+    });
+
+    afterEach(() => { editor.entryType = previousEntryType; });
+
+    function setupEntry(placesFor) {
+      setGlobals({entry: {fileReferences: () => ({placesFor})}});
+    }
+
+    it('lists file references below meta data', () => {
+      setupEntry(() => [{label: 'Intro - Image', pictogram: 'i.svg', select() {}}]);
+      const view = overlayView(support.factories.file({}), {metaDataAttributes: []});
+
+      render(view);
+
+      expect(view.$el.find('.file_references-label').text()).toEqual('Intro - Image');
+    });
+
+    it('updates file references when overlay is opened', () => {
+      let places = [];
+      setupEntry(() => places);
+      const view = overlayView(support.factories.file({}), {metaDataAttributes: []});
+
+      render(view);
+      places = [{label: 'Intro - Image', pictogram: 'i.svg', select() {}}];
+      view.open();
+
+      expect(view.$el.find('.file_references-label').text()).toEqual('Intro - Image');
+    });
+  });
 
   it('renders meta data items', () => {
     const file = support.factories.file({dimension: '200x100px'});

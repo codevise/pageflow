@@ -5,7 +5,10 @@ import {arrow, autoUpdate, computePosition, offset, shift, size} from '@floating
 
 import {CollectionView} from 'pageflow/ui';
 
+import {editor} from '../base';
+
 import {FileMetaDataItemView} from './FileMetaDataItemView';
+import {FileReferencesView} from './FileReferencesView';
 import {FileStageItemView} from './FileStageItemView';
 import {TextFileMetaDataItemValueView} from './TextFileMetaDataItemValueView';
 
@@ -28,6 +31,7 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
     preview: '.file_meta_data_overlay-preview',
     stageItems: '.file_stage_items',
     metaData: 'tbody.attributes',
+    fileReferences: '.file_meta_data_overlay-file_references',
     downloads: 'tbody.downloads',
     downloadLink: 'a.original'
   },
@@ -65,6 +69,11 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
     _.each(this.metaDataViews(), function(view) {
       this.ui.metaData.append(this.subview(view).el);
     }, this);
+
+    if (editor.entryType?.supportsFileReferences) {
+      this.fileReferencesView = new FileReferencesView({model: this.model});
+      this.appendSubview(this.fileReferencesView, {to: this.ui.fileReferences});
+    }
   },
 
   // Only exists while the overlay is open, so that videos of other
@@ -166,6 +175,7 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
                                      this.position.bind(this));
 
     this.renderPreview();
+    this.fileReferencesView?.update();
     this.trigger('toggle');
   },
 

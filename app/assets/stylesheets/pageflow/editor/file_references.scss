@@ -1,0 +1,68 @@
+.file_references {
+  &-separator {
+    display: flex;
+    align-items: center;
+    gap: space(2);
+    padding: space(4) 0 space(2);
+
+    &::before,
+    &::after {
+      content: "";
+      flex: 1;
+      border-bottom: solid 1px var(--ui-on-surface-color-lightest);
+    }
+  }
+
+  &-header {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  &-item {
+    display: flex;
+    align-items: center;
+    gap: space(2);
+    width: 100%;
+    margin-bottom: space(1);
+    padding: space(1);
+    border: solid 1px var(--ui-on-surface-color-lightest);
+    border-radius: rounded();
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--ui-primary-color-light);
+    }
+  }
+
+  &-pictogram {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    background-color: var(--ui-primary-color-light);
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+  }
+
+  &-lines {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  &-label,
+  &-detail {
+    overflow: hidden;
+    font-size: 0.75rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &-label {
+    font-weight: 500;
+    color: var(--ui-on-surface-color-light);
+  }
+}
