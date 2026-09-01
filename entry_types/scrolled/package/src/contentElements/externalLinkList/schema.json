@@ -1,0 +1,22 @@
+{
+  "$id": "pageflow-scrolled/contentElements/externalLinkList",
+  "x-subject": {"model": "contentElement", "typeName": "externalLinkList"},
+  "type": "object",
+  "properties": {
+    "links": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/link"}
+    }
+  },
+  "$defs": {
+    "link": {
+      "type": "object",
+      "properties": {
+        "thumbnail": {
+          "type": "integer",
+          "x-fileCollection": "image_files"
+        }
+      }
+    }
+  }
+}
