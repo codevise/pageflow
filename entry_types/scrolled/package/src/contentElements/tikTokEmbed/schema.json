@@ -1,0 +1,6 @@
+{
+  "$id": "pageflow-scrolled/contentElements/tikTokEmbed",
+  "x-subject": {"model": "contentElement", "typeName": "tikTokEmbed"},
+  "type": "object",
+  "properties": {}
+}

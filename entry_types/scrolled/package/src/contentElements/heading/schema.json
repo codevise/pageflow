@@ -1,0 +1,6 @@
+{
+  "$id": "pageflow-scrolled/contentElements/heading",
+  "x-subject": {"model": "contentElement", "typeName": "heading"},
+  "type": "object",
+  "properties": {}
+}

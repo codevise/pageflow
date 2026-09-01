@@ -1,0 +1,6 @@
+{
+  "$id": "pageflow-scrolled/contentElements/twitterEmbed",
+  "x-subject": {"model": "contentElement", "typeName": "twitterEmbed"},
+  "type": "object",
+  "properties": {}
+}

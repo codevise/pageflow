@@ -1,0 +1,6 @@
+{
+  "$id": "pageflow-scrolled/contentElements/counter",
+  "x-subject": {"model": "contentElement", "typeName": "counter"},
+  "type": "object",
+  "properties": {}
+}

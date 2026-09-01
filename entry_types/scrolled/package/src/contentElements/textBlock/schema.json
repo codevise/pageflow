@@ -1,0 +1,6 @@
+{
+  "$id": "pageflow-scrolled/contentElements/textBlock",
+  "x-subject": {"model": "contentElement", "typeName": "textBlock"},
+  "type": "object",
+  "properties": {}
+}

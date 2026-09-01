@@ -1,0 +1,6 @@
+{
+  "$id": "pageflow-scrolled/contentElements/soundDisclaimer",
+  "x-subject": {"model": "contentElement", "typeName": "soundDisclaimer"},
+  "type": "object",
+  "properties": {}
+}
