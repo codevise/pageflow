@@ -21,6 +21,7 @@ import {insertContentElement} from './insertContentElement';
 import {moveContentElement} from './moveContentElement';
 import {deleteContentElement} from './deleteContentElement';
 import {duplicateContentElement} from './duplicateContentElement';
+import {fileReferences} from './fileReferences';
 import {updateContentElement} from './updateContentElement';
 
 import {sortColors} from './sortColors';
@@ -159,6 +160,10 @@ export const ScrolledEntry = Entry.extend({
 
   duplicateContentElement(contentElement) {
     return duplicateContentElement(this, contentElement);
+  },
+
+  fileReferences() {
+    return fileReferences(this);
   },
 
   getTypographyVariants({contentElement, prefix}) {

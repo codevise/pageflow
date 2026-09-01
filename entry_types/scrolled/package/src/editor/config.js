@@ -42,6 +42,7 @@ editor.registerEntryType('scrolled', {
   },
 
   supportsExtendedFileRights: true,
+  supportsFileReferences: true,
 
   isBrowserSupported() {
     return (browser.agent.matchesDesktopChrome({minVersion: 20}) ||
