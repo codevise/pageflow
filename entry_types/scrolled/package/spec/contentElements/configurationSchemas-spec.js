@@ -13,7 +13,12 @@ const path = require('path');
 describe('configuration schemas', () => {
   useConfigurationEditorMatchers();
 
-  const {createEntry} = useEditorGlobals();
+  const {createEntry} = useEditorGlobals({
+    fileTypes: [{
+      collectionName: 'lottie_files',
+      typeName: 'PageflowScrolled::LottieFile'
+    }]
+  });
 
   schemas().forEach(({typeName, schema}) => {
     it(`of ${typeName} match inputs of configuration editor`, () => {

@@ -1,0 +1,11 @@
+{
+  "$id": "pageflow-scrolled/contentElements/videoEmbed",
+  "x-subject": {"model": "contentElement", "typeName": "videoEmbed"},
+  "type": "object",
+  "properties": {
+    "posterId": {
+      "type": "integer",
+      "x-fileCollection": "image_files"
+    }
+  }
+}
