@@ -1,4 +1,5 @@
 import Backbone from 'backbone';
+import I18n from 'i18n-js';
 import {getAvailableTransitionNames} from 'pageflow-scrolled/frontend';
 
 import {
@@ -9,6 +10,8 @@ import {
   ForeignKeySubsetCollection
 } from 'pageflow/editor';
 
+import {configurationPlace} from './configurationPlace';
+import sectionPictogram from '../views/images/sectionPictogram.svg';
 import {SectionConfiguration} from './SectionConfiguration';
 
 export const Section = Backbone.Model.extend({
@@ -64,6 +67,22 @@ export const Section = Backbone.Model.extend({
     }
   },
 
+  getConfigurationPlace(path) {
+    return configurationPlace({
+      chapter: this.chapter,
+      subject: I18n.t('pageflow_scrolled.editor.configuration_places.section',
+                      {number: this.chapter.sections.indexOf(this) + 1}),
+      detail: I18n.t(`${editorAttributeName(path)}.label`, {
+        scope: 'pageflow_scrolled.editor.edit_section.attributes'
+      }),
+      pictogram: sectionPictogram,
+      select: () => {
+        this.chapter.entry.trigger('selectSectionSettings', this);
+        this.chapter.entry.trigger('scrollToSection', this, {ifNeeded: true});
+      }
+    });
+  },
+
   getBackdropContentElement() {
     return this.contentElements.findWhere({
       permaId: this.configuration.get('backdropContentElement')
@@ -94,3 +113,9 @@ export const Section = Backbone.Model.extend({
     }
   }
 });
+
+function editorAttributeName(path) {
+  return path.map((segment, index) =>
+    index ? `${segment[0].toUpperCase()}${segment.slice(1)}` : segment
+  ).join('');
+}

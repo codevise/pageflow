@@ -9,6 +9,8 @@ describe('ScrolledEntry', () => {
       'pageflow_scrolled.editor.configuration_places.label': '%{chapter} - %{subject}',
       'pageflow_scrolled.editor.configuration_places.section': 'Section %{number}',
       'pageflow_scrolled.editor.chapter_item.chapter': 'Chapter',
+      'pageflow_scrolled.editor.edit_section.attributes.backdropImage.label': 'Background image',
+      'pageflow_scrolled.editor.edit_section.attributes.atmoAudioFileId.label': 'Atmo audio',
       'pageflow_scrolled.editor.content_elements.inlineImage.name': 'Image',
       'pageflow_scrolled.editor.configuration_places.entry': 'Settings',
       'activerecord.attributes.pageflow/entry.share_image_id': 'Social Sharing Image'
@@ -54,6 +56,25 @@ describe('ScrolledEntry', () => {
 
       expect(entry.fileReferences().placesFor(imageFile(entry, 5)).map(({label}) => label))
         .toEqual(['Chapter 1 - Section 1']);
+    });
+
+    it('names the referencing property of a section', () => {
+      const entry = create({
+        imageFiles: [{perma_id: 5}],
+        audioFiles: [{perma_id: 6}],
+        sections: [{id: 1, permaId: 10, chapterId: 1,
+                    configuration: {backdrop: {image: 5}, atmoAudioFileId: 6}}],
+        fileReferenceLocations: {
+          sections: [{path: ['backdrop', 'image'], collection: 'imageFiles'},
+                     {path: ['atmoAudioFileId'], collection: 'audioFiles'}]
+        }
+      });
+
+      const audioFile = entry.getFileCollection('audio_files').findWhere({perma_id: 6});
+
+      expect(entry.fileReferences().placesFor(imageFile(entry, 5))[0].detail)
+        .toEqual('Background image');
+      expect(entry.fileReferences().placesFor(audioFile)[0].detail).toEqual('Atmo audio');
     });
 
     it('uses section pictogram for sections', () => {
@@ -192,6 +213,41 @@ describe('ScrolledEntry', () => {
       entry.fileReferences().placesFor(imageFile(entry, 5))[0].select();
 
       expect(listener).toHaveBeenCalledWith(entry.sections.get(1));
+    });
+
+    it('scrolls to section on select', () => {
+      const entry = create({
+        imageFiles: [{perma_id: 5}],
+        sections: [{id: 1, permaId: 10, chapterId: 1,
+                    configuration: {backdrop: {image: 5}}}],
+        fileReferenceLocations: {
+          sections: [{path: ['backdrop', 'image'], collection: 'imageFiles'}]
+        }
+      });
+      const listener = jest.fn();
+      entry.on('scrollToSection', listener);
+
+      entry.fileReferences().placesFor(imageFile(entry, 5))[0].select();
+
+      expect(listener).toHaveBeenCalledWith(entry.sections.get(1), {ifNeeded: true});
+    });
+
+    it('scrolls to content element on select', () => {
+      const entry = create({
+        imageFiles: [{perma_id: 5}],
+        sections: [{id: 1, permaId: 10, chapterId: 1}],
+        contentElements: [{id: 2, permaId: 20, sectionId: 1, typeName: 'inlineImage',
+                           configuration: {id: 5}}],
+        fileReferenceLocations: {
+          contentElements: {inlineImage: [{path: ['id'], collection: 'imageFiles'}]}
+        }
+      });
+      const listener = jest.fn();
+      entry.on('scrollToContentElement', listener);
+
+      entry.fileReferences().placesFor(imageFile(entry, 5))[0].select();
+
+      expect(listener).toHaveBeenCalledWith(entry.contentElements.get(2), {align: 'center'});
     });
 
     it('selects content element on select', () => {

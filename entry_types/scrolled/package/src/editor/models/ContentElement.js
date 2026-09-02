@@ -1,4 +1,6 @@
 import Backbone from 'backbone';
+import I18n from 'i18n-js';
+
 import {editor} from '../api';
 
 import {
@@ -10,6 +12,7 @@ import {
 
 import {features} from 'pageflow/frontend';
 import {ContentElementConfiguration} from './ContentElementConfiguration';
+import {configurationPlace} from './configurationPlace';
 
 const widths = {
   xxs: -3,
@@ -186,5 +189,27 @@ export const ContentElement = Backbone.Model.extend({
   getEditorPath() {
     return this.getType().editorPath?.call(null, this) ||
            `/scrolled/content_elements/${this.id}`;
+  },
+
+  getConfigurationPlace() {
+    const typeName = this.get('typeName');
+
+    return configurationPlace({
+      chapter: this.section.chapter,
+      subject: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`),
+      pictogram: editor.contentElementTypes.findPictogram(typeName),
+      select: () => {
+        this.select();
+        this.scrollIntoView({align: 'center'});
+      }
+    });
+  },
+
+  select() {
+    this.section.chapter.entry.trigger('selectContentElement', this);
+  },
+
+  scrollIntoView(options) {
+    this.section.chapter.entry.trigger('scrollToContentElement', this, options);
   }
 });
