@@ -42,6 +42,14 @@ export class ContentElementTypeRegistry {
    *   Pass array consisting of two widths of the form `xxs`, `xs`, `sm`,
    *   `md`, `lg`, `xl` or `full` representing the smallest andlargest
    *   supported width. By default only width `md` is supported.
+   * @param {Function} [options.configurationPlace] -
+   *   Function that receives a content element and the path of one of
+   *   its configuration properties. Can return a `label` naming that
+   *   property and a `select` function revealing where it is edited.
+   *   Both are optional. Root properties are named by the label of
+   *   their configuration editor input unless the returned object
+   *   says otherwise. Used by the list of places that reference a
+   *   file.
    * @memberof editor_contentElementTypes
    *
    * @example
@@ -81,6 +89,11 @@ export class ContentElementTypeRegistry {
 
   findPictogram(typeName) {
     return this.contentElementTypes[typeName]?.pictogram;
+  }
+
+  findConfigurationPlace(contentElement, path) {
+    return this.contentElementTypes[contentElement.get('typeName')]
+               ?.configurationPlace?.call(null, contentElement, path);
   }
 
   groupedByCategory() {

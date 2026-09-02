@@ -12,6 +12,8 @@ describe('ScrolledEntry', () => {
       'pageflow_scrolled.editor.edit_section.attributes.backdropImage.label': 'Background image',
       'pageflow_scrolled.editor.edit_section.attributes.atmoAudioFileId.label': 'Atmo audio',
       'pageflow_scrolled.editor.content_elements.inlineImage.name': 'Image',
+      'pageflow_scrolled.editor.content_elements.inlineImage.attributes.id.label': 'Image file',
+      'pageflow_scrolled.editor.content_elements.customElement.name': 'Custom element',
       'pageflow_scrolled.editor.configuration_places.entry': 'Settings',
       'activerecord.attributes.pageflow/entry.share_image_id': 'Social Sharing Image'
     });
@@ -121,6 +123,70 @@ describe('ScrolledEntry', () => {
 
       expect(entry.fileReferences().placesFor(imageFile(entry, 5))[0].pictogram)
         .toEqual('inlineImage.svg');
+    });
+
+    it('names the referencing root property by the label of its input', () => {
+      const entry = create({
+        imageFiles: [{perma_id: 5}],
+        sections: [{id: 1, permaId: 10, chapterId: 1}],
+        contentElements: [{id: 2, permaId: 20, sectionId: 1, typeName: 'inlineImage',
+                           configuration: {id: 5}}],
+        fileReferenceLocations: {
+          contentElements: {inlineImage: [{path: ['id'], collection: 'imageFiles'}]}
+        }
+      });
+
+      expect(entry.fileReferences().placesFor(imageFile(entry, 5))[0].detail).toEqual('Image file');
+    });
+
+    it('omits detail for root property without input label', () => {
+      const entry = create({
+        imageFiles: [{perma_id: 5}],
+        sections: [{id: 1, permaId: 10, chapterId: 1}],
+        contentElements: [{id: 2, permaId: 20, sectionId: 1, typeName: 'inlineImage',
+                           configuration: {thumbnail: 5}}],
+        fileReferenceLocations: {
+          contentElements: {inlineImage: [{path: ['thumbnail'], collection: 'imageFiles'}]}
+        }
+      });
+
+      expect(entry.fileReferences().placesFor(imageFile(entry, 5))[0].detail).toBeUndefined();
+    });
+
+    it('omits detail for nested property', () => {
+      const entry = create({
+        imageFiles: [{perma_id: 5}],
+        sections: [{id: 1, permaId: 10, chapterId: 1}],
+        contentElements: [{id: 2, permaId: 20, sectionId: 1, typeName: 'inlineImage',
+                           configuration: {areas: [{id: 5}]}}],
+        fileReferenceLocations: {
+          contentElements: {inlineImage: [{path: ['areas', '*', 'id'], collection: 'imageFiles'}]}
+        }
+      });
+
+      expect(entry.fileReferences().placesFor(imageFile(entry, 5))[0].detail).toBeUndefined();
+    });
+
+    it('names the referencing property described by content element type', () => {
+      editor.contentElementTypes.register('customElement', {
+        configurationPlace(contentElement, path) {
+          return {label: `Property ${path.join('.')}`};
+        }
+      });
+
+      const entry = create({
+        imageFiles: [{perma_id: 5}],
+        sections: [{id: 1, permaId: 10, chapterId: 1}],
+        contentElements: [{id: 2, permaId: 20, sectionId: 1, typeName: 'customElement',
+                           configuration: {id: 5}}],
+        fileReferenceLocations: {
+          contentElements: {customElement: [{path: ['id'], collection: 'imageFiles'}]}
+        }
+      });
+
+      expect(entry.fileReferences().placesFor(imageFile(entry, 5))
+                  .map(({label, detail}) => [label, detail]))
+        .toEqual([['Intro - Custom element', 'Property id']]);
     });
 
     it('lists a place per location referencing the file', () => {
@@ -248,6 +314,29 @@ describe('ScrolledEntry', () => {
       entry.fileReferences().placesFor(imageFile(entry, 5))[0].select();
 
       expect(listener).toHaveBeenCalledWith(entry.contentElements.get(2), {align: 'center'});
+    });
+
+    it('lets content element type select the described place', () => {
+      const select = jest.fn();
+      editor.contentElementTypes.register('customElement', {
+        configurationPlace() {
+          return {select};
+        }
+      });
+
+      const entry = create({
+        imageFiles: [{perma_id: 5}],
+        sections: [{id: 1, permaId: 10, chapterId: 1}],
+        contentElements: [{id: 2, permaId: 20, sectionId: 1, typeName: 'customElement',
+                           configuration: {id: 5}}],
+        fileReferenceLocations: {
+          contentElements: {customElement: [{path: ['id'], collection: 'imageFiles'}]}
+        }
+      });
+
+      entry.fileReferences().placesFor(imageFile(entry, 5))[0].select();
+
+      expect(select).toHaveBeenCalled();
     });
 
     it('selects content element on select', () => {

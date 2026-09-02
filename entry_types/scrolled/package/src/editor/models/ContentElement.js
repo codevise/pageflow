@@ -191,15 +191,18 @@ export const ContentElement = Backbone.Model.extend({
            `/scrolled/content_elements/${this.id}`;
   },
 
-  getConfigurationPlace() {
+  getConfigurationPlace(path) {
     const typeName = this.get('typeName');
+    const described = editor.contentElementTypes.findConfigurationPlace(this, path);
+    const select = described?.select || (() => this.select());
 
     return configurationPlace({
       chapter: this.section.chapter,
       subject: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`),
+      detail: described?.label || attributeLabel(typeName, path),
       pictogram: editor.contentElementTypes.findPictogram(typeName),
       select: () => {
-        this.select();
+        select();
         this.scrollIntoView({align: 'center'});
       }
     });
@@ -213,3 +216,13 @@ export const ContentElement = Backbone.Model.extend({
     this.section.chapter.entry.trigger('scrollToContentElement', this, options);
   }
 });
+
+function attributeLabel(typeName, path) {
+  if (path.length > 1) {
+    return undefined;
+  }
+
+  return I18n.lookup(`${path[0]}.label`, {
+    scope: `pageflow_scrolled.editor.content_elements.${typeName}.attributes`
+  });
+}
