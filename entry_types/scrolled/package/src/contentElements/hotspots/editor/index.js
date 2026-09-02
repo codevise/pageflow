@@ -1,3 +1,5 @@
+import I18n from 'i18n-js';
+
 import {editor, InlineFileRightsMenuItem} from 'pageflow-scrolled/editor';
 import {contentElementWidths} from 'pageflow-scrolled/frontend';
 import {CheckBoxInputView, FileInputView, SelectInputView, SeparatorView} from 'pageflow/editor';
@@ -29,6 +31,16 @@ editor.contentElementTypes.register('hotspots', {
     if (activeAreaId) {
       return `/scrolled/hotspots/${contentElement.id}/${activeAreaId}`;
     }
+  },
+
+  configurationPlace(contentElement, path) {
+    const [propertyName] = path;
+
+    if (propertyName !== 'areas') {
+      return elementConfigurationPlace(contentElement);
+    }
+
+    return areaConfigurationPlace(contentElement, path);
   },
 
   configurationEditor({entry, contentElement}) {
@@ -83,3 +95,37 @@ editor.registerFileSelectionHandler('hotspotsArea', function (options) {
     return '/scrolled/hotspots/' + contentElement.id + '/' + options.id + '/' + options.tab;
   };
 });
+
+// The editor path of the element points at the active area, which
+// would send the sidebar back to an area the property is not in.
+function elementConfigurationPlace(contentElement) {
+  return {
+    select() {
+      contentElement.postCommand({type: 'SET_ACTIVE_AREA', index: -1});
+      contentElement.select();
+    }
+  };
+}
+
+function areaConfigurationPlace(contentElement, [, index, propertyName]) {
+  const area = contentElement.configuration.get('areas')[index];
+  const tab = propertyName.startsWith('portrait') ? 'portrait' : 'area';
+
+  return {
+    label: areaAttributeLabel(propertyName),
+
+    select() {
+      contentElement.postCommand({type: 'SET_ACTIVE_AREA', index: Number(index)});
+      contentElement.select({navigate: false});
+
+      editor.navigate(`/scrolled/hotspots/${contentElement.id}/${area.id}/${tab}`,
+                      {trigger: true});
+    }
+  };
+}
+
+function areaAttributeLabel(propertyName) {
+  return I18n.t(`${propertyName}.label`, {
+    scope: 'pageflow_scrolled.editor.content_elements.hotspots.edit_area.attributes'
+  });
+}

@@ -208,8 +208,10 @@ export const ContentElement = Backbone.Model.extend({
     });
   },
 
-  select() {
-    this.section.chapter.entry.trigger('selectContentElement', this);
+  select(options) {
+    this.section.chapter.entry.trigger('selectContentElement',
+                                       this,
+                                       {navigate: true, ...options});
   },
 
   scrollIntoView(options) {

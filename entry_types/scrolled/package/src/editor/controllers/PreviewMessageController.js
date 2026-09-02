@@ -119,6 +119,7 @@ export const PreviewMessageController = Object.extend({
               payload: {
                 id: contentElement.id,
                 range: options?.range,
+                navigate: options?.navigate,
                 type: 'contentElement'
               }
             })
@@ -238,8 +239,10 @@ export const PreviewMessageController = Object.extend({
           );
         }
         else if (type === 'contentElement') {
-          const contentElement = this.entry.contentElements.get(id);
-          this.editor.navigate(contentElement.getEditorPath(), {trigger: true})
+          if (message.data.payload.navigate !== false) {
+            const contentElement = this.entry.contentElements.get(id);
+            this.editor.navigate(contentElement.getEditorPath(), {trigger: true})
+          }
         }
         else if (type === 'sectionSettings') {
           this.editor.navigate(`/scrolled/sections/${id}`, {trigger: true})

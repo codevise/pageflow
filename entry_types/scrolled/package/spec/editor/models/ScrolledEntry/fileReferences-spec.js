@@ -354,7 +354,7 @@ describe('ScrolledEntry', () => {
 
       entry.fileReferences().placesFor(imageFile(entry, 5))[0].select();
 
-      expect(listener).toHaveBeenCalledWith(entry.contentElements.get(2));
+      expect(listener).toHaveBeenCalledWith(entry.contentElements.get(2), {navigate: true});
     });
   });
 });
