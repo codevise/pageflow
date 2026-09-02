@@ -11,6 +11,7 @@ json.config do
   json.file_reference_locations do
     json.content_elements file_reference_locations.content_element_locations
     json.sections file_reference_locations.section_locations
+    json.entry file_reference_locations.entry_locations
   end
 
   json.pretty_url pretty_entry_url(entry)
@@ -81,7 +82,8 @@ unless options[:skip_collections]
   json.collections do
     json.entries do
       json.array!([entry]) do |entry|
-        json.call(entry, :id, :locale, :share_providers, :share_url, :credits, :configuration)
+        json.call(entry, :id, :locale, :share_providers, :share_url, :share_image_id,
+                  :credits, :configuration)
         json.published_at entry.published_at.try(:iso8601, 0)
         json.permaId entry.id # required as keyAttribute in EntryStateProvider
       end

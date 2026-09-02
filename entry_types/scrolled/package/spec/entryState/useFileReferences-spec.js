@@ -34,6 +34,20 @@ describe('useFileReferences', () => {
       .toEqual([{subject: {model: 'section', permaId: 10}, active: true}]);
   });
 
+  it('indexes files referenced by entry metadata', () => {
+    const {result} = renderHookInEntry(() => useFileReferences(), {
+      seed: {
+        entry: {shareImageId: 5},
+        fileReferenceLocations: {
+          entry: [{path: ['shareImageId'], collection: 'imageFiles'}]
+        }
+      }
+    });
+
+    expect(result.current.of('imageFiles', 5))
+      .toEqual([{subject: {model: 'entry'}, active: true}]);
+  });
+
   it('indexes files nested in a referenced file', () => {
     const {result} = renderHookInEntry(() => useFileReferences(), {
       seed: {

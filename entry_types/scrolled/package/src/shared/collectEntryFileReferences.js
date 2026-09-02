@@ -35,10 +35,16 @@ export function collectEntryFileReferences({collections, locations, fileModelTyp
   };
 }
 
-function subjects({sections = [], contentElements = []}, locations) {
+function subjects({entries = [], sections = [], contentElements = []}, locations) {
   const bySectionId = groupBySectionId(contentElements);
 
-  return sections.flatMap(section => [
+  return [
+    ...entries.map(entry => ({
+      subject: {model: 'entry'},
+      configuration: entry,
+      locations: locations.entry || []
+    })),
+    ...sections.flatMap(section => [
     {
       subject: {model: 'section', permaId: section.permaId},
       configuration: section.configuration,
@@ -49,7 +55,8 @@ function subjects({sections = [], contentElements = []}, locations) {
       configuration: contentElement.configuration,
       locations: (locations.contentElements || {})[contentElement.typeName] || []
     }))
-  ]);
+    ])
+  ];
 }
 
 // Text tracks and the like are not referenced by any configuration.

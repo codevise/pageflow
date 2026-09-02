@@ -564,6 +564,20 @@ module PageflowScrolled
             .to include('path' => ['someFile'], 'collection' => 'imageFiles')
         end
 
+        it 'renders references of entry metadata' do
+          register_schema(
+            'x-subject' => {'model' => 'entry'},
+            'properties' => {'someFile' => {'x-fileCollection' => 'image_files'}}
+          )
+
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry)
+
+          expect(json_config(result)['fileReferenceLocations']['entry'])
+            .to include('path' => ['someFile'], 'collection' => 'imageFiles')
+        end
+
         it 'raises if schema for sections is missing' do
           pageflow_configure do |config|
             config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
@@ -623,6 +637,20 @@ module PageflowScrolled
 
         def json_config(result)
           JSON.parse(result)['config']
+        end
+      end
+
+      context 'entry metadata' do
+        it 'renders share image id' do
+          image_file = create_used_file(:image_file)
+          entry = create(:published_entry, type_name: 'scrolled')
+          entry.revision.update!(share_image_id: image_file.perma_id)
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(collections: {
+                                           entries: [{shareImageId: image_file.perma_id}]
+                                         })
         end
       end
 

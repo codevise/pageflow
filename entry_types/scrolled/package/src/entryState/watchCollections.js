@@ -12,6 +12,7 @@ export function watchCollections(entry, {dispatch}) {
       {permaId: () => entry.id}, // Make sure key attribute is present
       {shareProviders: 'share_providers'},
       {shareUrl: 'share_url'},
+      {shareImageId: 'share_image_id'},
       'credits'
     ],
     keyAttribute: 'permaId',

@@ -7,6 +7,7 @@ import {
   useEntryStateConfig,
   useMultipleEntryStateCollectionItems
 } from './EntryStateProvider';
+import {useEntryMetadata} from './metadata';
 import {collectEntryFileReferences} from '../shared/collectEntryFileReferences';
 
 /**
@@ -22,6 +23,7 @@ import {collectEntryFileReferences} from '../shared/collectEntryFileReferences';
  */
 export function useFileReferences() {
   const config = useEntryStateConfig();
+  const entry = useEntryMetadata();
   const sections = useEntryStateCollectionItems('sections');
   const contentElements = useEntryStateCollectionItems('contentElements');
   const collectionNames = useMemo(() => Object.keys(config.fileModelTypes), [config]);
@@ -29,11 +31,11 @@ export function useFileReferences() {
 
   return useMemo(
     () => collectEntryFileReferences({
-      collections: {sections, contentElements, ...files},
+      collections: {entries: [entry], sections, contentElements, ...files},
       locations: config.fileReferenceLocations || {},
       fileModelTypes: config.fileModelTypes
     }),
-    [config, sections, contentElements, files]
+    [config, entry, sections, contentElements, files]
   );
 }
 

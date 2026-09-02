@@ -309,6 +309,7 @@ function normalizeFileReferenceLocations(fileReferenceLocations) {
   return {
     contentElements: {},
     sections: [],
+    entry: [],
     ...fileReferenceLocations
   };
 }
