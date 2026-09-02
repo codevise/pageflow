@@ -9,7 +9,9 @@ describe('ScrolledEntry', () => {
       'pageflow_scrolled.editor.configuration_places.label': '%{chapter} - %{subject}',
       'pageflow_scrolled.editor.configuration_places.section': 'Section %{number}',
       'pageflow_scrolled.editor.chapter_item.chapter': 'Chapter',
-      'pageflow_scrolled.editor.content_elements.inlineImage.name': 'Image'
+      'pageflow_scrolled.editor.content_elements.inlineImage.name': 'Image',
+      'pageflow_scrolled.editor.configuration_places.entry': 'Settings',
+      'activerecord.attributes.pageflow/entry.share_image_id': 'Social Sharing Image'
     });
 
     const {createEntry} = useEditorGlobals();
@@ -113,6 +115,20 @@ describe('ScrolledEntry', () => {
 
       expect(entry.fileReferences().placesFor(imageFile(entry, 5)).map(({label}) => label))
         .toEqual(['Intro - Section 1', 'Intro - Section 1']);
+    });
+
+    it('lists entry metadata referencing a file', () => {
+      const entry = create({
+        metadata: {share_image_id: 5},
+        imageFiles: [{perma_id: 5}],
+        fileReferenceLocations: {
+          entry: [{path: ['shareImageId'], collection: 'imageFiles'}]
+        }
+      });
+
+      expect(entry.fileReferences().placesFor(imageFile(entry, 5))
+                  .map(({label, detail, pictogram}) => [label, detail, pictogram]))
+        .toEqual([['Settings', 'Social Sharing Image', 'settingsPictogram.svg']]);
     });
 
     it('skips inactive references', () => {

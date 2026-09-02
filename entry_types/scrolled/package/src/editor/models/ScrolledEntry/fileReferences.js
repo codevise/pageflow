@@ -8,6 +8,7 @@ import {collectEntryFileReferences} from '../../../shared/collectEntryFileRefere
 
 import defaultPictogram from '../../views/images/defaultPictogram.svg';
 import sectionPictogram from '../../views/images/sectionPictogram.svg';
+import settingsPictogram from '../../views/images/settingsPictogram.svg';
 
 export function fileReferences(entry) {
   const {config} = entry.scrolledSeed;
@@ -28,6 +29,15 @@ export function fileReferences(entry) {
 }
 
 function place(entry, subject) {
+  if (subject.model === 'entry') {
+    return {
+      label: I18n.t('pageflow_scrolled.editor.configuration_places.entry'),
+      detail: I18n.t('activerecord.attributes.pageflow/entry.share_image_id'),
+      pictogram: settingsPictogram,
+      select: () => editor.navigate('/meta_data/social', {trigger: true})
+    };
+  }
+
   if (subject.model === 'section') {
     const section = entry.sections.findWhere({permaId: subject.permaId});
 
