@@ -13,7 +13,10 @@
   }
 
   // Never taller than the space floating-ui found next to the row.
+  // Painted after the arrow, whose inner half would otherwise cover the
+  // scroll bar.
   &-content {
+    position: relative;
     max-height: var(--available-height, 100vh);
     overflow-y: auto;
     padding: space(2);

@@ -19,6 +19,10 @@ const DISTANCE_FROM_VIEWPORT_EDGE = 8;
 // into the overlay.
 const DISMISS_DELAY = 300;
 
+// Below this the preview no longer tells the file apart, so the content
+// scrolls rather than scaling the preview away.
+const MIN_PREVIEW_HEIGHT = 96;
+
 export const FileMetaDataOverlayView = Marionette.ItemView.extend({
   template,
   className: 'file_meta_data_overlay',
@@ -279,7 +283,8 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
     this.el.style.setProperty('--available-height', `${available}px`);
     this.el.style.setProperty(
       '--preview-max-height',
-      `${Math.max(0, available - (content.scrollHeight - previewHeight))}px`
+      `${Math.max(MIN_PREVIEW_HEIGHT,
+                  available - (content.scrollHeight - previewHeight))}px`
     );
   },
 

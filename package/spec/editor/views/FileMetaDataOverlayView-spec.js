@@ -255,6 +255,40 @@ describe('FileMetaDataOverlayView', () => {
     expect(view.isOpen()).toBe(false);
   });
 
+  describe('available height', () => {
+    function setup({availableHeight, contentHeight, previewHeight}) {
+      const view = overlayView(support.factories.file({}), {metaDataAttributes: []});
+
+      render(view);
+
+      define(view.el, 'offsetHeight', contentHeight);
+      define(view.ui.content[0], 'offsetHeight', contentHeight);
+      define(view.ui.content[0], 'scrollHeight', contentHeight);
+      jest.spyOn(view.ui.preview, 'outerHeight').mockReturnValue(previewHeight);
+
+      view.applyAvailableHeight({availableHeight});
+
+      return view;
+    }
+
+    function define(element, name, value) {
+      Object.defineProperty(element, name, {value, configurable: true});
+    }
+
+    it('leaves the preview the space the rest of the content does not need', () => {
+      const view = setup({availableHeight: 500, contentHeight: 400, previewHeight: 150});
+
+      expect(view.el.style.getPropertyValue('--preview-max-height')).toEqual('250px');
+    });
+
+    it('keeps the preview visible when the content does not fit', () => {
+      const view = setup({availableHeight: 200, contentHeight: 400, previewHeight: 150});
+
+      expect(view.el.style.getPropertyValue('--preview-max-height')).toEqual('96px');
+      expect(view.el.style.getPropertyValue('--available-height')).toEqual('200px');
+    });
+  });
+
   describe('dismissing after a delay', () => {
     it('dismisses when nothing cancels it', () => {
       const view = overlayView(support.factories.file({id: 123}));
