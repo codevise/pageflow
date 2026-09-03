@@ -43,7 +43,11 @@ describe('FilteredFilesView', () => {
     'pageflow.editor.views.filtered_files_view.sort.most_recent': 'Most recent',
     'pageflow.editor.files.tabs.image_files': 'Images',
     'pageflow.editor.files.tabs.video_files': 'Videos',
-    'pageflow.editor.views.file_type_pills_view.group_label': 'Filter by file type'
+    'pageflow.editor.views.file_type_pills_view.group_label': 'Filter by file type',
+    'pageflow.editor.templates.file_item.reference_count': {
+      one: '1 usage',
+      other: '%{count} usages'
+    }
   });
 
   it('uses entry type-specific translations if provided', () => {
@@ -608,6 +612,71 @@ describe('FilteredFilesView', () => {
       const {entry} = setup();
 
       expect(entry.fileReferences).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('reference count badges', () => {
+    let previousEntryType;
+
+    beforeEach(() => { previousEntryType = editor.entryType; });
+    afterEach(() => { editor.entryType = previousEntryType; });
+
+    function setup(countsByFileId) {
+      editor.registerEntryType('strange', {supportsFileReferences: true});
+
+      const fileTypes = f.fileTypes(function() { this.withImageFileType(); });
+      const entry = f.entry({}, {
+        fileTypes,
+        filesAttributes: {image_files: [{id: 1, display_name: 'image.png'},
+                                        {id: 2, display_name: 'photo.png'}]}
+      });
+
+      entry.fileReferences = () => ({
+        placesFor: file => new Array(countsByFileId[file.id]).fill({})
+      });
+
+      const view = new FilteredFilesView({entry, fileTypes: [fileTypes.first()]});
+
+      return {view, queries: render(view)};
+    }
+
+    function badges(view) {
+      return Array.from(view.el.querySelectorAll('.file_item-reference_count'));
+    }
+
+    it('are blank until files are being checked', () => {
+      const {view} = setup({1: 3, 2: 0});
+
+      expect(badges(view).map(badge => badge.textContent)).toEqual(['', '']);
+    });
+
+    it('count the references of each file once files are being checked', async () => {
+      const {view, queries} = setup({1: 3, 2: 0});
+      const user = userEvent.setup();
+
+      await user.click(queries.getByRole('link', {name: 'Select files and folders'}));
+
+      expect(badges(view).map(badge => badge.textContent))
+        .toEqual(['3 usages', '0 usages']);
+    });
+
+    it('name a single reference in the singular', async () => {
+      const {view, queries} = setup({1: 1, 2: 0});
+      const user = userEvent.setup();
+
+      await user.click(queries.getByRole('link', {name: 'Select files and folders'}));
+
+      expect(badges(view)[0].textContent).toEqual('1 usage');
+    });
+
+    it('mark files without references', async () => {
+      const {view, queries} = setup({1: 3, 2: 0});
+      const user = userEvent.setup();
+
+      await user.click(queries.getByRole('link', {name: 'Select files and folders'}));
+
+      expect(badges(view).map(badge => badge.classList.contains('is_unreferenced')))
+        .toEqual([false, true]);
     });
   });
 

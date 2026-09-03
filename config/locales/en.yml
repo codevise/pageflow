@@ -1426,6 +1426,9 @@ en:
           expand_details: Show details
           collapse_details: Hide details
           move: Move...
+          reference_count:
+            one: 1 usage
+            other: "%{count} usages"
           retry: Retry
           select: Select
           settings: Settings

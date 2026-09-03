@@ -158,6 +158,41 @@ ul.files {
       position: relative;
       z-index: 1;
     }
+
+    .file_item-reference_count {
+      display: flex;
+    }
+  }
+
+  // Only shown while files are being checked, which is when the number
+  // of places a file would disappear from decides whether to check it.
+  // Sits beside the thumbnail but stays inside its button, so pointing
+  // at the count still opens the details of the file it belongs to.
+  .file_item-reference_count {
+    display: none;
+    position: absolute;
+    // Shares the line of the action buttons on the other side of the
+    // row, which are 30px tall below space(0.5) of padding.
+    top: 7px;
+    left: 100%;
+    align-items: center;
+    height: space(5);
+    margin-left: space(2);
+    padding: 0 space(1.5);
+    border-radius: rounded();
+    background-color: var(--ui-on-surface-color-lightest);
+    color: var(--ui-on-surface-color-light);
+    font-size: 0.6875rem;
+    line-height: 1;
+    white-space: nowrap;
+
+    // Checking the file is all that is left to do with one nothing
+    // references, so its badge lets the click through to the row.
+    &.is_unreferenced {
+      background-color: var(--ui-warning-color-lightest);
+      color: var(--ui-warning-color);
+      pointer-events: none;
+    }
   }
 
   // Only shown while files are being checked, which indents the names of
