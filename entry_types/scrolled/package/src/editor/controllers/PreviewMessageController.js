@@ -53,6 +53,16 @@ export const PreviewMessageController = Object.extend({
             })
           );
 
+          this.listenTo(this.entry, 'scrollToContentElement', (contentElement, options) =>
+            postMessage({
+              type: 'SCROLL_TO_CONTENT_ELEMENT',
+              payload: {
+                id: contentElement.id,
+                ...options
+              }
+            })
+          );
+
           this.listenTo(this.entry.contentElements, 'postCommand', (contentElementId, command) =>
             postMessage({
               type: 'CONTENT_ELEMENT_EDITOR_COMMAND',

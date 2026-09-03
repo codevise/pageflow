@@ -1,5 +1,6 @@
 import {useRef, useCallback} from 'react';
 import {usePostMessageListener} from '../../shared/usePostMessageListener';
+import {scrollToElement} from '../scrollToElement';
 
 // Scroll points are used to preserve scroll position when toggling
 // the editor phone preview. Each ContentElementDecorator renders a
@@ -37,11 +38,22 @@ export function ScrollPointMessageHandler() {
         restoreScrollPoint(scrollPoint.current);
       }
     }
+    else if (data.type === 'SCROLL_TO_CONTENT_ELEMENT') {
+      scrollToContentElement(data.payload);
+    }
   }, []);
 
   usePostMessageListener(receiveMessage);
 
   return null;
+}
+
+function scrollToContentElement({id, ...options}) {
+  const element = document.querySelector(`[data-scrollpoint="${id}"]`);
+
+  if (element) {
+    scrollToElement(element, options);
+  }
 }
 
 function getCurrentScrollPoint() {

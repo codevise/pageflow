@@ -1,6 +1,8 @@
 import React, {createContext, useCallback, useContext, useEffect, useMemo, useRef} from 'react';
 import BackboneEvents from 'backbone-events-standalone';
 
+import {scrollToElement} from './scrollToElement';
+
 const ScrollTargetEmitterContext = createContext();
 
 export function ScrollTargetEmitterProvider({children}) {
@@ -30,18 +32,9 @@ export function useScrollTarget(id) {
   const emitter = useContext(ScrollTargetEmitterContext);
 
   useEffect(() => {
-    const handler = ({align, ifNeeded, behavior}) => {
+    const handler = options => {
       if (ref.current) {
-        const rect = ref.current.getBoundingClientRect();
-
-        if (ifNeeded && isInViewport(align, rect)) {
-          return;
-        }
-
-        window.scrollTo({
-          top: rect.top + window.scrollY + getAlignOffset(align, rect),
-          behavior: behavior || 'smooth'
-        });
+        scrollToElement(ref.current, options);
       }
     };
 
@@ -51,26 +44,4 @@ export function useScrollTarget(id) {
   }, [id, emitter]);
 
   return ref;
-}
-
-function getAlignOffset(align, rect) {
-  if (align === 'start') {
-    return 0;
-  }
-  else if (align === 'nearEnd') {
-    return rect.height - window.innerHeight * 0.75;
-  }
-  else {
-    return -window.innerHeight * 0.25;
-  }
-}
-
-function isInViewport(align, rect) {
-  if (align === 'nearEnd') {
-    const bottom = rect.top + rect.height;
-    return bottom > 0 && bottom <= window.innerHeight;
-  }
-  else {
-    return rect.top >= 0 && rect.top < window.innerHeight;
-  }
 }
