@@ -5,7 +5,11 @@ import {
   ScrollRangeSelectInputView
 } from 'pageflow-scrolled/editor';
 import {processImageModifiers} from 'pageflow-scrolled/frontend';
-import {FileInputView} from 'pageflow/editor';
+import {
+  altConfigurationEditorInput,
+  altMetaDataAttribute,
+  FileInputView
+} from 'pageflow/editor';
 import {SelectInputView, SeparatorView} from 'pageflow/ui';
 
 import {LottieFile} from './models/LottieFile';
@@ -20,6 +24,13 @@ editor.fileTypes.register('lottie_files', {
   positioningView: LottieFilePositioningView,
   previewView: LottieFilePreviewView,
   thumbnailView: LottieFileThumbnailView,
+
+  metaDataAttributes: [
+    altMetaDataAttribute
+  ],
+  configurationEditorInputs: [
+    altConfigurationEditorInput
+  ],
 
   // Browsers derive the content type of uploads from the file
   // extension. Since dotLottie is missing from their mappings, uploads

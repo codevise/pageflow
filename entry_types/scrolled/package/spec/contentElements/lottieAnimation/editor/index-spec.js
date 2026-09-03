@@ -175,6 +175,18 @@ describe('lottieAnimation/editor', () => {
     expect(editor.fileTypes.findByCollectionName('lottie_files').model).toBe(LottieFile);
   });
 
+  it('supports editing alt text of lottie files', () => {
+    const fileType = editor.fileTypes.findByCollectionName('lottie_files');
+
+    expect(fileType.configurationEditorInputs.map(input => input.name)).toContain('alt');
+  });
+
+  it('displays alt text in meta data of lottie files', () => {
+    const fileType = editor.fileTypes.findByCollectionName('lottie_files');
+
+    expect(fileType.metaDataAttributes.map(attribute => attribute.name)).toContain('alt');
+  });
+
   it('matches uploads of dotLottie files', () => {
     const fileType = editor.fileTypes.findByUpload({name: 'animation.lottie', type: ''});
 

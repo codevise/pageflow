@@ -1,6 +1,7 @@
 import './sync';
 
 export * from './api';
+export * from './api/alt';
 
 export * from 'pageflow/ui';
 
