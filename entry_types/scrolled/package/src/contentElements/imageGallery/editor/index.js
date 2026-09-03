@@ -1,3 +1,5 @@
+import I18n from 'i18n-js';
+
 import {editor} from 'pageflow-scrolled/editor';
 import {contentElementWidths} from 'pageflow-scrolled/frontend';
 import {CheckBoxInputView, SeparatorView} from 'pageflow/editor';
@@ -22,6 +24,27 @@ editor.contentElementTypes.register('imageGallery', {
   supportedWidthRange: ['xxs', 'full'],
   supportedCaptions: {disableWhenNoCaption: false},
   supportedStyles: ['boxShadow', 'outline'],
+
+  configurationPlace(contentElement, path) {
+    const [propertyName, index, itemProperty] = path;
+
+    if (propertyName !== 'items') {
+      return;
+    }
+
+    const item = contentElement.configuration.get('items')[index];
+
+    return {
+      label: attributeLabel(itemProperty),
+
+      select() {
+        contentElement.select({navigate: false});
+
+        editor.navigate(`/scrolled/imageGalleries/${contentElement.id}/${item.id}`,
+                        {trigger: true});
+      }
+    };
+  },
 
   configurationEditor({entry, contentElement}) {
     this.tab('general', function() {
@@ -60,3 +83,9 @@ editor.registerFileSelectionHandler('imageGalleryItem', function (options) {
     return '/scrolled/imageGalleries/' + contentElement.id + '/' + options.id;
   };
 });
+
+function attributeLabel(propertyName) {
+  return I18n.t(`${propertyName}.label`, {
+    scope: 'pageflow_scrolled.editor.content_elements.imageGallery.edit_item.attributes'
+  });
+}
