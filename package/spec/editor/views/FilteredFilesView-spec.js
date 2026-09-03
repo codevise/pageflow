@@ -574,6 +574,43 @@ describe('FilteredFilesView', () => {
       .toBeTruthy();
   });
 
+  describe('file references', () => {
+    let previousEntryType;
+
+    beforeEach(() => { previousEntryType = editor.entryType; });
+    afterEach(() => { editor.entryType = previousEntryType; });
+
+    function setup({supportsFileReferences} = {}) {
+      editor.registerEntryType('strange', {supportsFileReferences});
+
+      const fileTypes = f.fileTypes(function() { this.withImageFileType(); });
+      const entry = f.entry({}, {
+        fileTypes,
+        filesAttributes: {image_files: [{id: 1, display_name: 'image.png'},
+                                        {id: 2, display_name: 'photo.png'}]}
+      });
+
+      entry.fileReferences = jest.fn(() => ({placesFor: () => []}));
+
+      const view = new FilteredFilesView({entry, fileTypes: [fileTypes.first()]});
+      render(view);
+
+      return {view, entry};
+    }
+
+    it('are looked up once for the whole list', () => {
+      const {entry} = setup({supportsFileReferences: true});
+
+      expect(entry.fileReferences).toHaveBeenCalledTimes(1);
+    });
+
+    it('are not looked up for entry types which do not support them', () => {
+      const {entry} = setup();
+
+      expect(entry.fileReferences).not.toHaveBeenCalled();
+    });
+  });
+
   describe('file selection', () => {
     function setup({filesAttributes, ...options} = {}) {
       const fileTypes = f.fileTypes(function() {

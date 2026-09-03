@@ -2,10 +2,8 @@ import $ from 'jquery';
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
-import {state} from '$state';
-
-// Lists the places of the entry that reference a file. Entry types
-// provide the places via `Entry#fileReferences`. Each place has a
+// Lists the places of the entry that reference a file. Takes the index
+// the files list built via `Entry#fileReferences`. Each place has a
 // label, an optional detail naming the referencing property and a
 // pictogram. Clicking an item selects the referencing model in the
 // editor.
@@ -29,10 +27,8 @@ export const FileReferencesView = Marionette.ItemView.extend({
     this.update();
   },
 
-  // Rebuilt on every open, since the overlay outlives the entry state
-  // it describes.
   update() {
-    const places = state.entry.fileReferences().placesFor(this.model);
+    const places = this.options.fileReferences.placesFor(this.model);
 
     this.ui.list.empty().append(places.map(place => renderItem(place)));
     this.$el.toggle(places.length > 0);

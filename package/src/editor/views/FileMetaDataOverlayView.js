@@ -5,8 +5,6 @@ import {arrow, autoUpdate, computePosition, offset, shift, size} from '@floating
 
 import {CollectionView} from 'pageflow/ui';
 
-import {editor} from '../base';
-
 import {FileMetaDataItemView} from './FileMetaDataItemView';
 import {FileReferencesView} from './FileReferencesView';
 import {FileStageItemView} from './FileStageItemView';
@@ -70,9 +68,11 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
       this.ui.metaData.append(this.subview(view).el);
     }, this);
 
-    if (editor.entryType?.supportsFileReferences) {
-      this.fileReferencesView = new FileReferencesView({model: this.model});
-      this.appendSubview(this.fileReferencesView, {to: this.ui.fileReferences});
+    if (this.options.fileReferences) {
+      this.appendSubview(new FileReferencesView({
+        model: this.model,
+        fileReferences: this.options.fileReferences
+      }), {to: this.ui.fileReferences});
     }
   },
 
@@ -175,7 +175,6 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
                                      this.position.bind(this));
 
     this.renderPreview();
-    this.fileReferencesView?.update();
     this.trigger('toggle');
   },
 

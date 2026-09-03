@@ -152,6 +152,7 @@ export const FileItemView = Marionette.ItemView.extend({
       this.metaDataOverlayView = this.subview(new FileMetaDataOverlayView({
         model: this.model,
         metaDataAttributes: this.options.metaDataAttributes,
+        fileReferences: this.options.fileReferences,
         reference: this.ui.thumbnailButton[0]
       }));
 

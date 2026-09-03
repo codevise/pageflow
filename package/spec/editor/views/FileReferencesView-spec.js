@@ -7,12 +7,11 @@ describe('FileReferencesView', () => {
     'pageflow.editor.views.file_references.header': 'Referenced by'
   });
 
-  const {setGlobals} = support.setupGlobals({});
-
   function render({places}) {
-    setGlobals({entry: {fileReferences: () => ({placesFor: () => places})}});
-
-    const view = new FileReferencesView({model: support.factories.imageFile()});
+    const view = new FileReferencesView({
+      model: support.factories.imageFile(),
+      fileReferences: {placesFor: () => places}
+    });
 
     view.render();
 

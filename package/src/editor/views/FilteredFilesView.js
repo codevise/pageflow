@@ -154,6 +154,12 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       this.setupListSelection();
     }
 
+    // Walking the entry once and looking each file up lets the list
+    // display a reference count per row without repeating the walk.
+    if (editor.entryType?.supportsFileReferences) {
+      this.fileReferences = this.options.entry.fileReferences();
+    }
+
     this.menuItems = this.createMenuItems();
   },
 
@@ -437,7 +443,8 @@ export const FilteredFilesView = Marionette.ItemView.extend({
         files: this.selectedFiles || this.combinedFiles,
         listSelection: this.listSelection,
         selectionHandler: this.options.selectionHandler,
-        listHighlight: this.listHighlight
+        listHighlight: this.listHighlight,
+        fileReferences: this.fileReferences
       },
       blankSlateViewConstructor: FilesBlankSlateView,
       blankSlateViewOptions: {

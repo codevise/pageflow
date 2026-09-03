@@ -1,6 +1,6 @@
 import Marionette from 'backbone.marionette';
 
-import {editor, FileMetaDataItemValueView, FileMetaDataOverlayView} from 'pageflow/editor';
+import {FileMetaDataItemValueView, FileMetaDataOverlayView} from 'pageflow/editor';
 
 import * as support from '$support';
 import {FileMetaDataTable, FileStageItem} from '$support/dominos/editor';
@@ -33,41 +33,26 @@ describe('FileMetaDataOverlayView', () => {
     });
   }
 
-  describe('with entry type supporting file references', () => {
-    const {setGlobals} = support.setupGlobals({});
-
-    let previousEntryType;
-
-    beforeEach(() => {
-      previousEntryType = editor.entryType;
-      editor.entryType = {supportsFileReferences: true};
-    });
-
-    afterEach(() => { editor.entryType = previousEntryType; });
-
-    function setupEntry(placesFor) {
-      setGlobals({entry: {fileReferences: () => ({placesFor})}});
-    }
-
-    it('lists file references below meta data', () => {
-      setupEntry(() => [{label: 'Intro - Image', pictogram: 'i.svg', select() {}}]);
-      const view = overlayView(support.factories.file({}), {metaDataAttributes: []});
+  describe('file references', () => {
+    it('are listed below meta data', () => {
+      const view = overlayView(support.factories.file({}), {
+        metaDataAttributes: [],
+        fileReferences: {
+          placesFor: () => [{label: 'Intro - Image', pictogram: 'i.svg', select() {}}]
+        }
+      });
 
       render(view);
 
       expect(view.$el.find('.file_references-label').text()).toEqual('Intro - Image');
     });
 
-    it('updates file references when overlay is opened', () => {
-      let places = [];
-      setupEntry(() => places);
+    it('are omitted without index', () => {
       const view = overlayView(support.factories.file({}), {metaDataAttributes: []});
 
       render(view);
-      places = [{label: 'Intro - Image', pictogram: 'i.svg', select() {}}];
-      view.open();
 
-      expect(view.$el.find('.file_references-label').text()).toEqual('Intro - Image');
+      expect(view.$el.find('.file_references').length).toEqual(0);
     });
   });
 
