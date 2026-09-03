@@ -1,3 +1,5 @@
+import I18n from 'i18n-js';
+
 import {editor} from 'pageflow-scrolled/editor';
 import {SelectInputView, SliderInputView, SeparatorView, CheckBoxInputView} from 'pageflow/ui';
 
@@ -34,6 +36,28 @@ editor.contentElementTypes.register('externalLinkList', {
     if (selectedItemId) {
       return `/scrolled/external_links/${contentElement.id}/${selectedItemId}`;
     }
+  },
+
+  configurationPlace(contentElement, path) {
+    const [propertyName, index, linkProperty] = path;
+
+    if (propertyName !== 'links') {
+      return;
+    }
+
+    const link = contentElement.configuration.get('links')[index];
+
+    return {
+      label: attributeLabel(linkProperty),
+
+      select() {
+        contentElement.postCommand({type: 'SET_SELECTED_ITEM', index: Number(index)});
+        contentElement.select({navigate: false});
+
+        editor.navigate(`/scrolled/external_links/${contentElement.id}/${link.id}`,
+                        {trigger: true});
+      }
+    };
   },
 
   configurationEditor({entry, contentElement}) {
@@ -138,3 +162,9 @@ editor.registerFileSelectionHandler('contentElement.externalLinks.link', functio
     return '/scrolled/external_links/' + contentElement.id + '/' + options.id;
   };
 });
+
+function attributeLabel(propertyName) {
+  return I18n.t(`${propertyName}.label`, {
+    scope: 'pageflow_scrolled.editor.content_elements.externalLinkList.attributes'
+  });
+}
