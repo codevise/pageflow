@@ -91,12 +91,6 @@ describe('LottieAnimation', () => {
     expect(players[0].config.loop).toBe(true);
   });
 
-  it('does not loop in playOnce playback mode', () => {
-    renderLottieAnimation({configuration: {id: 100, playbackMode: 'playOnce'}});
-
-    expect(players[0].config.loop).toBe(false);
-  });
-
   it('plays animation once it has loaded while element is visible', () => {
     renderLottieAnimation({scrollPosition: 'in viewport'});
 
@@ -120,6 +114,92 @@ describe('LottieAnimation', () => {
     simulateScrollPosition('near viewport');
 
     expect(players[0].pause).toHaveBeenCalled();
+  });
+
+  describe('playOnce playback mode', () => {
+    const configuration = {id: 100, playbackMode: 'playOnce'};
+
+    it('does not loop', () => {
+      renderLottieAnimation({configuration});
+
+      expect(players[0].config.loop).toBe(false);
+    });
+
+    it('does not play animation before element reaches viewport center', () => {
+      renderLottieAnimation({configuration, scrollPosition: 'in viewport'});
+
+      players[0].emit('load');
+
+      expect(players[0].play).not.toHaveBeenCalled();
+    });
+
+    it('plays animation once element reaches viewport center', () => {
+      renderLottieAnimation({configuration, scrollPosition: 'center of viewport'});
+
+      players[0].emit('load');
+
+      expect(players[0].play).toHaveBeenCalled();
+    });
+
+    it('keeps playing animation once element has passed viewport center', () => {
+      const {simulateScrollPosition} = renderLottieAnimation({
+        configuration, scrollPosition: 'center of viewport'
+      });
+      players[0].emit('load');
+      players[0].pause.mockClear();
+
+      simulateScrollPosition('in viewport');
+
+      expect(players[0].pause).not.toHaveBeenCalled();
+    });
+
+    it('pauses animation when element leaves viewport', () => {
+      const {simulateScrollPosition} = renderLottieAnimation({
+        configuration, scrollPosition: 'center of viewport'
+      });
+      players[0].emit('load');
+
+      simulateScrollPosition('near viewport');
+
+      expect(players[0].pause).toHaveBeenCalled();
+    });
+
+    it('waits for the viewport center again after element has left viewport', () => {
+      const {simulateScrollPosition} = renderLottieAnimation({
+        configuration, scrollPosition: 'center of viewport'
+      });
+      players[0].emit('load');
+      simulateScrollPosition('near viewport');
+      players[0].play.mockClear();
+
+      simulateScrollPosition('in viewport');
+
+      expect(players[0].play).not.toHaveBeenCalled();
+    });
+
+    it('plays animation again once element reaches viewport center again', () => {
+      const {simulateScrollPosition} = renderLottieAnimation({
+        configuration, scrollPosition: 'center of viewport'
+      });
+      players[0].emit('load');
+      simulateScrollPosition('near viewport');
+      players[0].play.mockClear();
+
+      simulateScrollPosition('center of viewport');
+
+      expect(players[0].play).toHaveBeenCalled();
+    });
+
+    it('plays animation as soon as element is visible with onVisible trigger', () => {
+      renderLottieAnimation({
+        configuration: {...configuration, startAnimationTrigger: 'onVisible'},
+        scrollPosition: 'in viewport'
+      });
+
+      players[0].emit('load');
+
+      expect(players[0].play).toHaveBeenCalled();
+    });
   });
 
   describe('scroll playback mode', () => {

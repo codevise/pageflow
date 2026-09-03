@@ -760,7 +760,7 @@ en:
             id:
               label: Animation
             playbackMode:
-              inline_help_html: Determines how the animation is played once it becomes visible:<ul><li><strong>Loop:</strong> Again and again as long as it is visible.</li><li><strong>Play once:</strong> Once from start to end.</li><li><strong>Scroll position:</strong> Frame by frame while scrolling. Use the scroll range setting to choose when scrolling the page drives the animation.</li></ul>
+              inline_help_html: Determines how the animation is played:<ul><li><strong>Loop:</strong> Again and again as long as it is visible.</li><li><strong>Play once:</strong> Once from start to end. Use the start animation setting to choose when playback begins.</li><li><strong>Scroll position:</strong> Frame by frame while scrolling. Use the scroll range setting to choose when scrolling the page drives the animation.</li></ul>
               label: Playback Mode
               values:
                 loop: Loop
@@ -775,6 +775,12 @@ en:
                 entry: While entering
                 inFocus: While crossing the viewport center
                 inFocusWhenPinned: While locked in place
+            startAnimationTrigger:
+              inline_help_html: Determines when the animation starts playing:<ul><li><strong>When scrolled to center of viewport:</strong> Once the element reaches the vertical center of the viewport.</li><li><strong>When first scrolled into view:</strong> As soon as the element starts entering the viewport.</li></ul>The animation then plays to its end. It only pauses while the element is outside the viewport.
+              label: Start animation
+              values:
+                onActivate: When scrolled to center of viewport
+                onVisible: When first scrolled into view
           description: Embed an animation exported as dotLottie file
           name: Lottie animation
           tabs:

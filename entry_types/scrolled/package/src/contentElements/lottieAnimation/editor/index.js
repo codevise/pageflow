@@ -2,6 +2,7 @@ import {
   editor,
   ImageModifierListInputView,
   InlineFileRightsMenuItem,
+  PlaybackStartSelectInputView,
   ScrollRangeSelectInputView
 } from 'pageflow-scrolled/editor';
 import {processImageModifiers} from 'pageflow-scrolled/frontend';
@@ -39,6 +40,7 @@ editor.fileTypes.register('lottie_files', {
 });
 
 const playbackModes = ['loop', 'playOnce', 'scroll'];
+const startAnimationTriggers = ['onActivate', 'onVisible'];
 const scrollRanges = ['cover', 'contain', 'inFocus', 'entry'];
 const pinnedPositions = ['sticky', 'standAlone'];
 
@@ -84,13 +86,19 @@ editor.contentElementTypes.register('lottieAnimation', {
         visible: () => this.model.getReference('id', 'lottie_files')
       });
       this.input('playbackMode', SelectInputView, {values: playbackModes});
+      this.input('startAnimationTrigger', PlaybackStartSelectInputView, {
+        values: startAnimationTriggers,
+        ...illustrationOptions(contentElement),
+        visibleBinding: 'playbackMode',
+        visible: playbackMode => playbackMode === 'playOnce'
+      });
       // Elements that stay in place while scrolling name the inFocus
       // range after that phase instead of after the center of the
       // viewport. Since the texts of a select cannot depend on other
       // attributes, there is one input per wording.
       this.input('scrollRange', ScrollRangeSelectInputView, {
         values: scrollRanges,
-        ...scrollRangeIllustration(contentElement),
+        ...illustrationOptions(contentElement),
         visibleBinding: ['playbackMode', 'position'],
         visible: ([playbackMode]) =>
           playbackMode === 'scroll' && !staysInPlace(contentElement)
@@ -98,7 +106,7 @@ editor.contentElementTypes.register('lottieAnimation', {
       this.input('scrollRange', ScrollRangeSelectInputView, {
         values: scrollRanges,
         translationKeys: pinnedScrollRangeKeys,
-        ...scrollRangeIllustration(contentElement),
+        ...illustrationOptions(contentElement),
         visibleBinding: ['playbackMode', 'position'],
         visible: ([playbackMode]) =>
           playbackMode === 'scroll' && staysInPlace(contentElement)
@@ -122,8 +130,8 @@ function staysInPlace(contentElement) {
   return pinnedPositions.includes(contentElement.getResolvedPosition());
 }
 
-// Illustrate the ranges with the element as it looks in its section.
-function scrollRangeIllustration(contentElement) {
+// Illustrate options with the element as it looks in its section.
+function illustrationOptions(contentElement) {
   return {
     position: () => contentElement.getResolvedPosition(),
     sectionLayout: () => contentElement.section.configuration.get('layout')

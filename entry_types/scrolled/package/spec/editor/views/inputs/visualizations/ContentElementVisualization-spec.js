@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import {
   ContentElementVisualization,
+  measureElementTop,
   measureScrollTimeline,
   measureViewTimelineProgress
 } from 'editor/views/inputs/visualizations/ContentElementVisualization';
@@ -96,15 +97,45 @@ describe('measureViewTimelineProgress', () => {
   });
 });
 
+describe('measureElementTop', () => {
+  afterEach(() => jest.restoreAllMocks());
+
+  function elementTop(position, rects, options) {
+    fakeBoundingClientRectsByClassName(rects, options);
+
+    const {container} = render(<ContentElementVisualization position={position} />);
+
+    return measureElementTop({scroller: container.firstChild, position});
+  }
+
+  it('measures in fractions of the height of the visualization', () => {
+    expect(elementTop('inline', {
+      [styles.visualization]: {top: 200, height: 100},
+      [styles.block]: {top: 250, height: 20}
+    })).toEqual(0.5);
+  });
+
+  it('measures the element itself for positions that pin it', () => {
+    expect(elementTop(
+      'sticky',
+      {
+        [styles.visualization]: {top: 0, height: 100},
+        [styles.wrapper]: {top: 40, height: 20}
+      },
+      {otherElements: {top: 0, height: 200}}
+    )).toEqual(0.4);
+  });
+});
+
 describe('measureScrollTimeline', () => {
   afterEach(() => jest.restoreAllMocks());
 
-  function scrollTimeline(rects) {
+  function scrollTimeline(rects, options) {
     fakeBoundingClientRectsByClassName(rects);
 
     const {container} = render(<ContentElementVisualization position="inline" />);
 
-    return measureScrollTimeline({scroller: container.firstChild, position: 'inline'});
+    return measureScrollTimeline({scroller: container.firstChild, position: 'inline', ...options});
   }
 
   it('spans from element about to enter until it has left the viewport', () => {
@@ -112,6 +143,13 @@ describe('measureScrollTimeline', () => {
       [styles.visualization]: {top: 0, height: 100},
       [styles.block]: {top: 150, height: 20}
     })).toEqual({from: 50, to: 170});
+  });
+
+  it('optionally ends once the top edge of the element has reached an offset', () => {
+    expect(scrollTimeline({
+      [styles.visualization]: {top: 0, height: 100},
+      [styles.block]: {top: 150, height: 20}
+    }, {until: 0.4})).toEqual({from: 50, to: 110});
   });
 
   it('starts at the top if there is not enough room above', () => {
