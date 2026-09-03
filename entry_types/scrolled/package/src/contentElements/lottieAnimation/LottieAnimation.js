@@ -42,6 +42,7 @@ export function LottieAnimation({configuration}) {
               <FilePlaceholder file={lottieFile} />
               {lottieFile && shouldLoad &&
                <Player lottieFile={lottieFile}
+                       alt={lottieFile.configuration.alt}
                        loop={playbackMode === 'loop'}
                        play={isVisible}
                        seekOnScroll={playbackMode === 'scroll'}
@@ -65,7 +66,7 @@ export function LottieAnimation({configuration}) {
 }
 
 function Player({
-  lottieFile, loop, play, seekOnScroll, scrollRange, fit,
+  lottieFile, alt, loop, play, seekOnScroll, scrollRange, fit,
   cropPositionX = 50, cropPositionY = 50, onAspectRatioChange
 }) {
   const canvasRef = useRef();
@@ -142,7 +143,12 @@ function Player({
     }
   }, [play, seekOnScroll]);
 
+  // A canvas has no alt attribute.
   return (
-    <canvas ref={canvasRef} className={styles.canvas} />
+    <canvas ref={canvasRef}
+            className={styles.canvas}
+            role={alt ? 'img' : undefined}
+            aria-label={alt || undefined}
+            aria-hidden={alt ? undefined : true} />
   );
 }

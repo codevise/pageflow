@@ -2,6 +2,8 @@ import I18n from 'i18n-js';
 
 import {IconTableCellView, SelectInputView, TextInputView, TextTableCellView} from 'pageflow/ui';
 
+import {altConfigurationEditorInput, altMetaDataAttribute} from '../api/alt';
+
 import {AudioFile} from '../models/AudioFile';
 import {ImageFile} from '../models/ImageFile';
 import {TextTrackFile} from '../models/TextTrackFile';
@@ -35,23 +37,6 @@ var textTracksSettingsDialogTab = {
     supersetCollection: function() {
       return state.textTrackFiles;
     }
-  }
-};
-
-var altMetaDataAttribute = {
-  name: 'alt',
-  valueView: TextFileMetaDataItemValueView,
-  valueViewOptions: {
-    fromConfiguration: true,
-    settingsDialogTabLink: 'general'
-  }
-};
-
-var altConfigurationEditorInput = {
-  name: 'alt',
-  inputView: TextInputView,
-  inputViewOptions: {
-    maxLength: 5000
   }
 };
 
@@ -179,10 +164,7 @@ editor.fileTypes.register('other_files', {
   matchUpload: () => true,
   priority: 100,
   configurationEditorInputs: [
-    {
-      name: 'alt',
-      inputView: TextInputView
-    }
+    altConfigurationEditorInput
   ]
 });
 

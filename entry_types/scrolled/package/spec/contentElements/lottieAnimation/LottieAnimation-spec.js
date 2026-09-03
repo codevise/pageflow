@@ -54,6 +54,25 @@ describe('LottieAnimation', () => {
     expect(players[0].config.src).toEqual('000/000/001/animation.lottie');
   });
 
+  it('exposes animation as image named after alt text of file', () => {
+    const {getByRole} = renderLottieAnimation({
+      lottieFiles: [
+        {
+          id: 1, permaId: 100, basename: 'animation', extension: 'lottie',
+          configuration: {alt: 'Dancing robot'}
+        }
+      ]
+    });
+
+    expect(getByRole('img', {name: 'Dancing robot'})).not.toBeNull();
+  });
+
+  it('hides animation from screen readers if file has no alt text', () => {
+    const {container} = renderLottieAnimation();
+
+    expect(container.querySelector('canvas')).toHaveAttribute('aria-hidden', 'true');
+  });
+
   it('does not create player before element is near viewport', () => {
     renderLottieAnimation({scrollPosition: 'outside viewport'});
 
