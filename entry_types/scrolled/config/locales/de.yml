@@ -775,7 +775,7 @@ de:
             id:
               label: Animation
             playbackMode:
-              inline_help_html: Bestimmt, wie die Animation abgespielt wird, sobald sie sichtbar wird:<ul><li><strong>Endlosschleife:</strong> Immer wieder, solange sie sichtbar ist.</li><li><strong>Einmal abspielen:</strong> Einmal von Anfang bis Ende.</li><li><strong>Scrollposition:</strong> Bild für Bild beim Scrollen. Über die Einstellung „Scroll-Bereich“ kann gewählt werden, wann das Scrollen der Seite die Animation antreibt.</li></ul>
+              inline_help_html: Bestimmt, wie die Animation abgespielt wird:<ul><li><strong>Endlosschleife:</strong> Immer wieder, solange sie sichtbar ist.</li><li><strong>Einmal abspielen:</strong> Einmal von Anfang bis Ende. Über die Einstellung „Animation starten“ kann gewählt werden, wann die Wiedergabe beginnt.</li><li><strong>Scrollposition:</strong> Bild für Bild beim Scrollen. Über die Einstellung „Scroll-Bereich“ kann gewählt werden, wann das Scrollen der Seite die Animation antreibt.</li></ul>
               label: Wiedergabe-Modus
               values:
                 loop: Endlosschleife
@@ -790,6 +790,12 @@ de:
                 entry: Beim Hereinscrollen
                 inFocus: Beim Passieren der Viewport-Mitte
                 inFocusWhenPinned: Während eingerastet
+            startAnimationTrigger:
+              inline_help_html: Bestimmt, wann die Animation zu spielen beginnt:<ul><li><strong>Bei Erreichen der Viewport-Mitte:</strong> Sobald das Element die vertikale Mitte des Viewports erreicht.</li><li><strong>Sobald das Element sichtbar wird:</strong> Sobald das Element in den Viewport scrollt.</li></ul>Die Animation spielt dann bis zu ihrem Ende. Sie pausiert nur, solange das Element außerhalb des Viewports ist.
+              label: Animation starten
+              values:
+                onActivate: Bei Erreichen der Viewport-Mitte
+                onVisible: Sobald das Element sichtbar wird
           description: Eine als dotLottie-Datei exportierte Animation einbinden
           name: Lottie-Animation
           tabs:

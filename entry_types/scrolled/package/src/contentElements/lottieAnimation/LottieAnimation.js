@@ -21,13 +21,33 @@ export function LottieAnimation({configuration}) {
     configuration, collectionName: 'lottieFiles', propertyName: 'id'
   });
 
-  const {shouldLoad, isVisible} = useContentElementLifecycle();
+  const {
+    playbackMode = 'loop',
+    scrollRange = 'cover',
+    startAnimationTrigger = 'onActivate'
+  } = configuration;
+
+  // Loops and scroll coupled animations start as soon as they are visible, so
+  // a trigger left over from switching playback modes must not hold them back.
+  const startTrigger = playbackMode === 'playOnce' ? startAnimationTrigger : 'onVisible';
+
+  const [hasStarted, setHasStarted] = useState(false);
+  const start = useCallback(() => setHasStarted(true), []);
+
+  const {shouldLoad, isVisible} = useContentElementLifecycle({
+    onActivate: startTrigger === 'onActivate' ? start : undefined,
+    onVisible: startTrigger === 'onVisible' ? start : undefined,
+
+    // Without forgetting that playback has started, the animation would resume
+    // as soon as the element becomes visible again, even though its trigger
+    // has not been reached since.
+    onInvisible: () => setHasStarted(false)
+  });
+
   const [animationAspectRatio, setAnimationAspectRatio] = useState();
 
   const {aspectRatio, rounded} = processImageModifiers(configuration.imageModifiers);
   const isCircleCrop = rounded === 'circle';
-
-  const {playbackMode = 'loop', scrollRange = 'cover'} = configuration;
 
   return (
     <FitViewport aspectRatio={aspectRatio || animationAspectRatio}
@@ -44,7 +64,7 @@ export function LottieAnimation({configuration}) {
                <Player lottieFile={lottieFile}
                        alt={lottieFile.configuration.alt}
                        loop={playbackMode === 'loop'}
-                       play={isVisible}
+                       play={isVisible && hasStarted}
                        seekOnScroll={playbackMode === 'scroll'}
                        scrollRange={scrollRange}
                        fit={aspectRatio ? 'cover' : 'contain'}

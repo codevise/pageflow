@@ -3,15 +3,13 @@ import _ from 'underscore';
 
 import {ListboxInputView} from './ListboxInputView';
 import {
-  ContentElementVisualization,
-  measureScrollTimeline,
   measureViewTimelineProgress,
   pinsElement
 } from './visualizations/ContentElementVisualization';
+import {
+  ScrollingContentElementVisualization
+} from './visualizations/ScrollingContentElementVisualization';
 import {PlaybackProgress} from './visualizations/PlaybackProgress';
-import {useScrollAnimation} from './visualizations/useScrollAnimation';
-
-import styles from './ScrollRangeSelectInputView.module.css';
 
 export const ScrollRangeSelectInputView = ListboxInputView.extend({
   // Options are rendered when the dropdown is opened, so passing
@@ -27,36 +25,20 @@ export const ScrollRangeSelectInputView = ListboxInputView.extend({
 });
 
 function Preview({item, position, layout}) {
-  const scrollerRef = useRef();
   const progressRef = useRef();
 
-  useScrollAnimation(scrollerRef, {
-    scrollTop: (scroller, animationProgress) => {
-      const {from, to} = measureScrollTimeline({scroller, position});
-
-      return from + (to - from) * animationProgress;
-    },
-
-    onScroll: scroller => progressRef.current.setProgress(
-      measureViewTimelineProgress({scroller, position, range: item.value})
-    )
-  });
-
   return (
-    <div className={styles.outer}>
-      <ContentElementVisualization
-        ref={scrollerRef}
+    <div>
+      <ScrollingContentElementVisualization
         position={position}
         layout={layout}
-        narrowBlock
-        scrollRoom
-        viewportCenter={measuresViewportCenter(item.value, position)}>
+        viewportCenter={measuresViewportCenter(item.value, position)}
+        onScroll={scroller => progressRef.current.setProgress(
+          measureViewTimelineProgress({scroller, position, range: item.value})
+        )}>
         <PlaybackProgress ref={progressRef} />
-      </ContentElementVisualization>
-
-      <div className={styles.description}>
-        {item.text}
-      </div>
+      </ScrollingContentElementVisualization>
+      {item.text}
     </div>
   );
 }

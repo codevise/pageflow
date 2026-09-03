@@ -74,17 +74,35 @@ export function measureViewTimelineProgress({scroller, position, range}) {
   });
 }
 
+// The lifecycle of a content element observes the element's own rect, no
+// matter whether something pins it: It turns visible once the rect intersects
+// the viewport and active once the rect crosses the center. Offsets are
+// fractions of the viewport height, like the root margins of the intersection
+// observers behind them.
+export function measureElementTop({scroller, position}) {
+  const scrollerRect = scroller.getBoundingClientRect();
+  const {element} = findViewTimelineElements(scroller, position);
+
+  return relativeRect(element, scrollerRect).top / scrollerRect.height;
+}
+
 // Scroll positions of the visualization at which the element starts
 // entering the viewport and at which it has completely left it again.
-export function measureScrollTimeline({scroller, position}) {
+// Pass until to end the timeline once the top edge of the element has
+// reached that offset instead.
+export function measureScrollTimeline({scroller, position, until}) {
   const scrollerRect = scroller.getBoundingClientRect();
   const {subject} = findViewTimelineElements(scroller, position);
   const subjectRect = subject.getBoundingClientRect();
   const subjectTop = subjectRect.top - scrollerRect.top + scroller.scrollTop;
 
+  // The element has completely left the viewport once its bottom edge has
+  // reached the top edge of it.
+  const end = until ?? -subjectRect.height / scrollerRect.height;
+
   return {
     from: Math.max(subjectTop - scrollerRect.height, 0),
-    to: subjectTop + subjectRect.height
+    to: subjectTop - scrollerRect.height * end
   };
 }
 

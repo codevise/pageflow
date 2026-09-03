@@ -2,8 +2,8 @@ import {editor} from 'pageflow-scrolled/editor';
 import {FileInput, SelectInput, useFakeFeatures, useFakeTranslations} from 'pageflow/testHelpers';
 
 import {
+  illustratedOptionNames,
   renderContentElementConfigurationEditor,
-  scrollRangeNames,
   useEditorGlobals
 } from 'support';
 
@@ -66,7 +66,11 @@ describe('lottieAnimation/editor', () => {
       'pageflow_scrolled.editor.content_elements.lottieAnimation.attributes.scrollRange.values.inFocus':
         'While crossing the viewport center',
       'pageflow_scrolled.editor.content_elements.lottieAnimation.attributes.scrollRange.values.inFocusWhenPinned':
-        'While locked in place'
+        'While locked in place',
+      'pageflow_scrolled.editor.content_elements.lottieAnimation.attributes.startAnimationTrigger.values.onActivate':
+        'When scrolled to center of viewport',
+      'pageflow_scrolled.editor.content_elements.lottieAnimation.attributes.startAnimationTrigger.values.onVisible':
+        'When first scrolled into view'
     });
 
     it('displays select to choose playback mode', () => {
@@ -79,12 +83,34 @@ describe('lottieAnimation/editor', () => {
       expect(input.values()).toEqual(['loop', 'playOnce', 'scroll']);
     });
 
+    it('displays select to choose when playback starts in playOnce playback mode', async () => {
+      const configurationEditor = renderConfigurationEditor({
+        configuration: {playbackMode: 'playOnce'}
+      });
+
+      expect(await illustratedOptionNames('startAnimationTrigger', {
+        inView: configurationEditor
+      })).toEqual([
+        'When scrolled to center of viewport',
+        'When first scrolled into view'
+      ]);
+    });
+
+    it('does not display select to choose when playback starts in other playback modes', () => {
+      const configurationEditor = renderConfigurationEditor({
+        configuration: {playbackMode: 'scroll'}
+      });
+
+      expect(configurationEditor.visibleInputPropertyNames())
+        .not.toContain('startAnimationTrigger');
+    });
+
     it('displays select to choose scroll range in scroll playback mode', async () => {
       const configurationEditor = renderConfigurationEditor({
         configuration: {playbackMode: 'scroll'}
       });
 
-      expect(await scrollRangeNames('scrollRange', {inView: configurationEditor})).toEqual([
+      expect(await illustratedOptionNames('scrollRange', {inView: configurationEditor})).toEqual([
         'While visible',
         'While completely visible',
         'While crossing the viewport center',
@@ -97,7 +123,7 @@ describe('lottieAnimation/editor', () => {
         configuration: {playbackMode: 'scroll', position: 'sticky'}
       });
 
-      expect(await scrollRangeNames('scrollRange', {inView: configurationEditor})).toEqual([
+      expect(await illustratedOptionNames('scrollRange', {inView: configurationEditor})).toEqual([
         'While visible',
         'While completely visible',
         'While locked in place',
@@ -110,7 +136,7 @@ describe('lottieAnimation/editor', () => {
         configuration: {playbackMode: 'scroll', position: 'standAlone'}
       });
 
-      expect(await scrollRangeNames('scrollRange', {inView: configurationEditor}))
+      expect(await illustratedOptionNames('scrollRange', {inView: configurationEditor}))
         .toContain('While locked in place');
     });
 
@@ -120,7 +146,7 @@ describe('lottieAnimation/editor', () => {
         configuration: {playbackMode: 'scroll', position: 'sticky'}
       });
 
-      expect(await scrollRangeNames('scrollRange', {inView: configurationEditor}))
+      expect(await illustratedOptionNames('scrollRange', {inView: configurationEditor}))
         .toContain('While crossing the viewport center');
     });
 

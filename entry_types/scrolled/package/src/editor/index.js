@@ -21,6 +21,7 @@ export {ColorSelectInputView} from './views/inputs/ColorSelectInputView';
 export {NoOptionsHintView} from './views/NoOptionsHintView';
 export {EditMotifAreaDialogView} from './views/EditMotifAreaDialogView';
 export {ImageModifierListInputView} from './views/inputs/ImageModifierListInputView';
+export {PlaybackStartSelectInputView} from './views/inputs/PlaybackStartSelectInputView';
 export {ScrollRangeSelectInputView} from './views/inputs/ScrollRangeSelectInputView';
 export {InlineFileRightsMenuItem} from './models/InlineFileRightsMenuItem';
 
