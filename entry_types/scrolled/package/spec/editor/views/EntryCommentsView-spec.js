@@ -577,7 +577,7 @@ describe('EntryCommentsView', () => {
     expect(pictogram.style.maskImage).not.toBe('');
   });
 
-  it('renders a section thread group with a label-only separator', () => {
+  it('renders a section thread group with the section pictogram', () => {
     const entry = createEntry({
       sections: [{id: 1, permaId: 10}],
       contentElements: [{id: 1, permaId: 100, sectionId: 1, typeName: 'image'}]
@@ -594,7 +594,8 @@ describe('EntryCommentsView', () => {
 
     expect(getByText('On the section')).toBeInTheDocument();
     expect(getByText('Section')).toBeInTheDocument();
-    expect(view.el.querySelector(`.${styles.pictogram}`)).toBeNull();
+    expect(view.el.querySelector(`.${styles.pictogram}`).style.maskImage)
+      .toContain('sectionPictogram.svg');
   });
 
   it("renders a section's comments above its content element comments", () => {
