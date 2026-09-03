@@ -65,6 +65,16 @@ describe('imageGallery configuration place', () => {
       .toHaveBeenCalledWith('/scrolled/imageGalleries/2/8', {trigger: true});
   });
 
+  it('switches the gallery to the item on select', () => {
+    const entry = create({items: [{id: 7}, {id: 8, image: 5}]});
+    const listener = jest.fn();
+    entry.contentElements.get(2).on('postCommand', listener);
+
+    places(entry)[0].select();
+
+    expect(listener).toHaveBeenCalledWith(2, {type: 'SET_CURRENT_ITEM', index: 1});
+  });
+
   it('selects the content element without leaving the item route', () => {
     const entry = create({items: [{id: 7}, {id: 8, image: 5}]});
     const listener = jest.fn();

@@ -38,6 +38,7 @@ editor.contentElementTypes.register('imageGallery', {
       label: attributeLabel(itemProperty),
 
       select() {
+        contentElement.postCommand({type: 'SET_CURRENT_ITEM', index: Number(index)});
         contentElement.select({navigate: false});
 
         editor.navigate(`/scrolled/imageGalleries/${contentElement.id}/${item.id}`,

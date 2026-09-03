@@ -2,6 +2,7 @@ import React, {forwardRef, useCallback, useState, useEffect, useRef} from 'react
 import classNames from 'classnames';
 import {
   useContentElementConfigurationUpdate,
+  useContentElementEditorCommandSubscription,
   useContentElementEditorState,
   useContentElementLifecycle,
   useFileWithInlineRights,
@@ -104,17 +105,23 @@ function Scroller({
     }
   }, [visibleIndex, scrollerRef, controlled]);
 
-  function scrollBy(delta) {
-    scrollTo(visibleIndex + delta);
-  }
-
-  function scrollTo(index) {
+  const scrollToItem = useCallback(index => {
     const scroller = scrollerRef.current;
     const child = scroller.children[index];
 
     if (child) {
-      scrollerRef.current.scrollTo(child.offsetLeft - scroller.offsetLeft, 0);
+      scroller.scrollTo(child.offsetLeft - scroller.offsetLeft, 0);
     }
+  }, [scrollerRef]);
+
+  useContentElementEditorCommandSubscription(useCallback(command => {
+    if (command.type === 'SET_CURRENT_ITEM') {
+      scrollToItem(command.index);
+    }
+  }, [scrollToItem]));
+
+  function scrollBy(delta) {
+    scrollToItem(visibleIndex + delta);
   }
 
   function handleClick(event) {
@@ -184,7 +191,7 @@ function Scroller({
            scrollerRef={scrollerRef}
            navAriaLabelTranslationKey="pageflow_scrolled.public.image_gallery_pagination"
            itemAriaLabelTranslationKey="pageflow_scrolled.public.go_to_image_gallery_item"
-           onItemClick={index => scrollTo(index)} />
+           onItemClick={index => scrollToItem(index)} />
        </div>}
     </div>
   );

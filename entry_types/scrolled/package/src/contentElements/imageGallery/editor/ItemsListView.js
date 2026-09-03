@@ -29,6 +29,9 @@ export const ItemsListView = Marionette.Layout.extend({
       sortable: true,
 
       onEdit: (model) => {
+        this.options.contentElement.postCommand({type: 'SET_CURRENT_ITEM',
+                                                 index: this.collection.indexOf(model)});
+
         editor.navigate(
           `/scrolled/imageGalleries/${this.options.contentElement.id}/${model.id}`,
           {trigger: true}
