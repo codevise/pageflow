@@ -55,6 +55,38 @@ describe('SidebarEditAreaView', () => {
       expect(areas.length).toBe(1);
       expect(areas.get(1)).toBeUndefined();
     });
+
+    it('navigates back to content element when confirmed', () => {
+      const entry = createEntry({
+        imageFiles: [{perma_id: 10}],
+        contentElements: [
+          {
+            id: 1,
+            typeName: 'hotspots',
+            configuration: {
+              image: 10,
+              areas: [{id: 1}, {id: 2}]
+            }
+          }
+        ]
+      });
+      const contentElement = entry.contentElements.get(1);
+      const areas = AreasCollection.forContentElement(contentElement);
+      const view = new SidebarEditAreaView({
+        model: areas.get(1),
+        collection: areas,
+        entry,
+        contentElement
+      });
+      window.confirm = jest.fn(() => true);
+
+      view.render();
+      DropDownButton.find(view).selectMenuItemByName('destroy');
+
+      expect(editor.router.navigate).toHaveBeenCalledWith(
+        '/scrolled/content_elements/1', {trigger: true}
+      );
+    });
   });
 
   describe('goBack', () => {

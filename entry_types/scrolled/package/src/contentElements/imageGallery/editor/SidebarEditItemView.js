@@ -3,7 +3,9 @@ import {EditConfigurationView, DestroyMenuItem, FileInputView} from 'pageflow/ed
 export const SidebarEditItemView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.content_elements.imageGallery.edit_item',
 
-  destroyEvent: 'remove',
+  containingCollection() {
+    return this.options.collection;
+  },
 
   getConfigurationModel() {
     return this.model;

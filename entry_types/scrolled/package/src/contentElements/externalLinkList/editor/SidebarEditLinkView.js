@@ -6,7 +6,9 @@ import I18n from 'i18n-js';
 export const SidebarEditLinkView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.content_elements.externalLinkList',
 
-  destroyEvent: 'remove',
+  containingCollection() {
+    return this.options.collection;
+  },
 
   getConfigurationModel() {
     return this.model;
