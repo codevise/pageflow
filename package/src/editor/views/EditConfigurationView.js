@@ -41,6 +41,10 @@ import {editor} from '../base';
  * Override the `getActionsMenuItems` method to add menu items to the
  * actions dropdown.
  *
+ * The view navigates back when the model is destroyed. Override the
+ * `containingCollection` property or method to also navigate back
+ * when the model is removed from the returned collection.
+ *
  * @param {Object} options
  * @param {Backbone.Model} options.model -
  *   Model including the {@link configurationContainer} and
@@ -81,10 +85,18 @@ export const EditConfigurationView = Marionette.Layout.extend({
     'click a.back': 'goBack'
   },
 
-  destroyEvent: 'destroy',
-
   initialize() {
-    this.listenTo(this.model, _.result(this, 'destroyEvent'), this.goBack);
+    const containingCollection = _.result(this, 'containingCollection');
+
+    if (containingCollection) {
+      this.listenTo(containingCollection, 'remove', model => {
+        if (model === this.model) {
+          this.goBack();
+        }
+      });
+    }
+
+    this.listenTo(this.model, 'destroy', this.goBack);
   },
 
   onRender: function() {

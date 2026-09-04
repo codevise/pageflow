@@ -10,7 +10,9 @@ export const SidebarEditAreaView = EditConfigurationView.extend({
 
   className: 'edit_configuration_view ' + styles.view,
 
-  destroyEvent: 'remove',
+  containingCollection() {
+    return this.options.collection;
+  },
 
   getConfigurationModel() {
     return this.model;

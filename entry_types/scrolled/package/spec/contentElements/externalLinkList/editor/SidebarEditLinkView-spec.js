@@ -48,6 +48,35 @@ describe('SidebarEditLinkView', () => {
       expect(links.get(1)).toBeUndefined();
     });
 
+    it('navigates back to content element when confirmed', () => {
+      const entry = createEntry({
+        contentElements: [
+          {
+            id: 1,
+            typeName: 'externalLinkList',
+            configuration: {
+              links: [{id: 1}, {id: 2}]
+            }
+          }
+        ]
+      });
+      const contentElement = entry.contentElements.get(1);
+      const links = ExternalLinkCollection.forContentElement(contentElement, entry);
+      const view = new SidebarEditLinkView({
+        model: links.get(1),
+        collection: links,
+        entry,
+        contentElement
+      });
+      window.confirm = jest.fn(() => true);
+
+      view.render();
+      DropDownButton.find(view).selectMenuItemByName('destroy');
+
+      expect(editor.router.navigate).toHaveBeenCalledWith(
+        '/scrolled/content_elements/1', {trigger: true}
+      );
+    });
   });
 
   describe('goBack', () => {

@@ -393,7 +393,7 @@ describe('EditConfigurationView', () => {
       expect(editor.router.navigate).toHaveBeenCalledWith('/', {trigger: true});
     });
 
-    it('does not navigate back by default when model is removed from collection', () => {
+    it('does not navigate back when model is removed from a collection', () => {
       const Model = Backbone.Model.extend({
         mixins: [configurationContainer(), failureTracking]
       });
@@ -403,27 +403,57 @@ describe('EditConfigurationView', () => {
         }
       });
       const model = new Model();
+      const collection = new Backbone.Collection([model]);
 
       new View({model}).render();
-      model.trigger('remove');
+      collection.remove(model);
+
+      expect(editor.router.navigate).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('containingCollection', () => {
+    const View = EditConfigurationView.extend({
+      containingCollection() {
+        return this.options.collection;
+      },
+
+      configure(configurationEditor) {
+        configurationEditor.tab('general', function() {});
+      }
+    });
+
+    const Model = Backbone.Model.extend({
+      mixins: [configurationContainer(), failureTracking]
+    });
+
+    it('navigates back when model is removed from collection', () => {
+      const model = new Model();
+      const collection = new Backbone.Collection([model]);
+
+      new View({model, collection}).render();
+      collection.remove(model);
+
+      expect(editor.router.navigate).toHaveBeenCalledWith('/', {trigger: true});
+    });
+
+    it('does not navigate back when other model is removed from collection', () => {
+      const model = new Model();
+      const otherModel = new Model();
+      const collection = new Backbone.Collection([model, otherModel]);
+
+      new View({model, collection}).render();
+      collection.remove(otherModel);
 
       expect(editor.router.navigate).not.toHaveBeenCalled();
     });
 
-    it('navigates back when model is removed if destroyEvent is set to remove', () => {
-      const Model = Backbone.Model.extend({
-        mixins: [configurationContainer(), failureTracking]
-      });
-      const View = EditConfigurationView.extend({
-        destroyEvent: 'remove',
-        configure(configurationEditor) {
-          configurationEditor.tab('general', function() {});
-        }
-      });
+    it('still navigates back when model is destroyed', () => {
       const model = new Model();
+      const collection = new Backbone.Collection([model]);
 
-      new View({model}).render();
-      model.trigger('remove');
+      new View({model, collection}).render();
+      model.trigger('destroy');
 
       expect(editor.router.navigate).toHaveBeenCalledWith('/', {trigger: true});
     });

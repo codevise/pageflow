@@ -11,6 +11,10 @@ export const EditContentElementView = EditConfigurationView.extend({
     return `pageflow_scrolled.editor.content_elements.${this.model.get('typeName')}`
   },
 
+  containingCollection() {
+    return this.options.entry.contentElements;
+  },
+
   configure(configurationEditor) {
     this.options.editor.contentElementTypes
         .setupConfigurationEditor(this.model.get('typeName'),
