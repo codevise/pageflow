@@ -54,7 +54,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'state_machines-activerecord', '~> 0.9.0'
 
   # Trigger resque jobs with a state machine
-  s.add_dependency 'state_machine_job', '~> 3.0'
+  s.add_dependency 'state_machine_job', '~> 3.3'
 
   # File attachments
   s.add_dependency 'kt-paperclip', '~> 7.2'
