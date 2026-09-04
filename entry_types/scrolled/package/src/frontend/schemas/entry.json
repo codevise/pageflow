@@ -1,0 +1,11 @@
+{
+  "$id": "pageflow-scrolled/entry",
+  "x-subject": {"model": "entry"},
+  "type": "object",
+  "properties": {
+    "shareImageId": {
+      "type": "integer",
+      "x-fileCollection": "image_files"
+    }
+  }
+}

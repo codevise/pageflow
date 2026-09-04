@@ -1,0 +1,15 @@
+{
+  "$id": "pageflow-scrolled/contentElements/inlineBeforeAfter",
+  "x-subject": {"model": "contentElement", "typeName": "inlineBeforeAfter"},
+  "type": "object",
+  "properties": {
+    "before_id": {
+      "type": "integer",
+      "x-fileCollection": "image_files"
+    },
+    "after_id": {
+      "type": "integer",
+      "x-fileCollection": "image_files"
+    }
+  }
+}

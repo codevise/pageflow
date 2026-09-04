@@ -1,0 +1,6 @@
+{
+  "$id": "pageflow-scrolled/contentElements/infoTable",
+  "x-subject": {"model": "contentElement", "typeName": "infoTable"},
+  "type": "object",
+  "properties": {}
+}

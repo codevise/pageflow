@@ -1,6 +1,9 @@
 import {SidebarEditAreaView} from 'contentElements/hotspots/editor/SidebarEditAreaView';
 import {AreasCollection} from 'contentElements/hotspots/editor/models/AreasCollection';
 
+import schema from 'contentElements/hotspots/schema.json';
+
+import {useConfigurationEditorMatchers} from 'pageflow-scrolled/testHelpers';
 import {editor} from 'pageflow/editor';
 import {ConfigurationEditor, DropDownButton, Tabs, renderBackboneView as render, useFakeTranslations} from 'pageflow/testHelpers';
 import {useEditorGlobals, useFakeXhr} from 'support';
@@ -8,6 +11,8 @@ import userEvent from '@testing-library/user-event';
 
 describe('SidebarEditAreaView', () => {
   useFakeXhr();
+  useConfigurationEditorMatchers();
+
   const {createEntry} = useEditorGlobals();
 
   beforeEach(() => {
@@ -229,5 +234,66 @@ describe('SidebarEditAreaView', () => {
     configurationEditor = ConfigurationEditor.find(view);
 
     expect(configurationEditor.inputPropertyNames()).not.toContain('portraitZoom');
+  });
+
+  it('renders inputs of area tab described by schema', () => {
+    const entry = createEntry({
+      imageFiles: [
+        {perma_id: 10},
+        {perma_id: 11}
+      ],
+      contentElements: [
+        {
+          id: 1,
+          typeName: 'hotspots',
+          configuration: {
+            image: 10,
+            portraitImage: 11,
+            areas: [{id: 1}]
+          }
+        }
+      ]
+    });
+    const contentElement = entry.contentElements.get(1);
+    const areas = AreasCollection.forContentElement(contentElement);
+    const view = new SidebarEditAreaView({
+      model: areas.get(1),
+      collection: areas,
+      entry,
+      contentElement
+    });
+
+    expect(() => render(view)).toRenderInputsMatching(schema, {path: ['areas', '*']});
+  });
+
+  it('renders inputs of portrait tab described by schema', () => {
+    const entry = createEntry({
+      imageFiles: [
+        {perma_id: 10},
+        {perma_id: 11}
+      ],
+      contentElements: [
+        {
+          id: 1,
+          typeName: 'hotspots',
+          configuration: {
+            image: 10,
+            portraitImage: 11,
+            areas: [{id: 1}]
+          }
+        }
+      ]
+    });
+    const contentElement = entry.contentElements.get(1);
+    const areas = AreasCollection.forContentElement(contentElement);
+    const view = new SidebarEditAreaView({
+      model: areas.get(1),
+      collection: areas,
+      entry,
+      contentElement,
+      tab: 'portrait'
+    });
+
+    expect(() => render(view)).toRenderInputsMatching(schema, {path: ['areas', '*']});
   });
 });

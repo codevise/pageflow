@@ -19,6 +19,7 @@ module PageflowScrolled
                                  skip_i18n: true,
                                  include_hidden_sections: true,
                                  include_unused_additional_seed_data: true,
+                                 include_unused_file_reference_locations: true,
                                  include_theme_translations: true)
       end
 

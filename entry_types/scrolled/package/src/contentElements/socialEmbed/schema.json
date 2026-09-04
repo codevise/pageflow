@@ -1,0 +1,6 @@
+{
+  "$id": "pageflow-scrolled/contentElements/socialEmbed",
+  "x-subject": {"model": "contentElement", "typeName": "socialEmbed"},
+  "type": "object",
+  "properties": {}
+}

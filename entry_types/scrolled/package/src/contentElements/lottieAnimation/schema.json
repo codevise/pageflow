@@ -1,0 +1,11 @@
+{
+  "$id": "pageflow-scrolled/contentElements/lottieAnimation",
+  "x-subject": {"model": "contentElement", "typeName": "lottieAnimation"},
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "x-fileCollection": "lottie_files"
+    }
+  }
+}

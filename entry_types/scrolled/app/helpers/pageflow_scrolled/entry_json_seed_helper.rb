@@ -27,14 +27,21 @@ module PageflowScrolled
     def scrolled_entry_json_seed(json, scrolled_entry, options = {})
       revision = scrolled_entry.revision
       sections = scrolled_entry_json_seed_sections(scrolled_entry, options)
+      content_elements = scrolled_entry_json_seed_content_elements(revision, sections)
+      entry_config = Pageflow.config_for(scrolled_entry)
 
       json.partial!('pageflow_scrolled/entry_json_seed/entry',
                     entry: scrolled_entry,
-                    entry_config: Pageflow.config_for(scrolled_entry),
+                    entry_config:,
                     storylines: scrolled_entry_json_seed_storylines(revision),
                     chapters: scrolled_entry_json_seed_chapters(revision, options),
                     sections:,
-                    content_elements: scrolled_entry_json_seed_content_elements(revision, sections),
+                    content_elements:,
+                    file_reference_locations: EntryFileReferenceLocations.new(
+                      entry_config,
+                      content_elements,
+                      include_unused: options[:include_unused_file_reference_locations]
+                    ),
                     widgets: scrolled_entry.resolve_widgets(insert_point: :react),
                     options:)
     end

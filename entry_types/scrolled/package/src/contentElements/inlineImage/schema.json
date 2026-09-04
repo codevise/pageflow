@@ -1,0 +1,15 @@
+{
+  "$id": "pageflow-scrolled/contentElements/inlineImage",
+  "x-subject": {"model": "contentElement", "typeName": "inlineImage"},
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "x-fileCollection": "image_files"
+    },
+    "portraitId": {
+      "type": "integer",
+      "x-fileCollection": "image_files"
+    }
+  }
+}

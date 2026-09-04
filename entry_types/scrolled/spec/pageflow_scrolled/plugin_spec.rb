@@ -26,6 +26,36 @@ module PageflowScrolled
       end
     end
 
+    describe 'file_rights_from_references feature' do
+      it 'is enabled by default' do
+        entry = build(:entry, type_name: 'scrolled', features_configuration: {})
+
+        expect(entry.enabled_feature_names).to include('file_rights_from_references')
+      end
+    end
+
+    describe 'configuration schemas' do
+      it 'reads schemas shipped by the engine' do
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        schemas = Pageflow.config_for(entry).configuration_schemas
+
+        expect(schemas.find(model: 'contentElement', type_name: 'hotspots')).to be_present
+      end
+
+      it 'describes file references of sections' do
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        schemas = Pageflow.config_for(entry).configuration_schemas
+        locations = FileReferenceLocations.new(schemas).for(schemas.find(model: 'section'))
+
+        expect(locations.map { |location| location['path'] })
+          .to contain_exactly(%w[backdrop image], %w[backdrop imageMobile],
+                              %w[backdrop video], %w[backdrop videoMobile],
+                              ['atmoAudioFileId'])
+      end
+    end
+
     describe 'IFRAME_EMBED_CONSENT_VENDOR' do
       it 'returns nil if consent not required' do
         pageflow_configure do |config|

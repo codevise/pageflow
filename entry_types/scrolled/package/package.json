@@ -86,6 +86,7 @@
     "storybook": "^7.6.10"
   },
   "scripts": {
+    "build-configuration-schemas": "node config/configurationSchemas.js",
     "test": "jest",
     "lint": "eslint --rulesdir ../../../node_modules/pageflow/config/eslint-rules",
     "start-storybook": "storybook dev --port 8001",

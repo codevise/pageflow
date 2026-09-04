@@ -1,12 +1,17 @@
 import {SidebarEditLinkView} from 'contentElements/externalLinkList/editor/SidebarEditLinkView';
 import {ExternalLinkCollection} from 'contentElements/externalLinkList/editor/models/ExternalLinkCollection';
 
+import schema from 'contentElements/externalLinkList/schema.json';
+
+import {useConfigurationEditorMatchers} from 'pageflow-scrolled/testHelpers';
 import {editor} from 'pageflow/editor';
 import {DropDownButton} from 'pageflow/testHelpers';
 import {useEditorGlobals, useFakeXhr} from 'support';
 
 describe('SidebarEditLinkView', () => {
   useFakeXhr();
+  useConfigurationEditorMatchers();
+
   const {createEntry} = useEditorGlobals();
 
   beforeEach(() => {
@@ -76,5 +81,29 @@ describe('SidebarEditLinkView', () => {
         index: -1
       });
     });
+  });
+
+  it('renders inputs described by schema', () => {
+    const entry = createEntry({
+      contentElements: [
+        {
+          id: 1,
+          typeName: 'externalLinkList',
+          configuration: {
+            links: [{id: 1}]
+          }
+        }
+      ]
+    });
+    const contentElement = entry.contentElements.get(1);
+    const links = ExternalLinkCollection.forContentElement(contentElement, entry);
+    const view = new SidebarEditLinkView({
+      model: links.get(1),
+      collection: links,
+      entry,
+      contentElement
+    });
+
+    expect(() => view.render()).toRenderInputsMatching(schema, {path: ['links', '*']});
   });
 });

@@ -1,0 +1,15 @@
+{
+  "$id": "pageflow-scrolled/contentElements/inlineAudio",
+  "x-subject": {"model": "contentElement", "typeName": "inlineAudio"},
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "x-fileCollection": "audio_files"
+    },
+    "posterId": {
+      "type": "integer",
+      "x-fileCollection": "image_files"
+    }
+  }
+}

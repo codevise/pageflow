@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tmpdir'
 require 'pageflow/used_file_test_helper'
 require 'pageflow/shared_contexts/fake_translations'
 require 'pageflow/test_uploadable_file'
@@ -488,6 +489,168 @@ module PageflowScrolled
           expect(
             JSON.parse(result).dig('collections', 'sections').map { |s| s['id'] }
           ).to eq([section11.id, section12.id])
+        end
+      end
+
+      context 'file reference locations' do
+        it 'renders references of content element types used in entry' do
+          register_schema(
+            'x-subject' => {'model' => 'contentElement', 'typeName' => 'someType'},
+            'properties' => {'image' => {'x-fileCollection' => 'image_files'}}
+          )
+
+          entry = create(:published_entry, type_name: 'scrolled')
+          chapter = create(:scrolled_chapter, revision: entry.revision)
+          section = create(:section, chapter:)
+          create(:content_element, section:, type_name: 'someType')
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(
+            config: {
+              fileReferenceLocations: {
+                contentElements: {
+                  someType: [{path: ['image'], collection: 'imageFiles'}]
+                }
+              }
+            }
+          )
+        end
+
+        it 'omits content element types not used in entry' do
+          register_schema(
+            'x-subject' => {'model' => 'contentElement', 'typeName' => 'someType'},
+            'properties' => {'image' => {'x-fileCollection' => 'image_files'}}
+          )
+
+          entry = create(:published_entry, type_name: 'scrolled')
+          chapter = create(:scrolled_chapter, revision: entry.revision)
+          section = create(:section, chapter:)
+          create(:content_element, section:, type_name: 'otherType')
+
+          result = render(helper, entry)
+
+          expect(json_config(result)['fileReferenceLocations']['contentElements']).to eq({})
+        end
+
+        it 'renders empty list for content element types without file references' do
+          register_schema(
+            'x-subject' => {'model' => 'contentElement', 'typeName' => 'someType'},
+            'properties' => {'text' => {'type' => 'string'}}
+          )
+
+          entry = create(:published_entry, type_name: 'scrolled')
+          chapter = create(:scrolled_chapter, revision: entry.revision)
+          section = create(:section, chapter:)
+          create(:content_element, section:, type_name: 'someType')
+
+          result = render(helper, entry)
+
+          expect(json_config(result)['fileReferenceLocations']['contentElements'])
+            .to eq('someType' => [])
+        end
+
+        it 'renders references of sections' do
+          register_schema(
+            'x-subject' => {'model' => 'section'},
+            'properties' => {'someFile' => {'x-fileCollection' => 'image_files'}}
+          )
+
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry)
+
+          expect(json_config(result)['fileReferenceLocations']['sections'])
+            .to include('path' => ['someFile'], 'collection' => 'imageFiles')
+        end
+
+        it 'renders references of entry metadata' do
+          register_schema(
+            'x-subject' => {'model' => 'entry'},
+            'properties' => {'someFile' => {'x-fileCollection' => 'image_files'}}
+          )
+
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry)
+
+          expect(json_config(result)['fileReferenceLocations']['entry'])
+            .to include('path' => ['someFile'], 'collection' => 'imageFiles')
+        end
+
+        it 'raises if schema for sections is missing' do
+          pageflow_configure do |config|
+            config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+              entry_type_config.configuration_schema_load_path = []
+            end
+          end
+
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          expect { render(helper, entry) }.to raise_error(/schema for section/)
+        end
+
+        it 'logs content element types without schema' do
+          register_schema(
+            'x-subject' => {'model' => 'contentElement', 'typeName' => 'someType'},
+            'properties' => {}
+          )
+
+          entry = create(:published_entry, type_name: 'scrolled')
+          chapter = create(:scrolled_chapter, revision: entry.revision)
+          section = create(:section, chapter:)
+          create(:content_element, section:, type_name: 'otherType')
+
+          expect(Rails.logger).to receive(:warn).with(/otherType/)
+
+          render(helper, entry)
+        end
+
+        it 'does not log content element types without schema when feature is disabled' do
+          register_schema(
+            'x-subject' => {'model' => 'contentElement', 'typeName' => 'someType'},
+            'properties' => {}
+          )
+
+          entry = create(:published_entry,
+                         type_name: 'scrolled',
+                         without_feature: 'file_rights_from_references')
+          chapter = create(:scrolled_chapter, revision: entry.revision)
+          section = create(:section, chapter:)
+          create(:content_element, section:, type_name: 'otherType')
+
+          expect(Rails.logger).not_to receive(:warn).with(/otherType/)
+
+          render(helper, entry)
+        end
+
+        def register_schema(schema)
+          dir = Dir.mktmpdir
+          File.write(File.join(dir, 'schema.json'), JSON.generate(schema))
+
+          pageflow_configure do |config|
+            config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|
+              entry_type_config.configuration_schema_load_path << File.join(dir, '*.json')
+            end
+          end
+        end
+
+        def json_config(result)
+          JSON.parse(result)['config']
+        end
+      end
+
+      context 'entry metadata' do
+        it 'renders share image id' do
+          image_file = create_used_file(:image_file)
+          entry = create(:published_entry, type_name: 'scrolled')
+          entry.revision.update!(share_image_id: image_file.perma_id)
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(collections: {
+                                           entries: [{shareImageId: image_file.perma_id}]
+                                         })
         end
       end
 

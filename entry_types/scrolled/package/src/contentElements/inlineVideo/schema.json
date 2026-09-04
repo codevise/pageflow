@@ -1,0 +1,24 @@
+{
+  "$id": "pageflow-scrolled/contentElements/inlineVideo",
+  "x-subject": {"model": "contentElement", "typeName": "inlineVideo"},
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "x-fileCollection": "video_files"
+    },
+    "posterId": {
+      "type": "integer",
+      "x-fileCollection": "image_files"
+    },
+    "portraitId": {
+      "type": "integer",
+      "x-fileCollection": "video_files"
+    },
+    "portraitPosterId": {
+      "type": "integer",
+      "x-fileCollection": "image_files",
+      "x-activeIf": {"path": ["portraitId"], "present": true}
+    }
+  }
+}

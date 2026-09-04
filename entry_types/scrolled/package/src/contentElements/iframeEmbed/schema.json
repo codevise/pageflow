@@ -1,0 +1,6 @@
+{
+  "$id": "pageflow-scrolled/contentElements/iframeEmbed",
+  "x-subject": {"model": "contentElement", "typeName": "iframeEmbed"},
+  "type": "object",
+  "properties": {}
+}

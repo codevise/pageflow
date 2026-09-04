@@ -17,6 +17,7 @@ extend Pageflow Scrolled.
 Concept level deep dives:
 
 * [Understanding Motif Area Handling](./internal/understanding_motif_area_handling.md)
+* [Configuration Schemas](./internal/configuration_schemas.md)
 
 ### Contributing
 

@@ -1,0 +1,38 @@
+{
+  "$id": "pageflow-scrolled/section",
+  "x-subject": {"model": "section"},
+  "type": "object",
+  "properties": {
+    "backdrop": {
+      "type": "object",
+      "anyOf": [
+        {
+          "properties": {
+            "image": {"type": "integer", "x-fileCollection": "image_files"},
+            "imageMobile": {"type": "integer", "x-fileCollection": "image_files"}
+          }
+        },
+        {
+          "properties": {
+            "video": {"type": "integer", "x-fileCollection": "video_files"},
+            "videoMobile": {"type": "integer", "x-fileCollection": "video_files"}
+          }
+        },
+        {
+          "properties": {
+            "color": {"type": "string"}
+          }
+        },
+        {
+          "properties": {
+            "contentElement": {"type": "integer"}
+          }
+        }
+      ]
+    },
+    "atmoAudioFileId": {
+      "type": "integer",
+      "x-fileCollection": "audio_files"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "$id": "pageflow-scrolled/contentElements/vrImage",
+  "x-subject": {"model": "contentElement", "typeName": "vrImage"},
+  "type": "object",
+  "properties": {
+    "image": {
+      "type": "integer",
+      "x-fileCollection": "image_files"
+    }
+  }
+}

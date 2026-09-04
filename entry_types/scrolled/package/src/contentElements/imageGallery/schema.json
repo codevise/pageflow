@@ -1,0 +1,26 @@
+{
+  "$id": "pageflow-scrolled/contentElements/imageGallery",
+  "x-subject": {"model": "contentElement", "typeName": "imageGallery"},
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/item"}
+    }
+  },
+  "$defs": {
+    "item": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "type": "integer",
+          "x-fileCollection": "image_files"
+        },
+        "portraitImage": {
+          "type": "integer",
+          "x-fileCollection": "image_files"
+        }
+      }
+    }
+  }
+}

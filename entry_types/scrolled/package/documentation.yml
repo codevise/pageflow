@@ -71,6 +71,9 @@ toc:
       - useContentElementMatchers
       - toContainContentElementBox
       - toContainFitViewport
+      - renderContentElementConfigurationEditor
+      - useConfigurationEditorMatchers
+      - toRenderInputsMatching
   - name: Storybook Support
     description: |
       Helper functions to use in content element stories.

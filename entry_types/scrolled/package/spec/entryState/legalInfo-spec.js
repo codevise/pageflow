@@ -1,7 +1,7 @@
 import {useFileRights, useLegalInfo, useCredits, watchCollections} from 'entryState';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 
-import {factories} from 'pageflow/testHelpers';
+import {factories, useFakeFeatures} from 'pageflow/testHelpers';
 import {renderHookInEntry, normalizeSeed} from 'support';
 
 describe('useLegalInfo', () => {
@@ -84,6 +84,120 @@ describe('useCredits', () => {
 });
 
 describe('useFileRights', () => {
+  describe('with file_rights_from_references feature', () => {
+    useFakeFeatures('frontend', ['file_rights_from_references']);
+
+    it('only includes referenced files', () => {
+      const {result} = renderHookInEntry(
+        () => useFileRights(), {
+          seed: {
+            imageFiles: [
+              {permaId: 5, rights: 'referenced'},
+              {permaId: 6, rights: 'unreferenced'}
+            ],
+            contentElements: [{typeName: 'someType', configuration: {image: 5}}],
+            fileReferenceLocations: {
+              contentElements: {
+                someType: [{path: ['image'], collection: 'imageFiles'}]
+              }
+            }
+          }
+        }
+      );
+
+      expect(result.current).toMatchObject([{text: 'referenced'}]);
+    });
+
+    it('includes files nested in a referenced file', () => {
+      const {result} = renderHookInEntry(
+        () => useFileRights(), {
+          seed: {
+            videoFiles: [{id: 100, permaId: 5, rights: 'referenced'}],
+            textTrackFiles: [
+              {id: 200, permaId: 6, parentFileId: 100,
+               parentFileModelType: 'Pageflow::VideoFile', rights: 'nested'}
+            ],
+            contentElements: [{typeName: 'someType', configuration: {video: 5}}],
+            fileReferenceLocations: {
+              contentElements: {
+                someType: [{path: ['video'], collection: 'videoFiles'}]
+              }
+            }
+          }
+        }
+      );
+
+      expect(result.current).toMatchObject([{text: 'nested'}, {text: 'referenced'}]);
+    });
+
+    it('skips files nested in an unreferenced file', () => {
+      const {result} = renderHookInEntry(
+        () => useFileRights(), {
+          seed: {
+            videoFiles: [{id: 100, permaId: 5, rights: 'unreferenced'}],
+            textTrackFiles: [
+              {id: 200, permaId: 6, parentFileId: 100,
+               parentFileModelType: 'Pageflow::VideoFile', rights: 'nested'}
+            ],
+            contentElements: [{typeName: 'someType', configuration: {}}],
+            fileReferenceLocations: {
+              contentElements: {
+                someType: [{path: ['video'], collection: 'videoFiles'}]
+              }
+            }
+          }
+        }
+      );
+
+      expect(result.current).toEqual([]);
+    });
+
+    it('skips inactive references', () => {
+      const {result} = renderHookInEntry(
+        () => useFileRights(), {
+          seed: {
+            imageFiles: [{permaId: 5, rights: 'author'}],
+            contentElements: [
+              {typeName: 'someType', configuration: {image: 5, backgroundType: 'color'}}
+            ],
+            fileReferenceLocations: {
+              contentElements: {
+                someType: [{
+                  path: ['image'],
+                  collection: 'imageFiles',
+                  activeIf: {path: ['backgroundType'], not: 'color'}
+                }]
+              }
+            }
+          }
+        }
+      );
+
+      expect(result.current).toEqual([]);
+    });
+  });
+
+  it('includes unreferenced files without feature', () => {
+    const {result} = renderHookInEntry(
+      () => useFileRights(), {
+        seed: {
+          imageFiles: [
+            {permaId: 5, rights: 'referenced'},
+            {permaId: 6, rights: 'unreferenced'}
+          ],
+          contentElements: [{typeName: 'someType', configuration: {image: 5}}],
+          fileReferenceLocations: {
+            contentElements: {
+              someType: [{path: ['image'], collection: 'imageFiles'}]
+            }
+          }
+        }
+      }
+    );
+
+    expect(result.current).toMatchObject([{text: 'referenced'}, {text: 'unreferenced'}]);
+  });
+
   it('reads data from seed', () => {
     const {result} = renderHookInEntry(
       () => useFileRights(), {

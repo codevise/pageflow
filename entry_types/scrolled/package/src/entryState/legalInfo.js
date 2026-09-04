@@ -3,12 +3,17 @@ import {
   useEntryStateConfig,
   useMultipleEntryStateCollectionItems
 } from "./EntryStateProvider";
+import {useIsFileReferenced} from './useFileReferences';
 
 /**
- * Returns a collection of rights and source urls of all files
- * used in the entry. If none of the files has a rights attribute
+ * Returns a collection of rights and source urls of the files
+ * referenced in the entry. If none of the files has a rights attribute
  * configured, it falls back to the default file rights of the
  * entry's site, otherwise returns an empty array.
+ *
+ * Lists all files of the entry unless the file_rights_from_references
+ * feature is enabled, since schemas do not cover all content element
+ * types yet.
  *
  * @example
  *
@@ -19,14 +24,16 @@ export function useFileRights() {
   const config = useEntryStateConfig();
   const fileCollectionNames = Object.keys(config.fileModelTypes);
   const files = useMultipleEntryStateCollectionItems(fileCollectionNames);
+  const isFileReferenced = useIsFileReferenced();
 
   const defaultFileRights = config.defaultFileRights?.trim();
 
   const items = {};
 
-  Object.keys(files).forEach(key =>
-    files[key]
+  Object.keys(files).forEach(collectionName =>
+    files[collectionName]
       .filter(file => file.configuration.rights_display !== 'inline')
+      .filter(file => isFileReferenced(collectionName, file.permaId))
       .forEach(file => {
         const text = file.rights?.trim() || defaultFileRights;
 

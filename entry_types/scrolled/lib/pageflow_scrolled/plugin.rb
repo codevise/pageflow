@@ -7,6 +7,9 @@ module PageflowScrolled
       end
 
       config.for_entry_type(PageflowScrolled.entry_type) do |c|
+        c.configuration_schema_load_path <<
+          Engine.root.join('config', 'configuration_schemas', '*.json').to_s
+
         padding_scale = {
           'none' => '0px',
           'xxxs' => '1.375em',
@@ -224,7 +227,9 @@ module PageflowScrolled
         c.features.register('backdrop_size')
         c.features.register('commenting')
         c.features.register('image_srcset')
+        c.features.register('file_rights_from_references')
         c.features.enable_by_default('image_srcset')
+        c.features.enable_by_default('file_rights_from_references')
 
         c.features.register('faq_page_structured_data') do |feature_config|
           feature_config.entry_structured_data_types.register(

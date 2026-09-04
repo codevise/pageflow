@@ -1,0 +1,6 @@
+{
+  "$id": "pageflow-scrolled/contentElements/dataWrapperChart",
+  "x-subject": {"model": "contentElement", "typeName": "dataWrapperChart"},
+  "type": "object",
+  "properties": {}
+}
