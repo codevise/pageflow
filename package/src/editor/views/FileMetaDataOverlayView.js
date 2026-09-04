@@ -6,6 +6,7 @@ import {arrow, autoUpdate, computePosition, offset, shift, size} from '@floating
 import {CollectionView} from 'pageflow/ui';
 
 import {FileMetaDataItemView} from './FileMetaDataItemView';
+import {FileReferencesView} from './FileReferencesView';
 import {FileStageItemView} from './FileStageItemView';
 import {TextFileMetaDataItemValueView} from './TextFileMetaDataItemValueView';
 
@@ -18,6 +19,10 @@ const DISTANCE_FROM_VIEWPORT_EDGE = 8;
 // into the overlay.
 const DISMISS_DELAY = 300;
 
+// Below this the preview no longer tells the file apart, so the content
+// scrolls rather than scaling the preview away.
+const MIN_PREVIEW_HEIGHT = 96;
+
 export const FileMetaDataOverlayView = Marionette.ItemView.extend({
   template,
   className: 'file_meta_data_overlay',
@@ -28,6 +33,7 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
     preview: '.file_meta_data_overlay-preview',
     stageItems: '.file_stage_items',
     metaData: 'tbody.attributes',
+    fileReferences: '.file_meta_data_overlay-file_references',
     downloads: 'tbody.downloads',
     downloadLink: 'a.original'
   },
@@ -65,6 +71,13 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
     _.each(this.metaDataViews(), function(view) {
       this.ui.metaData.append(this.subview(view).el);
     }, this);
+
+    if (this.options.fileReferences) {
+      this.appendSubview(new FileReferencesView({
+        model: this.model,
+        fileReferences: this.options.fileReferences
+      }), {to: this.ui.fileReferences});
+    }
   },
 
   // Only exists while the overlay is open, so that videos of other
@@ -270,7 +283,8 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
     this.el.style.setProperty('--available-height', `${available}px`);
     this.el.style.setProperty(
       '--preview-max-height',
-      `${Math.max(0, available - (content.scrollHeight - previewHeight))}px`
+      `${Math.max(MIN_PREVIEW_HEIGHT,
+                  available - (content.scrollHeight - previewHeight))}px`
     );
   },
 

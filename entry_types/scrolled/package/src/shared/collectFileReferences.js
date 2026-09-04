@@ -9,11 +9,15 @@
  */
 export function collectFileReferences({locations, configuration}) {
   return locations.flatMap(location =>
-    valuesAt(configuration, location.path).map(toPermaId).filter(Boolean).map(permaId => ({
-      collectionName: location.collection,
-      permaId,
-      active: isActive(location.activeIf, configuration)
-    }))
+    valuesAt(configuration, location.path)
+      .map(({path, value}) => ({path, permaId: toPermaId(value)}))
+      .filter(({permaId}) => permaId)
+      .map(({path, permaId}) => ({
+        collectionName: location.collection,
+        permaId,
+        path,
+        active: isActive(location.activeIf, configuration)
+      }))
   );
 }
 
@@ -25,22 +29,24 @@ function toPermaId(value) {
   return Number.isInteger(permaId) && permaId > 0 ? permaId : null;
 }
 
-function valuesAt(value, path) {
+function valuesAt(value, path, resolvedPath = []) {
   if (value === null || value === undefined) {
     return [];
   }
 
   if (!path.length) {
-    return [value];
+    return [{path: resolvedPath, value}];
   }
 
   const [segment, ...rest] = path;
 
   if (segment === '*') {
-    return Object.values(value).flatMap(item => valuesAt(item, rest));
+    return Object.entries(value).flatMap(
+      ([key, item]) => valuesAt(item, rest, [...resolvedPath, key])
+    );
   }
 
-  return valuesAt(value[segment], rest);
+  return valuesAt(value[segment], rest, [...resolvedPath, segment]);
 }
 
 function isActive(activeIf, configuration) {

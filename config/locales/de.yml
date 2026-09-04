@@ -1435,6 +1435,9 @@ de:
           expand_details: Details einblenden
           collapse_details: Details ausblenden
           move: Verschieben...
+          reference_count:
+            one: 1x verwendet
+            other: "%{count}x verwendet"
           retry: Erneut versuchen
           select: Auswählen
           settings: Einstellungen
@@ -1590,6 +1593,8 @@ de:
           confirm_destroy: Datei wirklich löschen?
         file_meta_data_item_value_view:
           blank: "-"
+        file_references:
+          header: Verwendet in
         file_preview_progress_bar_view:
           position: Wiedergabeposition
         files_blank_slate_view:

@@ -16,11 +16,14 @@ import {
 import {CommentDisplayFilter} from '../CommentDisplayFilter';
 import {ContentElement} from '../ContentElement';
 import {Cutoff} from '../Cutoff';
+import {configurationPlace} from '../configurationPlace';
+import settingsPictogram from '../../views/images/settingsPictogram.svg';
 
 import {insertContentElement} from './insertContentElement';
 import {moveContentElement} from './moveContentElement';
 import {deleteContentElement} from './deleteContentElement';
 import {duplicateContentElement} from './duplicateContentElement';
+import {fileReferences} from './fileReferences';
 import {updateContentElement} from './updateContentElement';
 
 import {sortColors} from './sortColors';
@@ -159,6 +162,19 @@ export const ScrolledEntry = Entry.extend({
 
   duplicateContentElement(contentElement) {
     return duplicateContentElement(this, contentElement);
+  },
+
+  fileReferences() {
+    return fileReferences(this);
+  },
+
+  getConfigurationPlace() {
+    return configurationPlace({
+      subject: I18n.t('pageflow_scrolled.editor.configuration_places.entry'),
+      detail: I18n.t('activerecord.attributes.pageflow/entry.share_image_id'),
+      pictogram: settingsPictogram,
+      select: () => editor.navigate('/meta_data/social', {trigger: true})
+    });
   },
 
   getTypographyVariants({contentElement, prefix}) {

@@ -12,7 +12,8 @@ import {collectFileReferences} from './collectFileReferences';
  *
  * const references = collectEntryFileReferences({collections, locations, fileModelTypes});
  * references.of('imageFiles', 5)
- * // => [{subject: {model: 'section', permaId: 12}, active: true}]
+ * // => [{subject: {model: 'section', permaId: 12},
+ * //      path: ['backdrop', 'image'], active: true}]
  *
  * @private
  */
@@ -71,8 +72,8 @@ function addNestedFileReferences(references, collections, fileModelTypes = {}) {
 
       const parent = filesById[modelTypeAndId(file.parentFileModelType, file.parentFileId)];
 
-      references[key(parent || {})]?.forEach(({subject, active}) =>
-        add(references, {collectionName, permaId: file.permaId, active}, subject)
+      references[key(parent || {})]?.forEach(({subject, path, active}) =>
+        add(references, {collectionName, permaId: file.permaId, path, active}, subject)
       );
     })
   );
@@ -88,11 +89,11 @@ function indexFilesById(collections, fileModelTypes) {
   }, {});
 }
 
-function add(references, {collectionName, permaId, active}, subject) {
+function add(references, {collectionName, permaId, path, active}, subject) {
   const list = references[key({collectionName, permaId})] =
     references[key({collectionName, permaId})] || [];
 
-  list.push({subject, active});
+  list.push({subject, path, active});
 }
 
 function groupBySectionId(contentElements) {

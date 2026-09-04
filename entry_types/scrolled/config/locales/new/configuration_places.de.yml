@@ -1,0 +1,7 @@
+de:
+  pageflow_scrolled:
+    editor:
+      configuration_places:
+        entry: "Einstellungen"
+        label: "%{chapter} - %{subject}"
+        section: "Abschnitt %{number}"

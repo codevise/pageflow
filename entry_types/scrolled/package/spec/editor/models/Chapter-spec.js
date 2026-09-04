@@ -1,6 +1,6 @@
 import 'pageflow-scrolled/editor';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
-import {factories, setupGlobals} from 'pageflow/testHelpers';
+import {factories, setupGlobals, useFakeTranslations} from 'pageflow/testHelpers';
 import {useFakeXhr, normalizeSeed} from 'support';
 
 describe('Chapter', () => {
@@ -466,6 +466,41 @@ describe('Chapter', () => {
 
         expect(targetChapter.sections.pluck('position')).toEqual([0]);
       });
+    });
+  });
+
+  describe('#getDisplayName', () => {
+    useFakeTranslations({
+      'pageflow_scrolled.editor.chapter_item.chapter': 'Chapter',
+      'pageflow_scrolled.editor.chapter_item.excursion': 'Excursion'
+    });
+
+    function createEntry() {
+      return factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          storylines: [
+            {id: 100, configuration: {main: true}},
+            {id: 200}
+          ],
+          chapters: [
+            {id: 1, storylineId: 100, position: 0, configuration: {title: 'Intro'}},
+            {id: 2, storylineId: 100, position: 1},
+            {id: 3, storylineId: 200, position: 0}
+          ]
+        })
+      });
+    }
+
+    it('returns title of chapter', () => {
+      expect(createEntry().chapters.get(1).getDisplayName()).toEqual('Intro');
+    });
+
+    it('returns number of untitled chapter', () => {
+      expect(createEntry().chapters.get(2).getDisplayName()).toEqual('Chapter 2');
+    });
+
+    it('returns excursion label for untitled excursion', () => {
+      expect(createEntry().chapters.get(3).getDisplayName()).toEqual('Excursion');
     });
   });
 

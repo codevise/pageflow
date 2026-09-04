@@ -110,6 +110,7 @@ export * from './views/PageLinksView';
 export * from './views/FilesView';
 export * from './views/FileTypePillsView';
 export * from './views/FileMetaDataItemValueView';
+export * from './views/FileReferencesView';
 export * from './views/PublishEntryView';
 export * from './views/DropDownButtonView';
 export * from './views/DropDownButtonItemListView';

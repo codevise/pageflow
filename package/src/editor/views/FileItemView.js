@@ -35,7 +35,8 @@ export const FileItemView = Marionette.ItemView.extend({
     retryButton: '.retry',
 
     thumbnail: '.file_thumbnail',
-    thumbnailButton: '.file_thumbnail_button'
+    thumbnailButton: '.file_thumbnail_button',
+    referenceCount: '.file_item-reference_count'
   },
 
   events: {
@@ -73,6 +74,10 @@ export const FileItemView = Marionette.ItemView.extend({
       this.listenTo(this.options.listSelection,
                     'add remove reset change:selecting',
                     this.updateSelected);
+
+      this.listenTo(this.options.listSelection,
+                    'change:selecting',
+                    this.updateReferenceCount);
     }
   },
 
@@ -131,6 +136,7 @@ export const FileItemView = Marionette.ItemView.extend({
 
     this.update();
     this.updateSelected();
+    this.updateReferenceCount();
     this.setupAriaAttributes();
 
     this.subview(new FileThumbnailView({
@@ -152,6 +158,7 @@ export const FileItemView = Marionette.ItemView.extend({
       this.metaDataOverlayView = this.subview(new FileMetaDataOverlayView({
         model: this.model,
         metaDataAttributes: this.options.metaDataAttributes,
+        fileReferences: this.options.fileReferences,
         reference: this.ui.thumbnailButton[0]
       }));
 
@@ -221,6 +228,24 @@ export const FileItemView = Marionette.ItemView.extend({
     this.ui.checkBox.prop('checked', selected);
     this.ui.checkBox.prop('disabled', !this.options.listSelection.isSelecting());
     this.$el.toggleClass('is_selected', selected);
+  },
+
+  // Counted only while files are being checked, since deciding which
+  // files a bulk delete may take out of the entry is what the count is
+  // there for.
+  updateReferenceCount: function() {
+    if (this.isClosed ||
+        !this.options.fileReferences ||
+        !this.options.listSelection?.isSelecting()) {
+      return;
+    }
+
+    var count = this.options.fileReferences.placesFor(this.model).length;
+
+    this.ui.referenceCount.text(
+      I18n.t('pageflow.editor.templates.file_item.reference_count', {count: count})
+    );
+    this.ui.referenceCount.toggleClass('is_unreferenced', !count);
   },
 
   // Only folders which have been created can hold a file, so an entry

@@ -18,7 +18,8 @@ describe('FileMetaDataOverlayView', () => {
 
   support.useFakeTranslations({
     'pageflow.editor.templates.file_item.source': 'Source',
-    'pageflow.editor.templates.file_item.download': 'Download'
+    'pageflow.editor.templates.file_item.download': 'Download',
+    'pageflow.editor.views.file_references.header': 'Referenced by'
   });
 
   function overlayView(file, options) {
@@ -31,6 +32,29 @@ describe('FileMetaDataOverlayView', () => {
       ...options
     });
   }
+
+  describe('file references', () => {
+    it('are listed below meta data', () => {
+      const view = overlayView(support.factories.file({}), {
+        metaDataAttributes: [],
+        fileReferences: {
+          placesFor: () => [{label: 'Intro - Image', pictogram: 'i.svg', select() {}}]
+        }
+      });
+
+      render(view);
+
+      expect(view.$el.find('.file_references-label').text()).toEqual('Intro - Image');
+    });
+
+    it('are omitted without index', () => {
+      const view = overlayView(support.factories.file({}), {metaDataAttributes: []});
+
+      render(view);
+
+      expect(view.$el.find('.file_references').length).toEqual(0);
+    });
+  });
 
   it('renders meta data items', () => {
     const file = support.factories.file({dimension: '200x100px'});
@@ -229,6 +253,40 @@ describe('FileMetaDataOverlayView', () => {
     view.close();
 
     expect(view.isOpen()).toBe(false);
+  });
+
+  describe('available height', () => {
+    function setup({availableHeight, contentHeight, previewHeight}) {
+      const view = overlayView(support.factories.file({}), {metaDataAttributes: []});
+
+      render(view);
+
+      define(view.el, 'offsetHeight', contentHeight);
+      define(view.ui.content[0], 'offsetHeight', contentHeight);
+      define(view.ui.content[0], 'scrollHeight', contentHeight);
+      jest.spyOn(view.ui.preview, 'outerHeight').mockReturnValue(previewHeight);
+
+      view.applyAvailableHeight({availableHeight});
+
+      return view;
+    }
+
+    function define(element, name, value) {
+      Object.defineProperty(element, name, {value, configurable: true});
+    }
+
+    it('leaves the preview the space the rest of the content does not need', () => {
+      const view = setup({availableHeight: 500, contentHeight: 400, previewHeight: 150});
+
+      expect(view.el.style.getPropertyValue('--preview-max-height')).toEqual('250px');
+    });
+
+    it('keeps the preview visible when the content does not fit', () => {
+      const view = setup({availableHeight: 200, contentHeight: 400, previewHeight: 150});
+
+      expect(view.el.style.getPropertyValue('--preview-max-height')).toEqual('96px');
+      expect(view.el.style.getPropertyValue('--available-height')).toEqual('200px');
+    });
   });
 
   describe('dismissing after a delay', () => {

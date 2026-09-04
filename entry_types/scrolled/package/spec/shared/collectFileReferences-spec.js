@@ -6,7 +6,7 @@ describe('collectFileReferences', () => {
     const configuration = {image: 5};
 
     expect(collectFileReferences({locations, configuration}))
-      .toEqual([{collectionName: 'imageFiles', permaId: 5, active: true}]);
+      .toEqual([{collectionName: 'imageFiles', permaId: 5, path: ['image'], active: true}]);
   });
 
   it('skips property that is not set', () => {
@@ -37,7 +37,8 @@ describe('collectFileReferences', () => {
     const configuration = {tooltip: {image: 5}};
 
     expect(collectFileReferences({locations, configuration}))
-      .toEqual([{collectionName: 'imageFiles', permaId: 5, active: true}]);
+      .toEqual([{collectionName: 'imageFiles', permaId: 5,
+                 path: ['tooltip', 'image'], active: true}]);
   });
 
   it('returns references from array items', () => {
@@ -48,12 +49,28 @@ describe('collectFileReferences', () => {
       .toEqual([5, 6]);
   });
 
+  it('resolves wildcards in paths of array items', () => {
+    const locations = [{path: ['areas', '*', 'image'], collection: 'imageFiles'}];
+    const configuration = {areas: [{image: 5}, {}, {image: 6}]};
+
+    expect(collectFileReferences({locations, configuration}).map(({path}) => path))
+      .toEqual([['areas', '0', 'image'], ['areas', '2', 'image']]);
+  });
+
   it('returns references from values of map with dynamic keys', () => {
     const locations = [{path: ['tooltipTexts', '*', 'image'], collection: 'imageFiles'}];
     const configuration = {tooltipTexts: {1: {image: 5}, 2: {image: 6}}};
 
     expect(collectFileReferences({locations, configuration}).map(({permaId}) => permaId))
       .toEqual([5, 6]);
+  });
+
+  it('resolves wildcards in paths of map values', () => {
+    const locations = [{path: ['tooltipTexts', '*', 'image'], collection: 'imageFiles'}];
+    const configuration = {tooltipTexts: {1: {image: 5}, 2: {image: 6}}};
+
+    expect(collectFileReferences({locations, configuration}).map(({path}) => path))
+      .toEqual([['tooltipTexts', '1', 'image'], ['tooltipTexts', '2', 'image']]);
   });
 
   it('skips nested path that is not set', () => {

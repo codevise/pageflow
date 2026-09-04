@@ -1,4 +1,6 @@
 import Backbone from 'backbone';
+import I18n from 'i18n-js';
+
 import {editor} from '../api';
 
 import {
@@ -10,6 +12,7 @@ import {
 
 import {features} from 'pageflow/frontend';
 import {ContentElementConfiguration} from './ContentElementConfiguration';
+import {configurationPlace} from './configurationPlace';
 
 const widths = {
   xxs: -3,
@@ -186,5 +189,42 @@ export const ContentElement = Backbone.Model.extend({
   getEditorPath() {
     return this.getType().editorPath?.call(null, this) ||
            `/scrolled/content_elements/${this.id}`;
+  },
+
+  getConfigurationPlace(path) {
+    const typeName = this.get('typeName');
+    const described = editor.contentElementTypes.findConfigurationPlace(this, path);
+    const select = described?.select || (() => this.select());
+
+    return configurationPlace({
+      chapter: this.section.chapter,
+      subject: I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`),
+      detail: described?.label || attributeLabel(typeName, path),
+      pictogram: editor.contentElementTypes.findPictogram(typeName),
+      select: () => {
+        select();
+        this.scrollIntoView({align: 'center'});
+      }
+    });
+  },
+
+  select(options) {
+    this.section.chapter.entry.trigger('selectContentElement',
+                                       this,
+                                       {navigate: true, ...options});
+  },
+
+  scrollIntoView(options) {
+    this.section.chapter.entry.trigger('scrollToContentElement', this, options);
   }
 });
+
+function attributeLabel(typeName, path) {
+  if (path.length > 1) {
+    return undefined;
+  }
+
+  return I18n.lookup(`${path[0]}.label`, {
+    scope: `pageflow_scrolled.editor.content_elements.${typeName}.attributes`
+  });
+}

@@ -117,6 +117,30 @@ describe('PreviewMessageController', () => {
     })).resolves.toMatchObject({type: 'SCROLL_TO_SECTION', payload: {id: 2}});
   });
 
+  it('sends SCROLL_TO_CONTENT_ELEMENT message on scrollToContentElement event on model',
+     async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 5}, {id: 6}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SCROLL_TO_CONTENT_ELEMENT') {
+          resolve(event.data);
+        }
+      });
+      entry.trigger('scrollToContentElement', entry.contentElements.get(6), {ifNeeded: true});
+    })).resolves.toMatchObject({
+      type: 'SCROLL_TO_CONTENT_ELEMENT', payload: {id: 6, ifNeeded: true}
+    });
+  });
+
   it('supports sending SCROLL_TO_SECTION message with align property', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({
@@ -229,6 +253,33 @@ describe('PreviewMessageController', () => {
     })).resolves.toMatchObject({type: 'SELECT', payload: {
       id: 1,
       range: [1, 2],
+      type: 'contentElement'
+    }});
+  });
+
+  it('passes on navigate option from selectContentElement event', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT') {
+          resolve(event.data);
+        }
+      });
+      entry.trigger('selectContentElement',
+                    entry.contentElements.first(),
+                    {navigate: false});
+    })).resolves.toMatchObject({type: 'SELECT', payload: {
+      id: 1,
+      navigate: false,
       type: 'contentElement'
     }});
   });
@@ -485,6 +536,26 @@ describe('PreviewMessageController', () => {
       editor.on('navigate', resolve);
       window.postMessage({type: 'SELECTED', payload: {id: 1, type: 'contentElement'}}, '*');
     })).resolves.toBe('/scrolled/content_elements/1');
+  });
+
+  it('does not navigate on SELECTED message for selection which asked not to', async () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+    const listener = jest.fn();
+    editor.on('navigate', listener);
+
+    window.postMessage(
+      {type: 'SELECTED', payload: {id: 1, type: 'contentElement', navigate: false}}, '*'
+    );
+    await tick();
+
+    expect(listener).not.toHaveBeenCalled();
   });
 
   it('navigates to edit section route on SELECTED message for section settings', () => {

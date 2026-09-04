@@ -38,6 +38,13 @@ export const Chapter = Backbone.Model.extend({
            I18n.t('pageflow_scrolled.editor.chapter_item.unnamed')
   },
 
+  getDisplayName() {
+    return this.configuration.get('title') ||
+           (this.isExcursion() ?
+            I18n.t('pageflow_scrolled.editor.chapter_item.excursion') :
+            this.getDisplayNumber());
+  },
+
   getDisplayNumber() {
     if (this.storyline.isMain()) {
       return I18n.t('pageflow_scrolled.editor.chapter_item.chapter') + ' ' + (this.get('position') + 1);

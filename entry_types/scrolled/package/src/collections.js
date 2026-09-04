@@ -116,6 +116,13 @@ export function updateConfiguration({dispatch, name, key, configuration}) {
   })
 }
 
+export function collectionSnapshot(collection, {attributes, includeConfiguration}) {
+  return collection.map(model => getAttributes(model, {
+    attributeNames: attributes,
+    includeConfiguration
+  }));
+}
+
 export function watchCollection(collection,
                                 {name, dispatch, attributes, includeConfiguration, keyAttribute = 'id'}) {
   const handle = {};

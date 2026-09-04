@@ -53,6 +53,16 @@ export const PreviewMessageController = Object.extend({
             })
           );
 
+          this.listenTo(this.entry, 'scrollToContentElement', (contentElement, options) =>
+            postMessage({
+              type: 'SCROLL_TO_CONTENT_ELEMENT',
+              payload: {
+                id: contentElement.id,
+                ...options
+              }
+            })
+          );
+
           this.listenTo(this.entry.contentElements, 'postCommand', (contentElementId, command) =>
             postMessage({
               type: 'CONTENT_ELEMENT_EDITOR_COMMAND',
@@ -109,6 +119,7 @@ export const PreviewMessageController = Object.extend({
               payload: {
                 id: contentElement.id,
                 range: options?.range,
+                navigate: options?.navigate,
                 type: 'contentElement'
               }
             })
@@ -228,8 +239,10 @@ export const PreviewMessageController = Object.extend({
           );
         }
         else if (type === 'contentElement') {
-          const contentElement = this.entry.contentElements.get(id);
-          this.editor.navigate(contentElement.getEditorPath(), {trigger: true})
+          if (message.data.payload.navigate !== false) {
+            const contentElement = this.entry.contentElements.get(id);
+            this.editor.navigate(contentElement.getEditorPath(), {trigger: true})
+          }
         }
         else if (type === 'sectionSettings') {
           this.editor.navigate(`/scrolled/sections/${id}`, {trigger: true})

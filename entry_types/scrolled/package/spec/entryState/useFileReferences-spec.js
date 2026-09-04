@@ -17,7 +17,8 @@ describe('useFileReferences', () => {
     });
 
     expect(result.current.of('imageFiles', 5))
-      .toEqual([{subject: {model: 'contentElement', permaId: 20}, active: true}]);
+      .toEqual([{subject: {model: 'contentElement', permaId: 20},
+                 path: ['image'], active: true}]);
   });
 
   it('indexes files referenced by sections', () => {
@@ -31,7 +32,8 @@ describe('useFileReferences', () => {
     });
 
     expect(result.current.of('imageFiles', 5))
-      .toEqual([{subject: {model: 'section', permaId: 10}, active: true}]);
+      .toEqual([{subject: {model: 'section', permaId: 10},
+                 path: ['backdrop', 'image'], active: true}]);
   });
 
   it('indexes files referenced by entry metadata', () => {
@@ -45,7 +47,7 @@ describe('useFileReferences', () => {
     });
 
     expect(result.current.of('imageFiles', 5))
-      .toEqual([{subject: {model: 'entry'}, active: true}]);
+      .toEqual([{subject: {model: 'entry'}, path: ['shareImageId'], active: true}]);
   });
 
   it('indexes files nested in a referenced file', () => {
@@ -62,7 +64,8 @@ describe('useFileReferences', () => {
     });
 
     expect(result.current.of('textTrackFiles', 6))
-      .toEqual([{subject: {model: 'section', permaId: 10}, active: true}]);
+      .toEqual([{subject: {model: 'section', permaId: 10},
+                 path: ['backdrop', 'video'], active: true}]);
   });
 
   it('is empty without locations in seed', () => {

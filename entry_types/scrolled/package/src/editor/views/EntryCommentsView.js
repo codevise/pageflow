@@ -7,6 +7,7 @@ import {
 
 import {ReviewView} from './ReviewView';
 import defaultPictogram from './images/defaultPictogram.svg';
+import sectionPictogram from './images/sectionPictogram.svg';
 import styles from './EntryCommentsView.module.css';
 
 export const EntryCommentsView = ReviewView.extend({
@@ -188,7 +189,8 @@ function SectionGroup({section, threads, selectedSubject, highlightedThreadId, r
 
   return (
     <div className={styles.group}>
-      <Separator label={I18n.t('pageflow_scrolled.editor.comments_view.section')} />
+      <Separator label={I18n.t('pageflow_scrolled.editor.comments_view.section')}
+                 pictogram={sectionPictogram} />
       <ThreadList subjectType="Section"
                   subjectId={permaId}
                   resolution={resolution}

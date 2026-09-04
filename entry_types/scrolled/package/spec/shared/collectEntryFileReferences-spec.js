@@ -20,7 +20,8 @@ describe('collectEntryFileReferences', () => {
     });
 
     expect(references.of('imageFiles', 5))
-      .toEqual([{subject: {model: 'section', permaId: 10}, active: true}]);
+      .toEqual([{subject: {model: 'section', permaId: 10},
+                 path: ['backdrop', 'image'], active: true}]);
   });
 
   it('finds file referenced by content element', () => {
@@ -32,7 +33,8 @@ describe('collectEntryFileReferences', () => {
     });
 
     expect(references.of('imageFiles', 5))
-      .toEqual([{subject: {model: 'contentElement', permaId: 20}, active: true}]);
+      .toEqual([{subject: {model: 'contentElement', permaId: 20},
+                 path: ['id'], active: true}]);
   });
 
   it('is empty for file that is not referenced', () => {
@@ -73,6 +75,22 @@ describe('collectEntryFileReferences', () => {
                 {model: 'section', permaId: 11}]);
   });
 
+  it('includes resolved path of location', () => {
+    const references = collect({
+      sections: [{id: 1, permaId: 10}],
+      contentElements: [{id: 2, permaId: 20, sectionId: 1, typeName: 'hotspots',
+                         configuration: {areas: [{}, {tooltipImage: 5}]}}],
+      locations: {
+        contentElements: {
+          hotspots: [{path: ['areas', '*', 'tooltipImage'], collection: 'imageFiles'}]
+        }
+      }
+    });
+
+    expect(references.of('imageFiles', 5).map(({path}) => path))
+      .toEqual([['areas', '1', 'tooltipImage']]);
+  });
+
   it('lists one reference per location', () => {
     const references = collect({
       sections: [{id: 1, permaId: 10, configuration: {backdrop: {image: 5, imageMobile: 5}}}],
@@ -110,7 +128,8 @@ describe('collectEntryFileReferences', () => {
     });
 
     expect(references.of('imageFiles', 5))
-      .toEqual([{subject: {model: 'section', permaId: 10}, active: false}]);
+      .toEqual([{subject: {model: 'section', permaId: 10},
+                 path: ['backdrop', 'image'], active: false}]);
   });
 
   describe('nested files', () => {
@@ -128,7 +147,8 @@ describe('collectEntryFileReferences', () => {
       });
 
       expect(references.of('textTrackFiles', 6))
-        .toEqual([{subject: {model: 'section', permaId: 10}, active: true}]);
+        .toEqual([{subject: {model: 'section', permaId: 10},
+                   path: ['backdrop', 'video'], active: true}]);
     });
 
     it('is empty if parent file is not referenced', () => {
@@ -152,7 +172,8 @@ describe('collectEntryFileReferences', () => {
       });
 
       expect(references.of('textTrackFiles', 6))
-        .toEqual([{subject: {model: 'section', permaId: 10}, active: false}]);
+        .toEqual([{subject: {model: 'section', permaId: 10},
+                   path: ['backdrop', 'video'], active: false}]);
     });
   });
 });
