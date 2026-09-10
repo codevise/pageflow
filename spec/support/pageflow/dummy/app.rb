@@ -41,7 +41,7 @@ module Pageflow
       end
 
       def rails_new_options
-        result = '--skip-test-unit --skip-bundle --database=mysql'
+        result = '--skip-test-unit --skip-bundle --database=mysql --skip-active-storage'
         result << ' --skip-javascript'
         result
       end
