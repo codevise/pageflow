@@ -137,7 +137,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'http_accept_language', '~> 2.0'
 
   # Shared translations
-  s.add_dependency 'pageflow-public-i18n', '~> 1.29'
+  s.add_dependency 'pageflow-public-i18n', '~> 1.31'
 
   # Password encryption
   s.add_dependency 'bcrypt', '~> 3.1.7'

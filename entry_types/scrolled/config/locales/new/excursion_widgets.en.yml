@@ -13,6 +13,3 @@ en:
             values:
               full: Full width
               inset: With side margins
-    public:
-      close: Close
-      exit_excursion: Exit excursion
