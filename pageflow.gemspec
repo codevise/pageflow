@@ -2,6 +2,7 @@ lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'pageflow/version'
+require 'pageflow/rails_version'
 
 Gem::Specification.new do |s|
   s.name        = 'pageflow'
@@ -30,7 +31,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 3.2'
 
-  s.add_dependency 'rails', ['>= 7.1.2', '< 7.3']
+  s.add_dependency 'rails', *Pageflow::RailsVersion.requirement
 
   # Framework for admin interface
   s.add_dependency 'activeadmin', '~> 3.0'
@@ -54,7 +55,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'state_machines-activerecord', '~> 0.9.0'
 
   # Trigger resque jobs with a state machine
-  s.add_dependency 'state_machine_job', '~> 3.0'
+  s.add_dependency 'state_machine_job', '~> 3.3'
 
   # File attachments
   s.add_dependency 'kt-paperclip', '~> 7.2'

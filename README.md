@@ -50,7 +50,7 @@ Pageflow runs in environments with:
 
 * Ruby >= 3.4
 * Node >= 22
-* Rails 7.1
+* Rails >= 7.2, < 8.2
 * Redis server (for Resque)
 * A database server supported by Active Record (tested with MySQL)
 * ImageMagick

@@ -18,6 +18,17 @@ module Pageflow
         end
 
         require(File.join(ENV.fetch('RAILS_ROOT', nil), 'config', 'environment'))
+
+        load_routes
+      end
+
+      # Routes are only loaded on demand unless eager loading is
+      # enabled. Active Admin defines its controllers while routes are
+      # drawn, and specs reference those constants as they are loaded.
+      def load_routes
+        return unless Rails.application.respond_to?(:reload_routes_unless_loaded)
+
+        Rails.application.reload_routes_unless_loaded
       end
 
       def directory
@@ -30,7 +41,7 @@ module Pageflow
       end
 
       def rails_new_options
-        result = '--skip-test-unit --skip-bundle --database=mysql'
+        result = '--skip-test-unit --skip-bundle --database=mysql --skip-active-storage'
         result << ' --skip-javascript'
         result
       end

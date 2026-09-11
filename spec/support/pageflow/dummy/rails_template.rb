@@ -55,8 +55,12 @@ rake 'shakapacker:install' if ENV['PAGEFLOW_INSTALL_SHAKAPACKER'] == 'true'
 
 generate 'pageflow:install', '--force'
 
-if ENV['PAGEFLOW_PLUGIN_ENGINE'].present?
-  generate "#{ENV['PAGEFLOW_PLUGIN_ENGINE']}:install", '--force'
+# Invoking a generator that does not exist aborts the template, and not
+# every plugin engine comes with an install generator.
+plugin_engine = ENV['PAGEFLOW_PLUGIN_ENGINE'].presence
+
+if plugin_engine && Rails::Generators.find_by_namespace('install', plugin_engine)
+  generate "#{plugin_engine}:install", '--force'
 end
 
 # Devise needs default_url_options for generating mails.
