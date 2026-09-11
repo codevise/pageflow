@@ -48,6 +48,11 @@ Gem::Specification.new do |s|
   # Faster JSON backend
   s.add_dependency 'yajl-ruby', '~> 1.2'
 
+  # Rails calls JSON.parse in ways json 3 rejects: 8.1 passes options
+  # positionally, 7.2 passes the removed quirks_mode option. Fixed on
+  # Rails 8-0-stable and 8-1-stable, still open on 7-2-stable.
+  s.add_dependency 'json', '< 3'
+
   # Authorization
   s.add_dependency 'cancancan', '~> 3.5'
 
