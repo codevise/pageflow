@@ -16,7 +16,7 @@ module Pageflow
     # @param options [Hash]
     #   Default options to deep merge into accumulated defaults.
     #
-    # @since edge
+    # @since 17.2
     def register_default_options(options)
       @default_options = @default_options.deep_merge(options)
     end
@@ -29,7 +29,7 @@ module Pageflow
     #   Receives merged options hash, returns transformed options.
     #   Use for conditional defaults based on what theme defines.
     #
-    # @since edge
+    # @since 17.2
     def register_options_transform(callable)
       @options_transforms << callable
     end

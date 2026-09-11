@@ -67,7 +67,7 @@ module PageflowScrolled
     #     ]
     #
     # @return [Array<String>]
-    # @since edge
+    # @since 17.2
     attr_accessor :configuration_schema_load_path
 
     # @api private
@@ -111,7 +111,7 @@ module PageflowScrolled
     #     }
     #
     # @return [Hash<RegExp, String>]
-    # @since edge
+    # @since 17.2
     attr_accessor :consent_vendor_url_matchers
 
     # @deprecated Use {#consent_vendor_url_matchers=} instead.
@@ -186,7 +186,7 @@ module PageflowScrolled
     # previews. Defaults to `true`. Set to `false` once no code relies
     # on the legacy bundle anymore.
     #
-    # @since edge
+    # @since 17.2
     attr_accessor :include_legacy_frontend_javascript
 
     def initialize(*)

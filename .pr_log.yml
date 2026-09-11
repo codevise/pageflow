@@ -2,5 +2,25 @@ github_repository: "codevise/pageflow"
 insert_after: "# CHANGELOG\n"
 label_prefixes:
   bug: "Bug fix:"
-  "breaking change": "Breaking change:"
-  "manual update step": "Manual update step:"
+ignored_labels:
+  - dependencies
+  - reverted
+pull_requests_without_milestone: "fail"
+initial_heading_level: 4
+label_headings:
+  - "breaking change": "Breaking Changes"
+    core: "Core"
+    paged: "Paged Entry Type"
+    scrolled: "Scrolled Entry Type"
+  - "manual update step": "Manual Update Steps"
+    "published entry": "Published Entry"
+    admin: "Admin"
+    editor: "Editor"
+    review: "Review"
+    widgets: "Widgets"
+    "content elements": "Content Elements"
+    themes: "Themes"
+    "javascript api": "JavaScript API"
+    "rails engine": "Rails Engine"
+    "test-helpers": "Test Helpers"
+    internal: "Internal"

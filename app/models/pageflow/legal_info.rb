@@ -3,7 +3,7 @@ module Pageflow
   # falls back to the value stored in the site's column when there is
   # no translation for the locale.
   #
-  # @since edge
+  # @since 17.2
   class LegalInfo
     Link = Struct.new(:label, :url, keyword_init: true)
 
