@@ -1,0 +1,414 @@
+[
+  {
+    "$id": "pageflow-scrolled/contentElements/counter",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "counter"
+    },
+    "type": "object",
+    "properties": {}
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/dataWrapperChart",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "dataWrapperChart"
+    },
+    "type": "object",
+    "properties": {}
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/externalLinkList",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "externalLinkList"
+    },
+    "type": "object",
+    "properties": {
+      "links": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/link"
+        }
+      }
+    },
+    "$defs": {
+      "link": {
+        "type": "object",
+        "properties": {
+          "thumbnail": {
+            "type": "integer",
+            "x-fileCollection": "image_files"
+          }
+        }
+      }
+    }
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/heading",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "heading"
+    },
+    "type": "object",
+    "properties": {}
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/hotspots",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "hotspots"
+    },
+    "type": "object",
+    "properties": {
+      "image": {
+        "type": "integer",
+        "x-fileCollection": "image_files"
+      },
+      "portraitImage": {
+        "type": "integer",
+        "x-fileCollection": "image_files"
+      },
+      "areas": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/area"
+        }
+      }
+    },
+    "$defs": {
+      "area": {
+        "type": "object",
+        "properties": {
+          "activeImage": {
+            "type": "integer",
+            "x-fileCollection": "image_files"
+          },
+          "tooltipImage": {
+            "type": "integer",
+            "x-fileCollection": "image_files"
+          },
+          "portraitActiveImage": {
+            "type": "integer",
+            "x-fileCollection": "image_files",
+            "x-activeIf": {
+              "path": [
+                "portraitImage"
+              ],
+              "present": true
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/iframeEmbed",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "iframeEmbed"
+    },
+    "type": "object",
+    "properties": {}
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/imageGallery",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "imageGallery"
+    },
+    "type": "object",
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/item"
+        }
+      }
+    },
+    "$defs": {
+      "item": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "integer",
+            "x-fileCollection": "image_files"
+          },
+          "portraitImage": {
+            "type": "integer",
+            "x-fileCollection": "image_files"
+          }
+        }
+      }
+    }
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/infoTable",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "infoTable"
+    },
+    "type": "object",
+    "properties": {}
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/inlineAudio",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "inlineAudio"
+    },
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer",
+        "x-fileCollection": "audio_files"
+      },
+      "posterId": {
+        "type": "integer",
+        "x-fileCollection": "image_files"
+      }
+    }
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/inlineBeforeAfter",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "inlineBeforeAfter"
+    },
+    "type": "object",
+    "properties": {
+      "before_id": {
+        "type": "integer",
+        "x-fileCollection": "image_files"
+      },
+      "after_id": {
+        "type": "integer",
+        "x-fileCollection": "image_files"
+      }
+    }
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/inlineImage",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "inlineImage"
+    },
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer",
+        "x-fileCollection": "image_files"
+      },
+      "portraitId": {
+        "type": "integer",
+        "x-fileCollection": "image_files"
+      }
+    }
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/inlineVideo",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "inlineVideo"
+    },
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer",
+        "x-fileCollection": "video_files"
+      },
+      "posterId": {
+        "type": "integer",
+        "x-fileCollection": "image_files"
+      },
+      "portraitId": {
+        "type": "integer",
+        "x-fileCollection": "video_files"
+      },
+      "portraitPosterId": {
+        "type": "integer",
+        "x-fileCollection": "image_files",
+        "x-activeIf": {
+          "path": [
+            "portraitId"
+          ],
+          "present": true
+        }
+      }
+    }
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/lottieAnimation",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "lottieAnimation"
+    },
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer",
+        "x-fileCollection": "lottie_files"
+      }
+    }
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/question",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "question"
+    },
+    "type": "object",
+    "properties": {}
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/quote",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "quote"
+    },
+    "type": "object",
+    "properties": {}
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/socialEmbed",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "socialEmbed"
+    },
+    "type": "object",
+    "properties": {}
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/soundDisclaimer",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "soundDisclaimer"
+    },
+    "type": "object",
+    "properties": {}
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/textBlock",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "textBlock"
+    },
+    "type": "object",
+    "properties": {}
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/tikTokEmbed",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "tikTokEmbed"
+    },
+    "type": "object",
+    "properties": {}
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/twitterEmbed",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "twitterEmbed"
+    },
+    "type": "object",
+    "properties": {}
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/videoEmbed",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "videoEmbed"
+    },
+    "type": "object",
+    "properties": {
+      "posterId": {
+        "type": "integer",
+        "x-fileCollection": "image_files"
+      }
+    }
+  },
+  {
+    "$id": "pageflow-scrolled/contentElements/vrImage",
+    "x-subject": {
+      "model": "contentElement",
+      "typeName": "vrImage"
+    },
+    "type": "object",
+    "properties": {
+      "image": {
+        "type": "integer",
+        "x-fileCollection": "image_files"
+      }
+    }
+  },
+  {
+    "$id": "pageflow-scrolled/entry",
+    "x-subject": {
+      "model": "entry"
+    },
+    "type": "object",
+    "properties": {
+      "shareImageId": {
+        "type": "integer",
+        "x-fileCollection": "image_files"
+      }
+    }
+  },
+  {
+    "$id": "pageflow-scrolled/section",
+    "x-subject": {
+      "model": "section"
+    },
+    "type": "object",
+    "properties": {
+      "backdrop": {
+        "type": "object",
+        "anyOf": [
+          {
+            "properties": {
+              "image": {
+                "type": "integer",
+                "x-fileCollection": "image_files"
+              },
+              "imageMobile": {
+                "type": "integer",
+                "x-fileCollection": "image_files"
+              }
+            }
+          },
+          {
+            "properties": {
+              "video": {
+                "type": "integer",
+                "x-fileCollection": "video_files"
+              },
+              "videoMobile": {
+                "type": "integer",
+                "x-fileCollection": "video_files"
+              }
+            }
+          },
+          {
+            "properties": {
+              "color": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "properties": {
+              "contentElement": {
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      },
+      "atmoAudioFileId": {
+        "type": "integer",
+        "x-fileCollection": "audio_files"
+      }
+    }
+  }
+]

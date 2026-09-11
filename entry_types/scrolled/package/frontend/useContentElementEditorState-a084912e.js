@@ -1,0 +1,25 @@
+import { createContext, useContext } from 'react';
+
+const ContentElementEditorStateContext = createContext({
+  isSelected: false,
+  isEditable: false,
+  setTransientState() {},
+  select() {},
+  selectNewThread() {}
+});
+
+/**
+ * Use inside a content element component to determine whether the
+ * component is being rendered inside the editor iframe, and whether
+ * the content element is currently selected. This can be used to
+ * implement simple inline editing capabilities like displaying extra
+ * information when the content element is selected.
+ *
+ * @example
+ * const {isEditable, isSelected} = useContentElementEditorState();
+ */
+function useContentElementEditorState() {
+  return useContext(ContentElementEditorStateContext);
+}
+
+export { ContentElementEditorStateContext as C, useContentElementEditorState as u };
