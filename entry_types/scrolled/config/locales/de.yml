@@ -1100,8 +1100,6 @@ de:
                 phonePlatform: Im Phone-Layout
                 always: Immer
                 never: Nie
-            panZoomInitially:
-              label: Pan & Zoom bei erstem Bereich starten
             enableFullscreen:
               label: Vollbildmodus erlauben
               inline_help: Button anzeigen, um das Element bildschirmfüllend zu öffnen.

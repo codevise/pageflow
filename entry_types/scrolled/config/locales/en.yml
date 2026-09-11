@@ -1084,9 +1084,6 @@ en:
                 phonePlatform: In phone layout
                 always: Always
                 never: Never
-            panZoomInitially:
-              label: Pan to first area initially
-              inline_help: Starts the Pan & Zoom effect on the first hotspot area when it becomes active.
             enableFullscreen:
               label: Enable fullscreen
               inline_help: Display a button to open the element in fullscreen mode.
