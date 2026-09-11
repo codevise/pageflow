@@ -136,6 +136,10 @@ en:
       feature_name: Icon Scroll Indicator
     iconScrollIndicator:
       widget_type_name: Icon at bottom of viewport
+    excursion_sheets:
+      feature_name: "Excursion sheet widgets"
+    file_rights_from_references:
+      feature_name: "Credits only for referenced files"
   pageflow_scrolled:
     editor:
       backdrop_effects:
@@ -1194,6 +1198,13 @@ en:
             inline_help: |-
               Chapter can be used as link destination but does not
               appear in the navigation bar.
+          returnButtonLabel:
+            label: Return button label
+          sheetWidth:
+            label: Overlay width
+            values:
+              full: Full width
+              inset: With side margins
         save_error: There was an error while saving this chapter.
         tabs:
           chapter: Chapter
@@ -1649,6 +1660,10 @@ en:
         back: Comments
         tabs:
           newComment: New topic
+      configuration_places:
+        entry: "Settings"
+        label: "%{chapter} - %{subject}"
+        section: "Section %{number}"
     help_entries:
       content_elements:
         menu_item: Content Elements

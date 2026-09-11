@@ -136,6 +136,10 @@ de:
       feature_name: Icon Scroll-Indikator
     iconScrollIndicator:
       widget_type_name: Icon unten am Viewport-Rand
+    excursion_sheets:
+      feature_name: "Exkurs-Sheet-Widgets"
+    file_rights_from_references:
+      feature_name: "Nachweise nur für verwendete Dateien"
   pageflow_scrolled:
     editor:
       backdrop_effects:
@@ -1210,6 +1214,13 @@ de:
             inline_help: |-
               Kapitel kann als Link-Ziel verwendet werden, erscheint
               allerdings nicht in der Navigationsleiste.
+          returnButtonLabel:
+            label: Text für Zurück-Button
+          sheetWidth:
+            label: Overlay-Breite
+            values:
+              full: Volle Breite
+              inset: Mit seitlichem Abstand
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
         tabs:
           chapter: Kapitel
@@ -1667,6 +1678,10 @@ de:
         back: Kommentare
         tabs:
           newComment: Neues Thema
+      configuration_places:
+        entry: "Einstellungen"
+        label: "%{chapter} - %{subject}"
+        section: "Abschnitt %{number}"
     help_entries:
       content_elements:
         menu_item: Inhaltselemente
