@@ -1,8 +1,8 @@
-import $ from 'jquery';
 import Marionette from 'backbone.marionette';
 import {cssModulesUtils} from 'pageflow/ui';
 import {PreviewMessageController} from '../controllers/PreviewMessageController'
 import {BlankEntryView} from './BlankEntryView';
+import {injectSeedTemplate} from './injectSeedTemplate';
 
 import styles from './EntryPreviewView.module.css'
 
@@ -30,8 +30,7 @@ export const EntryPreviewView = Marionette.ItemView.extend({
       iframeWindow: this.ui.iframe[0].contentWindow
     });
 
-    inject(this.ui.iframe[0],
-           unescape($('[data-template="iframe_seed"]').html()));
+    injectSeedTemplate(this.ui.iframe[0], 'iframe_seed');
   },
 
   onClose() {
@@ -54,17 +53,3 @@ export const EntryPreviewView = Marionette.ItemView.extend({
     return `${mode}EmulationMode`;
   }
 });
-
-function inject(iframe, html) {
-  var doc = iframe.document ||
-            iframe.contentDocument ||
-            iframe.contentWindow.document;
-
-  doc.open();
-  doc.writeln(html);
-  doc.close();
-}
-
-function unescape(text) {
-  return text.replace(/<\\\//g, '</');
-}
