@@ -171,7 +171,7 @@
     border-left-color: var(--ui-on-surface-color-lightest);
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-    background-color: #{mix(#06202a, #fff, 3%)};
+    background-color: var(--ui-secondary-surface-color);
     overflow: auto;
   }
 

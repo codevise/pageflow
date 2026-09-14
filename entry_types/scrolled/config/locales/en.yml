@@ -179,6 +179,7 @@ en:
         text: While Pageflow stories work on all modern browsers and devices, the Pageflow editor requires a desktop computer running a recent version of Chrome, Firefox, Safari or Edge.
       chapter_item:
         add_section: New section
+        insert_fragment: Insert fragment
         drag_hint: Drag to move chapter
         save_error: There was an error while saving this chapter.
         chapter: Chapter
@@ -1366,6 +1367,7 @@ en:
         blank_slate: No fragments yet.
         cancel: Cancel
         header: Insert fragment
+        insert: Insert
         shared: Shared fragments
         shared_hint: For all members and entries of the account
         unnamed: Untitled fragment

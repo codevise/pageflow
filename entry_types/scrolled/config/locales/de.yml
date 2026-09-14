@@ -179,6 +179,7 @@ de:
         text: Während Pageflow stories auf allen modernen Browsern und Geräten funktionieren, benötigt der Pageflow Editor einen Desktop-Computer mit einer aktuellen Version von Chrome, Firefox, Safari oder Edge.
       chapter_item:
         add_section: Neuer Abschnitt
+        insert_fragment: Fragment einfügen
         drag_hint: Ziehen, um das Kapitel zu verschieben
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
         chapter: Kapitel
@@ -1383,6 +1384,7 @@ de:
         blank_slate: Noch keine Fragmente vorhanden.
         cancel: Abbrechen
         header: Fragment einfügen
+        insert: Einfügen
         shared: Geteilte Fragmente
         shared_hint: Für alle Mitglieder und Beiträge des Kontos
         unnamed: Unbenanntes Fragment

@@ -15,6 +15,7 @@
   --ui-font-size: 13px;
 
   --ui-surface-color: #fff;
+  --ui-secondary-surface-color: #{mix(#06202a, #fff, 3%)};
   --ui-backdrop-color: rgba(6, 32, 42, 0.6);
 
   --ui-on-surface-color: hsl(197, 26%, 23%);
