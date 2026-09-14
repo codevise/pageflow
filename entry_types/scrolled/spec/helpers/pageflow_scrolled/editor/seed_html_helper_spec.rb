@@ -212,6 +212,60 @@ module PageflowScrolled
                                           visible: false)
         end
       end
+
+      describe '#fragment_preview_seed_html_script_tag' do
+        it 'renders script tag with data-template attribute' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = helper.scrolled_editor_fragment_preview_seed_html_script_tag(entry)
+
+          expect(result).to have_selector('script[type="text/html"]' \
+                                          '[data-template="fragment_preview_seed"]',
+                                          visible: false)
+        end
+
+        it 'can be rendered after iframe seed without its packs' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          helper.scrolled_editor_iframe_seed_html_script_tag(entry)
+          result = helper.scrolled_editor_fragment_preview_seed_html_script_tag(entry)
+
+          expect(result).not_to have_selector('script',
+                                              text: 'pageflow-scrolled-frontend-inlineEditing',
+                                              visible: false)
+        end
+
+        it 'lets document accept collection resets' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = helper.scrolled_editor_fragment_preview_seed_html_script_tag(entry)
+
+          expect(result).to have_selector('script',
+                                          text: '"acceptCollectionResets":true',
+                                          visible: false)
+        end
+
+        it 'does not load inline editing' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = helper.scrolled_editor_fragment_preview_seed_html_script_tag(entry)
+
+          expect(result).not_to have_selector('script',
+                                              text: '"loadInlineEditing":true',
+                                              visible: false)
+        end
+
+        it 'does not render collections seed data' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          create(:section, revision: entry.revision)
+
+          result = helper.scrolled_editor_fragment_preview_seed_html_script_tag(entry)
+
+          expect(result).not_to have_selector('script',
+                                              text: '"collections"',
+                                              visible: false)
+        end
+      end
     end
   end
 end

@@ -834,4 +834,21 @@ describe('Third party consent', () => {
         });
     });
   });
+
+  describe('seed without collections', () => {
+    it('registers vendors from config', async () => {
+      const consent = Consent.create();
+      const {config} = normalizeSeed({
+        consentVendors: [{name: 'someService', displayName: 'Some Service'}]
+      });
+
+      registerConsentVendors({
+        contentElementTypes: frontend.contentElementTypes,
+        seed: {config},
+        consent
+      });
+
+      await expect(consent.requireAccepted('someService')).resolves.toEqual('fulfilled');
+    });
+  });
 });
