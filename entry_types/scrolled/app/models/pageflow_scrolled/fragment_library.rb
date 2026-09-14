@@ -37,6 +37,12 @@ module PageflowScrolled
       ContentElement.all_for_revision(entry.draft)
     end
 
+    def copy_fragment_to(fragment_perma_id:, entry:, chapter:)
+      SectionsCopy
+        .new(source_entry: self.entry, destination_entry: entry)
+        .perform(chapters.find_by!(perma_id: fragment_perma_id).sections, chapter:)
+    end
+
     # @api private
     class Query
       include Enumerable
@@ -63,6 +69,10 @@ module PageflowScrolled
 
       def merge(entries)
         Query.new(@entries.merge(entries))
+      end
+
+      def find(id)
+        library(@entries.find(id))
       end
 
       def each(&)

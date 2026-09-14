@@ -52,6 +52,24 @@ module PageflowScrolled
       end
     end
 
+    describe '.all.find' do
+      it 'returns library with id' do
+        entry = create(:entry, type_name: 'scrolled', fragment_library: 'shared')
+
+        library = FragmentLibrary.all.find(entry.id)
+
+        expect(library.id).to eq(entry.id)
+      end
+
+      it 'raises not found for entry that is not a fragment library' do
+        entry = create(:entry, type_name: 'scrolled')
+
+        expect {
+          FragmentLibrary.all.find(entry.id)
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
     describe '#chapters' do
       it 'returns chapters of library draft' do
         entry = create(:entry, type_name: 'scrolled', fragment_library: 'shared')
@@ -59,6 +77,39 @@ module PageflowScrolled
         library = FragmentLibrary.new(Pageflow::DraftEntry.new(entry))
 
         expect(library.chapters).to eq([chapter])
+      end
+    end
+
+    describe '#copy_fragment_to' do
+      it 'copies sections of fragment chapter to end of chapter' do
+        library_entry = create(:entry, type_name: 'scrolled', fragment_library: 'shared')
+        fragment = create(:scrolled_chapter, revision: library_entry.draft)
+        create(:section, chapter: fragment, configuration: {'layout' => 'left'})
+        entry = create(:entry, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        create(:section, chapter:, position: 0)
+        library = FragmentLibrary.new(Pageflow::DraftEntry.new(library_entry))
+
+        sections = library.copy_fragment_to(fragment_perma_id: fragment.perma_id,
+                                            entry: Pageflow::DraftEntry.new(entry),
+                                            chapter:)
+
+        expect(chapter.sections.reload.map(&:configuration))
+          .to match([anything, include('layout' => 'left')])
+        expect(sections).to eq([chapter.sections.last])
+      end
+
+      it 'raises not found for unknown fragment' do
+        library_entry = create(:entry, type_name: 'scrolled', fragment_library: 'shared')
+        entry = create(:entry, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        library = FragmentLibrary.new(Pageflow::DraftEntry.new(library_entry))
+
+        expect {
+          library.copy_fragment_to(fragment_perma_id: 404,
+                                   entry: Pageflow::DraftEntry.new(entry),
+                                   chapter:)
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

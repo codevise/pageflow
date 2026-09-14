@@ -17,6 +17,8 @@ PageflowScrolled::Engine.routes.draw do
             put :order
           end
 
+          resources :fragment_insertions, only: [:create]
+
           resources :sections, only: [:create, :update, :destroy] do
             collection do
               put :order
