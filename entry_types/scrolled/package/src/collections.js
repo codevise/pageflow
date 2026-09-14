@@ -328,7 +328,7 @@ export function createItemsSelector(collectionName, filter) {
 function toOrderedItems(collection) {
   if (collection) {
     const items = collection.items;
-    return collection.order.map(key => items[key]);
+    return collection.order.map(key => items[key]).filter(Boolean);
   }
   else {
     return [];

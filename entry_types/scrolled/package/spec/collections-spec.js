@@ -841,6 +841,28 @@ describe('getItems', () => {
 
     expect(items).toEqual([]);
   });
+
+  it('returns items in order', () => {
+    const state = {
+      posts: {
+        order: [1, 2],
+        items: {1: {id: 1, title: 'News'}, 2: {id: 2, title: 'Report'}}
+      }
+    };
+
+    expect(getItems(state, 'posts').map(post => post.title)).toEqual(['News', 'Report']);
+  });
+
+  it('skips ordered keys whose item is not present', () => {
+    const state = {
+      posts: {
+        order: [1, 2],
+        items: {1: {id: 1, title: 'News'}}
+      }
+    };
+
+    expect(getItems(state, 'posts').map(post => post.title)).toEqual(['News']);
+  });
 });
 
 describe('updateConfiguration', () => {
