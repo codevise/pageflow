@@ -1,5 +1,7 @@
 PageflowScrolled::Engine.routes.draw do
   scope module: 'editor' do
+    resources :fragment_libraries, only: [:index]
+
     shallow do
       # Legacy path to support editor sessions that span the deploy that
       # introduces the storylines resource above.

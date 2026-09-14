@@ -4,6 +4,8 @@ en:
       feature_name: Comments
     datawrapper_chart_embed_opt_in:
       feature_name: Opt-in for Datawrapper embeds
+    fragments:
+      feature_name: Fragments
     image_srcset:
       feature_name: Responsive image srcset
     defaultNavigation:

@@ -6,6 +6,10 @@ module PageflowScrolled
         feature_config.entry_types.register(PageflowScrolled.entry_type)
       end
 
+      config.permissions.policies.register(FragmentLibraryPolicy,
+                                           model: FragmentLibrary,
+                                           actions: [:read])
+
       config.for_entry_type(PageflowScrolled.entry_type) do |c|
         c.configuration_schema_load_path <<
           Engine.root.join('config', 'configuration_schemas', '*.json').to_s
@@ -226,6 +230,7 @@ module PageflowScrolled
         c.features.register('custom_palette_colors')
         c.features.register('backdrop_size')
         c.features.register('commenting')
+        c.features.register('fragments')
         c.features.register('image_srcset')
         c.features.register('file_rights_from_references')
         c.features.enable_by_default('image_srcset')
