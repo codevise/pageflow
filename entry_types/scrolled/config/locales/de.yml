@@ -1379,6 +1379,13 @@ de:
         header: Gliederung
         finish_reorder_chapters: Umsortieren beenden
         reorder_chapters: "Kapitel umsortieren..."
+      fragment_library:
+        blank_slate: Noch keine Fragmente vorhanden.
+        cancel: Abbrechen
+        header: Fragment einfügen
+        shared: Geteilte Fragmente
+        shared_hint: Für alle Mitglieder und Beiträge des Kontos
+        unnamed: Unbenanntes Fragment
       inline_file_rights_menu_item:
         label: Rechteangabe an dieser Stelle ausblenden
       insert_content_element:

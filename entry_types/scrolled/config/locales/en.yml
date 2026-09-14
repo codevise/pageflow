@@ -1362,6 +1362,13 @@ en:
         header: Outline
         finish_reorder_chapters: Finish reordering
         reorder_chapters: "Reorder chapters..."
+      fragment_library:
+        blank_slate: No fragments yet.
+        cancel: Cancel
+        header: Insert fragment
+        shared: Shared fragments
+        shared_hint: For all members and entries of the account
+        unnamed: Untitled fragment
       inline_file_rights_menu_item:
         label: Hide rights information here
       insert_content_element:
