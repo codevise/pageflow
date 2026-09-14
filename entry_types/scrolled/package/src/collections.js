@@ -105,6 +105,19 @@ function init(items, keyAttribute = 'id') {
   };
 }
 
+export function resetCollections({collections, dispatch, keyAttribute = 'id'}) {
+  Object.entries(collections).forEach(([name, items]) =>
+    dispatch({
+      type: RESET,
+      payload: {
+        collectionName: name,
+        keyAttribute,
+        items
+      }
+    })
+  );
+}
+
 export function updateConfiguration({dispatch, name, key, configuration}) {
   dispatch({
     type: PATCH_CONFIGURATION,
