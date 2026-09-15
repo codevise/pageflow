@@ -3,5 +3,6 @@ class AddCustomFields < ActiveRecord::Migration[4.2]
     add_column :pageflow_entries, :custom_field, :string
     add_column :pageflow_accounts, :custom_field, :string
     add_column :pageflow_sites, :custom_field, :string
+    add_column :users, :custom_field, :string
   end
 end

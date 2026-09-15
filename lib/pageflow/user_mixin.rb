@@ -27,6 +27,12 @@ module Pageflow
                dependent: :destroy,
                class_name: 'Pageflow::CommentThreadRead'
 
+      has_many :account_comment_settings,
+               dependent: :destroy,
+               class_name: 'Pageflow::AccountMemberCommentSettings'
+
+      accepts_nested_attributes_for :account_comment_settings
+
       validates :first_name, :last_name, presence: true
       validates_inclusion_of :locale, in: Pageflow.config.available_locales.map(&:to_s)
 

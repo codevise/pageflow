@@ -1,0 +1,36 @@
+<%= admin_form_for current_user, url: admin_notifications_update_path, method: :patch do |form| %>
+  <% general_inputs = Pageflow.config.admin_form_inputs.find_all_for(:user_notifications) %>
+
+  <% if general_inputs.any? %>
+    <%= form.inputs t('pageflow.admin.notifications.general_section') do %>
+      <% general_inputs.each do |form_input| %>
+        <%= form_input.build(form) %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% settings_per_account = current_user.account_comment_settings %>
+
+  <% settings_per_account.each_with_index do |settings, index| %>
+    <%= form.inputs comment_notifications_user_legend(settings.account,
+                                                      settings_per_account.size) do %>
+      <%= form.semantic_fields_for :account_comment_settings, settings,
+                                   child_index: index do |fields| %>
+        <%= fields.input :account_id, as: :hidden %>
+        <%= render 'admin/shared/comment_notification_fields',
+                   f: fields,
+                   scope: 'user',
+                   levels: resolved_comment_notification_levels(
+                     settings.account.comment_settings, settings
+                   ),
+                   other_entries: comment_notifications_reach_other_entries?(
+                     current_user, settings.account
+                   ) %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= form.actions do %>
+    <%= form.action(:submit, label: t('pageflow.admin.notifications.save')) %>
+  <% end %>
+<% end %>

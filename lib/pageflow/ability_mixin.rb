@@ -111,6 +111,7 @@ module Pageflow
         AccountPolicy.new(user, account).see_entry_types?
       end
 
+      can :manage, ActiveAdmin::Page, name: 'Notifications'
       can :manage, ActiveAdmin::Page, name: 'Site Root Entry'
 
       can :manage_root_entry, Site do |site|

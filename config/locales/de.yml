@@ -835,6 +835,15 @@ de:
             muted: Nichts
             participating_threads: Themen, in denen sie kommentiert haben
           other_entries: Beiträge, denen sie nicht als Mitglied zugeordnet sind
+        user:
+          assigned_entries: Beiträge, denen ich als Mitglied zugeordnet bin
+          legend: Kommentar-Benachrichtigungen
+          legend_with_account: "Kommentar-Benachrichtigungen in %{account}"
+          levels:
+            all_activity: Alle Aktivität
+            muted: Nichts
+            participating_threads: Themen, in denen ich kommentiert habe
+          other_entries: Beiträge, denen ich nicht als Mitglied zugeordnet bin
       entries:
         add_folder: Ordner hinzufügen
         comments:
@@ -944,6 +953,11 @@ de:
         on_entry:
           role:
             hint_html: Der <strong>Prüfer</strong> kann diesen Beitrag anschauen, auch bevor er veröffentlicht ist.<br>Der <strong>Redakteur</strong> kann zusätzlich dazu den Beitrag bearbeiten.<br>Der <strong>Veröffentlicher</strong> kann zusätzlich dazu den Beitrag veröffentlichen.<br>Der <strong>Administrator</strong> kann zusätzlich dazu Benutzerrollen auf diesem Beitrag setzen und bearbeiten.
+      notifications:
+        general_section: Allgemein
+        save: Speichern
+        title: Benachrichtigungen
+        updated: Benachrichtigungseinstellungen wurden gespeichert.
       resource_tabs:
         account_editor_hint: Auf Kontoebene zugeordnete Benutzer sind hier nicht aufgeführt
         accounts: Konten

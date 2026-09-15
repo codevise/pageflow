@@ -834,6 +834,15 @@ en:
             muted: Nothing
             participating_threads: Topics they have commented in
           other_entries: Stories they are not assigned to as a member
+        user:
+          assigned_entries: Stories I am assigned to as a member
+          legend: Comment notifications
+          legend_with_account: "Comment notifications in %{account}"
+          levels:
+            all_activity: All activity
+            muted: Nothing
+            participating_threads: Topics I have commented in
+          other_entries: Stories I am not assigned to as a member
       entries:
         add_folder: Add folder
         comments:
@@ -943,6 +952,11 @@ en:
         on_entry:
           role:
             hint_html: A <strong>Previewer</strong> can preview this story.<br>An <strong>Editor</strong> can additionally edit this story.<br>A <strong>Publisher</strong> can additionally publish this story.<br>A <strong>Manager</strong> can additionally set user roles on this story and edit them.
+      notifications:
+        general_section: General
+        save: Save
+        title: Notifications
+        updated: Notification settings saved.
       resource_tabs:
         account_editor_hint: Users who are assigned on an account level are not listed here
         accounts: Accounts
