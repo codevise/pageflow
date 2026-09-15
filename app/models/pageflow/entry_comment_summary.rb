@@ -10,13 +10,46 @@ module Pageflow
     attr_reader :topic_count, :unread_topic_count, :unread_reply_count,
                 :unread_resolution_count, :override_level
 
-    def self.for_entries(entries, user:)
-      entries = entries.to_a
-      return {} if entries.empty?
+    class << self
+      def for_entries(entries, user:)
+        entries = entries.to_a
+        return {} if entries.empty?
 
-      EntryCommentActivity
-        .for_entries(entries, user:, threads_by_entry_id: threads_by_entry_id(entries))
-        .transform_values { |activity| build(activity) }
+        EntryCommentActivity
+          .for_entries(entries, user:, threads_by_entry_id: threads_by_entry_id(entries))
+          .transform_values { |activity| build(activity) }
+      end
+
+      private
+
+      # Resolved threads come along: somebody resolving a thread is
+      # activity of its own.
+      def threads_by_entry_id(entries)
+        CommentThread.group_by_entry_id(
+          CommentThread.in_entries(entries).includes(:comments).to_a
+        )
+      end
+
+      def build(activity)
+        unread_events = activity.threads.map { |thread| activity.unread_events(thread) }
+
+        new(topic_count: activity.threads.count { |thread| !thread.resolved? },
+            notifying: activity.notifying?,
+            override_level: activity.override_level,
+            **unread_counts(unread_events))
+      end
+
+      def unread_counts(unread_events)
+        kinds = unread_events.map { |events| events.map(&:kind) }
+
+        {unread_topic_count: count_threads_with(kinds, :topic),
+         unread_reply_count: kinds.sum { |thread_kinds| thread_kinds.count(:reply) },
+         unread_resolution_count: count_threads_with(kinds, :resolution)}
+      end
+
+      def count_threads_with(kinds, kind)
+        kinds.count { |thread_kinds| thread_kinds.include?(kind) }
+      end
     end
 
     def initialize(topic_count:, unread_topic_count:, unread_reply_count:,
@@ -44,33 +77,5 @@ module Pageflow
     def notifying?
       @notifying
     end
-
-    # Resolved threads come along: somebody resolving a thread is
-    # activity of its own.
-    def self.threads_by_entry_id(entries)
-      CommentThread.group_by_entry_id(
-        CommentThread.in_entries(entries).includes(:comments).to_a
-      )
-    end
-    private_class_method :threads_by_entry_id
-
-    def self.build(activity)
-      unread_events = activity.threads.map { |thread| activity.unread_events(thread) }
-
-      new(topic_count: activity.threads.count { |thread| !thread.resolved? },
-          notifying: activity.notifying?,
-          override_level: activity.override_level,
-          **unread_counts(unread_events))
-    end
-    private_class_method :build
-
-    def self.unread_counts(unread)
-      kinds = unread.map { |events| events.map(&:kind) }
-
-      {unread_topic_count: kinds.count { |thread_kinds| thread_kinds.include?(:topic) },
-       unread_reply_count: kinds.sum { |thread_kinds| thread_kinds.count(:reply) },
-       unread_resolution_count: kinds.count { |thread_kinds| thread_kinds.include?(:resolution) }}
-    end
-    private_class_method :unread_counts
   end
 end
