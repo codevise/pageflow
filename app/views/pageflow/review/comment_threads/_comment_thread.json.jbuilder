@@ -14,6 +14,7 @@ json.call(comment_thread,
           :updated_at)
 
 json.resolver_name comment_thread.resolver&.full_name
+json.notification_level notification_level
 
 json.comments(comment_thread.comments) do |comment|
   json.partial!('pageflow/review/comments/comment', comment:)
