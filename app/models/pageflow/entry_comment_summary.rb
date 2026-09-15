@@ -43,17 +43,12 @@ module Pageflow
       @notifying
     end
 
-    # Comment threads live on the draft revision, so entries are reached
-    # through their editable revision rather than directly. Resolved ones
-    # come along: somebody resolving a thread is activity of its own.
+    # Resolved threads come along: somebody resolving a thread is
+    # activity of its own.
     def self.threads_by_entry_id(entries)
-      entry_id_by_revision_id =
-        Revision.editable.where(entry_id: entries.map(&:id)).pluck(:id, :entry_id).to_h
-
-      CommentThread
-        .where(revision_id: entry_id_by_revision_id.keys)
-        .includes(:comments)
-        .group_by { |thread| entry_id_by_revision_id[thread.revision_id] }
+      CommentThread.group_by_entry_id(
+        CommentThread.in_entries(entries).includes(:comments).to_a
+      )
     end
     private_class_method :threads_by_entry_id
 
