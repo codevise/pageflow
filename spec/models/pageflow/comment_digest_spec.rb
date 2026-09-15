@@ -159,68 +159,136 @@ module Pageflow
       end
     end
 
-    describe '.activity_in' do
-      it 'yields each entry with the threads carrying its activity' do
-        entry = create(:entry)
-        thread = create(:comment_thread, revision: entry.draft)
-        create(:comment, comment_thread: thread, creator: create(:user))
-
-        activity = CommentDigest.activity_in(since: 1.day.ago, until_at: 1.minute.from_now)
-
-        expect(activity).to eq(entry => [thread])
-      end
-
-      it 'yields nothing without activity in the window' do
-        entry = create(:entry)
-        thread = create(:comment_thread, revision: entry.draft)
-        create(:comment, comment_thread: thread, creator: create(:user),
-                         created_at: 2.days.ago)
-
-        activity = CommentDigest.activity_in(since: 1.day.ago, until_at: 1.minute.from_now)
-
-        expect(activity).to be_empty
-      end
-    end
-
-    describe '.recipients' do
+    describe '.sweep' do
       it 'yields everybody the activity in an entry could notify' do
-        user = create(:user)
-        entry = create(:entry, with_previewer: user)
-        thread = create(:comment_thread, revision: entry.draft)
-        create(:comment, comment_thread: thread, creator: create(:user))
+        user, entry = entry_with_activity_written(1.hour.ago)
 
-        recipients = CommentDigest.recipients(entry => [thread])
+        due = sweep
 
-        expect(recipients[entry.id]).to include(user)
-      end
-
-      it 'keeps the members of one entry out of another entry' do
-        user = create(:user)
-        entry = create(:entry, with_previewer: user)
-        other_entry = create(:entry)
-        thread = create(:comment_thread, revision: entry.draft)
-        create(:comment, comment_thread: thread, creator: create(:user))
-        other_thread = create(:comment_thread, revision: other_entry.draft)
-        create(:comment, comment_thread: other_thread, creator: create(:user))
-
-        recipients = CommentDigest.recipients(entry => [thread], other_entry => [other_thread])
-
-        expect(recipients[other_entry.id]).not_to include(user)
+        expect(due.map(&:user)).to include(user)
+        expect(due.map(&:entry).uniq).to eq([entry])
       end
 
       it 'yields the users who commented in the entry' do
         author = create(:user)
         entry = create(:entry)
         thread = create(:comment_thread, revision: entry.draft)
-        create(:comment, comment_thread: thread, creator: author)
+        create(:comment, comment_thread: thread, creator: author, created_at: 1.hour.ago)
 
-        recipients = CommentDigest.recipients(entry => [thread])
+        due = sweep
 
-        expect(recipients[entry.id]).to include(author)
+        expect(due.map(&:user)).to include(author)
       end
 
-      it 'yields nobody without activity' do
-        expect(CommentDigest.recipients({})).to be_empty
+      it 'keeps the members of one entry out of another entry' do
+        user, = entry_with_activity_written(1.hour.ago)
+        _other_user, other_entry = entry_with_activity_written(1.hour.ago)
+
+        due = sweep
+
+        expect(due.select { |entry_digest| entry_digest.entry == other_entry }.map(&:user))
+          .not_to include(user)
+      end
+
+      it 'yields the window from the horizon for an unswept entry' do
+        entry_with_activity_written(1.hour.ago)
+
+        due = sweep
+
+        expect(due.first.since).to eq(24.hours.ago)
+        expect(due.first.until_at).to eq(Time.current)
+      end
+
+      it 'yields the window from the entry watermark once it has one' do
+        _user, entry = entry_with_activity_written(1.hour.ago)
+        create(:comment_digest_watermark, entry:, considered_up_to: 2.hours.ago)
+
+        due = sweep
+
+        expect(due.first.since).to eq(2.hours.ago)
+      end
+
+      it 'yields nothing about activity from before the horizon' do
+        entry_with_activity_written(2.days.ago)
+
+        due = sweep
+
+        expect(due).to be_empty
+      end
+
+      it 'does not repeat what an earlier sweep considered' do
+        entry_with_activity_written(1.hour.ago)
+        sweep
+
+        due = sweep(at: 1.minute.from_now)
+
+        expect(due).to be_empty
+      end
+
+      it 'leaves an entry alone when another entry has new activity' do
+        entry_with_activity_written(1.hour.ago)
+        _other_user, other_entry = entry_with_activity_written(1.hour.ago)
+        sweep
+        create(:comment, comment_thread: create(:comment_thread, revision: other_entry.draft),
+                         creator: create(:user))
+
+        due = sweep(at: 1.minute.from_now)
+
+        expect(due.map(&:entry).uniq).to eq([other_entry])
+      end
+
+      it 'moves the watermark of an entry it swept' do
+        _user, entry = entry_with_activity_written(1.hour.ago)
+
+        sweep
+
+        expect(CommentDigestWatermark.considered_up_to_by_entry_id[entry.id])
+          .to eq(Time.current)
+      end
+
+      it 'moves the watermark of an entry whose activity notifies nobody' do
+        user = create(:user, unread_comments_since_at: 2.days.ago)
+        entry = create(:entry, account: create(:account, with_previewer: user))
+        thread = create(:comment_thread, revision: entry.draft)
+        create(:comment, comment_thread: thread, creator: create(:user),
+                         created_at: 1.hour.ago)
+
+        sweep
+
+        expect(CommentDigestWatermark.considered_up_to_by_entry_id).to include(entry.id)
+      end
+
+      it 'moves no watermark when enqueueing fails' do
+        _user, entry = entry_with_activity_written(1.hour.ago)
+
+        expect { sweep { raise 'no queue' } }.to raise_error('no queue')
+
+        expect(CommentDigestWatermark.where(entry:)).to be_empty
+      end
+
+      it 'moves no watermark for an entry without activity' do
+        create(:entry)
+
+        sweep
+
+        expect(CommentDigestWatermark.count).to eq(0)
+      end
+
+      def sweep(at: Time.current, max_lookback: 24.hours)
+        [].tap do |due|
+          CommentDigest.sweep(at:, max_lookback:) do |entry_digest|
+            due << entry_digest
+            yield entry_digest if block_given?
+          end
+        end
+      end
+
+      def entry_with_activity_written(created_at)
+        user = create(:user, unread_comments_since_at: 3.days.ago)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft)
+        create(:comment, comment_thread: thread, creator: create(:user), created_at:)
+        [user, entry]
       end
     end
   end

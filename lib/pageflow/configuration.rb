@@ -47,6 +47,11 @@ module Pageflow
     # new users
     attr_accessor :mailer_sender
 
+    # How far back a comment digest sweep looks for activity it has
+    # not considered yet. Also caps what an installation mails after
+    # a sweep has not run for a while.
+    attr_accessor :comment_digest_max_lookback
+
     # Extend the configuration based on feature flags set for accounts
     # or entries.
     #
@@ -526,6 +531,8 @@ module Pageflow
       @encryption_options = {}
 
       @mailer_sender = 'pageflow@example.com'
+
+      @comment_digest_max_lookback = 24.hours
 
       @features = Features.new
       @hooks = Hooks.new

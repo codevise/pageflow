@@ -5,6 +5,7 @@ module Pageflow
   # @api private
   class CommentDigest
     ThreadGroup = Struct.new(:comment_thread, :events, keyword_init: true)
+    Due = Struct.new(:user, :entry, :since, :until_at, keyword_init: true)
 
     attr_reader :user, :entry, :threads
 
@@ -19,6 +20,54 @@ module Pageflow
     end
 
     class << self
+      # An entry's watermark moves only once its digests have been
+      # yielded: a caller that fails part way through sees that entry
+      # again.
+      def sweep(at:, max_lookback:)
+        horizon = at - max_lookback
+        activity = activity_in(since: horizon, until_at: at)
+        since_by_entry = due_entries(activity, horizon:, until_at: at)
+        by_entry_id = recipients(activity.slice(*since_by_entry.keys))
+
+        since_by_entry.each do |entry, since|
+          by_entry_id.fetch(entry.id, []).each do |user|
+            yield Due.new(user:, entry:, since:, until_at: at)
+          end
+
+          CommentDigestWatermark.record!(entry, at)
+        end
+      end
+
+      def for(user, entry, since:, until_at:)
+        window = since...until_at
+        threads = threads_with_activity_in(window, entry:)
+        return if threads.empty?
+
+        build(user, entry, threads, window:)
+      end
+
+      private
+
+      # An entry whose activity all predates its own watermark has
+      # been swept already, however far back the horizon reaches.
+      def due_entries(activity, horizon:, until_at:)
+        watermarks = CommentDigestWatermark.considered_up_to_by_entry_id
+
+        since_by_entry = activity.to_h do |entry, _threads|
+          [entry, [watermarks[entry.id], horizon].compact.max]
+        end
+
+        since_by_entry.select do |entry, since|
+          pending?(activity.fetch(entry), since...until_at)
+        end
+      end
+
+      def pending?(threads, window)
+        threads.any? do |thread|
+          CommentThreadActivity.events(thread).any? { |event| window.cover?(event.created_at) }
+        end
+      end
+
       def activity_in(since:, until_at:)
         threads = threads_with_activity_in(since...until_at)
         threads_by_entry_id = CommentThread.group_by_entry_id(threads)
@@ -39,16 +88,6 @@ module Pageflow
           user_ids.uniq.filter_map { |user_id| users[user_id] }
         end
       end
-
-      def for(user, entry, since:, until_at:)
-        window = since...until_at
-        threads = threads_with_activity_in(window, entry:)
-        return if threads.empty?
-
-        build(user, entry, threads, window:)
-      end
-
-      private
 
       def threads_with_activity_in(window, entry: nil)
         scope = entry ? CommentThread.in_entries([entry]) : CommentThread.all
