@@ -69,7 +69,9 @@ module Pageflow
     private_class_method :read_at_by_entry_id
 
     def self.build(threads, read_at:, user:)
-      unread = threads.map { |thread| unread_activity(thread, read_at:, user:) }
+      unread = threads.map do |thread|
+        CommentThreadActivity.unread(thread, read_at: read_at[thread.perma_id], user:).map(&:kind)
+      end
 
       new(topic_count: threads.count { |thread| thread.resolved_at.nil? },
           unread_topic_count: unread.count { |kinds| kinds.include?(:topic) },
@@ -77,38 +79,5 @@ module Pageflow
           unread_resolution_count: unread.count { |kinds| kinds.include?(:resolution) })
     end
     private_class_method :build
-
-    # What the user has not seen in a thread, as one symbol per event.
-    # The resolution goes by the thread's read mark like the comments do,
-    # having none of its own.
-    def self.unread_activity(thread, read_at:, user:)
-      seen_up_to = [read_at[thread.perma_id], user.unread_comments_since_at].compact.max
-      first, *replies = thread.comments.sort_by(&:id)
-
-      unread_replies = replies.count do |reply|
-        unread?(reply.creator_id, reply.created_at, seen_up_to, user)
-      end
-
-      kinds = Array.new(unread_replies, :reply)
-      kinds << :topic if first && unread?(first.creator_id, first.created_at, seen_up_to, user)
-      kinds << :resolution if unread_resolution?(thread, seen_up_to, user)
-      kinds
-    end
-    private_class_method :unread_activity
-
-    def self.unread_resolution?(thread, seen_up_to, user)
-      thread.resolved_at &&
-        unread?(thread.resolved_by_id, thread.resolved_at, seen_up_to, user)
-    end
-    private_class_method :unread_resolution?
-
-    # Mirrors the unread rule of the review interface: the user's own
-    # activity never counts, and neither does anything from before their
-    # baseline. Kept in sync with isUnread in
-    # entry_types/scrolled/package/src/review/unreadActivity.js.
-    def self.unread?(creator_id, created_at, seen_up_to, user)
-      creator_id != user.id && (seen_up_to.nil? || created_at > seen_up_to)
-    end
-    private_class_method :unread?
   end
 end

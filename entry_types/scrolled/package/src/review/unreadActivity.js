@@ -64,7 +64,7 @@ export function unreadActivity(thread, {currentUser, readAt}) {
   return threadActivity(thread).filter(event => isUnread(event, {currentUser, readAt}));
 }
 
-// Kept in sync with Pageflow::EntryCommentSummary, which applies the same
+// Kept in sync with Pageflow::CommentThreadActivity, which applies the same
 // rule server side.
 export function isUnread({creatorId, createdAt}, {currentUser, readAt}) {
   if (!currentUser || creatorId === currentUser.id) return false;
