@@ -13,7 +13,7 @@ describe('Thread resolution', () => {
     'pageflow_scrolled.review.resolution_by': 'Marked as resolved by',
     'pageflow_scrolled.review.resolve': 'Mark as resolved',
     'pageflow_scrolled.review.unresolve': 'Mark as unresolved',
-    'pageflow_scrolled.review.thread_actions': 'Thread actions',
+    'pageflow_scrolled.review.resolution_actions': 'Resolution actions',
     'pageflow_scrolled.review.reply_placeholder': 'Reply...',
     'pageflow_scrolled.review.send': 'Send',
     'pageflow_scrolled.review.enter_for_new_line': 'Enter for new line'
@@ -151,7 +151,7 @@ describe('Thread resolution', () => {
       <Thread thread={resolvedWithReply} collapsed onResolve={() => {}} />
     );
 
-    expect(getByRole('button', {name: 'Thread actions'})).toBeInTheDocument();
+    expect(getByRole('button', {name: 'Resolution actions'})).toBeInTheDocument();
   });
 
   it('offers no resolve button while collapsed', () => {
@@ -170,7 +170,7 @@ describe('Thread resolution', () => {
       <Thread thread={resolved} onResolve={onResolve} />
     );
 
-    await user.click(getByRole('button', {name: 'Thread actions'}));
+    await user.click(getByRole('button', {name: 'Resolution actions'}));
     await user.click(getByRole('menuitem', {name: 'Mark as unresolved'}));
 
     expect(onResolve).toHaveBeenCalled();
@@ -182,6 +182,6 @@ describe('Thread resolution', () => {
     );
 
     expect(getByText('Ada')).toBeInTheDocument();
-    expect(queryByRole('button', {name: 'Thread actions'})).toBeNull();
+    expect(queryByRole('button', {name: 'Resolution actions'})).toBeNull();
   });
 });

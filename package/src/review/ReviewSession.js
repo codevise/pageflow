@@ -78,6 +78,23 @@ export class ReviewSession {
     this.trigger('change:thread', thread);
   }
 
+  async updateThreadNotificationLevel({threadId, level}) {
+    const thread = this._findThread(threadId);
+
+    if (!thread) return;
+
+    const data = await this._request({
+      url: `/review/entries/${this._entryId}/comment_thread_notification_levels/${thread.permaId}`,
+      method: 'PATCH',
+      payload: {level}
+    });
+
+    const updated = {...thread, notificationLevel: data.level};
+
+    this._upsertThread(updated);
+    this.trigger('change:thread', updated);
+  }
+
   async createComment({threadId, body, quote}) {
     this._writeDraft({threadId, body, pending: true});
 

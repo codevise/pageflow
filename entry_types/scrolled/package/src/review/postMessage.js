@@ -45,6 +45,13 @@ export function postUpdateThreadMessage({threadId, resolved}) {
   );
 }
 
+export function postUpdateThreadNotificationLevelMessage({threadId, level}) {
+  window.top.postMessage(
+    {type: 'UPDATE_THREAD_NOTIFICATION_LEVEL', payload: {threadId, level}},
+    window.location.origin
+  );
+}
+
 export function postReviewStateResetMessage(targetWindow, state) {
   targetWindow.postMessage(
     {type: 'REVIEW_STATE_RESET', payload: state},

@@ -22,6 +22,9 @@ export const ReviewMessageHandler = {
       else if (type === 'UPDATE_THREAD') {
         session.updateThread(payload);
       }
+      else if (type === 'UPDATE_THREAD_NOTIFICATION_LEVEL') {
+        session.updateThreadNotificationLevel(payload);
+      }
       else if (type === 'UPDATE_COMMENT') {
         session.updateComment(payload);
       }
