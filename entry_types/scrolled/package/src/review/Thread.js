@@ -12,6 +12,7 @@ import {useSubjectQuote} from './subjectQuote';
 import {commentsWithOutdatedQuote} from './outdatedQuotes';
 import {useMarkThreadReadWhenSeen} from './markThreadReadWhenSeen';
 import {useUnreadActivity} from './unreadActivity';
+import {useThreadNotifies} from './notifications';
 import {useScrollHighlightedThreadIntoView} from './scrollHighlightedThreadIntoView';
 
 import ChevronIcon from './images/chevron.svg';
@@ -39,6 +40,7 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
   const {
     unread, unreadTopic, unreadReplyCount, unreadResolution, firstUnreadReplyId, hidesUnread
   } = useUnreadMarkers({thread, firstComment, replies, hiddenReplies});
+  const notifies = useThreadNotifies(thread);
 
   const hidesUnreadReplies = repliesCollapsed && unreadReplyCount > 0;
 
@@ -84,9 +86,9 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
          })}
          onClick={onClick}
          aria-current={highlighted ? 'true' : undefined}>
-      {showUnreadMarker && unread.length > 0 &&
+      {showUnreadMarker && notifies && unread.length > 0 &&
         <span role="img"
-              className={styles.unreadDot}
+              className={styles.notifyingDot}
               aria-label={t('pageflow_scrolled.review.unread_count',
                             {count: unread.length})} />}
 

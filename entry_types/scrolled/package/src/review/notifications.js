@@ -13,6 +13,18 @@ export function useThreadsNotify(threads) {
   );
 }
 
+// Whether activity in this thread would notify, regardless of whether
+// any has arrived yet: the thread either notifies or it does not.
+export function useThreadNotifies(thread) {
+  const currentUser = useCurrentUser();
+
+  return useMemo(
+    () => !!currentUser && notifies(thread.notificationLevel,
+                                    participatedIn(thread, currentUser)),
+    [thread, currentUser]
+  );
+}
+
 // Kept in sync with Pageflow::CommentNotificationLevel.notifies?, which
 // applies the same rule server side. Both are held to the cases in
 // spec/fixtures/comment_notification_rules.json.

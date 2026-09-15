@@ -8,6 +8,7 @@ import {act} from '@testing-library/react';
 
 import {ActivityList} from 'review/ActivityList';
 import styles from 'review/ActivityList.module.css';
+import threadStyles from 'review/Thread.module.css';
 import {renderWithReviewState} from 'support/renderWithReviewState';
 import {simulateScrollingIntoView} from 'support/fakeIntersectionObserver';
 
@@ -61,6 +62,54 @@ describe('ActivityList', () => {
     'pageflow_scrolled.review.resolution_by': 'Marked as resolved by',
     'pageflow_scrolled.review.resolve': 'Mark as resolved',
     'pageflow_scrolled.review.unresolve': 'Mark as unresolved'
+  });
+
+  describe('notifying dot', () => {
+    it('marks the dot notifying where somebody is waiting', () => {
+      const {getByRole} = renderActivityList(
+        <ActivityList />,
+        {
+          commentThreads: [thread({
+            notificationLevel: 'all_activity',
+            comments: [comment({createdAt: '2026-08-17T09:00:00.000Z'})]
+          })]
+        }
+      );
+
+      expect(getByRole('img')).toHaveClass(threadStyles.notifyingDot);
+    });
+
+    it('leaves the dot out where the activity is addressed to somebody else', () => {
+      const {queryByRole} = renderActivityList(
+        <ActivityList />,
+        {
+          commentThreads: [thread({
+            notificationLevel: 'participating_threads',
+            comments: [comment({createdAt: '2026-08-17T09:00:00.000Z'})]
+          })]
+        }
+      );
+
+      expect(queryByRole('img')).toBeNull();
+    });
+
+    it('marks the dot notifying once the user has taken part in the thread', () => {
+      const {getByRole} = renderActivityList(
+        <ActivityList />,
+        {
+          commentThreads: [thread({
+            notificationLevel: 'participating_threads',
+            comments: [
+              comment({createdAt: '2026-08-17T09:00:00.000Z'}),
+              comment({id: 101, creatorId: currentUser.id,
+                       createdAt: '2026-08-17T09:30:00.000Z'})
+            ]
+          })]
+        }
+      );
+
+      expect(getByRole('img')).toHaveClass(threadStyles.notifyingDot);
+    });
   });
 
   it('shows who resolved a thread', () => {
@@ -326,6 +375,7 @@ describe('ActivityList', () => {
   describe('unseen activity', () => {
     const threadWithUnseenReplyFromEarlierDay = thread({
       permaId: 7,
+      notificationLevel: 'all_activity',
       comments: [
         comment({id: 100, body: 'A topic', createdAt: '2026-08-15T12:00:00.000Z'}),
         comment({id: 101, body: 'Unseen reply', createdAt: '2026-08-16T12:00:00.000Z'}),

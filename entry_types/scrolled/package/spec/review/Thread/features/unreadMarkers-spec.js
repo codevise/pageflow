@@ -33,6 +33,7 @@ describe('Thread unread markers', () => {
     permaId: 5,
     subjectType: 'ContentElement',
     subjectId: 10,
+    notificationLevel: 'all_activity',
     comments: [comment({id: 100, body: 'On the pull quote'})]
   };
 
@@ -50,17 +51,17 @@ describe('Thread unread markers', () => {
     return renderWithReviewState(ui, {currentUser, commentThreads: [thread], ...options});
   }
 
-  function unreadDot(container) {
-    return container.querySelector(`.${styles.unreadDot}`);
+  function notifyingDot(container) {
+    return container.querySelector(`.${styles.notifyingDot}`);
   }
 
-  describe('dot on the thread', () => {
+  describe('notifying dot on the thread', () => {
     it('marks a thread with unseen comments', () => {
       const {container, getByLabelText} = render(
         <Thread thread={thread} showUnreadMarker />
       );
 
-      expect(unreadDot(container)).not.toBeNull();
+      expect(notifyingDot(container)).not.toBeNull();
       expect(getByLabelText('1 unread')).toBeInTheDocument();
     });
 
@@ -73,7 +74,7 @@ describe('Thread unread markers', () => {
         }
       );
 
-      expect(unreadDot(container)).not.toBeNull();
+      expect(notifyingDot(container)).not.toBeNull();
     });
 
     it('marks a thread somebody else has resolved', () => {
@@ -91,7 +92,7 @@ describe('Thread unread markers', () => {
         }
       );
 
-      expect(unreadDot(container)).not.toBeNull();
+      expect(notifyingDot(container)).not.toBeNull();
     });
 
     it('does not mark a thread without unseen comments', () => {
@@ -100,13 +101,13 @@ describe('Thread unread markers', () => {
         {commentThreadReads: {5: '2026-08-17T12:00:00.000Z'}}
       );
 
-      expect(unreadDot(container)).toBeNull();
+      expect(notifyingDot(container)).toBeNull();
     });
 
     it('does not mark a thread shown on its own', () => {
       const {container} = render(<Thread thread={thread} />);
 
-      expect(unreadDot(container)).toBeNull();
+      expect(notifyingDot(container)).toBeNull();
     });
   });
 
