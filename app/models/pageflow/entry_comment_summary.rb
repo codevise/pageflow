@@ -13,22 +13,18 @@ module Pageflow
       entries = entries.to_a
       return {} if entries.empty?
 
-      threads = threads_by_entry_id(entries)
-      read_at = read_at_by_entry_id(entries, user)
-
-      entries.to_h do |entry|
-        [entry.id, build(threads.fetch(entry.id, []),
-                         read_at: read_at.fetch(entry.id, {}),
-                         user:)]
-      end
+      EntryCommentActivity
+        .for_entries(entries, user:, threads_by_entry_id: threads_by_entry_id(entries))
+        .transform_values { |activity| build(activity) }
     end
 
     def initialize(topic_count:, unread_topic_count:, unread_reply_count:,
-                   unread_resolution_count: 0)
+                   unread_resolution_count: 0, notifying: false)
       @topic_count = topic_count
       @unread_topic_count = unread_topic_count
       @unread_reply_count = unread_reply_count
       @unread_resolution_count = unread_resolution_count
+      @notifying = notifying
     end
 
     # Unread activity shows even where no topic is left open: the last
@@ -41,6 +37,10 @@ module Pageflow
       unread_topic_count.positive? ||
         unread_reply_count.positive? ||
         unread_resolution_count.positive?
+    end
+
+    def notifying?
+      @notifying
     end
 
     # Comment threads live on the draft revision, so entries are reached
@@ -57,27 +57,22 @@ module Pageflow
     end
     private_class_method :threads_by_entry_id
 
-    def self.read_at_by_entry_id(entries, user)
-      CommentThreadRead
-        .where(user:, entry_id: entries.map(&:id))
-        .pluck(:entry_id, :comment_thread_perma_id, :read_at)
-        .group_by(&:first)
-        .transform_values do |rows|
-          rows.to_h { |(_entry_id, perma_id, read_at)| [perma_id, read_at] }
-        end
-    end
-    private_class_method :read_at_by_entry_id
+    def self.build(activity)
+      unread_events = activity.threads.map { |thread| activity.unread_events(thread) }
 
-    def self.build(threads, read_at:, user:)
-      unread = threads.map do |thread|
-        CommentThreadActivity.unread(thread, read_at: read_at[thread.perma_id], user:).map(&:kind)
-      end
-
-      new(topic_count: threads.count { |thread| thread.resolved_at.nil? },
-          unread_topic_count: unread.count { |kinds| kinds.include?(:topic) },
-          unread_reply_count: unread.sum { |kinds| kinds.count(:reply) },
-          unread_resolution_count: unread.count { |kinds| kinds.include?(:resolution) })
+      new(topic_count: activity.threads.count { |thread| !thread.resolved? },
+          notifying: activity.notifying?,
+          **unread_counts(unread_events))
     end
     private_class_method :build
+
+    def self.unread_counts(unread)
+      kinds = unread.map { |events| events.map(&:kind) }
+
+      {unread_topic_count: kinds.count { |thread_kinds| thread_kinds.include?(:topic) },
+       unread_reply_count: kinds.sum { |thread_kinds| thread_kinds.count(:reply) },
+       unread_resolution_count: kinds.count { |thread_kinds| thread_kinds.include?(:resolution) }}
+    end
+    private_class_method :unread_counts
   end
 end

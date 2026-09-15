@@ -184,5 +184,30 @@ module Pageflow
         described_class.new(topic_count: 1, unread_topic_count:, unread_reply_count:)
       end
     end
+
+    describe '#notifying?' do
+      it 'reflects whether the unread activity in the entry notifies' do
+        user = create(:user, unread_comments_since_at: 3.hours.ago)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft)
+        create(:comment, comment_thread: thread, creator: create(:user))
+
+        summary = EntryCommentSummary.for_entries([entry], user:)[entry.id]
+
+        expect(summary).to be_notifying
+      end
+
+      it 'is false when the user has muted the entry' do
+        user = create(:user, unread_comments_since_at: 3.hours.ago)
+        entry = create(:entry, with_previewer: user)
+        create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+        thread = create(:comment_thread, revision: entry.draft)
+        create(:comment, comment_thread: thread, creator: create(:user))
+
+        summary = EntryCommentSummary.for_entries([entry], user:)[entry.id]
+
+        expect(summary).not_to be_notifying
+      end
+    end
   end
 end

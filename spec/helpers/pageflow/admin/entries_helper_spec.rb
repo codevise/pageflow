@@ -38,7 +38,30 @@ module Pageflow
 
           result = render_indicator(entry, user)
 
-          expect(result).to have_selector('span.entry_comments_indicator .unread_dot')
+          expect(result).to have_selector('span.entry_comments_indicator.unread')
+        end
+
+        it 'adds a dot when the activity is waiting for the user' do
+          user = create(:user, unread_comments_since_at: 3.hours.ago)
+          entry = create(:entry, with_previewer: user)
+          thread = create(:comment_thread, revision: entry.draft)
+          create(:comment, comment_thread: thread, creator: create(:user))
+
+          result = render_indicator(entry, user)
+
+          expect(result).to have_selector('.entry_comments_indicator.unread .notifying_dot')
+        end
+
+        it 'leaves the dot out when the activity is addressed to somebody else' do
+          user = create(:user, unread_comments_since_at: 3.hours.ago)
+          entry = create(:entry, account: create(:account, with_previewer: user))
+          thread = create(:comment_thread, revision: entry.draft)
+          create(:comment, comment_thread: thread, creator: create(:user))
+
+          result = render_indicator(entry, user)
+
+          expect(result).to have_selector('.entry_comments_indicator.unread')
+          expect(result).not_to have_selector('.notifying_dot')
         end
 
         it 'does not mark the indicator when everything has been seen' do
@@ -49,7 +72,7 @@ module Pageflow
           result = render_indicator(entry, user)
 
           expect(result).to have_selector('span.entry_comments_indicator')
-          expect(result).not_to have_selector('span.entry_comments_indicator .unread_dot')
+          expect(result).not_to have_selector('span.entry_comments_indicator.unread')
         end
 
         it 'names the topic count in the tooltip' do
