@@ -825,6 +825,15 @@ en:
         no_entries: No Stories
         no_members: No members
         site_defaults_inline_help: The following settings will be used as defaults for new stories in this account. Changes do not affect existing stories.
+      comment_notifications:
+        account:
+          assigned_entries: Stories they are assigned to as a member
+          legend: Comment notification defaults for members
+          levels:
+            all_activity: All activity
+            muted: Nothing
+            participating_threads: Topics they have commented in
+          other_entries: Stories they are not assigned to as a member
       entries:
         add_folder: Add folder
         comments:

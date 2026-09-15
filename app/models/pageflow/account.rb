@@ -14,7 +14,11 @@ module Pageflow
 
     validates :default_site, presence: true
 
+    has_one :comment_settings, class_name: 'Pageflow::AccountCommentSettings',
+                               dependent: :destroy
+
     accepts_nested_attributes_for :default_site, update_only: true
+    accepts_nested_attributes_for :comment_settings, update_only: true
 
     scope :with_landing_page, -> { where.not(landing_page_name: '') }
 

@@ -826,6 +826,15 @@ de:
         no_entries: Keine Beiträge
         no_members: Keine Benutzer
         site_defaults_inline_help: Die folgenden Einstellungen werden als Standard für neue Beiträge des Kontos verwendet. Änderungen wirken sich nicht auf existierende Beiträge aus.
+      comment_notifications:
+        account:
+          assigned_entries: Beiträge, denen sie als Mitglied zugeordnet sind
+          legend: Standard für Kommentar-Benachrichtigungen der Mitglieder
+          levels:
+            all_activity: Alle Aktivität
+            muted: Nichts
+            participating_threads: Themen, in denen sie kommentiert haben
+          other_entries: Beiträge, denen sie nicht als Mitglied zugeordnet sind
       entries:
         add_folder: Ordner hinzufügen
         comments:

@@ -336,8 +336,61 @@ module Admin
       end
     end
 
+    describe '#edit' do
+      render_views
+
+      it 'preselects the system default where the account has set no level' do
+        user = create(:user)
+        account = create(:account, with_manager: user)
+
+        sign_in(user, scope: :user)
+        get(:edit, params: {id: account.id})
+
+        expect(response.body).to have_selector(
+          '[name="account[comment_settings_attributes][other_entries_notification_level]"] ' \
+          'option[value="participating_threads"][selected]'
+        )
+      end
+
+      it 'preselects the level the account has set' do
+        user = create(:user)
+        account = create(:account, with_manager: user)
+        create(:account_comment_settings, account:, other_entries_notification_level: 'muted')
+
+        sign_in(user, scope: :user)
+        get(:edit, params: {id: account.id})
+
+        expect(response.body).to have_selector(
+          '[name="account[comment_settings_attributes][other_entries_notification_level]"] ' \
+          'option[value="muted"][selected]'
+        )
+      end
+    end
+
     describe '#update' do
       render_views
+
+      it 'allows an account manager to set comment notification defaults' do
+        user = create(:user)
+        account = create(:account, with_manager: user)
+
+        sign_in(user, scope: :user)
+        patch(:update,
+              params: {
+                id: account.id,
+                account: {
+                  comment_settings_attributes: {
+                    assigned_entries_notification_level: 'muted',
+                    other_entries_notification_level: 'all_activity'
+                  }
+                }
+              })
+
+        settings = account.reload.comment_settings
+
+        expect(settings.assigned_entries_notification_level).to eq('muted')
+        expect(settings.other_entries_notification_level).to eq('all_activity')
+      end
 
       it 'allows admin to update feature_configuration through feature_states param' do
         account = create(:account)

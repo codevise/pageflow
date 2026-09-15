@@ -1,0 +1,13 @@
+<%= f.input :assigned_entries_notification_level,
+            as: :select,
+            collection: comment_notification_level_options(scope),
+            include_blank: false,
+            selected: levels[:assigned],
+            label: t("pageflow.admin.comment_notifications.#{scope}.assigned_entries") %>
+
+<%= f.input :other_entries_notification_level,
+            as: :select,
+            collection: comment_notification_level_options(scope),
+            include_blank: false,
+            selected: levels[:other],
+            label: t("pageflow.admin.comment_notifications.#{scope}.other_entries") %>
