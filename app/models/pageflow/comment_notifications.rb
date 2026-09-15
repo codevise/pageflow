@@ -21,18 +21,26 @@ module Pageflow
     end
 
     def level_for_entry(entry)
-      entry_levels[entry.id] || default_level(entry)
+      override_level_for_entry(entry) || default_level_for_entry(entry)
     end
 
-    private
+    def override_level_for_entry(entry)
+      entry_levels[entry.id]
+    end
 
-    def default_level(entry)
-      bucket = assigned_entry_ids.include?(entry.id) ? :assigned : :other
+    def default_level_for_entry(entry)
+      bucket = bucket_for_entry(entry)
 
       member_defaults.dig(entry.account_id, bucket) ||
         account_defaults.dig(entry.account_id, bucket) ||
         CommentNotificationLevel::SYSTEM_DEFAULTS.fetch(bucket)
     end
+
+    def bucket_for_entry(entry)
+      assigned_entry_ids.include?(entry.id) ? :assigned : :other
+    end
+
+    private
 
     def thread_levels
       @thread_levels ||=
@@ -93,6 +101,18 @@ module Pageflow
 
       def level
         @notifications.level_for_entry(@entry)
+      end
+
+      def override_level
+        @notifications.override_level_for_entry(@entry)
+      end
+
+      def default_level
+        @notifications.default_level_for_entry(@entry)
+      end
+
+      def bucket
+        @notifications.bucket_for_entry(@entry)
       end
 
       def level_for_thread(comment_thread)

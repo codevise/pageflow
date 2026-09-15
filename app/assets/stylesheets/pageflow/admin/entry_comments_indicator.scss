@@ -6,11 +6,31 @@ $pageflow-entry-comments-indicator-notifying-dot-color: #ff7400 !default;
 
 $pageflow-entry-comments-indicator-icon-directory: "pageflow/admin/icons" !default;
 
+$pageflow-entry-comments-indicator-height: 20px !default;
+
+// Shares the badge's box, so that the tooltip both of them hang from
+// their own top edge comes out at one height. The box is also widened
+// until its middle meets the arrow, which keeps a fixed offset from
+// whatever it points at and would otherwise land past the bell.
+.entry_comments_notification_level {
+  // The shared 8px the arrow starts at, plus half its 10px width.
+  $arrow-tip: 13px;
+  $icon: $pageflow-comment-notification-level-icon-size;
+
+  width: $arrow-tip * 2;
+  height: $pageflow-entry-comments-indicator-height;
+  margin-left: 8px - $arrow-tip + $icon / 2;
+  vertical-align: middle;
+  background-position: center calc(50% + 0.1em);
+}
+
 .entry_comments_indicator {
   $dir: $pageflow-entry-comments-indicator-icon-directory;
 
+  box-sizing: border-box;
   position: relative;
   display: inline-block;
+  height: $pageflow-entry-comments-indicator-height;
   margin-left: 8px;
   padding: 1px 6px 1px 22px;
   vertical-align: middle;

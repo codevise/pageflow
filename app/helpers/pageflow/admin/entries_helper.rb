@@ -31,6 +31,19 @@ module Pageflow
         end
       end
 
+      # Rendered for every entry, so that the level shows for one
+      # nobody has commented on yet.
+      def entry_comments_notification_level(entry, summaries: entry_comment_summaries)
+        level = summaries[entry.id]&.override_level
+        return unless level
+
+        content_tag(
+          :span, '',
+          class: "entry_comments_notification_level comment_notification_level #{level}",
+          data: {tooltip: t("pageflow.admin.entries.comments.notification_level.#{level}")}
+        )
+      end
+
       def entry_comments_notifying_dot(summary)
         return unless summary.notifying?
 

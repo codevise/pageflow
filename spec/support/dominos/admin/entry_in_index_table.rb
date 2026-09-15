@@ -11,6 +11,10 @@ module Dom
       def comments_indicator
         node.first('.entry_comments_indicator', minimum: 0)
       end
+
+      def comments_notification_level
+        node.first('.entry_comments_notification_level', minimum: 0)
+      end
     end
   end
 end

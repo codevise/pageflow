@@ -1,0 +1,28 @@
+$pageflow-comment-notification-level-icon-directory: "pageflow/admin/icons" !default;
+
+$pageflow-comment-notification-level-icon-size: 13px !default;
+
+.comment_notification_level {
+  $dir: $pageflow-comment-notification-level-icon-directory;
+  $size: $pageflow-comment-notification-level-icon-size;
+
+  display: inline-block;
+  width: $size;
+  height: $size;
+  vertical-align: -2px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: $size $size;
+
+  &.all_activity {
+    background-image: image-url("#{$dir}/bell_ring.svg");
+  }
+
+  &.participating_threads {
+    background-image: image-url("#{$dir}/bell.svg");
+  }
+
+  &.muted {
+    background-image: image-url("#{$dir}/bell_off.svg");
+  }
+}

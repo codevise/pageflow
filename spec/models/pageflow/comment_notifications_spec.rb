@@ -76,6 +76,59 @@ module Pageflow
       end
     end
 
+    describe '#override_level_for_entry' do
+      it 'answers the level the user stored for the entry' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+
+        notifications = CommentNotifications.new(user:, entries: [entry])
+
+        expect(notifications.override_level_for_entry(entry)).to eq('muted')
+      end
+
+      it 'answers nothing when the user stored no level for the entry' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        notifications = CommentNotifications.new(user:, entries: [entry])
+
+        expect(notifications.override_level_for_entry(entry)).to be_nil
+      end
+    end
+
+    describe '#default_level_for_entry' do
+      it 'ignores the level the user stored for the entry' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+
+        notifications = CommentNotifications.new(user:, entries: [entry])
+
+        expect(notifications.default_level_for_entry(entry)).to eq('all_activity')
+      end
+    end
+
+    describe '#bucket_for_entry' do
+      it 'is assigned for an entry the user is a member of' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        notifications = CommentNotifications.new(user:, entries: [entry])
+
+        expect(notifications.bucket_for_entry(entry)).to eq(:assigned)
+      end
+
+      it 'is other for an entry the user reaches through the account' do
+        user = create(:user)
+        entry = create(:entry, account: create(:account, with_previewer: user))
+
+        notifications = CommentNotifications.new(user:, entries: [entry])
+
+        expect(notifications.bucket_for_entry(entry)).to eq(:other)
+      end
+    end
+
     describe '.for_entry' do
       it 'answers the level of the entry itself' do
         user = create(:user)

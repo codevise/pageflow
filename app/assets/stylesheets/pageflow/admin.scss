@@ -22,9 +22,11 @@ $pageflow-hint-color: #666 !default;
 
 @import "pageflow/admin/badge_list";
 @import "pageflow/admin/columns";
+@import "pageflow/admin/comment_notification_level";
 @import "pageflow/admin/embed_code";
 @import "pageflow/admin/embedded_index_table";
 @import "pageflow/admin/entries";
+@import "pageflow/admin/entry_comment_notifications";
 @import "pageflow/admin/entry_comments_indicator";
 @import "pageflow/admin/features";
 @import "pageflow/admin/filters";

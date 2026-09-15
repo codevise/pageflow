@@ -45,6 +45,32 @@ feature 'as account previewer, seeing comment activity in the entries table' do
     expect(indicator).to have_no_selector('.notifying_dot')
   end
 
+  scenario 'entry the previewer muted shows the level beside the count' do
+    entry = create(:entry, title: 'Muted Entry')
+    user = Dom::Admin::Page.sign_in_as(:previewer, on: entry.account)
+    create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+    create(:comment_thread, revision: entry.draft)
+
+    visit(admin_entries_path)
+    row = Dom::Admin::EntryInIndexTable.find_by_title('Muted Entry')
+
+    expect(row.comments_indicator['data-tooltip']).to eq('Comments: 1 unresolved topic')
+    expect(row.comments_notification_level).to match_selector('.muted')
+    expect(row.comments_notification_level['data-tooltip']).to eq('Muted')
+  end
+
+  scenario 'entry the previewer muted shows the level without any comments' do
+    entry = create(:entry, title: 'Quiet Muted Entry')
+    user = Dom::Admin::Page.sign_in_as(:previewer, on: entry.account)
+    create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+
+    visit(admin_entries_path)
+    row = Dom::Admin::EntryInIndexTable.find_by_title('Quiet Muted Entry')
+
+    expect(row.comments_indicator).to be_nil
+    expect(row.comments_notification_level).to match_selector('.muted')
+  end
+
   scenario 'entry with comments predating the user shows unmarked indicator' do
     entry = create(:entry, title: 'Settled Entry')
     Dom::Admin::Page.sign_in_as(:previewer, on: entry.account)

@@ -185,6 +185,19 @@ module Pageflow
       end
     end
 
+    describe '#override_level' do
+      it 'is nothing unless the user stored a level for the entry' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        activity = EntryCommentActivity
+                   .for_entries([entry], user:, threads_by_entry_id: {})
+                   .fetch(entry.id)
+
+        expect(activity.override_level).to be_nil
+      end
+    end
+
     it 'does not have N+1 queries' do
       user = create(:user)
       account = create(:account, with_previewer: user)

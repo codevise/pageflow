@@ -7,7 +7,8 @@ module Pageflow
   #
   # @api private
   class EntryCommentSummary
-    attr_reader :topic_count, :unread_topic_count, :unread_reply_count, :unread_resolution_count
+    attr_reader :topic_count, :unread_topic_count, :unread_reply_count,
+                :unread_resolution_count, :override_level
 
     def self.for_entries(entries, user:)
       entries = entries.to_a
@@ -19,12 +20,13 @@ module Pageflow
     end
 
     def initialize(topic_count:, unread_topic_count:, unread_reply_count:,
-                   unread_resolution_count: 0, notifying: false)
+                   unread_resolution_count: 0, notifying: false, override_level: nil)
       @topic_count = topic_count
       @unread_topic_count = unread_topic_count
       @unread_reply_count = unread_reply_count
       @unread_resolution_count = unread_resolution_count
       @notifying = notifying
+      @override_level = override_level
     end
 
     # Unread activity shows even where no topic is left open: the last
@@ -57,6 +59,7 @@ module Pageflow
 
       new(topic_count: activity.threads.count { |thread| !thread.resolved? },
           notifying: activity.notifying?,
+          override_level: activity.override_level,
           **unread_counts(unread_events))
     end
     private_class_method :build

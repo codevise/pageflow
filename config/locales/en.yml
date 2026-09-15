@@ -828,6 +828,25 @@ en:
       entries:
         add_folder: Add folder
         comments:
+          notification_level:
+            all_activity: Notifying about all activity
+            muted: Muted
+            participating_threads: Notifying about topics I have commented in
+          notifications:
+            button: "Comment notifications: %{level}"
+            default:
+              assigned: Default for stories I am assigned to as a member
+              name: "Default – %{level}"
+              other: Default for stories I am not assigned to as a member
+            heading: Comment notifications
+            hints:
+              all_activity: Every comment in this story
+              muted: Nothing from this story
+              participating_threads: Anything in those, but no new topics
+            levels:
+              all_activity: All activity
+              muted: Nothing
+              participating_threads: Topics I have commented in
           tooltip: "Comments: %{summary}"
           topic_count:
             one: 1 unresolved topic
