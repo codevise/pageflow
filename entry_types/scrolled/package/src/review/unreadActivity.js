@@ -2,21 +2,39 @@ import {useMemo} from 'react';
 
 import {useCommentThreadReads, useCurrentUser} from './ReviewStateProvider';
 import {useDisplayedCommentThreadReads} from './commentThreadReadsSnapshot';
+import {useThreadsNotify} from './notifications';
 
-export function useUnreadActivityCount(threads) {
+// Only the threads that have unread activity can make the set notify,
+// so the intersection is taken here rather than by each caller.
+export function useUnreadActivitySummary(threads) {
   const currentUser = useCurrentUser();
   const commentThreadReads = useDisplayedCommentThreadReads();
 
-  return useMemo(
-    () => threads.reduce(
-      (count, thread) => count + unreadActivity(thread, {
-        currentUser,
-        readAt: commentThreadReads[thread.permaId]
-      }).length,
-      0
-    ),
+  const {unreadCount, unreadThreads} = useMemo(
+    () => {
+      const unreadThreads = [];
+      let unreadCount = 0;
+
+      threads.forEach(thread => {
+        const events = unreadActivity(thread, {
+          currentUser,
+          readAt: commentThreadReads[thread.permaId]
+        });
+
+        if (events.length) {
+          unreadCount += events.length;
+          unreadThreads.push(thread);
+        }
+      });
+
+      return {unreadCount, unreadThreads};
+    },
     [threads, currentUser, commentThreadReads]
   );
+
+  const notifying = useThreadsNotify(unreadThreads);
+
+  return useMemo(() => ({unreadCount, notifying}), [unreadCount, notifying]);
 }
 
 export function useUnreadActivity(thread) {

@@ -4,7 +4,7 @@ import {Range, Transforms} from 'slate';
 import {useSlate} from 'slate-react';
 
 import {
-  Badge, useAnchoredFloating, useCommentDisplayFilter, useUnreadActivityCount
+  Badge, useAnchoredFloating, useCommentDisplayFilter, useUnreadActivitySummary
 } from 'pageflow-scrolled/review';
 import {useContentElementCommentSelection} from '../useCommentSelection';
 import {rangeOverlapsSelection} from './rangeOverlapsSelection';
@@ -41,7 +41,7 @@ function PositionedBadge({editor, highlight, overlapSelection, anchors}) {
     () => (highlight.thread ? [highlight.thread] : noThreads),
     [highlight.thread]
   );
-  const unreadCount = useUnreadActivityCount(threads);
+  const {unreadCount, notifying} = useUnreadActivitySummary(threads);
 
   const handleClick = useCallback(() => {
     if (highlight.key === 'selection') {
@@ -78,6 +78,7 @@ function PositionedBadge({editor, highlight, overlapSelection, anchors}) {
              mode={mode}
              resolved={!!highlight.thread?.resolvedAt}
              unreadCount={unreadCount}
+             notifying={notifying}
              onClick={handleClick} />
     </div>
   );

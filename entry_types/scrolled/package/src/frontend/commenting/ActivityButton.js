@@ -4,7 +4,9 @@ import {
   useFloating, FloatingPortal, offset, shift, size, autoUpdate
 } from '@floating-ui/react';
 
-import {ActivityList, useUnreadThreadCount} from 'pageflow-scrolled/review';
+import {
+  ActivityList, useLocatedCommentThreads, useUnreadActivitySummary
+} from 'pageflow-scrolled/review';
 import {useI18n} from '../i18n';
 import {useFloatingPortalRoot} from '../FloatingPortalRootProvider';
 import {useCommentNavigation, useSelectedSubject} from './SelectedSubjectProvider';
@@ -20,7 +22,8 @@ export function ActivityButton() {
   const {t} = useI18n({locale: 'ui'});
   const [open, setOpen] = useState(false);
 
-  const unreadCount = useUnreadThreadCount();
+  const {threads} = useLocatedCommentThreads();
+  const {notifying} = useUnreadActivitySummary(threads);
   const label = t('pageflow_scrolled.review.activity.toggle');
   const {clearSelection} = useSelectedSubject();
   const portalRoot = useFloatingPortalRoot();
@@ -57,7 +60,7 @@ export function ActivityButton() {
               aria-label={label}
               title={label}>
         <ActivityIcon />
-        {unreadCount > 0 && <span className={styles.unseenDot} />}
+        {notifying && <span className={styles.unseenDot} />}
       </button>
 
       {/* Out of the toolbar, whose view transition would snapshot the

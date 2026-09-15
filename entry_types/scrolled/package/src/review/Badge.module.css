@@ -1,7 +1,7 @@
 .badge {
   --dot-size: 12px;
   --icon-size: 15px;
-  --unread-dot-size: 8px;
+  --notifying-dot-size: 8px;
   position: relative;
   display: flex;
   align-items: center;
@@ -62,13 +62,18 @@
   height: var(--icon-size);
 }
 
-.unread::after {
+.unread {
+  box-shadow: 0 0 0 0.125rem currentColor,
+              0 0 0 0.25rem var(--ui-on-primary-color-light);
+}
+
+.notifying::after {
   content: '';
   position: absolute;
   top: 0;
   right: 0;
-  width: var(--unread-dot-size);
-  height: var(--unread-dot-size);
+  width: var(--notifying-dot-size);
+  height: var(--notifying-dot-size);
   border-radius: 50%;
   background: var(--ui-warning-color);
   box-shadow: 0 0 0 1px var(--ui-on-surface-color-lighter);

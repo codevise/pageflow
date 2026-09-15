@@ -49,6 +49,47 @@ describe('ThreadsBadge', () => {
       expect(getByRole('status')).toHaveAttribute('aria-label', '1 unread');
     });
 
+    it('marks the badge notifying when the thread asks for all activity', () => {
+      const thread = {...threadWithComment(), notificationLevel: 'all_activity'};
+
+      const {getByRole} = renderThreadsBadge(
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} />,
+        {currentUser, commentThreads: [thread]}
+      );
+
+      expect(getByRole('status')).toHaveClass(badgeStyles.notifying);
+    });
+
+    it('leaves the badge plain in a thread the user has no part in', () => {
+      const thread = {...threadWithComment(), notificationLevel: 'participating_threads'};
+
+      const {getByRole} = renderThreadsBadge(
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} />,
+        {currentUser, commentThreads: [thread]}
+      );
+
+      expect(getByRole('status')).toHaveClass(badgeStyles.unread);
+      expect(getByRole('status')).not.toHaveClass(badgeStyles.notifying);
+    });
+
+    it('marks the badge notifying once the user has replied in the thread', () => {
+      const thread = {
+        ...threadWithComment(),
+        notificationLevel: 'participating_threads',
+        comments: [
+          {id: 100, creatorId: 43, createdAt: '2026-08-17T11:00:00.000Z'},
+          {id: 101, creatorId: currentUser.id, createdAt: '2026-08-17T11:30:00.000Z'}
+        ]
+      };
+
+      const {getByRole} = renderThreadsBadge(
+        <ThreadsBadge subjectType="ContentElement" subjectId={10} />,
+        {currentUser, commentThreads: [thread]}
+      );
+
+      expect(getByRole('status')).toHaveClass(badgeStyles.notifying);
+    });
+
     it('counts unread comments across threads of the subject', () => {
       const {getByRole} = renderThreadsBadge(
         <ThreadsBadge subjectType="ContentElement" subjectId={10} />,

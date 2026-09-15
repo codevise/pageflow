@@ -174,11 +174,28 @@ describe('comment activity', () => {
     expect(entry.getAllCommentBadges()[0]).toHaveClass(badgeStyles.resolved);
   });
 
-  it('marks the button while activity is unseen', () => {
-    const entry = renderEntryWithTwoThreads();
+  it('marks the button while unseen activity notifies', () => {
+    const entry = renderEntryWithThreads([
+      {id: 1, permaId: 5, subjectType: 'ContentElement', subjectId: 1,
+       notificationLevel: 'all_activity',
+       comments: [{id: 10, body: 'First topic', creatorName: 'Bob', creatorId: 2,
+                   createdAt: '2026-08-17T09:00:00.000Z'}]}
+    ]);
 
     expect(entry.getActivityButton().querySelector(`.${activityStyles.unseenDot}`))
       .not.toBeNull();
+  });
+
+  it('leaves the button unmarked where unseen activity is addressed to somebody else', () => {
+    const entry = renderEntryWithThreads([
+      {id: 1, permaId: 5, subjectType: 'ContentElement', subjectId: 1,
+       notificationLevel: 'participating_threads',
+       comments: [{id: 10, body: 'First topic', creatorName: 'Bob', creatorId: 2,
+                   createdAt: '2026-08-17T09:00:00.000Z'}]}
+    ]);
+
+    expect(entry.getActivityButton().querySelector(`.${activityStyles.unseenDot}`))
+      .toBeNull();
   });
 
   it('leaves the button unmarked once everything has been seen', () => {

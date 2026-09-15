@@ -6,7 +6,8 @@ import CommentIcon from './images/comment.svg';
 import styles from './Badge.module.css';
 
 export const Badge = forwardRef(function Badge({
-  counter, hasThreads = counter > 0, mode, resolved, unreadCount = 0, onClick
+  counter, hasThreads = counter > 0, mode, resolved, unreadCount = 0, notifying = false,
+  onClick
 }, ref) {
   const {t} = useI18n({locale: 'ui'});
 
@@ -26,7 +27,8 @@ export const Badge = forwardRef(function Badge({
                         undefined}
             className={classNames(styles.badge, styles[variant],
                                   {[styles.resolved]: resolved,
-                                   [styles.unread]: unread})}
+                                   [styles.unread]: unread,
+                                   [styles.notifying]: notifying})}
             onClick={onClick}>
       {variant !== 'dot' && <CommentIcon className={styles.icon} />}
       {(variant === 'active' || variant === 'expanded') && counter > 1 ? counter : null}
@@ -43,7 +45,8 @@ function resolveVariant(mode, hasThreads, unread) {
   case 'none':
     return null;
   case 'dot':
-    // A dot would leave the unread dot sitting on a dot.
+    // The ring marking unread follows the button, which around a dot
+    // would sit well clear of it.
     return hasThreads ? (unread ? 'expanded' : 'dot') : null;
   default:
     return hasThreads ? 'expanded' : null;
