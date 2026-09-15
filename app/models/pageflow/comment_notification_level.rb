@@ -17,5 +17,19 @@ module Pageflow
     STORABLE_PER_THREAD = [ALL_ACTIVITY, MUTED].freeze
 
     SYSTEM_DEFAULTS = {assigned: ALL_ACTIVITY, other: PARTICIPATING_THREADS}.freeze
+
+    # Kept in sync with notifies in
+    # entry_types/scrolled/package/src/review/notifications.js. Both are
+    # held to the cases in spec/fixtures/comment_notification_rules.json.
+    def self.notifies?(level, participated)
+      case level
+      when ALL_ACTIVITY
+        true
+      when PARTICIPATING_THREADS
+        participated
+      when MUTED
+        false
+      end
+    end
   end
 end

@@ -23,20 +23,20 @@ module Pageflow
     end
 
     def unread_events(thread, read_at:, user:)
+      events(thread).select { |event| unread?(event, read_at:, user:) }
+    end
+
+    def unread?(event, read_at:, user:)
       seen_up_to = [read_at, user.unread_comments_since_at].compact.max
 
-      events(thread).select { |event| unread?(event, seen_up_to:, user:) }
+      event.creator_id != user.id &&
+        (seen_up_to.nil? || event.created_at > seen_up_to)
     end
 
     private
 
     def event(kind, creator_id, created_at)
       Event.new(kind:, creator_id:, created_at:)
-    end
-
-    def unread?(event, seen_up_to:, user:)
-      event.creator_id != user.id &&
-        (seen_up_to.nil? || event.created_at > seen_up_to)
     end
   end
 end
