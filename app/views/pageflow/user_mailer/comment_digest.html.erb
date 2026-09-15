@@ -1,0 +1,55 @@
+<div style="<%= comment_digest_style(:body) %>">
+  <p style="<%= comment_digest_style(:intro) %>">
+    <%= t('.salutation', first_name: @user.first_name) %>,
+  </p>
+
+  <p style="<%= comment_digest_style(:intro) %>">
+    <%= t('.instruction_html',
+          entry: link_to(@entry.title, main_app.admin_entry_url(@entry))) %>
+  </p>
+
+  <% @digest.threads.each do |thread_group| %>
+    <p style="<%= comment_digest_style(:summary) %>">
+      <%= comment_digest_summary(thread_group) %>
+    </p>
+
+    <div style="<%= comment_digest_style(:thread) %>">
+      <% topic = thread_group.comment_thread.comments.first %>
+
+      <p style="<%= comment_digest_style(:author) %>"><%= topic.creator.full_name %></p>
+      <p style="<%= comment_digest_style(:comment_body) %>"><%= topic.body %></p>
+
+      <% earlier = comment_digest_earlier_reply_count(thread_group) %>
+      <% if earlier.positive? %>
+        <p style="<%= comment_digest_style(:earlier_replies) %>">
+          <%= t('.earlier_reply_count', count: earlier) %>
+        </p>
+      <% end %>
+
+      <% replies = comment_digest_new_replies(thread_group) %>
+      <% if replies.any? %>
+        <p style="<%= comment_digest_style(:new_replies) %>"><%= t('.new_replies') %></p>
+
+        <% replies.each do |reply| %>
+          <div style="<%= comment_digest_style(:comment_spacing) %>">
+            <p style="<%= comment_digest_style(:author) %>"><%= reply.creator.full_name %></p>
+            <p style="<%= comment_digest_style(:comment_body) %>"><%= reply.body %></p>
+          </div>
+        <% end %>
+      <% end %>
+
+      <% if comment_digest_resolution(thread_group) %>
+        <p style="<%= comment_digest_style(:resolution) %>">
+          <%= t('.resolution') %>
+          <% if thread_group.comment_thread.resolver %>
+            <span style="<%= comment_digest_style(:resolver) %>">
+              <%= thread_group.comment_thread.resolver.full_name %>
+            </span>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <p style="<%= comment_digest_style(:greeting) %>"><%= t('.greeting') %></p>
+</div>

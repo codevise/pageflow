@@ -8,7 +8,7 @@ module Pageflow
   #
   # @api private
   module CommentThreadActivity
-    Event = Struct.new(:kind, :creator_id, :created_at, keyword_init: true)
+    Event = Struct.new(:kind, :comment, :creator_id, :created_at, keyword_init: true)
 
     extend self
 
@@ -16,9 +16,9 @@ module Pageflow
       topic, *replies = thread.comments.sort_by(&:id)
 
       result = []
-      result << event(:topic, topic.creator_id, topic.created_at) if topic
-      replies.each { |reply| result << event(:reply, reply.creator_id, reply.created_at) }
-      result << event(:resolution, thread.resolved_by_id, thread.resolved_at) if thread.resolved_at
+      result << event(:topic, topic) if topic
+      replies.each { |reply| result << event(:reply, reply) }
+      result << resolution_event(thread) if thread.resolved_at
       result
     end
 
@@ -35,8 +35,13 @@ module Pageflow
 
     private
 
-    def event(kind, creator_id, created_at)
-      Event.new(kind:, creator_id:, created_at:)
+    def event(kind, comment)
+      Event.new(kind:, comment:, creator_id: comment.creator_id, created_at: comment.created_at)
+    end
+
+    def resolution_event(thread)
+      Event.new(kind: :resolution, comment: nil,
+                creator_id: thread.resolved_by_id, created_at: thread.resolved_at)
     end
   end
 end

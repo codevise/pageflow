@@ -2168,6 +2168,24 @@ en:
     unmute_button:
       widget_type_name: Unmute button
     user_mailer:
+      comment_digest:
+        earlier_reply_count:
+          one: 1 earlier reply
+          other: "%{count} earlier replies"
+        greeting: Your Pageflow Team
+        instruction: "There is new comment activity in %{entry}."
+        instruction_html: There is new comment activity in %{entry}.
+        new_replies: New replies
+        resolution: Marked as resolved by
+        salutation: Hello %{first_name}
+        subject: New comments in %{title}
+        summary:
+          and: " and "
+          reply_count:
+            one: 1 reply
+            other: "%{count} replies"
+          resolution: marked as resolved
+          topic: topic started
       invitation:
         ending: Thank you and have fun,
         greeting: Your Pageflow Team
