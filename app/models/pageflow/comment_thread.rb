@@ -15,8 +15,12 @@ module Pageflow
 
     validates :subject_type, :subject_id, presence: true
 
+    def resolved?
+      resolved_at.present?
+    end
+
     def resolve(user)
-      update!(resolved_at: Time.current, resolver: user) unless resolved_at
+      update!(resolved_at: Time.current, resolver: user) unless resolved?
     end
 
     def unresolve

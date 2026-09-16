@@ -15,6 +15,26 @@ module Pageflow
       end
     end
 
+    describe '#resolved?' do
+      it 'is true once the thread has been resolved' do
+        thread = create(:comment_thread)
+
+        expect(thread).not_to be_resolved
+
+        thread.resolve(create(:user))
+
+        expect(thread).to be_resolved
+      end
+
+      it 'is false again after unresolving' do
+        thread = create(:comment_thread, resolved_at: Time.current)
+
+        thread.unresolve
+
+        expect(thread).not_to be_resolved
+      end
+    end
+
     describe '.migrate_to_subject' do
       it 'updates subject_id of matching threads' do
         revision = create(:revision)
