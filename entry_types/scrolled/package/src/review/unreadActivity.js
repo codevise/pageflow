@@ -32,7 +32,7 @@ export function useUnreadActivity(thread) {
   );
 }
 
-export function useLiveUnreadActivity(thread) {
+export function useHasLiveUnreadActivity(thread) {
   const currentUser = useCurrentUser();
   const commentThreadReads = useCommentThreadReads();
 
@@ -40,7 +40,7 @@ export function useLiveUnreadActivity(thread) {
     () => unreadActivity(thread, {
       currentUser,
       readAt: commentThreadReads[thread.permaId]
-    }),
+    }).length > 0,
     [thread, currentUser, commentThreadReads]
   );
 }

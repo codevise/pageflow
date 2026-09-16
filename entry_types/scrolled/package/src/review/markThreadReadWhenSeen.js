@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 
 import {useMarkThreadRead} from './ReviewStateProvider';
-import {useLiveUnreadActivity} from './unreadActivity';
+import {useHasLiveUnreadActivity} from './unreadActivity';
 
 const DWELL_TIME = 800;
 
@@ -9,11 +9,10 @@ const DWELL_TIME = 800;
 const ROOT_MARGIN = '-10% 0px -10% 0px';
 
 export function useMarkThreadReadWhenSeen({thread, ref, enabled}) {
-  const unread = useLiveUnreadActivity(thread);
+  const hasUnread = useHasLiveUnreadActivity(thread);
   const markThreadRead = useMarkThreadRead();
 
   const {permaId} = thread;
-  const hasUnread = unread.length > 0;
 
   useEffect(() => {
     const element = ref.current;
