@@ -23,10 +23,11 @@ module Pageflow
       # An entry's watermark moves only once its digests have been
       # yielded: a caller that fails part way through sees that entry
       # again.
-      def sweep(at:, max_lookback:)
+      def sweep(at:, max_lookback:, quiet_period:, max_hold:)
         horizon = at - max_lookback
         activity = activity_in(since: horizon, until_at: at)
-        since_by_entry = due_entries(activity, horizon:, until_at: at)
+        since_by_entry =
+          due_entries(activity, horizon:, until_at: at, quiet_period:, max_hold:)
         by_entry_id = recipients(activity.slice(*since_by_entry.keys))
 
         since_by_entry.each do |entry, since|
@@ -50,7 +51,7 @@ module Pageflow
 
       # An entry whose activity all predates its own watermark has
       # been swept already, however far back the horizon reaches.
-      def due_entries(activity, horizon:, until_at:)
+      def due_entries(activity, horizon:, until_at:, quiet_period:, max_hold:)
         watermarks = CommentDigestWatermark.considered_up_to_by_entry_id
 
         since_by_entry = activity.to_h do |entry, _threads|
@@ -58,14 +59,22 @@ module Pageflow
         end
 
         since_by_entry.select do |entry, since|
-          pending?(activity.fetch(entry), since...until_at)
+          flush?(pending_events(activity.fetch(entry), since...until_at),
+                 now: until_at, quiet_period:, max_hold:)
         end
       end
 
-      def pending?(threads, window)
-        threads.any? do |thread|
-          CommentThreadActivity.events(thread).any? { |event| window.cover?(event.created_at) }
-        end
+      def pending_events(threads, window)
+        threads.flat_map { |thread| CommentThreadActivity.events(thread) }
+               .select { |event| window.cover?(event.created_at) }
+      end
+
+      def flush?(events, now:, quiet_period:, max_hold:)
+        return false if events.empty?
+
+        written_at = events.map(&:created_at)
+
+        written_at.max < now - quiet_period || written_at.min <= now - max_hold
       end
 
       def activity_in(since:, until_at:)

@@ -52,6 +52,16 @@ module Pageflow
     # a sweep has not run for a while.
     attr_accessor :comment_digest_max_lookback
 
+    # How long an entry has to go without comment activity before its
+    # digest is sent, so that one review pass arrives as one mail.
+    attr_accessor :comment_digest_quiet_period
+
+    # How long an entry's comment activity may be held waiting for
+    # quiet before it is sent anyway. Has to stay well below
+    # {#comment_digest_max_lookback}, which is as far back as a sweep
+    # can still see held activity.
+    attr_accessor :comment_digest_max_hold
+
     # Extend the configuration based on feature flags set for accounts
     # or entries.
     #
@@ -533,6 +543,8 @@ module Pageflow
       @mailer_sender = 'pageflow@example.com'
 
       @comment_digest_max_lookback = 24.hours
+      @comment_digest_quiet_period = 15.minutes
+      @comment_digest_max_hold = 2.hours
 
       @features = Features.new
       @hooks = Hooks.new

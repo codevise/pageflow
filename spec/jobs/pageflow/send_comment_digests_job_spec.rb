@@ -30,6 +30,17 @@ module Pageflow
       }.not_to have_enqueued_job(SendCommentDigestJob)
     end
 
+    it 'holds an entry for the configured quiet period' do
+      pageflow_configure do |config|
+        config.comment_digest_quiet_period = 2.hours
+      end
+      user_with_notifying_activity
+
+      expect {
+        SendCommentDigestsJob.perform_now
+      }.not_to have_enqueued_job(SendCommentDigestJob)
+    end
+
     def user_with_notifying_activity
       user = create(:user, unread_comments_since_at: 2.days.ago)
       entry = create(:entry, with_previewer: user)

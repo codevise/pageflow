@@ -220,7 +220,7 @@ module Pageflow
         entry_with_activity_written(1.hour.ago)
         sweep
 
-        due = sweep(at: 1.minute.from_now)
+        due = sweep(at: 20.minutes.from_now)
 
         expect(due).to be_empty
       end
@@ -232,7 +232,7 @@ module Pageflow
         create(:comment, comment_thread: create(:comment_thread, revision: other_entry.draft),
                          creator: create(:user))
 
-        due = sweep(at: 1.minute.from_now)
+        due = sweep(at: 20.minutes.from_now)
 
         expect(due.map(&:entry).uniq).to eq([other_entry])
       end
@@ -274,9 +274,54 @@ module Pageflow
         expect(CommentDigestWatermark.count).to eq(0)
       end
 
-      def sweep(at: Time.current, max_lookback: 24.hours)
+      it 'yields nothing while the entry is still busy' do
+        entry_with_activity_written(5.minutes.ago)
+
+        expect(sweep).to be_empty
+      end
+
+      it 'moves no watermark while the entry is still busy' do
+        _user, entry = entry_with_activity_written(5.minutes.ago)
+
+        sweep
+
+        expect(CommentDigestWatermark.where(entry:)).to be_empty
+      end
+
+      it 'yields the whole burst once the entry has fallen quiet' do
+        _user, entry = entry_with_activity_written(5.minutes.ago)
+        sweep
+
+        due = sweep(at: 20.minutes.from_now)
+
+        expect(due.map(&:entry).uniq).to eq([entry])
+        expect(due.first.since).to eq(20.minutes.from_now - 24.hours)
+      end
+
+      it 'yields an entry that fell quiet beside one that did not' do
+        _user, entry = entry_with_activity_written(1.hour.ago)
+        entry_with_activity_written(5.minutes.ago)
+
+        expect(sweep.map(&:entry).uniq).to eq([entry])
+      end
+
+      it 'gives up holding an entry that has been busy for too long' do
+        _user, entry = entry_with_activity_written(3.hours.ago)
+        create(:comment, comment_thread: create(:comment_thread, revision: entry.draft),
+                         creator: create(:user), created_at: 1.minute.ago)
+
+        expect(sweep.map(&:entry).uniq).to eq([entry])
+      end
+
+      it 'never holds an entry for longer than a sweep can still see it' do
+        expect(Pageflow.config.comment_digest_max_hold)
+          .to be < Pageflow.config.comment_digest_max_lookback
+      end
+
+      def sweep(at: Time.current, max_lookback: 24.hours,
+                quiet_period: 15.minutes, max_hold: 2.hours)
         [].tap do |due|
-          CommentDigest.sweep(at:, max_lookback:) do |entry_digest|
+          CommentDigest.sweep(at:, max_lookback:, quiet_period:, max_hold:) do |entry_digest|
             due << entry_digest
             yield entry_digest if block_given?
           end

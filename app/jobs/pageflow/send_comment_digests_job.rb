@@ -6,7 +6,9 @@ module Pageflow
     def perform
       CommentDigest.sweep(
         at: Time.current,
-        max_lookback: Pageflow.config.comment_digest_max_lookback
+        max_lookback: Pageflow.config.comment_digest_max_lookback,
+        quiet_period: Pageflow.config.comment_digest_quiet_period,
+        max_hold: Pageflow.config.comment_digest_max_hold
       ) do |entry_digest|
         SendCommentDigestJob.perform_later(entry_digest.user, entry_digest.entry,
                                            since: entry_digest.since,
