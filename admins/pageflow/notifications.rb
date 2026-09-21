@@ -44,7 +44,8 @@ module Pageflow
             :id,
             :account_id,
             :assigned_entries_notification_level,
-            :other_entries_notification_level
+            :other_entries_notification_level,
+            :digest_interval
           ]
         )
       end

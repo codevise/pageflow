@@ -36,6 +36,11 @@ module Pageflow
         CommentNotificationLevel::SYSTEM_DEFAULTS.fetch(bucket)
     end
 
+    def digest_enabled_for_entry?(entry)
+      CommentDigestInterval.enabled?(member_defaults.dig(entry.account_id, :digest_interval),
+                                     account_defaults.dig(entry.account_id, :digest_interval))
+    end
+
     def bucket_for_entry(entry)
       assigned_entry_ids.include?(entry.id) ? :assigned : :other
     end
@@ -77,9 +82,12 @@ module Pageflow
 
     def defaults_by_account_id(scope)
       scope
-        .pluck(:account_id, :assigned_entries_notification_level, :other_entries_notification_level)
-        .to_h do |account_id, assigned, other|
-          [account_id, {assigned: assigned.presence, other: other.presence}]
+        .pluck(:account_id, :assigned_entries_notification_level,
+               :other_entries_notification_level, :digest_interval)
+        .to_h do |account_id, assigned, other, digest_interval|
+          [account_id, {assigned: assigned.presence,
+                        other: other.presence,
+                        digest_interval: digest_interval.presence}]
         end
     end
 

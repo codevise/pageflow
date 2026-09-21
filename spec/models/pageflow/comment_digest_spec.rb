@@ -145,6 +145,29 @@ module Pageflow
         expect(digest.threads.first.events.map(&:kind)).to eq([:topic])
       end
 
+      it 'says nothing to a user who takes no digest mail' do
+        user = create(:user, unread_comments_since_at: 2.days.ago)
+        entry = create(:entry, with_previewer: user)
+        create(:account_member_comment_settings,
+               account: entry.account, user:, digest_interval: 'never')
+        thread = create(:comment_thread, revision: entry.draft)
+        create(:comment, comment_thread: thread, creator: create(:user))
+
+        expect(CommentDigest.for(user, entry, since: 1.day.ago, until_at: 1.minute.from_now))
+          .to be_nil
+      end
+
+      it 'says nothing to a user whose account takes no digest mail' do
+        user = create(:user, unread_comments_since_at: 2.days.ago)
+        entry = create(:entry, with_previewer: user)
+        create(:account_comment_settings, account: entry.account, digest_interval: 'never')
+        thread = create(:comment_thread, revision: entry.draft)
+        create(:comment, comment_thread: thread, creator: create(:user))
+
+        expect(CommentDigest.for(user, entry, since: 1.day.ago, until_at: 1.minute.from_now))
+          .to be_nil
+      end
+
       it 'counts the threads it reports' do
         user = create(:user, unread_comments_since_at: 2.days.ago)
         entry = create(:entry, with_previewer: user)
@@ -316,6 +339,37 @@ module Pageflow
       it 'never holds an entry for longer than a sweep can still see it' do
         expect(Pageflow.config.comment_digest_max_hold)
           .to be < Pageflow.config.comment_digest_max_lookback
+      end
+
+      it 'leaves out somebody who has turned digest mail off' do
+        user, entry = entry_with_activity_written(1.hour.ago)
+        create(:account_member_comment_settings,
+               account: entry.account, user:, digest_interval: 'never')
+
+        expect(sweep.map(&:user)).not_to include(user)
+      end
+
+      it 'leaves out everybody in an account that sends no digest mail' do
+        user, entry = entry_with_activity_written(1.hour.ago)
+        create(:account_comment_settings, account: entry.account, digest_interval: 'never')
+
+        expect(sweep.map(&:user)).not_to include(user)
+      end
+
+      it 'keeps somebody who asked for mail in such an account' do
+        user, entry = entry_with_activity_written(1.hour.ago)
+        create(:account_comment_settings, account: entry.account, digest_interval: 'never')
+        create(:account_member_comment_settings,
+               account: entry.account, user:, digest_interval: 'continuous')
+
+        expect(sweep.map(&:user)).to include(user)
+      end
+
+      it 'keeps somebody who turned mail off in another account' do
+        user, = entry_with_activity_written(1.hour.ago)
+        create(:account_member_comment_settings, user:, digest_interval: 'never')
+
+        expect(sweep.map(&:user)).to include(user)
       end
 
       def sweep(at: Time.current, max_lookback: 24.hours,

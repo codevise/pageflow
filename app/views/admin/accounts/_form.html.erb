@@ -22,7 +22,8 @@
       <%= render 'admin/shared/comment_notification_fields',
                  f: s,
                  scope: 'account',
-                 levels: resolved_comment_notification_levels(s.object) %>
+                 levels: resolved_comment_notification_levels(s.object),
+                 interval: resolved_comment_digest_interval(s.object) %>
     <% end %>
   <% end %>
 

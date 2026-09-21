@@ -23,6 +23,9 @@
                    levels: resolved_comment_notification_levels(
                      settings.account.comment_settings, settings
                    ),
+                   interval: resolved_comment_digest_interval(
+                     settings.account.comment_settings, settings
+                   ),
                    other_entries: comment_notifications_reach_other_entries?(
                      current_user, settings.account
                    ) %>

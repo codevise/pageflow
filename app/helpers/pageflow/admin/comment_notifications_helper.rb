@@ -22,6 +22,19 @@ module Pageflow
         end
       end
 
+      def comment_digest_interval_options(scope)
+        CommentDigestInterval::STORABLE.map do |interval|
+          [t("pageflow.admin.comment_notifications.#{scope}.digest_intervals.#{interval}"),
+           interval]
+        end
+      end
+
+      def resolved_comment_digest_interval(*settings)
+        settings.compact.reduce(CommentDigestInterval::SYSTEM_DEFAULT) do |interval, rung|
+          rung.digest_interval.presence || interval
+        end
+      end
+
       def resolved_comment_notification_levels(*settings)
         settings.compact.reduce(CommentNotificationLevel::SYSTEM_DEFAULTS) do |levels, rung|
           levels.merge(

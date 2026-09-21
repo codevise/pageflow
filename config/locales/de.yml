@@ -828,22 +828,33 @@ de:
         site_defaults_inline_help: Die folgenden Einstellungen werden als Standard für neue Beiträge des Kontos verwendet. Änderungen wirken sich nicht auf existierende Beiträge aus.
       comment_notifications:
         account:
-          assigned_entries: Beiträge, denen sie als Mitglied zugeordnet sind
-          legend: Standard für Kommentar-Benachrichtigungen der Mitglieder
+          assigned_entries: Standard für Beiträge, denen sie als Mitglied zugeordnet
+            sind
+          digest_interval: Über neue Kommentar-Aktivität benachrichtigen
+          digest_intervals:
+            continuous: Per Mail sowie im Beitrag und in der Beitragsliste
+            never: Nur im Beitrag und in der Beitragsliste
+          legend: Kommentar-Benachrichtigungen der Mitglieder
           levels:
             all_activity: Alle Aktivität
             muted: Nichts
             participating_threads: Themen, in denen sie kommentiert haben
-          other_entries: Beiträge, denen sie nicht als Mitglied zugeordnet sind
+          other_entries: Standard für Beiträge, denen sie nicht als Mitglied zugeordnet
+            sind
         user:
-          assigned_entries: Beiträge, denen ich als Mitglied zugeordnet bin
+          assigned_entries: Standard für Beiträge, denen ich als Mitglied zugeordnet bin
+          digest_interval: Über neue Kommentar-Aktivität benachrichtigen
+          digest_intervals:
+            continuous: Per Mail sowie im Beitrag und in der Beitragsliste
+            never: Nur im Beitrag und in der Beitragsliste
           legend: Kommentar-Benachrichtigungen
           legend_with_account: "Kommentar-Benachrichtigungen in %{account}"
           levels:
             all_activity: Alle Aktivität
             muted: Nichts
             participating_threads: Themen, in denen ich kommentiert habe
-          other_entries: Beiträge, denen ich nicht als Mitglied zugeordnet bin
+          other_entries: Standard für Beiträge, denen ich nicht als Mitglied zugeordnet
+            bin
       entries:
         add_folder: Ordner hinzufügen
         comments:

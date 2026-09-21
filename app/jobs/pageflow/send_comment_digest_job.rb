@@ -1,9 +1,9 @@
 require 'net/smtp'
 
 module Pageflow
-  # The digest is built at delivery, so that read marks and levels as
-  # they stand then decide what it says. The window travels in the
-  # arguments, so a retry mails the same one.
+  # The digest is built at delivery, so that read marks, levels and
+  # the interval as they stand then decide what it says. The window
+  # travels in the arguments, so a retry mails the same one.
   #
   # @api private
   class SendCommentDigestJob < ApplicationJob

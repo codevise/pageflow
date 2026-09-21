@@ -35,6 +35,10 @@ module Pageflow
       @notifications.override_level_for_entry(@entry)
     end
 
+    def digest_enabled?
+      @notifications.digest_enabled_for_entry?(@entry)
+    end
+
     def unread_events(thread)
       unread_events_by_thread.fetch(thread)
     end

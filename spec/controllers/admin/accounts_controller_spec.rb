@@ -392,6 +392,20 @@ module Admin
         expect(settings.other_entries_notification_level).to eq('all_activity')
       end
 
+      it 'allows an account manager to turn comment mails off for members' do
+        user = create(:user)
+        account = create(:account, with_manager: user)
+
+        sign_in(user, scope: :user)
+        patch(:update,
+              params: {
+                id: account.id,
+                account: {comment_settings_attributes: {digest_interval: 'never'}}
+              })
+
+        expect(account.reload.comment_settings.digest_interval).to eq('never')
+      end
+
       it 'allows admin to update feature_configuration through feature_states param' do
         account = create(:account)
 

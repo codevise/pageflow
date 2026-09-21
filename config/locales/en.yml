@@ -827,22 +827,30 @@ en:
         site_defaults_inline_help: The following settings will be used as defaults for new stories in this account. Changes do not affect existing stories.
       comment_notifications:
         account:
-          assigned_entries: Stories they are assigned to as a member
-          legend: Comment notification defaults for members
+          assigned_entries: Default for stories they are assigned to as a member
+          digest_interval: Notify about new comment activity
+          digest_intervals:
+            continuous: By mail as well as in the story and the story list
+            never: Only in the story and the story list
+          legend: Comment notifications for members
           levels:
             all_activity: All activity
             muted: Nothing
             participating_threads: Topics they have commented in
-          other_entries: Stories they are not assigned to as a member
+          other_entries: Default for stories they are not assigned to as a member
         user:
-          assigned_entries: Stories I am assigned to as a member
+          assigned_entries: Default for stories I am assigned to as a member
+          digest_interval: Notify about new comment activity
+          digest_intervals:
+            continuous: By mail as well as in the story and the story list
+            never: Only in the story and the story list
           legend: Comment notifications
           legend_with_account: "Comment notifications in %{account}"
           levels:
             all_activity: All activity
             muted: Nothing
             participating_threads: Topics I have commented in
-          other_entries: Stories I am not assigned to as a member
+          other_entries: Default for stories I am not assigned to as a member
       entries:
         add_folder: Add folder
         comments:

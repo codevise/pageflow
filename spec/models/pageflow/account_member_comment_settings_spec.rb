@@ -24,5 +24,23 @@ module Pageflow
 
       expect(settings).to be_valid
     end
+
+    it 'accepts every digest interval' do
+      CommentDigestInterval::STORABLE.each do |interval|
+        expect(build(:account_member_comment_settings, digest_interval: interval)).to be_valid
+      end
+    end
+
+    it 'rejects an unknown digest interval' do
+      settings = build(:account_member_comment_settings, digest_interval: 'hourly')
+
+      expect(settings).not_to be_valid
+    end
+
+    it 'leaves the digest interval blank to fall through to the account' do
+      settings = build(:account_member_comment_settings, digest_interval: nil)
+
+      expect(settings).to be_valid
+    end
   end
 end

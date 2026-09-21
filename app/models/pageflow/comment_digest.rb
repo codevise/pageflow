@@ -90,12 +90,20 @@ module Pageflow
       def recipients(activity)
         return {} if activity.empty?
 
-        user_ids_by_entry_id = candidate_user_ids(activity)
-        users = User.where(id: user_ids_by_entry_id.values.flatten.uniq).index_by(&:id)
+        candidates = candidate_user_ids(activity)
+        user_ids = candidates.values.flatten.uniq
+        users = User.where(id: user_ids).index_by(&:id)
+        digests = EnabledDigests.new(activity.keys, user_ids)
 
-        user_ids_by_entry_id.transform_values do |user_ids|
-          user_ids.uniq.filter_map { |user_id| users[user_id] }
+        activity.keys.to_h do |entry|
+          [entry.id, mailed(candidates.fetch(entry.id), entry, users, digests)]
         end
+      end
+
+      def mailed(user_ids, entry, users, digests)
+        user_ids.uniq
+                .select { |user_id| digests.enabled?(entry.account_id, user_id) }
+                .filter_map { |user_id| users[user_id] }
       end
 
       def threads_with_activity_in(window, entry: nil)
@@ -164,6 +172,7 @@ module Pageflow
           EntryCommentActivity.for_entries([entry], user:,
                                                     threads_by_entry_id: {entry.id => threads})
                               .fetch(entry.id)
+        return unless entry_activity.digest_enabled?
 
         groups = notifying_threads(entry_activity, window:)
 
@@ -178,5 +187,34 @@ module Pageflow
         end
       end
     end
+
+    # Asks only about the users the sweep found, not about every member
+    # of their accounts.
+    class EnabledDigests
+      def initialize(entries, user_ids)
+        account_ids = entries.map(&:account_id).uniq
+
+        @by_member = member_intervals(account_ids, user_ids)
+        @by_account = AccountCommentSettings.where(account_id: account_ids)
+                                            .pluck(:account_id, :digest_interval)
+                                            .to_h
+      end
+
+      def enabled?(account_id, user_id)
+        CommentDigestInterval.enabled?(@by_member[[account_id, user_id]],
+                                       @by_account[account_id])
+      end
+
+      private
+
+      def member_intervals(account_ids, user_ids)
+        AccountMemberCommentSettings
+          .where(account_id: account_ids, user_id: user_ids)
+          .pluck(:account_id, :user_id, :digest_interval)
+          .to_h { |account_id, user_id, interval| [[account_id, user_id], interval] }
+      end
+    end
+
+    private_constant :EnabledDigests
   end
 end

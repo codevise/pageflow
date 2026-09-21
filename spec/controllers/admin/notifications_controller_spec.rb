@@ -22,6 +22,56 @@ module Admin
         )
       end
 
+      it 'offers the digest interval per account' do
+        user = create(:user)
+        create(:account, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        get(:index)
+
+        expect(response.body).to have_selector(
+          '[name="user[account_comment_settings_attributes][0][digest_interval]"]'
+        )
+      end
+
+      it 'names the levels as the defaults an entry can override' do
+        user = create(:user)
+        create(:account, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        get(:index)
+
+        expect(response.body)
+          .to have_selector('label', text: 'Default for stories I am assigned to as a member')
+      end
+
+      it 'says where activity shows when no mail is sent' do
+        user = create(:user)
+        create(:account, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        get(:index)
+
+        expect(response.body).to have_selector(
+          '[name="user[account_comment_settings_attributes][0][digest_interval]"] option',
+          text: 'Only in the story and the story list'
+        )
+      end
+
+      it "preselects the account's digest interval where the user has set none" do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        create(:account_comment_settings, account:, digest_interval: 'never')
+
+        sign_in(user, scope: :user)
+        get(:index)
+
+        expect(response.body).to have_selector(
+          '[name="user[account_comment_settings_attributes][0][digest_interval]"] ' \
+          'option[value="never"][selected]'
+        )
+      end
+
       it 'leaves the account out of the heading where the user has a single account' do
         user = create(:user)
         create(:account, name: 'Newsroom', with_previewer: user)
@@ -124,6 +174,24 @@ module Admin
         expect(settings.assigned_entries_notification_level).to eq('muted')
         expect(settings.other_entries_notification_level).to eq('all_activity')
         expect(response).to redirect_to(admin_notifications_path)
+      end
+
+      it 'stores the digest interval the user picks for an account' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        patch(:update,
+              params: {
+                user: {
+                  account_comment_settings_attributes: {
+                    '0' => {account_id: account.id, digest_interval: 'never'}
+                  }
+                }
+              })
+
+        expect(user.reload.account_comment_settings.find_by(account:).digest_interval)
+          .to eq('never')
       end
 
       it 'stores registered form inputs' do
