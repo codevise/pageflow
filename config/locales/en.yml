@@ -2230,6 +2230,15 @@ en:
         earlier_reply_count:
           one: 1 earlier reply
           other: "%{count} earlier replies"
+        footer:
+          manage: Change comment notifications
+          mute: Mute this story
+          reason:
+            all_activity: You are receiving this mail because notifications for all activity in
+              this story are turned on.
+            participating_threads: You are receiving this mail because you commented in or are
+              watching these topics.
+            watched_threads: You are receiving this mail because you are watching these topics.
         greeting: Your Pageflow Team
         instruction: "There is new comment activity in %{entry}."
         instruction_html: There is new comment activity in %{entry}.

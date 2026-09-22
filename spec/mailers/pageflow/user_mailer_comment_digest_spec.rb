@@ -107,6 +107,73 @@ module Pageflow
         expect(references.uniq.size).to eq(2)
       end
 
+      describe 'footer' do
+        it 'explains that every comment in the entry notifies the recipient' do
+          user = create(:user)
+          entry = create(:entry, with_previewer: user)
+
+          mail = mail_for(user, entry:)
+
+          expect(bodies(mail)).to all(
+            include('You are receiving this mail because notifications for all activity in this ' \
+                    'story are turned on')
+          )
+        end
+
+        it 'explains that topics the recipient took part in or watches notify them' do
+          mail = mail_for(create(:user))
+
+          expect(bodies(mail)).to all(
+            include('You are receiving this mail because you commented in or are watching ' \
+                    'these topics')
+          )
+        end
+
+        it 'explains that watched topics notify a recipient who follows only those' do
+          user = create(:user)
+          entry = create(:entry)
+          create(:entry_comment_notification_override, entry:, user:, level: 'watched_threads')
+
+          mail = mail_for(user, entry:)
+
+          expect(bodies(mail)).to all(
+            include('You are receiving this mail because you are watching these topics')
+          )
+        end
+
+        it 'links the entry to change the notification level' do
+          entry = create(:entry)
+
+          mail = mail_for(create(:user), entry:)
+
+          expect(bodies(mail)).to all(include('Change comment notifications'))
+          expect(bodies(mail)).to all(include("/admin/entries/#{entry.to_param}"))
+        end
+
+        it 'links muting the entry' do
+          user = create(:user)
+          entry = create(:entry)
+
+          mail = mail_for(user, entry:)
+
+          expect(bodies(mail)).to all(include('Mute this story'))
+          expect(bodies(mail)).to all(include('/comment_notifications/mute?token='))
+        end
+
+        it 'signs the mute link for the recipient and the entry' do
+          user = create(:user)
+          entry = create(:entry)
+
+          mail = mail_for(user, entry:)
+          token = mail.text_part.body.decoded[/mute\?token=(\S+)/, 1]
+          expect(EntryCommentMuteToken.find(CGI.unescape(token))).to eq([user, entry])
+        end
+
+        def bodies(mail)
+          [mail.html_part.body.decoded, mail.text_part.body.decoded]
+        end
+      end
+
       def mail_for(user, entry: nil, entry_title: 'A Story', author_name: 'Grace Hopper',
                    body: 'A first thought')
         first_name, last_name = author_name.split

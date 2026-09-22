@@ -7,6 +7,8 @@ module Pageflow
       @digest = digest
       @user = digest.user
       @entry = digest.entry
+      @level = CommentNotifications.for_entry(@entry, user: @user).level
+      @mute_token = EntryCommentMuteToken.generate(user: @user, entry: @entry)
 
       I18n.with_locale(@user.locale) do
         headers('X-Language' => I18n.locale,

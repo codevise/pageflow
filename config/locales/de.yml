@@ -2244,6 +2244,15 @@ de:
         earlier_reply_count:
           one: 1 frühere Antwort
           other: "%{count} frühere Antworten"
+        footer:
+          manage: Kommentar-Benachrichtigungen ändern
+          mute: Beitrag stummschalten
+          reason:
+            all_activity: Du erhältst diese Mail, weil Benachrichtigungen über jede Aktivität
+              dieses Beitrags aktiviert sind.
+            participating_threads: Du erhältst diese Mail, weil du in diesen Themen kommentiert
+              hast oder sie beobachtest.
+            watched_threads: Du erhältst diese Mail, weil du diese Themen beobachtest.
         greeting: Dein Pageflow-Team
         instruction: "Es gibt neue Kommentar-Aktivität in %{entry}."
         instruction_html: Es gibt neue Kommentar-Aktivität in %{entry}.

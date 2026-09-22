@@ -52,4 +52,20 @@
   <% end %>
 
   <p style="<%= comment_digest_style(:greeting) %>"><%= t('.greeting') %></p>
+
+  <div style="<%= comment_digest_style(:footer) %>">
+    <p style="<%= comment_digest_style(:footer_reason) %>">
+      <%= t(".footer.reason.#{@level}") %>
+    </p>
+
+    <p style="<%= comment_digest_style(:footer_links) %>">
+      <%= link_to(t('.footer.mute'),
+                  mute_comment_notifications_url(token: @mute_token),
+                  style: comment_digest_style(:footer_link)) %>
+      &middot;
+      <%= link_to(t('.footer.manage'),
+                  main_app.admin_entry_url(@entry),
+                  style: comment_digest_style(:footer_link)) %>
+    </p>
+  </div>
 </div>
