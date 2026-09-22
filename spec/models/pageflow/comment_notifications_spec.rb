@@ -175,6 +175,43 @@ module Pageflow
 
         expect(notifications.level_for_thread(entry, other)).to eq('all_activity')
       end
+
+      it 'keeps a muted entry over a thread the user watches' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft)
+        create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+        create(:comment_thread_notification_override,
+               entry:, user:, comment_thread_perma_id: thread.perma_id, level: 'all_activity')
+
+        notifications = CommentNotifications.new(user:, entries: [entry])
+
+        expect(notifications.level_for_thread(entry, thread)).to eq('muted')
+      end
+
+      it 'prefers a watched thread over an entry notifying about watched threads only' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft)
+        create(:entry_comment_notification_override, entry:, user:, level: 'watched_threads')
+        create(:comment_thread_notification_override,
+               entry:, user:, comment_thread_perma_id: thread.perma_id, level: 'all_activity')
+
+        notifications = CommentNotifications.new(user:, entries: [entry])
+
+        expect(notifications.level_for_thread(entry, thread)).to eq('all_activity')
+      end
+
+      it 'notifies about nothing else in an entry watching threads only' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft)
+        create(:entry_comment_notification_override, entry:, user:, level: 'watched_threads')
+
+        notifications = CommentNotifications.new(user:, entries: [entry])
+
+        expect(notifications.level_for_thread(entry, thread)).to eq('watched_threads')
+      end
     end
 
     it 'does not have N+1 queries' do

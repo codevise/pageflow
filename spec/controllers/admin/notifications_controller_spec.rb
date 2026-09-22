@@ -45,6 +45,20 @@ module Admin
           .to have_selector('label', text: 'Default for stories I am assigned to as a member')
       end
 
+      it 'offers being notified about watched topics only' do
+        user = create(:user)
+        create(:account, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        get(:index)
+
+        expect(response.body).to have_selector(
+          '[name="user[account_comment_settings_attributes][0]' \
+          '[assigned_entries_notification_level]"] option[value="watched_threads"]',
+          text: 'Topics I watch'
+        )
+      end
+
       it 'says where activity shows when no mail is sent' do
         user = create(:user)
         create(:account, with_previewer: user)

@@ -31,6 +31,7 @@ module Pageflow
         expect(rendered).to have_selector(".dropdown_menu_list a[href*='level=all_activity']")
         expect(rendered)
           .to have_selector(".dropdown_menu_list a[href*='level=participating_threads']")
+        expect(rendered).to have_selector(".dropdown_menu_list a[href*='level=watched_threads']")
         expect(rendered).to have_selector(".dropdown_menu_list a[href*='level=muted']")
       end
 
@@ -50,7 +51,7 @@ module Pageflow
 
         render(entry, CommentNotifications.for_entry(entry, user:))
 
-        expect(rendered).to have_selector(".dropdown_menu_list a[data-method='patch']", count: 4)
+        expect(rendered).to have_selector(".dropdown_menu_list a[data-method='patch']", count: 5)
       end
 
       it 'explains each level' do
@@ -61,6 +62,7 @@ module Pageflow
 
         expect(rendered).to have_selector('.hint', text: 'Every comment in this story')
         expect(rendered).to have_selector('.hint', text: 'Anything in those, but no new topics')
+        expect(rendered).to have_selector('.hint', text: 'Nothing else from this story')
         expect(rendered).to have_selector('.hint', text: 'Nothing from this story')
       end
 

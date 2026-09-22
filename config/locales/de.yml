@@ -837,8 +837,9 @@ de:
           legend: Kommentar-Benachrichtigungen der Mitglieder
           levels:
             all_activity: Alle Aktivität
-            muted: Nichts
+            muted: Stummgeschaltet
             participating_threads: Themen, in denen sie kommentiert haben
+            watched_threads: Themen, die sie beobachten
           other_entries: Standard für Beiträge, denen sie nicht als Mitglied zugeordnet
             sind
         user:
@@ -851,8 +852,9 @@ de:
           legend_with_account: "Kommentar-Benachrichtigungen in %{account}"
           levels:
             all_activity: Alle Aktivität
-            muted: Nichts
+            muted: Stummgeschaltet
             participating_threads: Themen, in denen ich kommentiert habe
+            watched_threads: Themen, die ich beobachte
           other_entries: Standard für Beiträge, denen ich nicht als Mitglied zugeordnet
             bin
       entries:
@@ -862,6 +864,7 @@ de:
             all_activity: Benachrichtigung über alle Aktivität
             muted: Stummgeschaltet
             participating_threads: Benachrichtigung über Themen, in denen ich kommentiert habe
+            watched_threads: Benachrichtigung nur über beobachtete Themen
           notifications:
             button: "Kommentar-Benachrichtigungen: %{level}"
             default:
@@ -873,10 +876,12 @@ de:
               all_activity: Jeder Kommentar in diesem Beitrag
               muted: Nichts aus diesem Beitrag
               participating_threads: Alles in diesen Themen, aber keine neuen
+              watched_threads: Sonst nichts aus diesem Beitrag
             levels:
               all_activity: Alle Aktivität
-              muted: Nichts
+              muted: Stummgeschaltet
               participating_threads: Themen, in denen ich kommentiert habe
+              watched_threads: Themen, die ich beobachte
           tooltip: "Kommentare: %{summary}"
           topic_count:
             one: 1 ungelöstes Thema

@@ -835,8 +835,9 @@ en:
           legend: Comment notifications for members
           levels:
             all_activity: All activity
-            muted: Nothing
+            muted: Muted
             participating_threads: Topics they have commented in
+            watched_threads: Topics they watch
           other_entries: Default for stories they are not assigned to as a member
         user:
           assigned_entries: Default for stories I am assigned to as a member
@@ -848,8 +849,9 @@ en:
           legend_with_account: "Comment notifications in %{account}"
           levels:
             all_activity: All activity
-            muted: Nothing
+            muted: Muted
             participating_threads: Topics I have commented in
+            watched_threads: Topics I watch
           other_entries: Default for stories I am not assigned to as a member
       entries:
         add_folder: Add folder
@@ -858,6 +860,7 @@ en:
             all_activity: Notifying about all activity
             muted: Muted
             participating_threads: Notifying about topics I have commented in
+            watched_threads: Notifying about watched topics only
           notifications:
             button: "Comment notifications: %{level}"
             default:
@@ -869,10 +872,12 @@ en:
               all_activity: Every comment in this story
               muted: Nothing from this story
               participating_threads: Anything in those, but no new topics
+              watched_threads: Nothing else from this story
             levels:
               all_activity: All activity
-              muted: Nothing
+              muted: Muted
               participating_threads: Topics I have commented in
+              watched_threads: Topics I watch
           tooltip: "Comments: %{summary}"
           topic_count:
             one: 1 unresolved topic

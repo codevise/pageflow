@@ -34,6 +34,8 @@ export function notifies(level, participated) {
     return true;
   case 'participating_threads':
     return participated;
+  case 'watched_threads':
+    return false;
   default:
     return false;
   }

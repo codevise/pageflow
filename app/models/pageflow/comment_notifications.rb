@@ -16,8 +16,13 @@ module Pageflow
       @entries = entries.to_a
     end
 
+    # Mute swallows what is below it: a thread the user watches would
+    # otherwise keep notifying an entry they asked for silence from.
     def level_for_thread(entry, comment_thread)
-      thread_levels[[entry.id, comment_thread.perma_id]] || level_for_entry(entry)
+      entry_level = level_for_entry(entry)
+      return entry_level if entry_level == CommentNotificationLevel::MUTED
+
+      thread_levels[[entry.id, comment_thread.perma_id]] || entry_level
     end
 
     def level_for_entry(entry)

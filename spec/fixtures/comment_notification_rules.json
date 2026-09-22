@@ -75,6 +75,19 @@
       "notifies": true
     },
     {
+      "name": "watched_threads does not notify without participation",
+      "level": "watched_threads",
+      "unread": true,
+      "notifies": false
+    },
+    {
+      "name": "watched_threads does not notify despite participation",
+      "level": "watched_threads",
+      "participated": true,
+      "unread": true,
+      "notifies": false
+    },
+    {
       "name": "muted does not notify without participation",
       "level": "muted",
       "unread": true,
