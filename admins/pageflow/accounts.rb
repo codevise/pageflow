@@ -67,6 +67,7 @@ module Pageflow
     end
 
     controller do
+      helper Admin::CommentNotificationsHelper
       helper Admin::CutoffModesHelper
       helper Admin::FeaturesHelper
       helper Admin::FormHelper
@@ -116,7 +117,10 @@ module Pageflow
         [
           :name,
           :default_file_rights,
-          {default_site_attributes: permitted_site_attributes}
+          {default_site_attributes: permitted_site_attributes},
+          {comment_settings_attributes: [:assigned_entries_notification_level,
+                                         :other_entries_notification_level,
+                                         :digest_interval]}
         ] +
           permitted_attributes_for(:account)
       end

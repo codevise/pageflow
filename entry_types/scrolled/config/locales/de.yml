@@ -2046,12 +2046,15 @@ de:
       enter_for_new_line: Enter für neue Zeile
       comment_actions: Kommentaraktionen
       edit_comment: Bearbeiten
+      mute_thread: Thema stummschalten
+      resolution_actions: Aktionen zur Lösung
       edited: Bearbeitet %{date}
       resolve: Als gelöst markieren
       unresolve: Als ungelöst markieren
+      watch_thread: Thema beobachten
       resolution: Als gelöst markiert
       resolution_by: Als gelöst markiert von
-      thread_actions: Aktionen für Thema
+      thread_actions: Aktionen zum Thema
       resolved_count:
         one: 1 erledigt
         other: '%{count} erledigt'

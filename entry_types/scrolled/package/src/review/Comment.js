@@ -11,12 +11,21 @@ import {isSubmitShortcut} from './submitShortcut';
 import EditIcon from './images/edit.svg';
 import styles from './Comment.module.css';
 
-export function Comment({comment, threadId, showQuote, editing, onEdit, onEditEnd}) {
+export function Comment({
+  comment, threadId, showQuote, editing, onEdit, onEditEnd, menuItems = [], menuLabel
+}) {
   const {t} = useI18n({locale: 'ui'});
   const locale = useLocale({locale: 'ui'});
   const currentUser = useCurrentUser();
 
   const editable = !!onEdit && comment.creatorId === currentUser?.id;
+
+  const items = [
+    ...(editable ?
+        [{icon: EditIcon, label: t('pageflow_scrolled.review.edit_comment'), onSelect: onEdit}] :
+        []),
+    ...menuItems
+  ];
 
   return (
     <div>
@@ -29,12 +38,10 @@ export function Comment({comment, threadId, showQuote, editing, onEdit, onEditEn
               {formatDate(comment.createdAt, locale)}
             </time>}
         </div>
-        {editable &&
+        {items.length > 0 &&
           <span className={styles.headerMenu}>
-            <CommentMenu label={t('pageflow_scrolled.review.comment_actions')}
-                         items={[{icon: EditIcon,
-                                  label: t('pageflow_scrolled.review.edit_comment'),
-                                  onSelect: onEdit}]} />
+            <CommentMenu label={menuLabel || t('pageflow_scrolled.review.comment_actions')}
+                         items={items} />
           </span>}
       </div>
       {showQuote &&

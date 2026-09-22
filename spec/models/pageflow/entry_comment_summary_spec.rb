@@ -173,6 +173,29 @@ module Pageflow
       end
     end
 
+    describe '#override_level' do
+      it 'is the level the user stored for the entry' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        create(:comment_thread, revision: entry.draft)
+        create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+
+        summary = EntryCommentSummary.for_entries([entry], user:)[entry.id]
+
+        expect(summary.override_level).to eq('muted')
+      end
+
+      it 'is nothing when the user stored no level for the entry' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        create(:comment_thread, revision: entry.draft)
+
+        summary = EntryCommentSummary.for_entries([entry], user:)[entry.id]
+
+        expect(summary.override_level).to be_nil
+      end
+    end
+
     describe '#unread?' do
       it 'is true with unread topics or unread replies' do
         expect(build_summary(unread_topic_count: 1)).to be_unread
@@ -182,6 +205,31 @@ module Pageflow
 
       def build_summary(unread_topic_count: 0, unread_reply_count: 0)
         described_class.new(topic_count: 1, unread_topic_count:, unread_reply_count:)
+      end
+    end
+
+    describe '#notifying?' do
+      it 'reflects whether the unread activity in the entry notifies' do
+        user = create(:user, unread_comments_since_at: 3.hours.ago)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft)
+        create(:comment, comment_thread: thread, creator: create(:user))
+
+        summary = EntryCommentSummary.for_entries([entry], user:)[entry.id]
+
+        expect(summary).to be_notifying
+      end
+
+      it 'is false when the user has muted the entry' do
+        user = create(:user, unread_comments_since_at: 3.hours.ago)
+        entry = create(:entry, with_previewer: user)
+        create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+        thread = create(:comment_thread, revision: entry.draft)
+        create(:comment, comment_thread: thread, creator: create(:user))
+
+        summary = EntryCommentSummary.for_entries([entry], user:)[entry.id]
+
+        expect(summary).not_to be_notifying
       end
     end
   end

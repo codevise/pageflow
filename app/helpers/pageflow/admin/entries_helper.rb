@@ -24,11 +24,30 @@ module Pageflow
         return unless summary&.any?
 
         content_tag(:span,
-                    class: 'entry_comments_indicator',
+                    class: class_names('entry_comments_indicator',
+                                       'unread' => summary.unread?),
                     data: {tooltip: entry_comments_tooltip(summary)}) do
-          safe_join([summary.topic_count.to_s,
-                     (content_tag(:span, '', class: 'unread_dot') if summary.unread?)].compact)
+          safe_join([summary.topic_count.to_s, entry_comments_notifying_dot(summary)].compact)
         end
+      end
+
+      # Rendered for every entry, so that the level shows for one
+      # nobody has commented on yet.
+      def entry_comments_notification_level(entry, summaries: entry_comment_summaries)
+        level = summaries[entry.id]&.override_level
+        return unless level
+
+        content_tag(
+          :span, '',
+          class: "entry_comments_notification_level comment_notification_level #{level}",
+          data: {tooltip: t("pageflow.admin.entries.comments.notification_level.#{level}")}
+        )
+      end
+
+      def entry_comments_notifying_dot(summary)
+        return unless summary.notifying?
+
+        content_tag(:span, '', class: 'notifying_dot')
       end
 
       # Built for the whole page at once, so that rendering a row does

@@ -42,6 +42,7 @@ describe('Thread reply form', () => {
   describe('while editing a comment', () => {
     useFakeTranslations({
       'pageflow_scrolled.review.comment_actions': 'Comment actions',
+      'pageflow_scrolled.review.thread_actions': 'Topic actions',
       'pageflow_scrolled.review.edit_comment': 'Edit',
       'pageflow_scrolled.review.cancel': 'Cancel'
     });
@@ -55,7 +56,7 @@ describe('Thread reply form', () => {
     };
 
     async function startEditing(user, getAllByRole, index) {
-      await user.click(getAllByRole('button', {name: 'Comment actions'})[index]);
+      await user.click(getAllByRole('button', {name: /actions$/})[index]);
       await user.click(getAllByRole('menuitem', {name: 'Edit'})[0]);
     }
 

@@ -7,6 +7,7 @@ function fakeReviewSession() {
     createThread: jest.fn().mockResolvedValue(),
     createComment: jest.fn().mockResolvedValue(),
     updateThread: jest.fn().mockResolvedValue(),
+    updateThreadNotificationLevel: jest.fn().mockResolvedValue(),
     updateComment: jest.fn().mockResolvedValue(),
     setDraft: jest.fn(),
     markThreadsRead: jest.fn()
@@ -152,6 +153,27 @@ describe('ReviewMessageHandler', () => {
     );
 
     window.postMessage.mockRestore();
+  });
+
+  it('calls session.updateThreadNotificationLevel on UPDATE_THREAD_NOTIFICATION_LEVEL message', async () => {
+    const session = fakeReviewSession();
+
+    ReviewMessageHandler.create({session, targetWindow: window});
+
+    window.dispatchEvent(new MessageEvent('message', {
+      data: {
+        type: 'UPDATE_THREAD_NOTIFICATION_LEVEL',
+        payload: {threadId: 1, level: 'muted'}
+      },
+      origin: window.location.origin,
+      source: window
+    }));
+
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(session.updateThreadNotificationLevel).toHaveBeenCalledWith({
+      threadId: 1, level: 'muted'
+    });
   });
 
   it('calls session.updateThread on UPDATE_THREAD message from targetWindow', async () => {

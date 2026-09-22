@@ -139,6 +139,34 @@ module Pageflow
         )
       end
 
+      it 'includes the resolved notification level of each thread' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft, creator: user)
+        create(:comment_thread_notification_override,
+               entry:, user:, comment_thread_perma_id: thread.perma_id, level: 'muted')
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(
+          commentThreads: [{id: thread.id, notificationLevel: 'muted'}]
+        )
+      end
+
+      it 'falls back to the level the entry resolves to' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft, creator: user)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(
+          commentThreads: [{id: thread.id, notificationLevel: 'all_activity'}]
+        )
+      end
+
       it 'does not have N+1 queries' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)

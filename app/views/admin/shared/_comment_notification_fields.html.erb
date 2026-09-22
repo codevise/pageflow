@@ -1,0 +1,22 @@
+<%= f.input :assigned_entries_notification_level,
+            as: :select,
+            collection: comment_notification_level_options(scope),
+            include_blank: false,
+            selected: levels[:assigned],
+            label: t("pageflow.admin.comment_notifications.#{scope}.assigned_entries") %>
+
+<% if local_assigns.fetch(:other_entries, true) %>
+  <%= f.input :other_entries_notification_level,
+              as: :select,
+              collection: comment_notification_level_options(scope),
+              include_blank: false,
+              selected: levels[:other],
+              label: t("pageflow.admin.comment_notifications.#{scope}.other_entries") %>
+<% end %>
+
+<%= f.input :digest_interval,
+            as: :select,
+            collection: comment_digest_interval_options(scope),
+            include_blank: false,
+            selected: interval,
+            label: t("pageflow.admin.comment_notifications.#{scope}.digest_interval") %>

@@ -1,0 +1,21 @@
+<%= t('.salutation', first_name: @user.first_name) %>,
+
+<%= t('.instruction', entry: @entry.title) %>
+<%= main_app.admin_entry_url(@entry) %>
+<% @digest.threads.each do |thread_group| %>
+<%= comment_digest_summary(thread_group) %>
+<% topic = thread_group.comment_thread.comments.first %>
+  <%= topic.creator.full_name %>
+  <%= topic.body %>
+<% earlier = comment_digest_earlier_reply_count(thread_group) %><% if earlier.positive? %>
+  <%= t('.earlier_reply_count', count: earlier) %>
+<% end %><% replies = comment_digest_new_replies(thread_group) %><% if replies.any? %>
+  -- <%= t('.new_replies') %> --
+<% replies.each do |reply| %>
+  <%= reply.creator.full_name %>
+  <%= reply.body %>
+<% end %><% end %><% if comment_digest_resolution(thread_group) %>
+  <%= t('.resolution') %><%= " #{thread_group.comment_thread.resolver.full_name}" if thread_group.comment_thread.resolver %>
+<% end %><% end %>
+
+<%= t('.greeting') %>

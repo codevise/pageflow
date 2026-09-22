@@ -86,6 +86,7 @@ Pageflow::Engine.routes.draw do
         end
 
         resources :comment_thread_reads, only: [:create]
+        resources :comment_thread_notification_levels, only: [:update]
       end
     end
 

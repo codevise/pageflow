@@ -1,0 +1,74 @@
+$pageflow-entry-comment-notifications-hint-color: #666 !default;
+
+$pageflow-entry-comment-notifications-icon-size: 16px !default;
+
+$pageflow-entry-comment-notifications-max-width: 28rem !default;
+
+$pageflow-entry-comment-notifications-column-gap: 8px !default;
+
+// Active Admin centers its menu items and keeps them on one line,
+// which a name above a hint cannot live with. The grid also gives the
+// level icon a column of its own.
+.dropdown_menu.entry_comment_notifications .dropdown_menu_list li a {
+  display: grid;
+  text-align: left;
+  white-space: normal;
+}
+
+.entry_comment_notifications {
+  .comment_notification_level {
+    $size: $pageflow-entry-comment-notifications-icon-size;
+
+    width: $size;
+    height: $size;
+    vertical-align: -3px;
+    background-size: $size $size;
+  }
+
+  .dropdown_menu_list {
+    max-width: $pageflow-entry-comment-notifications-max-width;
+
+    a {
+      grid-template-columns: auto 1fr;
+      column-gap: $pageflow-entry-comment-notifications-column-gap;
+    }
+
+    .comment_notification_level {
+      grid-row: 1;
+      align-self: center;
+    }
+
+    .name {
+      grid-area: 1 / 2;
+    }
+
+    .hint {
+      grid-area: 2 / 2;
+    }
+  }
+
+  .heading {
+    padding: 7px 16px 5px;
+    color: $pageflow-entry-comment-notifications-hint-color;
+    text-align: left;
+  }
+
+  .name {
+    display: block;
+  }
+
+  .hint {
+    display: block;
+    color: $pageflow-entry-comment-notifications-hint-color;
+    font-size: 0.9em;
+    font-weight: normal;
+  }
+
+  a:hover .hint {
+    color: inherit;
+  }
+
+  [aria-current] .name::after {
+    content: " ✓";
+  }
+}

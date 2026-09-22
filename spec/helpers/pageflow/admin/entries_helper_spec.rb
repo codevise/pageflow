@@ -19,6 +19,18 @@ module Pageflow
           expect(render_indicator(entry, user)).to be_nil
         end
 
+        it 'leaves the level out of the indicator' do
+          user = create(:user)
+          entry = create(:entry)
+          create(:comment_thread, revision: entry.draft)
+          create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+
+          result = render_indicator(entry, user)
+
+          expect(result).not_to have_selector('.comment_notification_level')
+          expect(result).to have_selector("[data-tooltip='Comments: 1 unresolved topic']")
+        end
+
         it 'renders the number of unresolved topics' do
           user = create(:user)
           entry = create(:entry)
@@ -38,7 +50,30 @@ module Pageflow
 
           result = render_indicator(entry, user)
 
-          expect(result).to have_selector('span.entry_comments_indicator .unread_dot')
+          expect(result).to have_selector('span.entry_comments_indicator.unread')
+        end
+
+        it 'adds a dot when the activity is waiting for the user' do
+          user = create(:user, unread_comments_since_at: 3.hours.ago)
+          entry = create(:entry, with_previewer: user)
+          thread = create(:comment_thread, revision: entry.draft)
+          create(:comment, comment_thread: thread, creator: create(:user))
+
+          result = render_indicator(entry, user)
+
+          expect(result).to have_selector('.entry_comments_indicator.unread .notifying_dot')
+        end
+
+        it 'leaves the dot out when the activity is addressed to somebody else' do
+          user = create(:user, unread_comments_since_at: 3.hours.ago)
+          entry = create(:entry, account: create(:account, with_previewer: user))
+          thread = create(:comment_thread, revision: entry.draft)
+          create(:comment, comment_thread: thread, creator: create(:user))
+
+          result = render_indicator(entry, user)
+
+          expect(result).to have_selector('.entry_comments_indicator.unread')
+          expect(result).not_to have_selector('.notifying_dot')
         end
 
         it 'does not mark the indicator when everything has been seen' do
@@ -49,7 +84,7 @@ module Pageflow
           result = render_indicator(entry, user)
 
           expect(result).to have_selector('span.entry_comments_indicator')
-          expect(result).not_to have_selector('span.entry_comments_indicator .unread_dot')
+          expect(result).not_to have_selector('span.entry_comments_indicator.unread')
         end
 
         it 'names the topic count in the tooltip' do
@@ -127,6 +162,45 @@ module Pageflow
           result = helper.entry_type_collection([TestEntryType.new(name: 'phaged')])
 
           expect(result).to include('Test Type' => 'phaged')
+        end
+      end
+
+      describe '#entry_comments_notification_level' do
+        def render_level(entry, user)
+          allow(helper).to receive(:collection).and_return([entry])
+          allow(helper).to receive(:current_user).and_return(user)
+
+          helper.entry_comments_notification_level(entry)
+        end
+
+        it 'renders the level the user set for the entry' do
+          user = create(:user)
+          entry = create(:entry)
+          create(:comment_thread, revision: entry.draft)
+          create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+
+          result = render_level(entry, user)
+
+          expect(result).to have_selector('.comment_notification_level.muted')
+          expect(result).to have_selector("[data-tooltip='Muted']")
+        end
+
+        it 'renders the level for an entry nobody has commented on' do
+          user = create(:user)
+          entry = create(:entry)
+          create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+
+          result = render_level(entry, user)
+
+          expect(result).to have_selector('.comment_notification_level.muted')
+        end
+
+        it 'renders nothing for a level the user has not set' do
+          user = create(:user)
+          entry = create(:entry, with_previewer: user)
+          create(:comment_thread, revision: entry.draft)
+
+          expect(render_level(entry, user)).to be_nil
         end
       end
     end

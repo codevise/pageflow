@@ -338,6 +338,7 @@ describe('ThreadList', () => {
     function thread(id, permaId, body) {
       return {
         id, permaId, subjectType: 'ContentElement', subjectId: 10,
+        notificationLevel: 'all_activity',
         comments: [
           {id: id * 10, body, creatorName: 'Bob', creatorId: 43,
            createdAt: '2026-08-17T11:00:00.000Z'},

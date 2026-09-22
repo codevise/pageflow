@@ -2,15 +2,35 @@ $pageflow-entry-comments-indicator-color: #8a5a00 !default;
 
 $pageflow-entry-comments-indicator-background-color: #fdf1dc !default;
 
-$pageflow-entry-comments-indicator-dot-color: #ff7400 !default;
+$pageflow-entry-comments-indicator-notifying-dot-color: #ff7400 !default;
 
 $pageflow-entry-comments-indicator-icon-directory: "pageflow/admin/icons" !default;
+
+$pageflow-entry-comments-indicator-height: 20px !default;
+
+// Shares the badge's box, so that the tooltip both of them hang from
+// their own top edge comes out at one height. The box is also widened
+// until its middle meets the arrow, which keeps a fixed offset from
+// whatever it points at and would otherwise land past the bell.
+.entry_comments_notification_level {
+  // The shared 8px the arrow starts at, plus half its 10px width.
+  $arrow-tip: 13px;
+  $icon: $pageflow-comment-notification-level-icon-size;
+
+  width: $arrow-tip * 2;
+  height: $pageflow-entry-comments-indicator-height;
+  margin-left: 8px - $arrow-tip + $icon / 2;
+  vertical-align: middle;
+  background-position: center calc(50% + 0.1em);
+}
 
 .entry_comments_indicator {
   $dir: $pageflow-entry-comments-indicator-icon-directory;
 
+  box-sizing: border-box;
   position: relative;
   display: inline-block;
+  height: $pageflow-entry-comments-indicator-height;
   margin-left: 8px;
   padding: 1px 6px 1px 22px;
   vertical-align: middle;
@@ -21,19 +41,24 @@ $pageflow-entry-comments-indicator-icon-directory: "pageflow/admin/icons" !defau
   font-size: 0.7rem;
   line-height: 1.6;
 
+  &.unread {
+    box-shadow: 0 0 0 1px currentColor;
+    font-weight: 500;
+  }
+
   // The tooltip claims both pseudo elements of the indicator, so the
   // dot has to be an element of its own.
   //
-  // Straddles the corner like the unread dot inside the editor, so both
-  // read as the same signal.
-  .unread_dot {
+  // Straddles the corner like the notifying dot inside the editor, so
+  // both read as the same signal.
+  .notifying_dot {
     position: absolute;
     top: -2px;
     right: -2px;
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background-color: $pageflow-entry-comments-indicator-dot-color;
+    background-color: $pageflow-entry-comments-indicator-notifying-dot-color;
   }
 
   // The bubble is placed by its static position, which on an inline

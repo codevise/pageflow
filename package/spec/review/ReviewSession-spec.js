@@ -1,6 +1,48 @@
 import {ReviewSession} from 'review/ReviewSession';
 
 describe('ReviewSession', () => {
+  describe('updateThreadNotificationLevel', () => {
+    function sessionWithThread(answer) {
+      const request = jest.fn()
+        .mockResolvedValueOnce({
+          currentUser: {id: 42, name: 'Alice'},
+          commentThreads: [
+            {id: 1, permaId: 7, notificationLevel: 'all_activity', comments: []}
+          ]
+        })
+        .mockResolvedValueOnce(answer);
+
+      return {request, session: new ReviewSession({entryId: 5, request})};
+    }
+
+    it('addresses the thread by perma id', async () => {
+      const {request, session} = sessionWithThread({level: 'muted'});
+      await session.fetch();
+
+      await session.updateThreadNotificationLevel({threadId: 1, level: 'muted'});
+
+      expect(request).toHaveBeenLastCalledWith({
+        url: '/review/entries/5/comment_thread_notification_levels/7',
+        method: 'PATCH',
+        payload: {level: 'muted'}
+      });
+    });
+
+    it('takes the level the server resolves to, not the one asked for', async () => {
+      const {session} = sessionWithThread({level: 'participating_entries'});
+      await session.fetch();
+
+      const listener = jest.fn();
+      session.on('change:thread', listener);
+
+      await session.updateThreadNotificationLevel({threadId: 1, level: ''});
+
+      expect(listener).toHaveBeenCalledWith(
+        expect.objectContaining({id: 1, notificationLevel: 'participating_entries'})
+      );
+    });
+  });
+
   it('emits reset event with threads after fetch', async () => {
     const request = jest.fn().mockResolvedValue({
       currentUser: {id: 42, name: 'Alice'},

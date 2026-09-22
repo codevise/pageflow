@@ -4,12 +4,20 @@ $pageflow-tooltip-bubble-text-color: #fff !default;
 
 $pageflow-tooltip-clue-border-color: #aaa !default;
 
+$pageflow-tooltip-bubble-font-size: 0.75rem !default;
+
+// Together with the offsets below, keeps the bubble's bottom edge on
+// the arrow whatever line height the element it hangs from has.
+$pageflow-tooltip-bubble-line-height: 1.4 !default;
+
 .tooltip_bubble {
   display: none;
   position: absolute;
   background-color: $pageflow-tooltip-bubble-background-color;
   color: $pageflow-tooltip-bubble-text-color;
   padding: 5px 10px;
+  font-size: $pageflow-tooltip-bubble-font-size;
+  line-height: $pageflow-tooltip-bubble-line-height;
   bottom: 100%;
   margin-bottom: 5px;
   white-space: nowrap;
@@ -48,6 +56,8 @@ $pageflow-tooltip-clue-border-color: #aaa !default;
     color: $pageflow-tooltip-bubble-text-color;
     padding: 5px 10px;
     top: -33px;
+    font-size: $pageflow-tooltip-bubble-font-size;
+    line-height: $pageflow-tooltip-bubble-line-height;
     white-space: nowrap;
     border-radius: 2px;
     content: attr(data-tooltip);

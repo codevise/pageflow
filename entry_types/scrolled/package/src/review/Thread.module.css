@@ -37,7 +37,7 @@
   border-color: var(--thread-border-color);
 }
 
-.unreadDot {
+.notifyingDot {
   position: absolute;
   top: space(-1);
   right: space(-1);

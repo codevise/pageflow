@@ -25,6 +25,11 @@ module Pageflow
                :id => 'current_user',
                :if => proc { current_active_admin_user? },
                :url => '/admin/users/me')
+      menu.add(:label => proc { I18n.t('pageflow.admin.notifications.title') },
+               :id => 'notifications',
+               :parent => 'current_user',
+               :if => proc { current_active_admin_user? },
+               :url => '/admin/notifications')
       admin.add_logout_button_to_menu(menu)
     end
   end

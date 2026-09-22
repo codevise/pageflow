@@ -10,7 +10,8 @@ module Pageflow
       end
       column :title, sortable: 'title' do |entry|
         safe_join([link_to(entry.title, admin_entry_path(entry)),
-                   entry_comments_indicator(entry)].compact)
+                   entry_comments_indicator(entry),
+                   entry_comments_notification_level(entry)].compact)
       end
       column I18n.t('pageflow.admin.entries.members'), class: 'members' do |entry|
         entry_user_badge_list(entry)
@@ -121,6 +122,15 @@ module Pageflow
 
     form(partial: 'form')
 
+    action_item(:comment_notifications, only: :show, priority: 1) do
+      if entry.feature_state('commenting')
+        entry_comment_notifications_dropdown(
+          entry,
+          CommentNotifications.for_entry(entry, user: current_user)
+        )
+      end
+    end
+
     action_item(:depublish, only: :show, priority: 6) do
       if authorized?(:publish, entry) && entry.published?
         button_to(I18n.t('pageflow.admin.entries.depublish'),
@@ -185,6 +195,13 @@ module Pageflow
       authorize!(:snapshot, entry)
       entry.snapshot(creator: current_user, type: 'user')
       redirect_to(admin_entry_path(entry, params.permit(:tab)))
+    end
+
+    member_action :comment_notification_level, method: :patch do
+      entry = Entry.find(params[:id])
+      authorize!(:read, entry)
+      EntryCommentNotificationOverride.set(entry:, user: current_user, level: params[:level])
+      redirect_to(admin_entry_path(entry))
     end
 
     member_action :preview do

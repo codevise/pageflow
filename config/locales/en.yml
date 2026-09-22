@@ -825,9 +825,54 @@ en:
         no_entries: No Stories
         no_members: No members
         site_defaults_inline_help: The following settings will be used as defaults for new stories in this account. Changes do not affect existing stories.
+      comment_notifications:
+        account:
+          assigned_entries: Default for stories they are assigned to as a member
+          digest_interval: Notify about new comment activity
+          digest_intervals:
+            continuous: By mail as well as in the story and the story list
+            never: Only in the story and the story list
+          legend: Comment notifications for members
+          levels:
+            all_activity: All activity
+            muted: Nothing
+            participating_threads: Topics they have commented in
+          other_entries: Default for stories they are not assigned to as a member
+        user:
+          assigned_entries: Default for stories I am assigned to as a member
+          digest_interval: Notify about new comment activity
+          digest_intervals:
+            continuous: By mail as well as in the story and the story list
+            never: Only in the story and the story list
+          legend: Comment notifications
+          legend_with_account: "Comment notifications in %{account}"
+          levels:
+            all_activity: All activity
+            muted: Nothing
+            participating_threads: Topics I have commented in
+          other_entries: Default for stories I am not assigned to as a member
       entries:
         add_folder: Add folder
         comments:
+          notification_level:
+            all_activity: Notifying about all activity
+            muted: Muted
+            participating_threads: Notifying about topics I have commented in
+          notifications:
+            button: "Comment notifications: %{level}"
+            default:
+              assigned: Default for stories I am assigned to as a member
+              name: "Default – %{level}"
+              other: Default for stories I am not assigned to as a member
+            heading: Comment notifications
+            hints:
+              all_activity: Every comment in this story
+              muted: Nothing from this story
+              participating_threads: Anything in those, but no new topics
+            levels:
+              all_activity: All activity
+              muted: Nothing
+              participating_threads: Topics I have commented in
           tooltip: "Comments: %{summary}"
           topic_count:
             one: 1 unresolved topic
@@ -915,6 +960,11 @@ en:
         on_entry:
           role:
             hint_html: A <strong>Previewer</strong> can preview this story.<br>An <strong>Editor</strong> can additionally edit this story.<br>A <strong>Publisher</strong> can additionally publish this story.<br>A <strong>Manager</strong> can additionally set user roles on this story and edit them.
+      notifications:
+        general_section: General
+        save: Save
+        title: Notifications
+        updated: Notification settings saved.
       resource_tabs:
         account_editor_hint: Users who are assigned on an account level are not listed here
         accounts: Accounts
@@ -2168,6 +2218,24 @@ en:
     unmute_button:
       widget_type_name: Unmute button
     user_mailer:
+      comment_digest:
+        earlier_reply_count:
+          one: 1 earlier reply
+          other: "%{count} earlier replies"
+        greeting: Your Pageflow Team
+        instruction: "There is new comment activity in %{entry}."
+        instruction_html: There is new comment activity in %{entry}.
+        new_replies: New replies
+        resolution: Marked as resolved by
+        salutation: Hello %{first_name}
+        subject: New comments in %{title}
+        summary:
+          and: " and "
+          reply_count:
+            one: 1 reply
+            other: "%{count} replies"
+          resolution: marked as resolved
+          topic: topic started
       invitation:
         ending: Thank you and have fun,
         greeting: Your Pageflow Team

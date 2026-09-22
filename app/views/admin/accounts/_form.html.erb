@@ -16,6 +16,17 @@
     <% end %>
   <% end  %>
 
+  <%= f.inputs t('pageflow.admin.comment_notifications.account.legend') do %>
+    <%= f.semantic_fields_for :comment_settings,
+                              resource.comment_settings || resource.build_comment_settings do |s| %>
+      <%= render 'admin/shared/comment_notification_fields',
+                 f: s,
+                 scope: 'account',
+                 levels: resolved_comment_notification_levels(s.object),
+                 interval: resolved_comment_digest_interval(s.object) %>
+    <% end %>
+  <% end %>
+
   <%= f.actions do %>
     <%= f.action(:submit) %>
     <%= f.action(:cancel, :wrapper_html => {:class => 'cancel'}) %>

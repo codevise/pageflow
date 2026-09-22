@@ -12,9 +12,13 @@ import {useSubjectQuote} from './subjectQuote';
 import {commentsWithOutdatedQuote} from './outdatedQuotes';
 import {useMarkThreadReadWhenSeen} from './markThreadReadWhenSeen';
 import {useUnreadActivity} from './unreadActivity';
+import {useThreadNotifies} from './notifications';
 import {useScrollHighlightedThreadIntoView} from './scrollHighlightedThreadIntoView';
+import {postUpdateThreadNotificationLevelMessage} from './postMessage';
 
 import ChevronIcon from './images/chevron.svg';
+import MuteIcon from './images/mute.svg';
+import WatchIcon from './images/watch.svg';
 import ResolveIcon from './images/resolve.svg';
 import UnresolveIcon from './images/unresolve.svg';
 import styles from './Thread.module.css';
@@ -39,6 +43,7 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
   const {
     unread, unreadTopic, unreadReplyCount, unreadResolution, firstUnreadReplyId, hidesUnread
   } = useUnreadMarkers({thread, firstComment, replies, hiddenReplies});
+  const notifies = useThreadNotifies(thread);
 
   const hidesUnreadReplies = repliesCollapsed && unreadReplyCount > 0;
 
@@ -84,9 +89,9 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
          })}
          onClick={onClick}
          aria-current={highlighted ? 'true' : undefined}>
-      {showUnreadMarker && unread.length > 0 &&
+      {showUnreadMarker && notifies && unread.length > 0 &&
         <span role="img"
-              className={styles.unreadDot}
+              className={styles.notifyingDot}
               aria-label={t('pageflow_scrolled.review.unread_count',
                             {count: unread.length})} />}
 
@@ -98,6 +103,8 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
       {firstComment &&
         <Comment comment={firstComment}
                  showQuote={outdatedQuotes.has(firstComment.id)}
+                 menuItems={interactive ? threadMenuItems(t, thread, notifies) : []}
+                 menuLabel={t('pageflow_scrolled.review.thread_actions')}
                  {...editProps(firstComment)} />}
 
       {replies.length > 0 && !foldedReplyCount &&
@@ -194,6 +201,20 @@ function useUnreadMarkers({thread, firstComment, replies, hiddenReplies}) {
   };
 }
 
+// Carried by the first comment's menu rather than by a comment of its
+// own: muting is something one does to somebody else's thread.
+function threadMenuItems(t, thread, notifies) {
+  const [icon, key, level] = notifies ?
+                             [MuteIcon, 'mute_thread', 'muted'] :
+                             [WatchIcon, 'watch_thread', 'all_activity'];
+
+  return [{
+    icon,
+    label: t(`pageflow_scrolled.review.${key}`),
+    onSelect: () => postUpdateThreadNotificationLevelMessage({threadId: thread.id, level})
+  }];
+}
+
 function Resolution({thread, onUnresolve}) {
   const {t} = useI18n({locale: 'ui'});
   const locale = useLocale({locale: 'ui'});
@@ -217,7 +238,7 @@ function Resolution({thread, onUnresolve}) {
       </div>
 
       {onUnresolve &&
-        <CommentMenu label={t('pageflow_scrolled.review.thread_actions')}
+        <CommentMenu label={t('pageflow_scrolled.review.resolution_actions')}
                      items={[{icon: UnresolveIcon,
                               label: t('pageflow_scrolled.review.unresolve'),
                               onSelect: onUnresolve}]} />}

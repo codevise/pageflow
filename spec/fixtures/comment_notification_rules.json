@@ -1,0 +1,91 @@
+{
+  "comment": [
+    "Cases for the two facts about comment activity: whether the user has",
+    "seen it, and whether their level notifies them about it.",
+    "Read by spec/models/pageflow/comment_notification_rules_spec.rb and by",
+    "entry_types/scrolled/package/spec/review/notificationRules-spec.js, so",
+    "that both implementations of the rules stay in step.",
+    "Each case is merged onto defaults; only what it varies is listed."
+  ],
+  "defaults": {
+    "currentUserId": 1,
+    "creatorId": 2,
+    "createdAt": "2026-03-10T00:00:00Z",
+    "unreadCommentsSinceAt": "2026-03-01T00:00:00Z",
+    "readAt": null,
+    "level": "all_activity",
+    "participated": false
+  },
+  "cases": [
+    {
+      "name": "the user's own activity is not unread",
+      "creatorId": 1,
+      "participated": true,
+      "unread": false,
+      "notifies": true
+    },
+    {
+      "name": "activity from before the baseline is not unread",
+      "createdAt": "2026-02-20T00:00:00Z",
+      "unread": false,
+      "notifies": true
+    },
+    {
+      "name": "activity from before the read mark is not unread",
+      "createdAt": "2026-03-03T00:00:00Z",
+      "readAt": "2026-03-05T00:00:00Z",
+      "unread": false,
+      "notifies": true
+    },
+    {
+      "name": "activity from after the read mark is unread",
+      "readAt": "2026-03-05T00:00:00Z",
+      "unread": true,
+      "notifies": true
+    },
+    {
+      "name": "everything is unread without a baseline or read mark",
+      "createdAt": "2026-02-20T00:00:00Z",
+      "unreadCommentsSinceAt": null,
+      "unread": true,
+      "notifies": true
+    },
+    {
+      "name": "all_activity notifies without participation",
+      "unread": true,
+      "notifies": true
+    },
+    {
+      "name": "all_activity notifies with participation",
+      "participated": true,
+      "unread": true,
+      "notifies": true
+    },
+    {
+      "name": "participating_threads does not notify without participation",
+      "level": "participating_threads",
+      "unread": true,
+      "notifies": false
+    },
+    {
+      "name": "participating_threads notifies with participation",
+      "level": "participating_threads",
+      "participated": true,
+      "unread": true,
+      "notifies": true
+    },
+    {
+      "name": "muted does not notify without participation",
+      "level": "muted",
+      "unread": true,
+      "notifies": false
+    },
+    {
+      "name": "muted does not notify despite participation",
+      "level": "muted",
+      "participated": true,
+      "unread": true,
+      "notifies": false
+    }
+  ]
+}

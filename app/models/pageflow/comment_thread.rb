@@ -15,8 +15,31 @@ module Pageflow
 
     validates :subject_type, :subject_id, presence: true
 
+    # Comment threads live on the draft revision, so an entry is reached
+    # through its editable revision. Threads on frozen revisions are
+    # copies and have no activity of their own.
+    scope :in_entries, lambda { |entries|
+      where(revision_id: Revision.editable.where(entry_id: entries.map(&:id)))
+    }
+
+    scope :with_activity_in, lambda { |window|
+      where(id: Comment.where(created_at: window).select(:comment_thread_id))
+        .or(where(resolved_at: window))
+    }
+
+    def self.group_by_entry_id(threads)
+      entry_id_by_revision_id =
+        Revision.editable.where(id: threads.map(&:revision_id).uniq).pluck(:id, :entry_id).to_h
+
+      threads.group_by { |thread| entry_id_by_revision_id[thread.revision_id] }.except(nil)
+    end
+
+    def resolved?
+      resolved_at.present?
+    end
+
     def resolve(user)
-      update!(resolved_at: Time.current, resolver: user) unless resolved_at
+      update!(resolved_at: Time.current, resolver: user) unless resolved?
     end
 
     def unresolve

@@ -149,6 +149,28 @@ describe Admin::EntriesController do
   end
 
   describe '#show' do
+    it 'renders the comment notifications drop down as the first action item' do
+      user = create(:user)
+      entry = create(:entry, with_previewer: user, with_feature: 'commenting')
+
+      sign_in(user, scope: :user)
+      get(:show, params: {id: entry.id})
+
+      expect(response.body).to have_selector(
+        '.action_items .action_item:first-child .entry_comment_notifications'
+      )
+    end
+
+    it 'leaves out the comment notifications drop down where commenting is off' do
+      user = create(:user)
+      entry = create(:entry, with_previewer: user)
+
+      sign_in(user, scope: :user)
+      get(:show, params: {id: entry.id})
+
+      expect(response.body).not_to have_selector('.entry_comment_notifications')
+    end
+
     describe 'built in admin tabs' do
       it 'entry editor sees members and revisions tabs' do
         account = create(:account)
@@ -1648,6 +1670,51 @@ describe Admin::EntriesController do
       expect {
         post(:snapshot, params: {id: entry.id})
       }.to(change { entry.revisions.count })
+    end
+  end
+
+  describe '#comment_notification_level' do
+    it 'stores the level for the entry' do
+      user = create(:user)
+      entry = create(:entry, with_previewer: user)
+
+      sign_in(user, scope: :user)
+      patch(:comment_notification_level, params: {id: entry.id, level: 'muted'})
+
+      expect(Pageflow::EntryCommentNotificationOverride.find_by(entry:, user:).level)
+        .to eq('muted')
+    end
+
+    it 'removes the override for a blank level' do
+      user = create(:user)
+      entry = create(:entry, with_previewer: user)
+      create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+
+      sign_in(user, scope: :user)
+      patch(:comment_notification_level, params: {id: entry.id})
+
+      expect(Pageflow::EntryCommentNotificationOverride.count).to eq(0)
+    end
+
+    it 'does not store a level it does not know' do
+      user = create(:user)
+      entry = create(:entry, with_previewer: user)
+
+      sign_in(user, scope: :user)
+      patch(:comment_notification_level, params: {id: entry.id, level: 'everything'})
+
+      expect(Pageflow::EntryCommentNotificationOverride.count).to eq(0)
+    end
+
+    it 'does not allow a user who cannot read the entry' do
+      user = create(:user)
+      entry = create(:entry)
+
+      sign_in(user, scope: :user)
+
+      expect {
+        patch(:comment_notification_level, params: {id: entry.id, level: 'muted'})
+      }.not_to(change { Pageflow::EntryCommentNotificationOverride.count })
     end
   end
 

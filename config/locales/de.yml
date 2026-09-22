@@ -826,9 +826,57 @@ de:
         no_entries: Keine Beiträge
         no_members: Keine Benutzer
         site_defaults_inline_help: Die folgenden Einstellungen werden als Standard für neue Beiträge des Kontos verwendet. Änderungen wirken sich nicht auf existierende Beiträge aus.
+      comment_notifications:
+        account:
+          assigned_entries: Standard für Beiträge, denen sie als Mitglied zugeordnet
+            sind
+          digest_interval: Über neue Kommentar-Aktivität benachrichtigen
+          digest_intervals:
+            continuous: Per Mail sowie im Beitrag und in der Beitragsliste
+            never: Nur im Beitrag und in der Beitragsliste
+          legend: Kommentar-Benachrichtigungen der Mitglieder
+          levels:
+            all_activity: Alle Aktivität
+            muted: Nichts
+            participating_threads: Themen, in denen sie kommentiert haben
+          other_entries: Standard für Beiträge, denen sie nicht als Mitglied zugeordnet
+            sind
+        user:
+          assigned_entries: Standard für Beiträge, denen ich als Mitglied zugeordnet bin
+          digest_interval: Über neue Kommentar-Aktivität benachrichtigen
+          digest_intervals:
+            continuous: Per Mail sowie im Beitrag und in der Beitragsliste
+            never: Nur im Beitrag und in der Beitragsliste
+          legend: Kommentar-Benachrichtigungen
+          legend_with_account: "Kommentar-Benachrichtigungen in %{account}"
+          levels:
+            all_activity: Alle Aktivität
+            muted: Nichts
+            participating_threads: Themen, in denen ich kommentiert habe
+          other_entries: Standard für Beiträge, denen ich nicht als Mitglied zugeordnet
+            bin
       entries:
         add_folder: Ordner hinzufügen
         comments:
+          notification_level:
+            all_activity: Benachrichtigung über alle Aktivität
+            muted: Stummgeschaltet
+            participating_threads: Benachrichtigung über Themen, in denen ich kommentiert habe
+          notifications:
+            button: "Kommentar-Benachrichtigungen: %{level}"
+            default:
+              assigned: Standard für Beiträge, denen ich als Mitglied zugeordnet bin
+              name: "Standard – %{level}"
+              other: Standard für Beiträge, denen ich nicht als Mitglied zugeordnet bin
+            heading: Kommentar-Benachrichtigungen
+            hints:
+              all_activity: Jeder Kommentar in diesem Beitrag
+              muted: Nichts aus diesem Beitrag
+              participating_threads: Alles in diesen Themen, aber keine neuen
+            levels:
+              all_activity: Alle Aktivität
+              muted: Nichts
+              participating_threads: Themen, in denen ich kommentiert habe
           tooltip: "Kommentare: %{summary}"
           topic_count:
             one: 1 ungelöstes Thema
@@ -916,6 +964,11 @@ de:
         on_entry:
           role:
             hint_html: Der <strong>Prüfer</strong> kann diesen Beitrag anschauen, auch bevor er veröffentlicht ist.<br>Der <strong>Redakteur</strong> kann zusätzlich dazu den Beitrag bearbeiten.<br>Der <strong>Veröffentlicher</strong> kann zusätzlich dazu den Beitrag veröffentlichen.<br>Der <strong>Administrator</strong> kann zusätzlich dazu Benutzerrollen auf diesem Beitrag setzen und bearbeiten.
+      notifications:
+        general_section: Allgemein
+        save: Speichern
+        title: Benachrichtigungen
+        updated: Benachrichtigungseinstellungen wurden gespeichert.
       resource_tabs:
         account_editor_hint: Auf Kontoebene zugeordnete Benutzer sind hier nicht aufgeführt
         accounts: Konten
@@ -2179,6 +2232,24 @@ de:
     unmute_button:
       widget_type_name: "'Ton ein'-Button"
     user_mailer:
+      comment_digest:
+        earlier_reply_count:
+          one: 1 frühere Antwort
+          other: "%{count} frühere Antworten"
+        greeting: Dein Pageflow-Team
+        instruction: "Es gibt neue Kommentar-Aktivität in %{entry}."
+        instruction_html: Es gibt neue Kommentar-Aktivität in %{entry}.
+        new_replies: Neue Antworten
+        resolution: Als gelöst markiert von
+        salutation: Hallo %{first_name}
+        subject: Neue Kommentare in %{title}
+        summary:
+          and: " und "
+          reply_count:
+            one: 1 Antwort
+            other: "%{count} Antworten"
+          resolution: als gelöst markiert
+          topic: Thema begonnen
       invitation:
         ending: Dankeschön und viel Spaß,
         greeting: Dein Pageflow-Team

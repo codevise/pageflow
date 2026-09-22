@@ -11,7 +11,7 @@ export {
 } from './CommentDisplayFilterProvider';
 export {ReviewMessageHandler} from './ReviewMessageHandler';
 export {watchUnreadComments} from './watchUnreadComments';
-export {useUnreadActivityCount} from './unreadActivity';
+export {useUnreadActivitySummary} from './unreadActivity';
 export {ThreadsBadge} from './ThreadsBadge';
 export {Badge} from './Badge';
 export {ThreadList} from './ThreadList';
