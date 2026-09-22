@@ -871,6 +871,8 @@ de:
               assigned: Standard für Beiträge, denen ich als Mitglied zugeordnet bin
               name: "Standard – %{level}"
               other: Standard für Beiträge, denen ich nicht als Mitglied zugeordnet bin
+            expired_notice: Dieser Link zum Stummschalten ist nicht mehr gültig. Öffne den
+              Beitrag, um seine Kommentar-Benachrichtigungen zu ändern.
             heading: Kommentar-Benachrichtigungen
             hints:
               all_activity: Jeder Kommentar in diesem Beitrag
@@ -882,6 +884,7 @@ de:
               muted: Stummgeschaltet
               participating_threads: Themen, in denen ich kommentiert habe
               watched_threads: Themen, die ich beobachte
+            muted_notice: Kommentar-Benachrichtigungen für diesen Beitrag sind jetzt stummgeschaltet.
           tooltip: "Kommentare: %{summary}"
           topic_count:
             one: 1 ungelöstes Thema

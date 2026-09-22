@@ -90,6 +90,9 @@ Pageflow::Engine.routes.draw do
       end
     end
 
+    get '/comment_notifications/mute' => 'comment_notifications#mute',
+        as: :mute_comment_notifications
+
     root to: redirect('/admin')
   end
 

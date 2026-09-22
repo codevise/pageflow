@@ -867,6 +867,8 @@ en:
               assigned: Default for stories I am assigned to as a member
               name: "Default – %{level}"
               other: Default for stories I am not assigned to as a member
+            expired_notice: This mute link is no longer valid. Open the story to change its
+              comment notifications.
             heading: Comment notifications
             hints:
               all_activity: Every comment in this story
@@ -878,6 +880,7 @@ en:
               muted: Muted
               participating_threads: Topics I have commented in
               watched_threads: Topics I watch
+            muted_notice: Comment notifications for this story are now muted.
           tooltip: "Comments: %{summary}"
           topic_count:
             one: 1 unresolved topic
