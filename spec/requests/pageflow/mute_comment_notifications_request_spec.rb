@@ -43,6 +43,31 @@ module Pageflow
       expect(CommentThreadNotificationOverride.where(entry:, user:)).not_to be_empty
     end
 
+    describe 'posted by a mail client unsubscribe button' do
+      around do |example|
+        ActionController::Base.allow_forgery_protection = true
+        example.run
+        ActionController::Base.allow_forgery_protection = false
+      end
+
+      it 'mutes the entry without a csrf token' do
+        user = create(:user)
+        entry = create(:entry)
+
+        post(mute_comment_notifications_url(token: EntryCommentMuteToken.generate(user:, entry:)),
+             params: {'List-Unsubscribe' => 'One-Click'})
+
+        expect(response).to have_http_status(:ok)
+        expect(EntryCommentNotificationOverride.find_by(entry:, user:).level).to eq('muted')
+      end
+
+      it 'responds with not found for a token that was not signed here' do
+        post(mute_comment_notifications_url(token: 'made-up'))
+
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
     it 'mutes nothing for a token that was not signed here' do
       expect {
         get(mute_comment_notifications_url(token: 'made-up'))

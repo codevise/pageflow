@@ -174,6 +174,23 @@ module Pageflow
         end
       end
 
+      describe 'one-click unsubscribe' do
+        it 'points the list unsubscribe header at a mute link for the recipient' do
+          user = create(:user)
+          entry = create(:entry)
+
+          mail = mail_for(user, entry:)
+          token = mail.header['List-Unsubscribe'].value[/mute\?token=(.+)>/, 1]
+          expect(EntryCommentMuteToken.find(CGI.unescape(token))).to eq([user, entry])
+        end
+
+        it 'lets the client unsubscribe in one click' do
+          mail = mail_for(create(:user))
+
+          expect(mail.header['List-Unsubscribe-Post'].value).to eq('List-Unsubscribe=One-Click')
+        end
+      end
+
       def mail_for(user, entry: nil, entry_title: 'A Story', author_name: 'Grace Hopper',
                    body: 'A first thought')
         first_name, last_name = author_name.split
