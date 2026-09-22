@@ -13,3 +13,5 @@ json.comment_threads(@comment_threads) do |comment_thread|
 end
 
 json.comment_thread_reads(@read_at_by_perma_id.transform_keys(&:to_s))
+
+json.comment_notifications_muted(@muted)

@@ -93,6 +93,10 @@ export class ReviewSession {
 
     this._upsertThread(updated);
     this.trigger('change:thread', updated);
+
+    // Watching a thread of a muted entry brings the entry down to
+    // watched threads, so the server reports where that left it.
+    this._setCommentNotificationsMuted(data.commentNotificationsMuted);
   }
 
   async createComment({threadId, body, quote}) {
@@ -203,7 +207,8 @@ export class ReviewSession {
     this._state = {
       currentUser: data.currentUser,
       commentThreads: data.commentThreads,
-      commentThreadReads: data.commentThreadReads || {}
+      commentThreadReads: data.commentThreadReads || {},
+      commentNotificationsMuted: !!data.commentNotificationsMuted
     };
 
     this.trigger('reset', this._state);
@@ -249,6 +254,13 @@ export class ReviewSession {
       // leaving them unread until the next page load.
       permaIds.forEach(permaId => this._pendingReads.add(permaId));
     });
+  }
+
+  _setCommentNotificationsMuted(muted) {
+    if (!this._state || this._state.commentNotificationsMuted === muted) return;
+
+    this._state = {...this._state, commentNotificationsMuted: muted};
+    this.trigger('change:commentNotificationsMuted', muted);
   }
 
   _scheduleFlushReads() {

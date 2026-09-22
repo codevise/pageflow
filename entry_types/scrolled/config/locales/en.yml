@@ -1879,6 +1879,7 @@ en:
       resolve: Mark as resolved
       unresolve: Mark as unresolved
       watch_thread: Watch topic
+      unmute_entry_and_watch_thread: Unmute story and watch topic
       resolution: Marked as resolved
       resolution_by: Marked as resolved by
       thread_actions: Topic actions

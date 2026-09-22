@@ -79,3 +79,10 @@ export function postReviewStateReadsChangeMessage(targetWindow, reads) {
     window.location.origin
   );
 }
+
+export function postReviewStateCommentNotificationsMutedChangeMessage(targetWindow, muted) {
+  targetWindow.postMessage(
+    {type: 'REVIEW_STATE_COMMENT_NOTIFICATIONS_MUTED_CHANGE', payload: {muted}},
+    window.location.origin
+  );
+}

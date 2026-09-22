@@ -41,6 +41,27 @@ describe('ReviewSession', () => {
         expect.objectContaining({id: 1, notificationLevel: 'participating_entries'})
       );
     });
+
+    it('announces that watching the thread left the entry unmuted', async () => {
+      const request = jest.fn()
+        .mockResolvedValueOnce({
+          currentUser: {id: 42, name: 'Alice'},
+          commentThreads: [
+            {id: 1, permaId: 7, notificationLevel: 'muted', comments: []}
+          ],
+          commentNotificationsMuted: true
+        })
+        .mockResolvedValueOnce({level: 'all_activity', commentNotificationsMuted: false});
+      const session = new ReviewSession({entryId: 5, request});
+      await session.fetch();
+
+      const listener = jest.fn();
+      session.on('change:commentNotificationsMuted', listener);
+
+      await session.updateThreadNotificationLevel({threadId: 1, level: 'all_activity'});
+
+      expect(listener).toHaveBeenCalledWith(false);
+    });
   });
 
   it('emits reset event with threads after fetch', async () => {
@@ -72,7 +93,8 @@ describe('ReviewSession', () => {
           comments: [expect.objectContaining({body: 'Hello'})]
         })
       ],
-      commentThreadReads: {}
+      commentThreadReads: {},
+      commentNotificationsMuted: false
     });
   });
 
@@ -110,7 +132,8 @@ describe('ReviewSession', () => {
       commentThreads: [
         expect.objectContaining({id: 1})
       ],
-      commentThreadReads: {}
+      commentThreadReads: {},
+      commentNotificationsMuted: false
     });
   });
 

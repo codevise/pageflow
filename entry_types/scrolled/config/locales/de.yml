@@ -2052,6 +2052,7 @@ de:
       resolve: Als gelöst markieren
       unresolve: Als ungelöst markieren
       watch_thread: Thema beobachten
+      unmute_entry_and_watch_thread: Stummschaltung aufheben und Thema beobachten
       resolution: Als gelöst markiert
       resolution_by: Als gelöst markiert von
       thread_actions: Aktionen zum Thema
