@@ -154,13 +154,21 @@ module Pageflow
           )
         end
 
-        it 'links the entry to change the notification level' do
+        it 'links the entry to change its notification level' do
           entry = create(:entry)
 
           mail = mail_for(create(:user), entry:)
 
-          expect(bodies(mail)).to all(include('Change comment notifications'))
+          expect(bodies(mail)).to all(include('Comment notifications:'))
+          expect(bodies(mail)).to all(include('For this story'))
           expect(bodies(mail)).to all(include("/admin/entries/#{entry.to_param}"))
+        end
+
+        it 'links the account wide notification settings next to it' do
+          mail = mail_for(create(:user))
+
+          expect(bodies(mail)).to all(include('Global'))
+          expect(bodies(mail)).to all(include('/admin/notifications'))
         end
 
         it 'links muting the entry' do

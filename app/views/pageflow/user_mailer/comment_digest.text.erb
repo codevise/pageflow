@@ -23,4 +23,7 @@
 --
 <%= t(".footer.reason.#{@level}") %>
 <%= t('.footer.mute') %>: <%= mute_comment_notifications_url(token: @mute_token) %>
-<%= t('.footer.manage') %>: <%= main_app.admin_entry_url(@entry) %>
+
+<%= t('.footer.settings.label') %>
+<%= t('.footer.settings.entry') %>: <%= main_app.admin_entry_url(@entry) %>
+<%= t('.footer.settings.global') %>: <%= main_app.admin_notifications_url %>

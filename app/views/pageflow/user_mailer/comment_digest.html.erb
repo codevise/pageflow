@@ -62,9 +62,16 @@
       <%= link_to(t('.footer.mute'),
                   mute_comment_notifications_url(token: @mute_token),
                   style: comment_digest_style(:footer_link)) %>
-      &middot;
-      <%= link_to(t('.footer.manage'),
+    </p>
+
+    <p style="<%= comment_digest_style(:footer_links) %>">
+      <%= t('.footer.settings.label') %>
+      <%= link_to(t('.footer.settings.entry'),
                   main_app.admin_entry_url(@entry),
+                  style: comment_digest_style(:footer_link)) %>
+      &middot;
+      <%= link_to(t('.footer.settings.global'),
+                  main_app.admin_notifications_url,
                   style: comment_digest_style(:footer_link)) %>
     </p>
   </div>
