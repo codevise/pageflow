@@ -885,6 +885,8 @@ de:
               participating_threads: Themen, in denen ich kommentiert habe
               watched_threads: Themen, die ich beobachte
             muted_notice: Kommentar-Benachrichtigungen für diesen Beitrag sind jetzt stummgeschaltet.
+            other_user_notice: Dieser Link zum Stummschalten wurde an einen anderen Benutzer
+              geschickt. Es wurde nichts stummgeschaltet.
           tooltip: "Kommentare: %{summary}"
           topic_count:
             one: 1 ungelöstes Thema

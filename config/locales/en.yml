@@ -881,6 +881,8 @@ en:
               participating_threads: Topics I have commented in
               watched_threads: Topics I watch
             muted_notice: Comment notifications for this story are now muted.
+            other_user_notice: This mute link was sent to a different user. Nothing has
+              been muted.
           tooltip: "Comments: %{summary}"
           topic_count:
             one: 1 unresolved topic

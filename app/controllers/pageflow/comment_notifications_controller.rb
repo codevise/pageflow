@@ -10,6 +10,7 @@ module Pageflow
     def mute
       user, entry = EntryCommentMuteToken.find(params[:token])
       return render_expired_link unless entry
+      return render_other_user if signed_in_as_someone_else?(user)
 
       EntryCommentNotificationOverride.set(entry:, user:, level: CommentNotificationLevel::MUTED)
 
@@ -22,10 +23,20 @@ module Pageflow
 
     private
 
+    def signed_in_as_someone_else?(recipient)
+      current_user && current_user != recipient
+    end
+
     def render_expired_link
       return head(:not_found) if request.post?
 
       redirect_to(main_app.admin_root_path, alert: t("#{SCOPE}.expired_notice"))
+    end
+
+    def render_other_user
+      return head(:forbidden) if request.post?
+
+      redirect_to(main_app.admin_root_path, alert: t("#{SCOPE}.other_user_notice"))
     end
   end
 end
