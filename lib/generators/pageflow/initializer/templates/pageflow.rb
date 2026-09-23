@@ -1,7 +1,12 @@
 Pageflow.configure do |config|
   # The email address to use as from header in invitation mails to new
-  # users.
-  config.mailer_sender = 'change-me-at-config-initializers-pageflow@example.com'
+  # users. May carry a display name.
+  config.mailer_sender = 'Pageflow <change-me-at-config-initializers-pageflow@example.com>'
+
+  # The email address to use as from header in notification mails like
+  # comment digests. Defaults to a notifications address in the domain
+  # of the mailer sender, under its display name.
+  # config.notification_mailer_sender = 'Pageflow <notifications@example.com>'
 
   # Entry type plugins
   config.plugin(PageflowPaged.plugin)

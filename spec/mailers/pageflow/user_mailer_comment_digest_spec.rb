@@ -3,10 +3,23 @@ require 'spec_helper'
 module Pageflow
   describe UserMailer do
     describe '#comment_digest' do
-      it 'sends from the configured mailer sender' do
+      it 'sends from a notification address in the mailer sender domain' do
         Pageflow.config.mailer_sender = 'test@example.com'
 
-        expect(mail_for(create(:user)).from).to eq(['test@example.com'])
+        expect(mail_for(create(:user)).from).to eq(['notifications@example.com'])
+      end
+
+      it 'sends under the display name of the mailer sender' do
+        Pageflow.config.mailer_sender = 'Pageflow <test@example.com>'
+
+        expect(mail_for(create(:user))[:from].formatted)
+          .to eq(['Pageflow <notifications@example.com>'])
+      end
+
+      it 'sends from the configured notification mailer sender' do
+        Pageflow.config.notification_mailer_sender = 'noise@example.com'
+
+        expect(mail_for(create(:user)).from).to eq(['noise@example.com'])
       end
 
       it 'uses the locale of the receiving user' do
@@ -141,13 +154,22 @@ module Pageflow
           )
         end
 
-        it 'links the entry to change the notification level' do
+        it 'links the entry to change its notification level' do
           entry = create(:entry)
 
           mail = mail_for(create(:user), entry:)
 
-          expect(bodies(mail)).to all(include('Change comment notifications'))
-          expect(bodies(mail)).to all(include("/admin/entries/#{entry.to_param}"))
+          expect(bodies(mail)).to all(include('Comment notifications:'))
+          expect(bodies(mail)).to all(include('For this story'))
+          expect(bodies(mail))
+            .to all(include("/admin/entries/#{entry.to_param}?comment_notifications=open"))
+        end
+
+        it 'links the account wide notification settings next to it' do
+          mail = mail_for(create(:user))
+
+          expect(bodies(mail)).to all(include('Global'))
+          expect(bodies(mail)).to all(include('/admin/notifications'))
         end
 
         it 'links muting the entry' do

@@ -18,7 +18,7 @@ module Pageflow
                 'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click')
         mail(to: @user.email,
              subject: t('.subject', title: @entry.title),
-             from: Pageflow.config.mailer_sender)
+             from: Pageflow.config.notification_mailer_sender)
       end
     end
 

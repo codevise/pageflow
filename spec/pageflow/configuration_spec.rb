@@ -154,5 +154,29 @@ module Pageflow
         expect(result).to eq(false)
       end
     end
+
+    describe '#notification_mailer_sender' do
+      it 'defaults to a notifications address in the mailer sender domain' do
+        configuration = Configuration.new
+        configuration.mailer_sender = 'pageflow@example.com'
+
+        expect(configuration.notification_mailer_sender).to eq('notifications@example.com')
+      end
+
+      it 'keeps the display name of the mailer sender' do
+        configuration = Configuration.new
+        configuration.mailer_sender = 'Pageflow <pageflow@example.com>'
+
+        expect(configuration.notification_mailer_sender)
+          .to eq('Pageflow <notifications@example.com>')
+      end
+
+      it 'returns the address it has been set to' do
+        configuration = Configuration.new
+        configuration.notification_mailer_sender = 'noise@example.com'
+
+        expect(configuration.notification_mailer_sender).to eq('noise@example.com')
+      end
+    end
   end
 end

@@ -43,6 +43,39 @@ module Pageflow
       expect(CommentThreadNotificationOverride.where(entry:, user:)).not_to be_empty
     end
 
+    it 'mutes the entry when the user the token names is signed in' do
+      user = create(:user)
+      entry = create(:entry)
+      sign_in(user, scope: :user)
+
+      get(mute_comment_notifications_url(token: EntryCommentMuteToken.generate(user:, entry:)))
+
+      expect(EntryCommentNotificationOverride.find_by(entry:, user:).level).to eq('muted')
+    end
+
+    describe 'followed while signed in as someone else' do
+      it 'mutes nothing' do
+        token = EntryCommentMuteToken.generate(user: create(:user), entry: create(:entry))
+        sign_in(create(:user), scope: :user)
+
+        expect {
+          get(mute_comment_notifications_url(token:))
+        }.not_to(change { EntryCommentNotificationOverride.count })
+      end
+
+      it 'sends the signed in user to the admin root with an alert' do
+        token = EntryCommentMuteToken.generate(user: create(:user), entry: create(:entry))
+        sign_in(create(:user), scope: :user)
+
+        get(mute_comment_notifications_url(token:))
+
+        expect(response).to redirect_to(admin_root_path)
+        expect(flash[:alert]).to eq(
+          'This mute link was sent to a different user. Nothing has been muted.'
+        )
+      end
+    end
+
     describe 'posted by a mail client unsubscribe button' do
       around do |example|
         ActionController::Base.allow_forgery_protection = true
@@ -65,6 +98,15 @@ module Pageflow
         post(mute_comment_notifications_url(token: 'made-up'))
 
         expect(response).to have_http_status(:not_found)
+      end
+
+      it 'responds with forbidden while someone else is signed in' do
+        token = EntryCommentMuteToken.generate(user: create(:user), entry: create(:entry))
+        sign_in(create(:user), scope: :user)
+
+        post(mute_comment_notifications_url(token:))
+
+        expect(response).to have_http_status(:forbidden)
       end
     end
 

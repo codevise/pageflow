@@ -885,6 +885,8 @@ de:
               participating_threads: Themen, in denen ich kommentiert habe
               watched_threads: Themen, die ich beobachte
             muted_notice: Kommentar-Benachrichtigungen für diesen Beitrag sind jetzt stummgeschaltet.
+            other_user_notice: Dieser Link zum Stummschalten wurde an einen anderen Benutzer
+              geschickt. Es wurde nichts stummgeschaltet.
           tooltip: "Kommentare: %{summary}"
           topic_count:
             one: 1 ungelöstes Thema
@@ -2245,7 +2247,6 @@ de:
           one: 1 frühere Antwort
           other: "%{count} frühere Antworten"
         footer:
-          manage: Kommentar-Benachrichtigungen ändern
           mute: Beitrag stummschalten
           reason:
             all_activity: Du erhältst diese Mail, weil Benachrichtigungen über jede Aktivität
@@ -2253,6 +2254,10 @@ de:
             participating_threads: Du erhältst diese Mail, weil du in diesen Themen kommentiert
               hast oder sie beobachtest.
             watched_threads: Du erhältst diese Mail, weil du diese Themen beobachtest.
+          settings:
+            entry: Für diesen Beitrag
+            global: Global
+            label: 'Kommentar-Benachrichtigungen:'
         greeting: Dein Pageflow-Team
         instruction: "Es gibt neue Kommentar-Aktivität in %{entry}."
         instruction_html: Es gibt neue Kommentar-Aktivität in %{entry}.

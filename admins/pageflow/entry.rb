@@ -126,7 +126,8 @@ module Pageflow
       if entry.feature_state('commenting')
         entry_comment_notifications_dropdown(
           entry,
-          CommentNotifications.for_entry(entry, user: current_user)
+          CommentNotifications.for_entry(entry, user: current_user),
+          open: params[:comment_notifications] == 'open'
         )
       end
     end

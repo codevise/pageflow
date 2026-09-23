@@ -47,6 +47,11 @@ module Pageflow
     # new users
     attr_accessor :mailer_sender
 
+    # The email address to use as from header in notification mails
+    # like comment digests. Defaults to a `notifications` address in
+    # the domain of {#mailer_sender}, under its display name.
+    attr_writer :notification_mailer_sender
+
     # How far back a comment digest sweep looks for activity it has
     # not considered yet. Also caps what an installation mails after
     # a sweep has not run for a while.
@@ -701,6 +706,16 @@ module Pageflow
       else
         confirm_encoding_jobs
       end
+    end
+
+    def notification_mailer_sender
+      return @notification_mailer_sender if @notification_mailer_sender
+
+      sender = Mail::Address.new(mailer_sender)
+      notification_sender = Mail::Address.new("notifications@#{sender.domain}")
+      notification_sender.display_name = sender.display_name
+
+      notification_sender.format
     end
 
     # @api private
