@@ -2057,8 +2057,8 @@ de:
       resolution_by: Als gelöst markiert von
       thread_actions: Aktionen zum Thema
       resolved_count:
-        one: 1 erledigt
-        other: '%{count} erledigt'
+        one: 1 gelöst
+        other: '%{count} gelöst'
       reply_count:
         one: 1 Antwort
         other: '%{count} Antworten'
