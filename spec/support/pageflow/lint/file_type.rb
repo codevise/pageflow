@@ -64,6 +64,20 @@ module Pageflow
             end
           end
 
+          it 'exposes entries using the file' do
+            entry = create(:entry)
+            create(:file_usage, file:, revision: entry.draft)
+
+            expect(file.using_entries).to eq([entry])
+          end
+
+          it 'exposes accounts using the file' do
+            entry = create(:entry)
+            create(:file_usage, file:, revision: entry.draft)
+
+            expect(file.using_accounts).to eq([entry.account])
+          end
+
           it 'can be exported and imported without error' do
             exported_entry = create(:entry)
             create(:file_usage, file:, revision: exported_entry.draft)

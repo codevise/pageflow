@@ -15,8 +15,10 @@ module Pageflow
                required: false,
                dependent: :destroy
       has_many :using_revisions, through: :usages, source: :revision
-      has_many :using_entries, through: :using_revisions, source: :entry
-      has_many :using_accounts, through: :using_entries, source: :account
+      has_many :using_entries, through: :using_revisions, source: :entry,
+                               class_name: 'Pageflow::Entry'
+      has_many :using_accounts, through: :using_entries, source: :account,
+                                class_name: 'Pageflow::Account'
 
       validate :parent_allows_type_for_nesting, :parent_belongs_to_same_entry
 
