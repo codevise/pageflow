@@ -3,10 +3,23 @@ require 'spec_helper'
 module Pageflow
   describe UserMailer do
     describe '#comment_digest' do
-      it 'sends from the configured mailer sender' do
+      it 'sends from a notification address in the mailer sender domain' do
         Pageflow.config.mailer_sender = 'test@example.com'
 
-        expect(mail_for(create(:user)).from).to eq(['test@example.com'])
+        expect(mail_for(create(:user)).from).to eq(['notifications@example.com'])
+      end
+
+      it 'sends under the display name of the mailer sender' do
+        Pageflow.config.mailer_sender = 'Pageflow <test@example.com>'
+
+        expect(mail_for(create(:user))[:from].formatted)
+          .to eq(['Pageflow <notifications@example.com>'])
+      end
+
+      it 'sends from the configured notification mailer sender' do
+        Pageflow.config.notification_mailer_sender = 'noise@example.com'
+
+        expect(mail_for(create(:user)).from).to eq(['noise@example.com'])
       end
 
       it 'uses the locale of the receiving user' do
