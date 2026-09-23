@@ -2,7 +2,8 @@ import {
   postReviewStateResetMessage,
   postReviewStateThreadChangeMessage,
   postReviewStateDraftsChangeMessage,
-  postReviewStateReadsChangeMessage
+  postReviewStateReadsChangeMessage,
+  postReviewStateCommentNotificationsMutedChangeMessage
 } from './postMessage';
 
 export const ReviewMessageHandler = {
@@ -52,11 +53,16 @@ export const ReviewMessageHandler = {
       postReviewStateReadsChangeMessage(targetWindow, reads);
     }
 
+    function handleCommentNotificationsMutedChange(muted) {
+      postReviewStateCommentNotificationsMutedChangeMessage(targetWindow, muted);
+    }
+
     window.addEventListener('message', handleMessage);
     session.on('reset', handleReset);
     session.on('change:thread', handleThreadChange);
     session.on('change:drafts', handleDraftsChange);
     session.on('change:reads', handleReadsChange);
+    session.on('change:commentNotificationsMuted', handleCommentNotificationsMutedChange);
 
     return {
       dispose() {
@@ -65,6 +71,7 @@ export const ReviewMessageHandler = {
         session.off('change:thread', handleThreadChange);
         session.off('change:drafts', handleDraftsChange);
         session.off('change:reads', handleReadsChange);
+        session.off('change:commentNotificationsMuted', handleCommentNotificationsMutedChange);
       }
     };
   }

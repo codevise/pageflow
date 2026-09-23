@@ -35,6 +35,84 @@ module Pageflow
         expect(JSON.parse(response.body)['level']).to eq('all_activity')
       end
 
+      it 'says whether the entry is muted' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        thread = create(:comment_thread, revision: entry.draft)
+
+        sign_in(user, scope: :user)
+        patch(:update,
+              params: {entry_id: entry.id, id: thread.perma_id, level: 'muted'},
+              format: 'json')
+
+        expect(JSON.parse(response.body)['commentNotificationsMuted']).to eq(false)
+      end
+
+      describe 'watching a thread of a muted entry' do
+        it 'lifts the entry to watched threads so the watch takes effect' do
+          user = create(:user)
+          entry = create(:entry, with_previewer: user)
+          thread = create(:comment_thread, revision: entry.draft)
+          create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+
+          sign_in(user, scope: :user)
+          patch(:update,
+                params: {entry_id: entry.id, id: thread.perma_id, level: 'all_activity'},
+                format: 'json')
+
+          expect(EntryCommentNotificationOverride.find_by(entry:, user:).level)
+            .to eq('watched_threads')
+          expect(JSON.parse(response.body)).to include('level' => 'all_activity',
+                                                       'commentNotificationsMuted' => false)
+        end
+
+        it 'leaves an entry that is not muted alone' do
+          user = create(:user)
+          entry = create(:entry, with_previewer: user)
+          thread = create(:comment_thread, revision: entry.draft)
+          create(:entry_comment_notification_override,
+                 entry:, user:, level: 'participating_threads')
+
+          sign_in(user, scope: :user)
+          patch(:update,
+                params: {entry_id: entry.id, id: thread.perma_id, level: 'all_activity'},
+                format: 'json')
+
+          expect(EntryCommentNotificationOverride.find_by(entry:, user:).level)
+            .to eq('participating_threads')
+        end
+
+        it 'leaves the entry muted when the thread is muted too' do
+          user = create(:user)
+          entry = create(:entry, with_previewer: user)
+          thread = create(:comment_thread, revision: entry.draft)
+          create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+
+          sign_in(user, scope: :user)
+          patch(:update,
+                params: {entry_id: entry.id, id: thread.perma_id, level: 'muted'},
+                format: 'json')
+
+          expect(EntryCommentNotificationOverride.find_by(entry:, user:).level).to eq('muted')
+          expect(JSON.parse(response.body)['commentNotificationsMuted']).to eq(true)
+        end
+
+        it 'keeps the entry muted when the thread level is rejected' do
+          user = create(:user)
+          entry = create(:entry, with_previewer: user)
+          thread = create(:comment_thread, revision: entry.draft)
+          create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+
+          sign_in(user, scope: :user)
+          patch(:update,
+                params: {entry_id: entry.id, id: thread.perma_id, level: 'participating_threads'},
+                format: 'json')
+
+          expect(response.status).to eq(422)
+          expect(EntryCommentNotificationOverride.find_by(entry:, user:).level).to eq('muted')
+        end
+      end
+
       it 'rejects a level the thread rung cannot store' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)

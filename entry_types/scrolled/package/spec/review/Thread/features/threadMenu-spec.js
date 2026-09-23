@@ -10,7 +10,8 @@ describe('Thread menu', () => {
   useFakeTranslations({
     'pageflow_scrolled.review.thread_actions': 'Topic actions',
     'pageflow_scrolled.review.watch_thread': 'Watch topic',
-    'pageflow_scrolled.review.mute_thread': 'Mute topic'
+    'pageflow_scrolled.review.mute_thread': 'Mute topic',
+    'pageflow_scrolled.review.unmute_entry_and_watch_thread': 'Unmute story and watch topic'
   });
 
   const currentUser = {id: 42, name: 'Alice'};
@@ -24,12 +25,13 @@ describe('Thread menu', () => {
     };
   }
 
-  function render(ui) {
+  function render(ui, options = {}) {
     const postMessage = jest.spyOn(window.top, 'postMessage').mockImplementation(() => {});
     postMessage.mockClear();
 
-    return {...renderWithReviewState(ui, {currentUser}), postMessage};
+    return {...renderWithReviewState(ui, {currentUser, ...options}), postMessage};
   }
+
 
   function notificationLevelMessages(postMessage) {
     return postMessage.mock.calls
@@ -92,6 +94,34 @@ describe('Thread menu', () => {
     await user.click(getByRole('button', {name: 'Topic actions'}));
 
     expect(getByRole('menuitem', {name: 'Watch topic'})).toBeInTheDocument();
+    expect(queryByRole('menuitem', {name: 'Mute topic'})).toBeNull();
+  });
+
+  it('says that watching the topic unmutes the story where the story is muted', async () => {
+    const user = userEvent.setup();
+    const {getByRole, postMessage} = render(
+      <Thread thread={thread({notificationLevel: 'muted'})} />,
+      {commentNotificationsMuted: true}
+    );
+
+    await user.click(getByRole('button', {name: 'Topic actions'}));
+    await user.click(getByRole('menuitem', {name: 'Unmute story and watch topic'}));
+
+    expect(notificationLevelMessages(postMessage)).toEqual([
+      {type: 'UPDATE_THREAD_NOTIFICATION_LEVEL', payload: {threadId: 1, level: 'all_activity'}}
+    ]);
+  });
+
+  it('offers nothing else where the story is muted', async () => {
+    const user = userEvent.setup();
+    const {getByRole, queryByRole} = render(
+      <Thread thread={thread({notificationLevel: 'muted'})} />,
+      {commentNotificationsMuted: true}
+    );
+
+    await user.click(getByRole('button', {name: 'Topic actions'}));
+
+    expect(queryByRole('menuitem', {name: 'Watch topic'})).toBeNull();
     expect(queryByRole('menuitem', {name: 'Mute topic'})).toBeNull();
   });
 

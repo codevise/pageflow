@@ -22,7 +22,12 @@ module Pageflow
       resolution: 'margin: 16px 0 0; padding-top: 12px; ' \
                   'border-top: 1px solid #eceff2; font-size: 14px; color: #62707f;',
       resolver: 'font-weight: 600; color: #1f2328;',
-      greeting: 'margin: 32px 0 0;'
+      greeting: 'margin: 32px 0 0;',
+      footer: 'margin: 32px 0 0; padding-top: 16px; ' \
+              'border-top: 1px solid #eceff2; font-size: 13px; color: #8b95a1;',
+      footer_reason: 'margin: 0;',
+      footer_links: 'margin: 8px 0 0;',
+      footer_link: 'color: #62707f;'
     }.freeze
 
     def comment_digest_style(name)

@@ -7,11 +7,15 @@ module Pageflow
       @digest = digest
       @user = digest.user
       @entry = digest.entry
+      @level = CommentNotifications.for_entry(@entry, user: @user).level
+      @mute_token = EntryCommentMuteToken.generate(user: @user, entry: @entry)
 
       I18n.with_locale(@user.locale) do
         headers('X-Language' => I18n.locale,
                 'References' => entry_message_id(@entry),
-                'In-Reply-To' => entry_message_id(@entry))
+                'In-Reply-To' => entry_message_id(@entry),
+                'List-Unsubscribe' => "<#{mute_comment_notifications_url(token: @mute_token)}>",
+                'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click')
         mail(to: @user.email,
              subject: t('.subject', title: @entry.title),
              from: Pageflow.config.mailer_sender)

@@ -13,6 +13,7 @@ module Pageflow
         @read_at_by_perma_id =
           CommentThreadRead.read_at_by_perma_id(entry: entry.to_model, user: current_user)
         @notifications = notifications(entry.to_model)
+        @muted = @notifications.level == CommentNotificationLevel::MUTED
       end
 
       def create

@@ -10,10 +10,11 @@ module Pageflow
   module CommentNotificationLevel
     ALL_ACTIVITY = 'all_activity'.freeze
     PARTICIPATING_THREADS = 'participating_threads'.freeze
+    WATCHED_THREADS = 'watched_threads'.freeze
     MUTED = 'muted'.freeze
 
-    STORABLE_PER_ACCOUNT = [ALL_ACTIVITY, PARTICIPATING_THREADS, MUTED].freeze
-    STORABLE_PER_ENTRY = [ALL_ACTIVITY, PARTICIPATING_THREADS, MUTED].freeze
+    STORABLE_PER_ACCOUNT = [ALL_ACTIVITY, PARTICIPATING_THREADS, WATCHED_THREADS, MUTED].freeze
+    STORABLE_PER_ENTRY = [ALL_ACTIVITY, PARTICIPATING_THREADS, WATCHED_THREADS, MUTED].freeze
     STORABLE_PER_THREAD = [ALL_ACTIVITY, MUTED].freeze
 
     SYSTEM_DEFAULTS = {assigned: ALL_ACTIVITY, other: PARTICIPATING_THREADS}.freeze
@@ -27,7 +28,7 @@ module Pageflow
         true
       when PARTICIPATING_THREADS
         participated
-      when MUTED
+      when WATCHED_THREADS, MUTED
         false
       end
     end

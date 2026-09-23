@@ -176,6 +176,21 @@ describe('ReviewMessageHandler', () => {
     });
   });
 
+  it('posts the muted state to the target window when the session changes it', () => {
+    const session = fakeReviewSession();
+    const postMessage = jest.spyOn(window, 'postMessage').mockImplementation(() => {});
+
+    ReviewMessageHandler.create({session, targetWindow: window});
+    session.trigger('change:commentNotificationsMuted', false);
+
+    expect(postMessage).toHaveBeenCalledWith(
+      {type: 'REVIEW_STATE_COMMENT_NOTIFICATIONS_MUTED_CHANGE', payload: {muted: false}},
+      window.location.origin
+    );
+
+    window.postMessage.mockRestore();
+  });
+
   it('calls session.updateThread on UPDATE_THREAD message from targetWindow', async () => {
     const session = fakeReviewSession();
 

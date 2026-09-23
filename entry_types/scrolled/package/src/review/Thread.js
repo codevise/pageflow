@@ -7,7 +7,7 @@ import {Comment} from './Comment';
 import {CommentMenu} from './CommentMenu';
 import {formatDate} from './formatDate';
 import {ReplyForm} from './ReplyForm';
-import {useCommentDraft} from './ReviewStateProvider';
+import {useCommentDraft, useCommentNotificationsMuted} from './ReviewStateProvider';
 import {useSubjectQuote} from './subjectQuote';
 import {commentsWithOutdatedQuote} from './outdatedQuotes';
 import {useMarkThreadReadWhenSeen} from './markThreadReadWhenSeen';
@@ -44,6 +44,7 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
     unread, unreadTopic, unreadReplyCount, unreadResolution, firstUnreadReplyId, hidesUnread
   } = useUnreadMarkers({thread, firstComment, replies, hiddenReplies});
   const notifies = useThreadNotifies(thread);
+  const entryMuted = useCommentNotificationsMuted();
 
   const hidesUnreadReplies = repliesCollapsed && unreadReplyCount > 0;
 
@@ -103,7 +104,7 @@ export function Thread({thread, collapsed: collapsedProp, visibleReplyCount, onE
       {firstComment &&
         <Comment comment={firstComment}
                  showQuote={outdatedQuotes.has(firstComment.id)}
-                 menuItems={interactive ? threadMenuItems(t, thread, notifies) : []}
+                 menuItems={interactive ? threadMenuItems(t, thread, notifies, entryMuted) : []}
                  menuLabel={t('pageflow_scrolled.review.thread_actions')}
                  {...editProps(firstComment)} />}
 
@@ -203,10 +204,15 @@ function useUnreadMarkers({thread, firstComment, replies, hiddenReplies}) {
 
 // Carried by the first comment's menu rather than by a comment of its
 // own: muting is something one does to somebody else's thread.
-function threadMenuItems(t, thread, notifies) {
-  const [icon, key, level] = notifies ?
-                             [MuteIcon, 'mute_thread', 'muted'] :
-                             [WatchIcon, 'watch_thread', 'all_activity'];
+function threadMenuItems(t, thread, notifies, entryMuted) {
+  // Watching the topic brings a muted entry down to watched threads,
+  // since the entry's level would otherwise swallow the watch.
+  const [icon, key, level] =
+    notifies ?
+    [MuteIcon, 'mute_thread', 'muted'] :
+    [WatchIcon,
+     entryMuted ? 'unmute_entry_and_watch_thread' : 'watch_thread',
+     'all_activity'];
 
   return [{
     icon,

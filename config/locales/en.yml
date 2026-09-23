@@ -835,8 +835,9 @@ en:
           legend: Comment notifications for members
           levels:
             all_activity: All activity
-            muted: Nothing
+            muted: Muted
             participating_threads: Topics they have commented in
+            watched_threads: Topics they watch
           other_entries: Default for stories they are not assigned to as a member
         user:
           assigned_entries: Default for stories I am assigned to as a member
@@ -848,8 +849,9 @@ en:
           legend_with_account: "Comment notifications in %{account}"
           levels:
             all_activity: All activity
-            muted: Nothing
+            muted: Muted
             participating_threads: Topics I have commented in
+            watched_threads: Topics I watch
           other_entries: Default for stories I am not assigned to as a member
       entries:
         add_folder: Add folder
@@ -858,21 +860,27 @@ en:
             all_activity: Notifying about all activity
             muted: Muted
             participating_threads: Notifying about topics I have commented in
+            watched_threads: Notifying about watched topics only
           notifications:
             button: "Comment notifications: %{level}"
             default:
               assigned: Default for stories I am assigned to as a member
               name: "Default – %{level}"
               other: Default for stories I am not assigned to as a member
+            expired_notice: This mute link is no longer valid. Open the story to change its
+              comment notifications.
             heading: Comment notifications
             hints:
               all_activity: Every comment in this story
               muted: Nothing from this story
               participating_threads: Anything in those, but no new topics
+              watched_threads: Nothing else from this story
             levels:
               all_activity: All activity
-              muted: Nothing
+              muted: Muted
               participating_threads: Topics I have commented in
+              watched_threads: Topics I watch
+            muted_notice: Comment notifications for this story are now muted.
           tooltip: "Comments: %{summary}"
           topic_count:
             one: 1 unresolved topic
@@ -2222,6 +2230,15 @@ en:
         earlier_reply_count:
           one: 1 earlier reply
           other: "%{count} earlier replies"
+        footer:
+          manage: Change comment notifications
+          mute: Mute this story
+          reason:
+            all_activity: You are receiving this mail because notifications for all activity in
+              this story are turned on.
+            participating_threads: You are receiving this mail because you commented in or are
+              watching these topics.
+            watched_threads: You are receiving this mail because you are watching these topics.
         greeting: Your Pageflow Team
         instruction: "There is new comment activity in %{entry}."
         instruction_html: There is new comment activity in %{entry}.

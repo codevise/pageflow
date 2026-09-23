@@ -22,6 +22,10 @@ $pageflow-comment-notification-level-icon-size: 13px !default;
     background-image: image-url("#{$dir}/bell.svg");
   }
 
+  &.watched_threads {
+    background-image: image-url("#{$dir}/bell_check.svg");
+  }
+
   &.muted {
     background-image: image-url("#{$dir}/bell_off.svg");
   }

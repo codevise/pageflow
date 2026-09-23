@@ -30,8 +30,9 @@ export function ReviewStateProvider({initialState, initialDrafts, setDraft, chil
 
   const value = useMemo(() => ({
     currentUser: state.currentUser,
-    commentThreads: Object.values(state.threads)
-  }), [state.currentUser, state.threads]);
+    commentThreads: Object.values(state.threads),
+    commentNotificationsMuted: state.commentNotificationsMuted
+  }), [state.currentUser, state.threads, state.commentNotificationsMuted]);
 
   const draftsValue = useDraftsValue({drafts: state.drafts, setDraft, dispatch});
   const readsValue = useReadsValue(state.commentThreadReads);
@@ -90,6 +91,11 @@ export function useUpdateComment({threadId, commentId}) {
 export function useCurrentUser() {
   const context = useContext(ReviewStateContext);
   return context ? context.currentUser : null;
+}
+
+export function useCommentNotificationsMuted() {
+  const context = useContext(ReviewStateContext);
+  return !!context?.commentNotificationsMuted;
 }
 
 export function useCommentThreadReads() {
@@ -154,6 +160,9 @@ function useStateMessages(dispatch) {
       else if (type === 'REVIEW_STATE_READS_CHANGE') {
         dispatch({type: 'SET_READS', payload});
       }
+      else if (type === 'REVIEW_STATE_COMMENT_NOTIFICATIONS_MUTED_CHANGE') {
+        dispatch({type: 'SET_COMMENT_NOTIFICATIONS_MUTED', payload});
+      }
     }
 
     window.addEventListener('message', handleMessage);
@@ -205,7 +214,8 @@ function initState({initialState, initialDrafts}) {
     currentUser: null,
     threads: {},
     drafts: initialDrafts || {},
-    commentThreadReads: {}
+    commentThreadReads: {},
+    commentNotificationsMuted: false
   };
 
   if (initialState) {
@@ -227,9 +237,15 @@ function reducer(state, action) {
       ...state,
       currentUser: action.payload.currentUser,
       threads,
-      commentThreadReads: action.payload.commentThreadReads || {}
+      commentThreadReads: action.payload.commentThreadReads || {},
+      commentNotificationsMuted: !!action.payload.commentNotificationsMuted
     };
   }
+  case 'SET_COMMENT_NOTIFICATIONS_MUTED':
+    return {
+      ...state,
+      commentNotificationsMuted: action.payload.muted
+    };
   case 'SET_READS':
     return {
       ...state,

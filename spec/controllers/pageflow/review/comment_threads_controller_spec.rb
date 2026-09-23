@@ -6,6 +6,28 @@ module Pageflow
     render_views
 
     describe '#index' do
+      it 'says whether the user has muted the entry' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        create(:entry_comment_notification_override, entry:, user:, level: 'muted')
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(commentNotificationsMuted: true)
+      end
+
+      it 'says the entry is not muted where the user notifies about watched threads' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        create(:entry_comment_notification_override, entry:, user:, level: 'watched_threads')
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(commentNotificationsMuted: false)
+      end
+
       it 'returns threads with comments for draft revision' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)
