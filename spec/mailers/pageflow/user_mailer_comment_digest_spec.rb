@@ -161,7 +161,8 @@ module Pageflow
 
           expect(bodies(mail)).to all(include('Comment notifications:'))
           expect(bodies(mail)).to all(include('For this story'))
-          expect(bodies(mail)).to all(include("/admin/entries/#{entry.to_param}"))
+          expect(bodies(mail))
+            .to all(include("/admin/entries/#{entry.to_param}?comment_notifications=open"))
         end
 
         it 'links the account wide notification settings next to it' do

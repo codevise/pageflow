@@ -67,7 +67,7 @@
     <p style="<%= comment_digest_style(:footer_links) %>">
       <%= t('.footer.settings.label') %>
       <%= link_to(t('.footer.settings.entry'),
-                  main_app.admin_entry_url(@entry),
+                  main_app.admin_entry_url(@entry, comment_notifications: 'open'),
                   style: comment_digest_style(:footer_link)) %>
       &middot;
       <%= link_to(t('.footer.settings.global'),

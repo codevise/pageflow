@@ -12,6 +12,24 @@ module Pageflow
         expect(rendered).to have_selector('.dropdown_menu.entry_comment_notifications')
       end
 
+      it 'opens the menu on load when asked to' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        render(entry, CommentNotifications.for_entry(entry, user:), open: true)
+
+        expect(rendered).to include("$('#comment_notifications').aaDropdownMenu('open')")
+      end
+
+      it 'leaves the menu closed otherwise' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        render(entry, CommentNotifications.for_entry(entry, user:))
+
+        expect(rendered).not_to include('aaDropdownMenu')
+      end
+
       it 'names what the menu governs' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)
