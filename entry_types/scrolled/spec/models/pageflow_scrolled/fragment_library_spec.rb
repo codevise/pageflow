@@ -112,5 +112,58 @@ module PageflowScrolled
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    describe '.shared_for_account' do
+      it 'returns oldest shared library of account' do
+        account = create(:account)
+        entry = create(:entry, type_name: 'scrolled', account:, fragment_library: 'shared')
+        create(:entry, type_name: 'scrolled', account:, fragment_library: 'shared')
+
+        library = FragmentLibrary.shared_for_account(account)
+
+        expect(library.id).to eq(entry.id)
+      end
+
+      it 'returns unpersisted library if account has none yet' do
+        account = create(:account)
+        create(:entry, type_name: 'scrolled', fragment_library: 'shared')
+
+        library = FragmentLibrary.shared_for_account(account)
+
+        expect(library).not_to be_persisted
+        expect(library.account).to eq(account)
+      end
+    end
+
+    describe '#extract_fragment_from' do
+      it 'creates library entry on first extraction' do
+        account = create(:account, name: 'Acme')
+        entry = create(:entry, type_name: 'scrolled', account:)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        library = FragmentLibrary.shared_for_account(account)
+
+        library.extract_fragment_from(entry: Pageflow::DraftEntry.new(entry), chapter:)
+
+        expect(library).to be_persisted
+        expect(library.entry.to_model).to have_attributes(account:,
+                                                          type_name: 'scrolled',
+                                                          fragment_library: 'shared')
+      end
+
+      it 'copies chapter with its sections into library' do
+        account = create(:account)
+        entry = create(:entry, type_name: 'scrolled', account:)
+        chapter = create(:scrolled_chapter,
+                         revision: entry.draft,
+                         configuration: {'title' => 'Intro'})
+        create(:section, chapter:)
+        library = FragmentLibrary.shared_for_account(account)
+
+        library.extract_fragment_from(entry: Pageflow::DraftEntry.new(entry), chapter:)
+
+        expect(library.chapters.map(&:configuration)).to match([include('title' => 'Intro')])
+        expect(library.sections.count).to eq(1)
+      end
+    end
   end
 end

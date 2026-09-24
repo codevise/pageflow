@@ -26,6 +26,16 @@ module PageflowScrolled
       @user.admin? || entry_role_query.has_at_least_role?(:previewer)
     end
 
+    def update?
+      return true if @user.admin?
+
+      if @library.persisted?
+        entry_role_query.has_at_least_role?(:editor)
+      else
+        Pageflow::AccountRoleQuery.new(@user, @library.account).has_at_least_role?(:editor)
+      end
+    end
+
     private
 
     def entry_role_query

@@ -1673,6 +1673,8 @@ en:
         entry: "Settings"
         label: "%{chapter} - %{subject}"
         section: "Section %{number}"
+    fragment_library:
+      title: "Shared fragments of %{account_name}"
     help_entries:
       content_elements:
         menu_item: Content Elements

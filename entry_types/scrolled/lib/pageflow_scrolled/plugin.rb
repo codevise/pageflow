@@ -8,7 +8,7 @@ module PageflowScrolled
 
       config.permissions.policies.register(FragmentLibraryPolicy,
                                            model: FragmentLibrary,
-                                           actions: [:read])
+                                           actions: [:read, :update])
 
       config.for_entry_type(PageflowScrolled.entry_type) do |c|
         c.configuration_schema_load_path <<

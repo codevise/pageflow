@@ -1692,6 +1692,8 @@ de:
         entry: "Einstellungen"
         label: "%{chapter} - %{subject}"
         section: "Abschnitt %{number}"
+    fragment_library:
+      title: "Geteilte Fragmente von %{account_name}"
     help_entries:
       content_elements:
         menu_item: Inhaltselemente

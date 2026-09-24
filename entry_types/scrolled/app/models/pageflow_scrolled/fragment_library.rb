@@ -1,7 +1,7 @@
 module PageflowScrolled
   # @api private
   class FragmentLibrary
-    attr_reader :entry
+    attr_reader :entry, :account
 
     delegate :id, to: :entry
 
@@ -13,8 +13,22 @@ module PageflowScrolled
       all.where(...)
     end
 
-    def initialize(entry)
+    def self.shared_for_account(account)
+      entry = Pageflow::Entry
+              .where(account:, type_name: 'scrolled', fragment_library: 'shared')
+              .order(:id)
+              .first
+
+      new(entry && Pageflow::DraftEntry.new(entry), account:)
+    end
+
+    def initialize(entry, account: entry.account)
       @entry = entry
+      @account = account
+    end
+
+    def persisted?
+      entry.present?
     end
 
     def title
@@ -41,6 +55,39 @@ module PageflowScrolled
       SectionsCopy
         .new(source_entry: self.entry, destination_entry: entry)
         .perform(chapters.find_by!(perma_id: fragment_perma_id).sections, chapter:)
+    end
+
+    def extract_fragment_from(entry:, chapter:)
+      ActiveRecord::Base.transaction do
+        @entry ||= create_entry(locale: entry.locale)
+
+        SectionsCopy
+          .new(source_entry: entry, destination_entry: self.entry)
+          .perform(chapter.sections, chapter: create_fragment_chapter(chapter))
+      end
+    end
+
+    private
+
+    def create_entry(locale:)
+      Pageflow::DraftEntry.new(
+        Pageflow::Entry.create!(
+          account:,
+          site: account.default_site,
+          type_name: 'scrolled',
+          fragment_library: 'shared',
+          title: I18n.t('pageflow_scrolled.fragment_library.title',
+                        account_name: account.name,
+                        locale: locale == 'de' ? :de : :en)
+        )
+      )
+    end
+
+    def create_fragment_chapter(chapter)
+      storyline = storylines.detect { |candidate| candidate.configuration['main'] }
+
+      storyline.chapters.create!(position: (storyline.chapters.maximum(:position) || -1) + 1,
+                                 configuration: chapter.configuration)
     end
 
     # @api private

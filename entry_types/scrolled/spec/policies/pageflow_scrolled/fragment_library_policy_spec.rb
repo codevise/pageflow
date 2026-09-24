@@ -70,5 +70,49 @@ module PageflowScrolled
         expect(FragmentLibraryPolicy.new(user, library).read?).to eq(true)
       end
     end
+
+    describe '#update?' do
+      it 'is true if user is editor of library entry' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        create(:entry, type_name: 'scrolled', account:, fragment_library: 'shared',
+                       with_editor: user)
+        library = FragmentLibrary.shared_for_account(account)
+
+        expect(FragmentLibraryPolicy.new(user, library).update?).to eq(true)
+      end
+
+      it 'is false if user is only previewer of library entry' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        create(:entry, type_name: 'scrolled', account:, fragment_library: 'shared')
+        library = FragmentLibrary.shared_for_account(account)
+
+        expect(FragmentLibraryPolicy.new(user, library).update?).to eq(false)
+      end
+
+      it 'is true for unpersisted library if user is account editor' do
+        user = create(:user)
+        account = create(:account, with_editor: user)
+        library = FragmentLibrary.shared_for_account(account)
+
+        expect(FragmentLibraryPolicy.new(user, library).update?).to eq(true)
+      end
+
+      it 'is false for unpersisted library if user is account previewer' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        library = FragmentLibrary.shared_for_account(account)
+
+        expect(FragmentLibraryPolicy.new(user, library).update?).to eq(false)
+      end
+
+      it 'is true for admin' do
+        user = create(:user, :admin)
+        library = FragmentLibrary.shared_for_account(create(:account))
+
+        expect(FragmentLibraryPolicy.new(user, library).update?).to eq(true)
+      end
+    end
   end
 end
