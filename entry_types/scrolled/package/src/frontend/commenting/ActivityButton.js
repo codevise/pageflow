@@ -91,6 +91,7 @@ const ActivityPanel = React.forwardRef(function ActivityPanel({style, onClose}, 
     function handleClick(event) {
       if (panelRef.current?.contains(event.target)) return;
       if (event.target.closest('[data-comment-toolbar]')) return;
+      if (event.target.closest('[data-comment-menu]')) return;
 
       onClose();
     }
