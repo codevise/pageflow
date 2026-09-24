@@ -23,8 +23,11 @@ module Pageflow
     }
 
     scope :with_activity_in, lambda { |window|
-      where(id: Comment.where(created_at: window).select(:comment_thread_id))
-        .or(where(resolved_at: window))
+      commented = Comment.where(created_at: window).select('comment_thread_id AS id')
+      resolved = unscoped.where(resolved_at: window).select(:id)
+
+      joins("INNER JOIN (#{commented.to_sql} UNION #{resolved.to_sql}) AS activity " \
+            "ON activity.id = #{quoted_table_name}.id")
     }
 
     def self.group_by_entry_id(threads)
