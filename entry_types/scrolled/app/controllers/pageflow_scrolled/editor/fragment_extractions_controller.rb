@@ -13,7 +13,7 @@ module PageflowScrolled
         library = FragmentLibrary.shared_for_account(@entry.account)
 
         authorize!(:update, library)
-        library.extract_fragment_from(entry: @entry, chapter:)
+        library.extract_fragment_from(entry: @entry, chapter:, title: params[:title])
 
         head :created
       rescue ActiveRecord::RecordNotFound

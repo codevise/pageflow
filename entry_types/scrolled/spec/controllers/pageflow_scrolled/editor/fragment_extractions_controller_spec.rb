@@ -105,6 +105,37 @@ module PageflowScrolled
         expect(fragment.sections.count).to eq(2)
       end
 
+      it 'uses given title for fragment' do
+        user = create(:user)
+        account = create(:account, with_editor: user)
+        entry = create(:entry, type_name: 'scrolled', account:, with_feature: 'fragments')
+        chapter = create(:scrolled_chapter,
+                         revision: entry.draft,
+                         configuration: {'title' => 'Intro', 'kind' => 'intro'})
+
+        sign_in_and_lock(entry, user)
+        post_extraction(entry:, chapter:, title: 'Opening with video')
+
+        fragment = Chapter.all_for_revision(find_library(account).draft).first
+        expect(fragment.configuration).to include('title' => 'Opening with video',
+                                                  'kind' => 'intro')
+      end
+
+      it 'keeps chapter title if blank title is given' do
+        user = create(:user)
+        account = create(:account, with_editor: user)
+        entry = create(:entry, type_name: 'scrolled', account:, with_feature: 'fragments')
+        chapter = create(:scrolled_chapter,
+                         revision: entry.draft,
+                         configuration: {'title' => 'Intro'})
+
+        sign_in_and_lock(entry, user)
+        post_extraction(entry:, chapter:, title: ' ')
+
+        fragment = Chapter.all_for_revision(find_library(account).draft).first
+        expect(fragment.configuration).to include('title' => 'Intro')
+      end
+
       it 'adds fragment to main storyline of library' do
         user = create(:user)
         account = create(:account, with_editor: user)
@@ -249,13 +280,14 @@ module PageflowScrolled
       Pageflow::Entry.find_by(account:, fragment_library: 'shared')
     end
 
-    def post_extraction(entry:, chapter:)
+    def post_extraction(entry:, chapter:, title: nil)
       post(:create,
            params: {
              entry_type: 'scrolled',
              entry_id: entry,
-             chapter_id: chapter
-           }, format: 'json')
+             chapter_id: chapter,
+             title:
+           }.compact, format: 'json')
     end
 
     def sign_in_and_lock(entry, user)

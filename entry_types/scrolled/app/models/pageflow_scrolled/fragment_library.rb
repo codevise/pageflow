@@ -57,13 +57,13 @@ module PageflowScrolled
         .perform(chapters.find_by!(perma_id: fragment_perma_id).sections, chapter:)
     end
 
-    def extract_fragment_from(entry:, chapter:)
+    def extract_fragment_from(entry:, chapter:, title: nil)
       ActiveRecord::Base.transaction do
         @entry ||= create_entry(locale: entry.locale)
 
         SectionsCopy
           .new(source_entry: entry, destination_entry: self.entry)
-          .perform(chapter.sections, chapter: create_fragment_chapter(chapter))
+          .perform(chapter.sections, chapter: create_fragment_chapter(chapter, title))
       end
     end
 
@@ -83,11 +83,16 @@ module PageflowScrolled
       )
     end
 
-    def create_fragment_chapter(chapter)
+    def create_fragment_chapter(chapter, title)
       storyline = storylines.detect { |candidate| candidate.configuration['main'] }
 
       storyline.chapters.create!(position: (storyline.chapters.maximum(:position) || -1) + 1,
-                                 configuration: chapter.configuration)
+                                 configuration: fragment_configuration(chapter, title))
+    end
+
+    def fragment_configuration(chapter, title)
+      title = title.presence&.strip
+      title ? chapter.configuration.merge('title' => title) : chapter.configuration
     end
 
     # @api private
