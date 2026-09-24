@@ -1219,6 +1219,11 @@ en:
         save: Save
       chapter_menu_items:
         copy_permalink: Copy permalink
+        extract_fragment: Add to shared fragments
+        extract_fragment_failed: The chapter could not be added to the shared fragments.
+        extract_fragment_forbidden: You are not allowed to add chapters to the shared fragments of this account.
+        extracted_fragment: Added to shared fragments
+        extracting_fragment: Adding to shared fragments...
         move_to_main: Turn into chapter
         move_to_excursions: Turn into excursion
       destroy_chapter_menu_item:

@@ -1,9 +1,11 @@
 import {EditConfigurationView} from 'pageflow/editor';
 import {CheckBoxInputView, TextInputView, TextAreaInputView} from 'pageflow/ui';
+import {features} from 'pageflow/frontend';
 
 import {
   CopyPermalinkMenuItem,
   DestroyChapterMenuItem,
+  ExtractFragmentMenuItem,
   ToggleExcursionMenuItem
 } from '../models/chapterMenuItems';
 
@@ -14,6 +16,9 @@ export const EditChapterView = EditConfigurationView.extend({
     return [
       new ToggleExcursionMenuItem({}, {chapter: this.model}),
       new CopyPermalinkMenuItem({}, {entry: this.options.entry, chapter: this.model}),
+      ...(features.isEnabled('fragments') ?
+          [new ExtractFragmentMenuItem({}, {chapter: this.model})] :
+          []),
       new DestroyChapterMenuItem({separated: true}, {chapter: this.model})
     ];
   },

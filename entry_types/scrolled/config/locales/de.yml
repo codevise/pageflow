@@ -1236,6 +1236,11 @@ de:
         save: Speichern
       chapter_menu_items:
         copy_permalink: Permalink kopieren
+        extract_fragment: Zu geteilten Fragmenten hinzufügen
+        extract_fragment_failed: Das Kapitel konnte nicht zu den geteilten Fragmenten hinzugefügt werden.
+        extract_fragment_forbidden: Sie dürfen den geteilten Fragmenten dieses Kontos keine Kapitel hinzufügen.
+        extracted_fragment: Zu geteilten Fragmenten hinzugefügt
+        extracting_fragment: Wird zu geteilten Fragmenten hinzugefügt...
         move_to_main: In Kapitel umwandeln
         move_to_excursions: In Exkurs umwandeln
       destroy_chapter_menu_item:
