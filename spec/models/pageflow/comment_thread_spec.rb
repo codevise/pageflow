@@ -84,6 +84,26 @@ module Pageflow
 
         expect(result).to be_empty
       end
+
+      it 'leaves out threads of other entries when chained with in_entries' do
+        entry = create(:entry)
+        thread = create(:comment_thread, revision: entry.draft)
+        create(:comment, comment_thread: thread, created_at: 2.hours.ago)
+        create(:comment_thread, revision: create(:entry).draft,
+                                resolved_at: 2.hours.ago, resolver: create(:user))
+
+        result = CommentThread.in_entries([entry]).with_activity_in(1.day.ago...Time.current)
+
+        expect(result).to eq([thread])
+      end
+
+      it 'yields threads resolved in the window when chained after order' do
+        thread = create(:comment_thread, resolved_at: 2.hours.ago, resolver: create(:user))
+
+        result = CommentThread.order(:id).with_activity_in(1.day.ago...Time.current)
+
+        expect(result).to eq([thread])
+      end
     end
 
     describe '#resolved?' do
