@@ -5,7 +5,14 @@ import {renderBackboneView} from 'pageflow/testHelpers';
 import {fakeResizeObserver} from 'support/fakeResizeObserver';
 
 describe('FragmentPreviewView', () => {
-  let view;
+  let view, frames;
+
+  beforeEach(() => {
+    frames = [];
+    jest.spyOn(window, 'requestAnimationFrame')
+        .mockImplementation(callback => frames.push(callback));
+    jest.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {});
+  });
 
   beforeEach(() => {
     document.body.innerHTML = `
@@ -25,6 +32,7 @@ describe('FragmentPreviewView', () => {
     view = new FragmentPreviewView(options);
     resize({width, height});
     renderBackboneView(view);
+    jest.spyOn(iframeWindow(), 'scrollTo').mockImplementation(() => {});
 
     return view;
   }
@@ -134,6 +142,110 @@ describe('FragmentPreviewView', () => {
     showView({device: 'phone'});
 
     expect(view.el.classList).toContain(styles.phone);
+  });
+
+  describe('scrolling', () => {
+    beforeEach(() => {
+      jest.spyOn(performance, 'now').mockReturnValue(0);
+    });
+
+    function fakeDocumentScroll({scrollHeight, innerHeight}) {
+      const win = iframeWindow();
+
+      Object.defineProperty(win, 'innerHeight', {value: innerHeight, configurable: true});
+      Object.defineProperty(win.document.documentElement, 'scrollHeight',
+                            {value: scrollHeight, configurable: true});
+
+      return jest.spyOn(win, 'scrollTo').mockImplementation(() => {});
+    }
+
+    function runFrame(time) {
+      frames.shift()(time);
+    }
+
+    function lastScrollTop(scrollTo) {
+      return scrollTo.mock.calls[scrollTo.mock.calls.length - 1][1];
+    }
+
+    function showScrollingPreview() {
+      showView();
+      const scrollTo = fakeDocumentScroll({scrollHeight: 1800, innerHeight: 800});
+      receiveReady();
+      view.showCollections({sections: []});
+
+      return scrollTo;
+    }
+
+    it('waits at top before scrolling', () => {
+      const scrollTo = showScrollingPreview();
+
+      runFrame(500);
+
+      expect(scrollTo).toHaveBeenLastCalledWith(0, 0);
+    });
+
+    it('eases towards end of document', () => {
+      const scrollTo = showScrollingPreview();
+
+      runFrame(1000 + 2500);
+
+      expect(lastScrollTop(scrollTo)).toBeCloseTo(500);
+    });
+
+    it('waits at end of document', () => {
+      const scrollTo = showScrollingPreview();
+
+      runFrame(6500);
+
+      expect(scrollTo).toHaveBeenLastCalledWith(0, 1000);
+    });
+
+    it('eases back up and starts over', () => {
+      const scrollTo = showScrollingPreview();
+
+      runFrame(7000 + 2500);
+      expect(lastScrollTop(scrollTo)).toBeCloseTo(500);
+
+      runFrame(12000 + 500);
+      expect(scrollTo).toHaveBeenLastCalledWith(0, 0);
+    });
+
+    it('keeps document that fits viewport at top', () => {
+      showView();
+      const scrollTo = fakeDocumentScroll({scrollHeight: 800, innerHeight: 800});
+      receiveReady();
+      view.showCollections({sections: []});
+
+      runFrame(3500);
+
+      expect(scrollTo).toHaveBeenLastCalledWith(0, 0);
+    });
+
+    it('does not scroll before document is ready', () => {
+      showView();
+      view.showCollections({sections: []});
+
+      expect(frames).toEqual([]);
+    });
+
+    it('starts over from top when collections change', () => {
+      const scrollTo = showScrollingPreview();
+      runFrame(6500);
+
+      performance.now.mockReturnValue(6500);
+      view.showCollections({sections: []});
+      runFrame(7000);
+
+      expect(scrollTo).toHaveBeenLastCalledWith(0, 0);
+    });
+
+    it('stops scrolling when closed', () => {
+      showScrollingPreview();
+
+      view.close();
+
+      expect(window.cancelAnimationFrame).toHaveBeenCalled();
+    });
   });
 
   it('posts collections once document is ready', () => {

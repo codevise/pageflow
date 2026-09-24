@@ -8,6 +8,9 @@ import styles from './FragmentPreviewView.module.css';
 
 const fullFrameScale = 0.35;
 
+const scrollPause = 1000;
+const scrollDuration = 5000;
+
 const viewports = {
   desktop: {width: 1280, height: 800},
   phone: {width: 375, height: 667}
@@ -46,11 +49,36 @@ export const FragmentPreviewView = Marionette.ItemView.extend({
   onClose() {
     window.removeEventListener('message', this.listener);
     this.resizeObserver.disconnect();
+    window.cancelAnimationFrame(this.frame);
   },
 
   showCollections(collections) {
     this.collections = collections;
+    this.scrollStartedAt = performance.now();
     this.postCollections();
+  },
+
+  startScrolling() {
+    if (this.frame) {
+      return;
+    }
+
+    const scroll = time => {
+      const iframeWindow = this.iframeWindow();
+      const scrollableHeight =
+        iframeWindow.document.documentElement.scrollHeight - iframeWindow.innerHeight;
+
+      iframeWindow.scrollTo(0, Math.max(0, scrollableHeight) *
+                               scrollFraction(time - this.scrollStartedAt));
+
+      this.frame = window.requestAnimationFrame(scroll);
+    };
+
+    this.frame = window.requestAnimationFrame(scroll);
+  },
+
+  iframeWindow() {
+    return this.ui.iframe[0].contentWindow;
   },
 
   handleMessage(message) {
@@ -73,6 +101,8 @@ export const FragmentPreviewView = Marionette.ItemView.extend({
       },
       window.location.origin
     );
+
+    this.startScrolling();
   },
 
   updateScale() {
@@ -94,6 +124,7 @@ export const FragmentPreviewView = Marionette.ItemView.extend({
     }
 
     const frameScale = Math.min(1, scale / fullFrameScale);
+
     const deviceWidth = width * scale + bezelX * frameScale + bordersX;
     const deviceHeight = height * scale + bezelY * frameScale + bordersY;
 
@@ -118,4 +149,30 @@ function borders(element, start, end) {
 
   return (parseFloat(style[`border${start}Width`]) || 0) +
          (parseFloat(style[`border${end}Width`]) || 0);
+}
+
+function scrollFraction(elapsed) {
+  let time = elapsed % (2 * (scrollPause + scrollDuration));
+
+  if (time < scrollPause) {
+    return 0;
+  }
+
+  time -= scrollPause;
+
+  if (time < scrollDuration) {
+    return ease(time / scrollDuration);
+  }
+
+  time -= scrollDuration;
+
+  if (time < scrollPause) {
+    return 1;
+  }
+
+  return 1 - ease((time - scrollPause) / scrollDuration);
+}
+
+function ease(progress) {
+  return (1 - Math.cos(Math.PI * progress)) / 2;
 }
