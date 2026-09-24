@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent} from '@testing-library/react';
+import {useFakeTranslations} from 'pageflow/testHelpers';
 
 import {renderEntry, useCommentingPageObjects} from 'support/pageObjects/commenting';
 import activityStyles from 'frontend/commenting/ActivityButton.module.css';
@@ -7,6 +8,10 @@ import badgeStyles from 'review/Badge.module.css';
 
 describe('comment activity', () => {
   useCommentingPageObjects();
+  useFakeTranslations({
+    'pageflow_scrolled.review.thread_actions': 'Topic actions',
+    'pageflow_scrolled.review.edit_comment': 'Edit'
+  });
 
   beforeEach(() => {
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
@@ -104,6 +109,25 @@ describe('comment activity', () => {
     fireEvent.mouseDown(entry.getActivityPanel());
 
     expect(entry.getActivityPanel()).toBeInTheDocument();
+  });
+
+  it('keeps the feed open when selecting an action from a portaled comment menu', () => {
+    const entry = renderEntryWithThreads([
+      {id: 1, permaId: 5, subjectType: 'ContentElement', subjectId: 1,
+       comments: [{id: 10, body: 'My topic', creatorName: 'Alice',
+                   creatorId: currentUser.id,
+                   createdAt: '2026-08-17T09:00:00.000Z'}]}
+    ]);
+
+    fireEvent.click(entry.getActivityButton());
+    fireEvent.click(entry.getByRole('button', {name: 'Topic actions'}));
+
+    const editItem = entry.getByRole('menuitem', {name: 'Edit'});
+    fireEvent.mouseDown(editItem);
+    fireEvent.click(editItem);
+
+    expect(entry.getActivityPanel()).toBeInTheDocument();
+    expect(entry.getByRole('textbox')).toHaveValue('My topic');
   });
 
   it('closes the feed on escape', () => {

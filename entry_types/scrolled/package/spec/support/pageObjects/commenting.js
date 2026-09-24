@@ -88,7 +88,6 @@ export function useCommentingPageObjects() {
     'pageflow_scrolled.review.earlier_reply_count.other': '%{count} more',
     'pageflow_scrolled.review.resolve': 'Mark as resolved',
     'pageflow_scrolled.review.unresolve': 'Mark as unresolved',
-    'pageflow_scrolled.review.thread_actions': 'Topic actions',
     'pageflow_scrolled.review.resolution_by': 'Marked as resolved by',
     'pageflow_scrolled.review.resolution': 'Marked as resolved'
   });
