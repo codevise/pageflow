@@ -2,7 +2,7 @@ import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {EntryPreviewView} from 'editor/views/EntryPreviewView';
 import styles from 'editor/views/EntryPreviewView.module.css';
 import {setupGlobals} from 'pageflow/testHelpers';
-import {normalizeSeed, factories} from 'support';
+import {normalizeSeed, factories, simulateMessagesFrom} from 'support';
 
 describe('EntryPreviewView', () => {
   let view;
@@ -70,8 +70,10 @@ describe('EntryPreviewView', () => {
     document.body.appendChild(view.el);
     view.onShow();
 
+    const iframeWindow = view.ui.iframe[0].contentWindow;
+    simulateMessagesFrom(iframeWindow);
+
     return expect(new Promise(resolve => {
-      const iframeWindow = view.ui.iframe[0].contentWindow;
       iframeWindow.addEventListener('message', event => {
         resolve(event.data)
       });

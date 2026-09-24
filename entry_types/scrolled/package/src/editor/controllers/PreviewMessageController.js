@@ -33,7 +33,7 @@ export const PreviewMessageController = Object.extend({
       this.iframeWindow.postMessage(message, window.location.origin);
     };
 
-    if (isSameOriginMessage(message)) {
+    if (message.source === this.iframeWindow && isSameOriginMessage(message)) {
       if (message.data.type === 'READY') {
         if (!this.ready) {
           this.ready = true;
