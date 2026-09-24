@@ -85,6 +85,20 @@ describe('PreviewMessageController', () => {
     })).resolves.toBe(4);
   });
 
+  it('ignores message from origin that is a prefix of own origin', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    window.dispatchEvent(new MessageEvent('message', {
+      data: {type: 'CHANGE_SECTION', payload: {sectionIndex: 4}},
+      origin: window.location.origin.slice(0, -1)
+    }));
+    await tick();
+
+    expect(entry.get('currentSectionIndex')).toBeUndefined();
+  });
+
   it('sets current excursion id in model on CHANGE_SECTION message', () => {
     const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
     const iframeWindow = createIframeWindow();

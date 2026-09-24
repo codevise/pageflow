@@ -5,11 +5,12 @@ import {
   postReviewStateReadsChangeMessage,
   postReviewStateCommentNotificationsMutedChangeMessage
 } from './postMessage';
+import {isSameOriginMessage} from '../shared/isSameOriginMessage';
 
 export const ReviewMessageHandler = {
   create({session, targetWindow}) {
     function handleMessage(event) {
-      if (window.location.href.indexOf(event.origin) !== 0) return;
+      if (!isSameOriginMessage(event)) return;
       if (event.source !== targetWindow) return;
 
       const {type, payload} = event.data;

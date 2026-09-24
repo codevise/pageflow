@@ -16,7 +16,8 @@ module.exports = {
     '<rootDir>/spec/support/requestAnimationFrameStub.js',
     '<rootDir>/spec/support/scrollIntoViewStub.js',
     '<rootDir>/spec/support/getSelectionStub.js',
-    '<rootDir>/spec/support/fakeBrowserFeatures.js'
+    '<rootDir>/spec/support/fakeBrowserFeatures.js',
+    '<rootDir>/spec/support/postMessageOriginStub.js'
   ],
   modulePaths: ['<rootDir>/src', '<rootDir>/spec'],
 

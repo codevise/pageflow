@@ -1,4 +1,5 @@
 import {postSelectLinkDestinationMessage} from './postMessage';
+import {isSameOriginMessage} from '../../shared/isSameOriginMessage';
 
 let abortPreviousCall;
 
@@ -18,7 +19,7 @@ export function useSelectLinkDestination() {
       window.addEventListener('message', receive);
 
       function receive(message) {
-        if (window.location.href.indexOf(message.origin) === 0) {
+        if (isSameOriginMessage(message)) {
           if (message.data.type === 'LINK_DESTINATION_SELECTED') {
             abortPreviousCall = null;
 

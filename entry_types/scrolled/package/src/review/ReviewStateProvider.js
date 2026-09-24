@@ -12,6 +12,7 @@ import {
   postUpdateCommentMessage
 } from './postMessage';
 import {useSubjectQuote} from './subjectQuote';
+import {isSameOriginMessage} from '../shared/isSameOriginMessage';
 
 const ReviewStateContext = createContext(null);
 const CommentDraftsContext = createContext(null);
@@ -144,7 +145,7 @@ export function matchesResolution(thread, resolution) {
 function useStateMessages(dispatch) {
   useEffect(() => {
     function handleMessage(event) {
-      if (window.location.href.indexOf(event.origin) !== 0) return;
+      if (!isSameOriginMessage(event)) return;
 
       const {type, payload} = event.data;
 

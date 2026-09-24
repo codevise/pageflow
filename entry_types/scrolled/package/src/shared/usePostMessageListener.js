@@ -1,5 +1,7 @@
 import {useEffect} from 'react';
 
+import {isSameOriginMessage} from './isSameOriginMessage';
+
 export function usePostMessageListener(receiveData) {
   useEffect(() => {
     if (window.parent !== window) {
@@ -9,7 +11,7 @@ export function usePostMessageListener(receiveData) {
     return () => window.removeEventListener('message', receive);
 
     function receive(message) {
-      if (window.location.href.indexOf(message.origin) === 0) {
+      if (isSameOriginMessage(message)) {
         receiveData(message.data);
       }
     }
