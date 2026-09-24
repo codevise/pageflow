@@ -402,6 +402,14 @@ describe('Chapter', () => {
         .toBe('/editor/entries/1/scrolled/chapters/10/fragment_extractions');
     });
 
+    it('posts given title', () => {
+      const {entry, requests} = testContext;
+
+      entry.chapters.first().extractToFragmentLibrary({title: 'Opening'});
+
+      expect(requests[0].requestBody).toContain('title=Opening');
+    });
+
     it('resolves once library responds without body', async () => {
       const {entry, server} = testContext;
 

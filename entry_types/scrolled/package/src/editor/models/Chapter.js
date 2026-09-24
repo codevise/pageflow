@@ -135,10 +135,11 @@ export const Chapter = Backbone.Model.extend({
     );
   },
 
-  extractToFragmentLibrary() {
+  extractToFragmentLibrary({title} = {}) {
     return Promise.resolve($.ajax({
       url: `${this.url()}/fragment_extractions`,
-      type: 'POST'
+      type: 'POST',
+      data: {title}
     })).then(() => undefined);
   },
 

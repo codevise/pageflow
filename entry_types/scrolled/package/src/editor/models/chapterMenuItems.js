@@ -2,6 +2,8 @@ import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import {app, DestroyMenuItem} from 'pageflow/editor';
 
+import {ExtractFragmentDialogView} from '../views/ExtractFragmentDialogView';
+
 export const CopyPermalinkMenuItem = Backbone.Model.extend({
   initialize(attributes, {entry, chapter}) {
     this.entry = entry;
@@ -23,9 +25,16 @@ export const ExtractFragmentMenuItem = Backbone.Model.extend({
   },
 
   selected() {
+    ExtractFragmentDialogView.show({
+      chapter: this.chapter,
+      onSubmit: title => this.extract(title)
+    });
+  },
+
+  extract(title) {
     this.update('extracting_fragment', {disabled: true});
 
-    return this.chapter.extractToFragmentLibrary().then(
+    return this.chapter.extractToFragmentLibrary({title}).then(
       () => this.update('extracted_fragment', {disabled: true}),
       ({status}) => {
         this.update('extract_fragment', {disabled: false});

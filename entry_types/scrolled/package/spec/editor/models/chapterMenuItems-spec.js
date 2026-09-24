@@ -5,6 +5,8 @@ import {
   DestroyChapterMenuItem
 } from 'editor/models/chapterMenuItems';
 
+import {ExtractFragmentDialogView} from 'editor/views/ExtractFragmentDialogView';
+
 import {app} from 'pageflow/editor';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
@@ -89,6 +91,12 @@ describe('ChapterMenuItems', () => {
   });
 
   describe('ExtractFragmentMenuItem', () => {
+    beforeEach(() => {
+      jest.spyOn(ExtractFragmentDialogView, 'show').mockImplementation(() => {});
+    });
+
+    afterEach(() => jest.restoreAllMocks());
+
     function createMenuItem(extraction) {
       const entry = createEntry({chapters: [{id: 1}]});
       const chapter = entry.chapters.get(1);
@@ -101,24 +109,48 @@ describe('ChapterMenuItems', () => {
       return new Promise(() => {});
     }
 
+    function submitName(name) {
+      return ExtractFragmentDialogView.show.mock.calls[0][0].onSubmit(name);
+    }
+
     it('has Add to shared fragments label', () => {
       const {menuItem} = createMenuItem(pendingExtraction());
 
       expect(menuItem.get('label')).toBe('Add to shared fragments');
     });
 
-    it('extracts chapter when selected', () => {
+    it('opens name dialog for chapter when selected', () => {
       const {chapter, menuItem} = createMenuItem(pendingExtraction());
 
       menuItem.selected();
 
-      expect(chapter.extractToFragmentLibrary).toHaveBeenCalled();
+      expect(ExtractFragmentDialogView.show)
+        .toHaveBeenCalledWith(expect.objectContaining({chapter}));
+    });
+
+    it('extracts chapter with submitted name', () => {
+      const {chapter, menuItem} = createMenuItem(pendingExtraction());
+
+      menuItem.selected();
+      submitName('Opening with video');
+
+      expect(chapter.extractToFragmentLibrary)
+        .toHaveBeenCalledWith({title: 'Opening with video'});
+    });
+
+    it('does not extract chapter before name is submitted', () => {
+      const {chapter, menuItem} = createMenuItem(pendingExtraction());
+
+      menuItem.selected();
+
+      expect(chapter.extractToFragmentLibrary).not.toHaveBeenCalled();
     });
 
     it('is disabled while extraction is pending', () => {
       const {menuItem} = createMenuItem(pendingExtraction());
 
       menuItem.selected();
+      submitName('Intro');
 
       expect(menuItem.get('label')).toBe('Adding to shared fragments...');
       expect(menuItem.get('disabled')).toBe(true);
@@ -127,7 +159,8 @@ describe('ChapterMenuItems', () => {
     it('stays disabled once chapter has been added', async () => {
       const {menuItem} = createMenuItem(Promise.resolve());
 
-      await menuItem.selected();
+      menuItem.selected();
+      await submitName('Intro');
 
       expect(menuItem.get('label')).toBe('Added to shared fragments');
       expect(menuItem.get('disabled')).toBe(true);
@@ -138,7 +171,8 @@ describe('ChapterMenuItems', () => {
       const errors = [];
       app.on('error', error => errors.push(error.message));
 
-      await menuItem.selected();
+      menuItem.selected();
+      await submitName('Intro');
 
       expect(menuItem.get('label')).toBe('Add to shared fragments');
       expect(menuItem.get('disabled')).toBe(false);
@@ -151,7 +185,8 @@ describe('ChapterMenuItems', () => {
       const errors = [];
       app.on('error', error => errors.push(error.message));
 
-      await menuItem.selected();
+      menuItem.selected();
+      await submitName('Intro');
 
       expect(errors).toEqual(['Not allowed.']);
       app.off('error');

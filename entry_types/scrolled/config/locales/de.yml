@@ -1385,6 +1385,12 @@ de:
         header: Gliederung
         finish_reorder_chapters: Umsortieren beenden
         reorder_chapters: "Kapitel umsortieren..."
+      extract_fragment:
+        cancel: Abbrechen
+        header: Zu geteilten Fragmenten hinzufügen
+        name: Name des Fragments
+        shared_hint: Fragmente werden mit allen Beiträgen des Kontos und allen Mitgliedern mit Bearbeitungsrechten geteilt.
+        submit: Hinzufügen
       fragment_library:
         blank_slate: Noch keine Fragmente vorhanden.
         cancel: Abbrechen
