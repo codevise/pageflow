@@ -62,6 +62,14 @@ describe('Comment', () => {
     expect(getByText(/^Mar \d+$/)).toHaveAttribute('datetime', '2026-03-15T14:30:00Z');
   });
 
+  it('renders URLs in the comment body as links', () => {
+    const {getByRole} = renderWithReviewState(
+      <Comment comment={{...comment, body: 'See https://example.com/docs'}} />
+    );
+
+    expect(getByRole('link')).toHaveAttribute('href', 'https://example.com/docs');
+  });
+
   describe('edited hint', () => {
     useFakeTranslations({
       'en.pageflow_scrolled.review.edited': 'Edited %{date}',

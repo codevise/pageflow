@@ -45,6 +45,7 @@
   line-height: 1.4;
   color: var(--ui-on-surface-color);
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .editedHint {
