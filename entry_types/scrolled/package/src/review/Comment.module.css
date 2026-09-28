@@ -48,6 +48,17 @@
   overflow-wrap: anywhere;
 }
 
+.body a,
+.body a:visited {
+  color: var(--ui-primary-color);
+  text-decoration-color: var(--ui-primary-color-light);
+}
+
+.body a:hover,
+.body a:focus-visible {
+  text-decoration-color: var(--ui-primary-color);
+}
+
 .editedHint {
   margin: space(1) 0 0;
   padding-left: space(8);
