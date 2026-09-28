@@ -13,6 +13,10 @@ module Pageflow
       def index; end
 
       def create; end
+
+      def update
+        authorize!(:destroy, @entry.to_model)
+      end
     end
 
     it 'requires authentication' do
@@ -87,6 +91,20 @@ module Pageflow
            format: 'json')
 
       expect(response.status).to eq(204)
+    end
+
+    it 'responds with forbidden if action is not authorized' do
+      user = create(:user)
+      account = create(:account, with_editor: user)
+      entry = create(:entry, account:)
+
+      sign_in(user, scope: :user)
+      acquire_edit_lock(user, entry)
+      patch(:update,
+            params: {id: 1, entry_id: entry},
+            format: 'json')
+
+      expect(response.status).to eq(403)
     end
 
     it 'assigns draft entry to @entry' do

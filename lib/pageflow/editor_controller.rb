@@ -12,6 +12,10 @@ module Pageflow
     included do
       before_action :authenticate_user!
 
+      rescue_from CanCan::AccessDenied do
+        head :forbidden
+      end
+
       before_action do
         @entry = DraftEntry.find(params[:entry_id])
       rescue ActiveRecord::RecordNotFound
@@ -19,9 +23,7 @@ module Pageflow
       end
 
       before_action do
-        Ability.new(current_user).authorize!(:update, @entry.to_model)
-      rescue CanCan::AccessDenied
-        head :forbidden
+        authorize!(:update, @entry.to_model)
       end
 
       before_action :verify_edit_lock
