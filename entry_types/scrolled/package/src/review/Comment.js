@@ -7,6 +7,7 @@ import {useCurrentUser, useUpdateComment} from './ReviewStateProvider';
 import {autoGrow, autoResize} from './autoGrow';
 import {formatDate, formatDateTime} from './formatDate';
 import {isSubmitShortcut} from './submitShortcut';
+import {AutoLinkText} from './AutoLinkText';
 
 import EditIcon from './images/edit.svg';
 import styles from './Comment.module.css';
@@ -49,7 +50,7 @@ export function Comment({
       {editing
         ? <EditForm comment={comment} threadId={threadId} onDone={onEditEnd} />
         : <>
-            <p className={styles.body}>{comment.body}</p>
+            <p className={styles.body}><AutoLinkText text={comment.body} /></p>
             {comment.editedAt &&
               <p className={styles.editedHint}>
                 {t('pageflow_scrolled.review.edited',
