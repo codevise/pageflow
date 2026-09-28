@@ -51,8 +51,8 @@
 .body a,
 .body a:visited {
   color: var(--ui-primary-color);
-  text-decoration-color: var(--ui-primary-color-light);
   text-decoration: underline;
+  text-decoration-color: var(--ui-primary-color-light);
 }
 
 .body a:hover,
