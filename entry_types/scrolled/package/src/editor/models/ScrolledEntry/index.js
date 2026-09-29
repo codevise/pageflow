@@ -52,6 +52,9 @@ const defaultAspectRatios = [{
 }, {
   name: 'portrait',
   ratio: 4 / 3
+}, {
+  name: 'tall',
+  ratio: 16 / 9
 }];
 
 export const ScrolledEntry = Entry.extend({
@@ -396,7 +399,11 @@ export const ScrolledEntry = Entry.extend({
                                  ratio: parseFloat(value)
                                }));
 
-    return defaultAspectRatios.concat(customRatios);
+    return Array.from(
+      new Map(defaultAspectRatios.concat(customRatios)
+                                 .map(aspectRatio => [aspectRatio.name, aspectRatio]))
+        .values()
+    );
   },
 
   getScale(scaleName, {scope} = {}) {

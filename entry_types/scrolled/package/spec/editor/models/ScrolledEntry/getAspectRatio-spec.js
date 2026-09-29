@@ -18,6 +18,42 @@ describe('ScrolledEntry', () => {
       expect(result).toEqual(0.75);
     });
 
+    it('returns tall default aspect ratio', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed()
+        }
+      );
+
+      const result = entry.getAspectRatio('tall');
+
+      expect(result).toEqual(16 / 9);
+    });
+
+    it('lets theme aspect ratio override tall default', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  aspectRatioTall: '2'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const result = entry.getAspectRatio('tall');
+
+      expect(result).toEqual(2);
+    });
+
     it('returns custom aspect ratio', () => {
       const entry = factories.entry(
         ScrolledEntry,

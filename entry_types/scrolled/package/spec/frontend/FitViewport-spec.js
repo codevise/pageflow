@@ -6,6 +6,9 @@ import React from 'react';
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
+const fs = require('fs');
+const path = require('path');
+
 describe('FitViewport', () => {
   it('does not render content wrapper by default', () => {
     const {container} = render(
@@ -48,6 +51,17 @@ describe('FitViewport', () => {
     );
 
     expect(getOuter(container)).toHaveStyle('--fit-viewport-aspect-ratio: var(--theme-aspect-ratio-square)');
+  });
+
+  it('defines tall theme aspect ratio as 9:16', () => {
+    const css = fs.readFileSync(
+      path.join(__dirname, '..', '..', 'src', 'frontend', 'global.module.css'),
+      'utf8'
+    );
+    const declaration = css.match(/--theme-aspect-ratio-tall:\s*([^;]+);/);
+
+    expect(declaration).not.toBeNull();
+    expect(parseFloat(declaration[1])).toBeCloseTo(16 / 9);
   });
 
   it('sets scale custom property', () => {
