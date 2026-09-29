@@ -688,6 +688,7 @@ describe('Style', () => {
 
     useFakeTranslations({
       [`${commonPrefix}.square`]: 'Square (1:1)',
+      [`${commonPrefix}.tall`]: 'Portrait (9:16)',
       [`${themePrefix}.4to5`]: 'Custom (4:5)',
       'pageflow_scrolled.editor.backdrop_effects.rounded.label': 'Rounded corners',
       'pageflow_scrolled.editor.scales.contentElementBoxBorderRadius.none': 'None',
@@ -729,6 +730,10 @@ describe('Style', () => {
             {
               value: 'square',
               label: 'Square (1:1)'
+            },
+            {
+              value: 'tall',
+              label: 'Portrait (9:16)'
             }
           ])
         }

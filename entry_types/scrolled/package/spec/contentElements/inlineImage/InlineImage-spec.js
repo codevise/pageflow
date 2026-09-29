@@ -104,12 +104,12 @@ describe('InlineImage', () => {
   });
 
   describe('regular crop', () => {
-    it('applies aspect ratio from crop value', () => {
+    it('applies tall aspect ratio from crop value', () => {
       const {container} = renderInlineImage({
         configuration: {
           id: 100,
           imageModifiers: [
-            {name: 'crop', value: 'square'}
+            {name: 'crop', value: 'tall'}
           ]
         },
         imageFiles: [{
@@ -119,7 +119,7 @@ describe('InlineImage', () => {
         }]
       });
 
-      expect(container).toContainFitViewport({aspectRatio: 'square'});
+      expect(container).toContainFitViewport({aspectRatio: 'tall'});
     });
 
     it('applies box shadow on outer box with rounded styles', () => {

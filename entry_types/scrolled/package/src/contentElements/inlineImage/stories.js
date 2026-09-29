@@ -63,6 +63,15 @@ storiesOfContentElement(module, {
           {name: 'crop', value: 'circle'}
         ]
       }
+    },
+    {
+      name: 'With 9:16 Crop',
+      configuration: {
+        caption: 'Image with 9:16 crop',
+        imageModifiers: [
+          {name: 'crop', value: 'tall'}
+        ]
+      }
     }
   ],
   inlineFileRights: true,
