@@ -16,7 +16,10 @@
   "site": <%= render_json_seed(@entry.site) %>,
   "widget_types": <%= widget_types_json_seeds(@entry_config) %>,
   "page_types": <%= page_type_json_seeds(@entry_config) %>,
-  "themes": <%= theme_json_seeds(@entry_config) %>,
+  "themes": <%= theme_json_seeds(
+    @entry_config,
+    theme_asset_resolver: @entry.entry_type.theme_asset_resolver
+  ) %>,
 
   "common": <%= render_json { |json| common_entry_seed(json, @entry) }.html_safe %>,
 

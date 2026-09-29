@@ -11,6 +11,15 @@ only a subset of icons [required for modern
 browsers](https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs)
 has been included. Webmanifests are generated dynamically.
 
+The following images are used by the editor and for structured data:
+
+* `preview.png`
+* `preview_thumbnail.png`
+* `logo_print.png`
+
+If one of these files is missing, Pageflow falls back to resolving it
+from the legacy Sprockets theme directory.
+
 Register the theme in the theme plugin created by the
 `pageflow_scrolled:install` generator:
 
