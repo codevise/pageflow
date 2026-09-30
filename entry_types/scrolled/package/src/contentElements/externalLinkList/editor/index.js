@@ -27,7 +27,8 @@ editor.contentElementTypes.register('externalLinkList', {
   supportedStyles: ['boxShadow', 'outline'],
 
   defaultConfig: {
-    thumbnailAspectRatio: 'square'
+    thumbnailAspectRatio: 'square',
+    links: [{id: 1}, {id: 2}]
   },
 
   editorPath(contentElement) {
