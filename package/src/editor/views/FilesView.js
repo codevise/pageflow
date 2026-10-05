@@ -41,7 +41,7 @@ export const FilesView = Marionette.ItemView.extend({
         handler: () => {
           FilesExplorerView.open({
             callback: (otherEntry, file) => {
-              state.entry.reuseFile(otherEntry, file, {
+              state.entry.reuseFiles(otherEntry, [file], {
                 folderPermaId: this.currentFolderPermaId()
               });
             }
