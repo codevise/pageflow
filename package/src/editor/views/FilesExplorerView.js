@@ -7,6 +7,7 @@ import {CollectionView, TabsView} from 'pageflow/ui';
 import {app} from '../app';
 import {editor} from '../base';
 
+import {ExplorerFileDetailsView} from './ExplorerFileDetailsView';
 import {ExplorerFileItemView} from './ExplorerFileItemView';
 import {OtherEntriesCollectionView} from './OtherEntriesCollectionView';
 import {dialogView} from './mixins/dialogView';
@@ -24,8 +25,9 @@ export const FilesExplorerView = Marionette.ItemView.extend({
   mixins: [dialogView],
 
   ui: {
-    entriesPanel: '.entries_panel',
+    entriesList: '.entries_panel-list',
     filesPanel: '.files_panel',
+    fileDetailsPanel: '.file_details_panel',
     okButton: '.ok'
   },
 
@@ -53,7 +55,7 @@ export const FilesExplorerView = Marionette.ItemView.extend({
 
   onRender: function() {
     this.subview(new OtherEntriesCollectionView({
-      el: this.ui.entriesPanel,
+      el: this.ui.entriesList,
       selection: this.selection
     }));
 
@@ -70,6 +72,10 @@ export const FilesExplorerView = Marionette.ItemView.extend({
     }, this);
 
     this.ui.filesPanel.append(this.subview(this.tabsView).el);
+
+    this.appendSubview(new ExplorerFileDetailsView({
+      selection: this.selection
+    }), {to: this.ui.fileDetailsPanel});
 
     this.ui.okButton.prop('disabled', true);
   },

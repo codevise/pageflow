@@ -10,15 +10,29 @@
     list-style: none;
   }
 
-  .entries_panel,
-  .files_panel {
+  .files_panel,
+  .file_details_panel {
     overflow: auto;
   }
 
+  .entries_panel,
+  .files_panel {
+    border: solid 1px var(--ui-on-surface-color-lighter);
+    border-radius: rounded(md);
+    overflow: clip;
+  }
+
   .entries_panel {
+    display: flex;
+    flex-direction: column;
     width: 20%;
-    padding: 0 space(1) 0 space(1);
-    margin: 0 space(1) 0 space(-1);
+    margin-right: space(4);
+
+    &-list {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+    }
 
     li.blank_slate {
       text-align: center;
@@ -29,8 +43,6 @@
 
   .files_panel {
     flex: 1;
-    border-left: solid 1px var(--ui-on-surface-color-lighter);
-    padding-left: space(4);
 
     .tabs_view {
       height: 100%;
@@ -41,6 +53,12 @@
         height: auto;
       }
     }
+  }
+
+  .file_details_panel {
+    flex: 0 1 space(64);
+    min-width: 0;
+    margin-left: space(4);
   }
 
   .close {
