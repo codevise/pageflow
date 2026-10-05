@@ -1,14 +1,15 @@
 ul.files_gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-auto-rows: max-content;
+  gap: 2px;
   margin-top: 10px;
 
   > li {
-    margin-bottom: 2px;
     position: relative;
     overflow: hidden;
-    float: left;
     text-align: center;
     padding: space(2);
-    width: 120px;
     cursor: pointer;
     border: solid 3px transparent;
     border-radius: rounded();
@@ -32,6 +33,16 @@ ul.files_gallery {
     }
   }
 
+  > li.blank_slate,
+  > li.loading {
+    grid-column: 1 / -1;
+    cursor: default;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
   li.blank_slate {
     text-align: center;
     padding: 10px 5px 20px 5px;
@@ -45,6 +56,7 @@ ul.files_gallery {
     margin: auto;
     border-radius: rounded();
     overflow: hidden;
+    background-color: var(--ui-on-surface-color-lightest);
   }
 
   .file_name {

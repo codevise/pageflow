@@ -1,5 +1,4 @@
 import Marionette from 'backbone.marionette';
-import _ from 'underscore';
 
 import {FileThumbnailView} from './FileThumbnailView';
 import {loadable} from './mixins/loadable';
@@ -52,6 +51,8 @@ export const ExplorerFileItemView = Marionette.ItemView.extend({
   },
 
   isDisabled: function() {
-    return (this.options.disabledIds && _.contains(this.options.disabledIds, this.model.get('id')));
+    return !!this.options.currentEntry
+      ?.getFileCollection(this.model.fileType())
+      .get(this.model.id);
   }
 });

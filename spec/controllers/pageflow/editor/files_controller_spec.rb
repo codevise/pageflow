@@ -6,86 +6,6 @@ module Pageflow
     render_views
 
     describe '#index' do
-      it 'returns list of files of entry' do
-        user = create(:user)
-        entry = create(:entry, with_previewer: user)
-        file = create(:image_file)
-        create(:file_usage, revision: entry.draft, file:)
-
-        sign_in(user, scope: :user)
-        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
-
-        expect(response.body).to include_json([
-                                                {id: file.id}
-                                              ])
-      end
-
-      it 'returns list of files of account' do
-        user = create(:user)
-        account = create(:account, with_previewer: user)
-        entry = create(:entry, account:)
-        file = create(:image_file)
-        create(:file_usage, revision: entry.draft, file:)
-
-        sign_in(user, scope: :user)
-        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
-
-        expect(response.body).to include_json([
-                                                {id: file.id}
-                                              ])
-      end
-
-      it 'does not allow to list files of unaccessible entry' do
-        user = create(:user)
-        entry = create(:entry)
-        file = create(:image_file)
-        create(:file_usage, revision: entry.draft, file:)
-
-        sign_in(user, scope: :user)
-        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
-
-        expect(response.status).to eq(403)
-      end
-
-      it 'omits direct upload config for uploaded files' do
-        user = create(:user)
-        account = create(:account, with_previewer: user)
-        entry = create(:entry, account:)
-        file = create(:image_file)
-        create(:file_usage, revision: entry.draft, file:)
-
-        sign_in(user, scope: :user)
-        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
-
-        expect(response.body).not_to include_json(
-          [{direct_upload_config: a_kind_of(Hash)}]
-        )
-      end
-
-      it 'includes created at timestamp' do
-        user = create(:user)
-        entry = create(:entry, with_previewer: user)
-        file = create(:text_track_file, used_in: entry.draft)
-
-        sign_in(user, scope: :user)
-        get(:index,
-            params: {entry_id: entry.id, collection_name: 'text_track_files'},
-            format: 'json')
-
-        expect(response.body).to include_json([
-                                                {created_at: file.created_at.utc.iso8601(0)}
-                                              ])
-      end
-
-      it 'requires user to be signed in' do
-        entry = create(:entry)
-        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
-
-        expect(response.status).to eq(401)
-      end
-    end
-
-    describe '#index without collection name' do
       it 'returns files of entry grouped by collection name' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)
@@ -134,6 +54,44 @@ module Pageflow
         get(:index, params: {entry_id: entry.id}, format: 'json')
 
         expect(JSON.parse(response.body)['image_files']).to eq([])
+      end
+
+      it 'returns files of entries of account' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, account:)
+        file = create(:image_file, used_in: entry.draft)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(image_files: [{id: file.id}])
+      end
+
+      it 'omits direct upload config for uploaded files' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        create(:image_file, used_in: entry.draft)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).not_to include_json(
+          image_files: [{direct_upload_config: a_kind_of(Hash)}]
+        )
+      end
+
+      it 'includes created at timestamp' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        file = create(:text_track_file, used_in: entry.draft)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(
+          text_track_files: [{created_at: file.created_at.utc.iso8601(0)}]
+        )
       end
 
       it 'does not allow to list files of unaccessible entry' do

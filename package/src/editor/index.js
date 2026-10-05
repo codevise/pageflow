@@ -102,6 +102,7 @@ export * from './views/BackgroundPositioningView';
 export * from './views/BackgroundPositioningImageView';
 export * from './views/ExplorerFileItemView';
 export * from './views/ExplorerFileDetailsView';
+export * from './views/ExplorerFilesView';
 export * from './views/ConfirmableFileItemView';
 export * from './views/ScrollingView';
 export * from './views/LoadingView';

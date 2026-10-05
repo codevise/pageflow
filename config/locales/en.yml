@@ -1508,8 +1508,6 @@ en:
           reuse_files: Reuse files from other stories
         files_explorer_blank_slate:
           choose_hint: Please choose a story.
-        files_gallery_blank_slate:
-          no_files: This story does not contain any files of this type.
         help:
           close: Close
           title: Help
@@ -1640,6 +1638,8 @@ en:
           show_editor: Show editor panel
         entry_preview_view:
           scroll_hint: Scroll down to continue
+        explorer_files_view:
+          no_files: This story does not contain any files.
         file_item_view:
           confirm_destroy: Really delete this file?
         file_meta_data_item_value_view:

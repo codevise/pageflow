@@ -1520,8 +1520,6 @@ de:
           reuse_files: Dateien wiederverwenden
         files_explorer_blank_slate:
           choose_hint: Bitte wähle einen Beitrag aus.
-        files_gallery_blank_slate:
-          no_files: In diesem Beitrag gibt es keine Dateien dieses Typs.
         help:
           close: Schließen
           title: Hilfe
@@ -1652,6 +1650,8 @@ de:
           show_editor: Editorleiste einblenden
         entry_preview_view:
           scroll_hint: Scrollen, um weiterzulesen
+        explorer_files_view:
+          no_files: In diesem Beitrag gibt es keine Dateien.
         file_item_view:
           confirm_destroy: Datei wirklich löschen?
         file_meta_data_item_value_view:

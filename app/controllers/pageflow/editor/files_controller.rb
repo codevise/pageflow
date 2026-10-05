@@ -9,11 +9,6 @@ module Pageflow
       def index
         @entry = DraftEntry.find(params[:entry_id])
         authorize!(:use_files, @entry.to_model)
-
-        return unless params[:collection_name]
-
-        @files = @entry.find_files(file_type.model)
-        render(:index_of_type)
       end
 
       def create
