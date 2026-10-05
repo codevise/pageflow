@@ -66,6 +66,7 @@ Pageflow::Engine.routes.draw do
         end
 
         resources :file_folders, only: [:index, :create, :update, :destroy]
+        resources :file_reuses, only: [:create]
 
         get '/file_import/:file_import_name/search' => 'file_import#search'
         post '/file_import/:file_import_name/files_meta_data' => 'file_import#files_meta_data'
