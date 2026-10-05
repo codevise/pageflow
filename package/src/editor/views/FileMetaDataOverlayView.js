@@ -3,12 +3,8 @@ import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 import {arrow, autoUpdate, computePosition, offset, shift, size} from '@floating-ui/dom';
 
-import {CollectionView} from 'pageflow/ui';
-
-import {FileMetaDataItemView} from './FileMetaDataItemView';
+import {FileDetailsView} from './FileDetailsView';
 import {FileReferencesView} from './FileReferencesView';
-import {FileStageItemView} from './FileStageItemView';
-import {TextFileMetaDataItemValueView} from './TextFileMetaDataItemValueView';
 
 import template from '../templates/fileMetaDataOverlay.jst';
 
@@ -30,12 +26,8 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
   ui: {
     arrow: '.file_meta_data_overlay-arrow',
     content: '.file_meta_data_overlay-content',
-    preview: '.file_meta_data_overlay-preview',
-    stageItems: '.file_stage_items',
-    metaData: 'tbody.attributes',
-    fileReferences: '.file_meta_data_overlay-file_references',
-    downloads: 'tbody.downloads',
-    downloadLink: 'a.original'
+    details: '.file_meta_data_overlay-details',
+    fileReferences: '.file_meta_data_overlay-file_references'
   },
 
   events: {
@@ -47,30 +39,17 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
     'click .file_meta_data button.edit': 'dismiss'
   },
 
-  modelEvents: {
-    'change': 'update',
-    'change:state': 'renderPreview'
-  },
-
   initialize: function() {
     _.bindAll(this, 'handleOutsideClick');
   },
 
   onRender: function() {
-    this.update();
+    this.detailsView = new FileDetailsView({
+      model: this.model,
+      metaDataAttributes: this.options.metaDataAttributes
+    });
 
-    this.subview(new CollectionView({
-      el: this.ui.stageItems,
-      collection: this.model.currentStages,
-      itemViewConstructor: FileStageItemView
-    }));
-
-    this.listenTo(this.model.currentStages, 'add remove', this.updateStages);
-    this.updateStages();
-
-    _.each(this.metaDataViews(), function(view) {
-      this.ui.metaData.append(this.subview(view).el);
-    }, this);
+    this.appendSubview(this.detailsView, {to: this.ui.details});
 
     if (this.options.fileReferences) {
       this.appendSubview(new FileReferencesView({
@@ -78,69 +57,6 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
         fileReferences: this.options.fileReferences
       }), {to: this.ui.fileReferences});
     }
-  },
-
-  // Only exists while the overlay is open, so that videos of other
-  // files do not keep loading and playing in the background. Rerendered
-  // on state changes since files only get a preview once they have
-  // finished processing.
-  renderPreview: function() {
-    this.closePreview();
-
-    if (this.isClosed || !this.isOpen()) {
-      return;
-    }
-
-    this.previewView = this.model.createPreviewView();
-
-    if (this.previewView) {
-      this.ui.preview.append(this.previewView.render().el);
-    }
-
-    this.ui.preview.toggle(!!this.previewView);
-  },
-
-  closePreview: function() {
-    if (this.previewView) {
-      this.previewView.close();
-      this.previewView = null;
-    }
-
-    if (!this.isClosed) {
-      this.ui.preview.hide();
-    }
-  },
-
-  update: function() {
-    if (this.isClosed) {
-      return;
-    }
-
-    this.ui.downloadLink.attr('href', this.model.get('download_url'));
-    this.ui.downloads.toggle(this.model.isUploaded() &&
-                             !_.isEmpty(this.model.get('download_url')));
-  },
-
-  // The separator would otherwise linger once the file is done.
-  updateStages: function() {
-    this.ui.stageItems.toggle(!!this.model.currentStages.length);
-  },
-
-  metaDataViews: function() {
-    var model = this.model;
-
-    return _.map(this.options.metaDataAttributes, function(options) {
-      if (typeof options === 'string') {
-        options = {
-          name: options,
-          valueView: TextFileMetaDataItemValueView
-        };
-      }
-
-      return new FileMetaDataItemView(_.extend({
-        model: model
-      }, options));
-    });
   },
 
   isOpen: function() {
@@ -178,7 +94,7 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
                                      this.el,
                                      this.position.bind(this));
 
-    this.renderPreview();
+    this.detailsView.showPreview();
     this.trigger('toggle');
   },
 
@@ -247,7 +163,7 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
       FileMetaDataOverlayView.currentlyOpen = null;
     }
 
-    this.closePreview();
+    this.detailsView.hidePreview();
     this.$el.removeClass('is_open');
     this.trigger('toggle');
   },
@@ -278,7 +194,7 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
     var content = this.ui.content[0];
     var borders = this.el.offsetHeight - content.offsetHeight;
     var available = Math.max(0, availableHeight - borders);
-    var previewHeight = this.ui.preview.outerHeight(true) || 0;
+    var previewHeight = this.detailsView.ui.preview.outerHeight(true) || 0;
 
     this.el.style.setProperty('--available-height', `${available}px`);
     this.el.style.setProperty(
@@ -312,7 +228,6 @@ export const FileMetaDataOverlayView = Marionette.ItemView.extend({
   onClose: function() {
     Marionette.ItemView.prototype.onClose.call(this);
 
-    this.closePreview();
     this.dismiss();
   }
 });

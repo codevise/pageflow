@@ -122,6 +122,7 @@ export * from './views/InfoBoxView';
 export * from './views/EmulationModeButtonView';
 export * from './views/TextFileMetaDataItemValueView';
 export * from './views/FileMetaDataItemView';
+export * from './views/FileDetailsView';
 export * from './views/FileMetaDataOverlayView';
 export * from './views/AudioFilePreviewView';
 export * from './views/FilePreviewProgressBarView';
