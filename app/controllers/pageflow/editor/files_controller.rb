@@ -7,12 +7,13 @@ module Pageflow
       before_action :authenticate_user!
 
       def index
-        entry = DraftEntry.find(params[:entry_id])
+        @entry = DraftEntry.find(params[:entry_id])
+        authorize!(:use_files, @entry.to_model)
 
-        authorize!(:use_files, entry.to_model)
-        @files = entry.find_files(file_type.model)
+        return unless params[:collection_name]
 
-        respond_with(:editor, @files)
+        @files = @entry.find_files(file_type.model)
+        render(:index_of_type)
       end
 
       def create

@@ -85,6 +85,75 @@ module Pageflow
       end
     end
 
+    describe '#index without collection name' do
+      it 'returns files of entry grouped by collection name' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        image_file = create(:image_file, used_in: entry.draft)
+        video_file = create(:video_file, used_in: entry.draft)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(image_files: [{id: image_file.id}],
+                                              video_files: [{id: video_file.id}])
+      end
+
+      it 'includes nested files' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        video_file = create(:video_file, used_in: entry.draft)
+        text_track_file = create(:text_track_file,
+                                 parent_file: video_file,
+                                 used_in: entry.draft)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(
+          text_track_files: [{id: text_track_file.id, parent_file_id: video_file.id}]
+        )
+      end
+
+      it 'includes empty lists for file types without files' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(audio_files: [])
+      end
+
+      it 'does not include files of other entries' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        create(:image_file, used_in: create(:entry).draft)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(JSON.parse(response.body)['image_files']).to eq([])
+      end
+
+      it 'does not allow to list files of unaccessible entry' do
+        user = create(:user)
+        entry = create(:entry)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.status).to eq(403)
+      end
+
+      it 'requires user to be signed in' do
+        entry = create(:entry)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.status).to eq(401)
+      end
+    end
+
     describe '#create' do
       it 'responds with success for signed in editor of the entry' do
         user = create(:user)

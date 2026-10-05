@@ -55,6 +55,8 @@ Pageflow::Engine.routes.draw do
       end
 
       resources :entries, only: [] do
+        get 'files', to: 'files#index', as: :all_files
+
         resources :files,
                   path: 'files/:collection_name',
                   only: [:index, :create, :update, :destroy] do
