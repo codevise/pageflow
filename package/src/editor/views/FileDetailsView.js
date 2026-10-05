@@ -101,6 +101,7 @@ export const FileDetailsView = Marionette.ItemView.extend({
 
   metaDataViews: function() {
     var model = this.model;
+    var readOnly = this.options.readOnly;
 
     return _.map(this.options.metaDataAttributes, function(options) {
       if (typeof options === 'string') {
@@ -111,7 +112,8 @@ export const FileDetailsView = Marionette.ItemView.extend({
       }
 
       return new FileMetaDataItemView(_.extend({
-        model: model
+        model: model,
+        readOnly: readOnly
       }, options));
     });
   },

@@ -19,7 +19,9 @@ export const FileMetaDataItemView = Marionette.ItemView.extend({
       new this.options.valueView(_.extend({
         model: this.model,
         name: this.options.name
-      }, this.options.valueViewOptions || {})),
+      }, this.options.valueViewOptions || {}, {
+        readOnly: this.options.readOnly
+      })),
       {to: this.ui.value}
     );
 

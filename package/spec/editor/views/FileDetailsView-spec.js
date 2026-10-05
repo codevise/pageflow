@@ -9,7 +9,8 @@ import {renderBackboneView as render} from 'pageflow/testHelpers';
 describe('FileDetailsView', () => {
   support.useFakeTranslations({
     'pageflow.editor.templates.file_item.source': 'Source',
-    'pageflow.editor.templates.file_item.download': 'Download'
+    'pageflow.editor.templates.file_item.download': 'Download',
+    'pageflow.editor.templates.file_meta_data_item_value_view.edit': 'Edit'
   });
 
   it('renders meta data items', () => {
@@ -47,6 +48,39 @@ describe('FileDetailsView', () => {
 
     expect(FileMetaDataTable.find(view).values())
       .toEqual(expect.arrayContaining(['200x100px!!']));
+  });
+
+  describe('edit links of meta data items', () => {
+    const metaDataAttributes = [
+      {
+        name: 'rights',
+        valueView: FileMetaDataItemValueView.extend({getText: () => 'value'}),
+        valueViewOptions: {settingsDialogTabLink: 'general'}
+      }
+    ];
+
+    it('are displayed by default', () => {
+      const view = new FileDetailsView({
+        model: support.factories.file({id: 123}),
+        metaDataAttributes
+      });
+
+      const {queryByRole} = render(view);
+
+      expect(queryByRole('button', {name: 'Edit'})).not.toBeNull();
+    });
+
+    it('are not displayed when read only', () => {
+      const view = new FileDetailsView({
+        model: support.factories.file({id: 123}),
+        metaDataAttributes,
+        readOnly: true
+      });
+
+      const {queryByRole} = render(view);
+
+      expect(queryByRole('button', {name: 'Edit'})).toBeNull();
+    });
   });
 
   it('links to download_url', () => {
