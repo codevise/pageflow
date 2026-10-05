@@ -3,15 +3,29 @@
 }
 
 .wheel {
+  --mask-gutter: 0.15em;
+  --mask-fade: 0.075em;
+  --extended-height: calc(1cap + var(--mask-gutter) + var(--mask-gutter));
+
   display: inline-grid;
+  align-items: center;
   overflow: hidden;
+  height: max(
+    1lh,
+    var(--extended-height)
+  );
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-top: min(0px, calc((1lh - var(--extended-height)) / 2));
+  margin-bottom: min(0px, calc((1lh - var(--extended-height)) / 2));
   mask-image: linear-gradient(
     to bottom,
-    transparent 0%,
-    black 15%,
-    black 85%,
-    transparent 100%
+    transparent calc(var(--mask-gutter) - var(--mask-fade)),
+    black var(--mask-gutter),
+    black calc(100% - var(--mask-gutter)),
+    transparent calc(100% - var(--mask-gutter) + var(--mask-fade))
   );
+  mask-repeat: no-repeat;
 }
 
 .wheel > span {
@@ -21,6 +35,7 @@
   transform-origin: 50% 50% 1.5em;
   backface-visibility: hidden;
   text-align: center;
+  text-box: trim-both cap alphabetic;
 }
 
 .text {
