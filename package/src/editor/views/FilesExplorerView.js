@@ -1,8 +1,10 @@
 import Backbone from 'backbone';
+import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
 import {app} from '../app';
 
+import {ListSelection} from '../collections/ListSelection';
 import {FileTypeSelection} from '../models/FileTypeSelection';
 
 import {ExplorerFileDetailsView} from './ExplorerFileDetailsView';
@@ -31,8 +33,7 @@ export const FilesExplorerView = Marionette.ItemView.extend({
   events: {
     'click .ok': function() {
       if (this.options.callback) {
-        this.options.callback(this.selection.get('entry'),
-                              this.selection.get('file'));
+        this.options.callback(this.selection.get('entry'), this.selectedFiles());
       }
       this.close();
     }
@@ -40,13 +41,26 @@ export const FilesExplorerView = Marionette.ItemView.extend({
 
   initialize: function() {
     this.selection = new Backbone.Model();
+    this.markedFiles = new ListSelection();
     this.fileTypeSelection = new FileTypeSelection();
     this.listenTo(this.selection, 'change:entry', this.renderFiles);
 
-    // check if the OK button should be enabled.
-    this.listenTo(this.selection, 'change', function(selection, options) {
-      this.ui.okButton.prop('disabled', !this.selection.get('file'));
-    });
+    this.listenTo(this.selection, 'change', this.updateOkButton);
+    this.listenTo(this.markedFiles, 'add remove reset', this.updateOkButton);
+  },
+
+  selectedFiles: function() {
+    return this.markedFiles.length ?
+           this.markedFiles.models.slice() :
+           [this.selection.get('file')];
+  },
+
+  updateOkButton: function() {
+    this.ui.okButton.prop('disabled', !this.markedFiles.length && !this.selection.get('file'));
+    this.ui.okButton.text(this.markedFiles.length ?
+                          I18n.t('pageflow.editor.views.files_explorer_view.reuse_files',
+                                 {count: this.markedFiles.length}) :
+                          I18n.t('pageflow.editor.templates.files_explorer.ok'));
   },
 
   onRender: function() {
@@ -61,11 +75,13 @@ export const FilesExplorerView = Marionette.ItemView.extend({
       selection: this.selection
     }), {to: this.ui.fileDetailsPanel});
 
-    this.ui.okButton.prop('disabled', true);
+    this.updateOkButton();
   },
 
   renderFiles: function() {
     var entry = this.selection.get('entry');
+
+    this.markedFiles.reset();
 
     if (this.filesView) {
       this.filesView.close();
@@ -76,6 +92,7 @@ export const FilesExplorerView = Marionette.ItemView.extend({
                                     entry: entry,
                                     currentEntry: state.entry,
                                     selection: this.selection,
+                                    markedFiles: this.markedFiles,
                                     fileTypeSelection: this.fileTypeSelection
                                   }) :
                                   new BlankSlateView());

@@ -40,8 +40,8 @@ export const FilesView = Marionette.ItemView.extend({
         label: I18n.t('pageflow.editor.views.files_view.reuse'),
         handler: () => {
           FilesExplorerView.open({
-            callback: (otherEntry, file) => {
-              state.entry.reuseFiles(otherEntry, [file], {
+            callback: (otherEntry, files) => {
+              state.entry.reuseFiles(otherEntry, files, {
                 folderPermaId: this.currentFolderPermaId()
               });
             }

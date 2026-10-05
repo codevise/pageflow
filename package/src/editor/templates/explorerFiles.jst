@@ -1,6 +1,16 @@
-<div class="explorer_files-filter_bar">
-  <div class="explorer_files-pills"></div>
-  <div class="explorer_files-search"></div>
+<div class="explorer_files-toolbar">
+  <div class="explorer_files-filter_bar">
+    <div class="explorer_files-pills"></div>
+    <div class="explorer_files-search"></div>
+  </div>
+  <div class="explorer_files-marking_bar">
+    <span class="explorer_files-marking_bar_text" aria-live="polite"></span>
+    <button type="button"
+            class="explorer_files-end_marking"
+            title="<%= I18n.t('pageflow.editor.views.explorer_files_view.end_marking') %>"
+            aria-label="<%= I18n.t('pageflow.editor.views.explorer_files_view.end_marking') %>">
+    </button>
+  </div>
 </div>
 <div class="explorer_files-breadcrumb"></div>
 <div class="explorer_files-gallery"></div>

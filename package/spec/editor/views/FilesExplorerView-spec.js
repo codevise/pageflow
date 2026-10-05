@@ -1,6 +1,7 @@
 import {FilesExplorerView, editor} from 'pageflow/editor';
 
 import * as support from '$support';
+import {within} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import {renderBackboneView as render} from 'pageflow/testHelpers';
@@ -28,7 +29,18 @@ describe('FilesExplorerView', () => {
     'pageflow.editor.views.explorer_files_view.search': 'Filter files and folders',
     'pageflow.editor.views.explorer_files_view.search_hint': 'Search files',
     'pageflow.editor.views.folder_breadcrumb_view.label': 'Folder path',
-    'pageflow.editor.views.folder_breadcrumb_view.reset': 'Leave folder'
+    'pageflow.editor.views.folder_breadcrumb_view.reset': 'Leave folder',
+    'pageflow.editor.views.explorer_file_item_view.mark': 'Select for reuse',
+    'pageflow.editor.views.explorer_file_item_view.start_marking': 'Select multiple files',
+    'pageflow.editor.views.explorer_files_view.marked_files': {
+      one: '1 file selected',
+      other: '%{count} files selected'
+    },
+    'pageflow.editor.views.explorer_files_view.end_marking': 'End selection',
+    'pageflow.editor.views.files_explorer_view.reuse_files': {
+      one: 'Reuse 1 file',
+      other: 'Reuse %{count} files'
+    }
   });
 
   beforeEach(() => {
@@ -185,7 +197,7 @@ describe('FilesExplorerView', () => {
 
     expect(callback).toHaveBeenCalledWith(
       expect.objectContaining({id: 2}),
-      expect.objectContaining({id: 5})
+      [expect.objectContaining({id: 5})]
     );
   });
 
@@ -466,6 +478,135 @@ describe('FilesExplorerView', () => {
       await user.clear(getByLabelText('Filter files and folders'));
 
       expect(queryByText('This story does not contain any files.')).not.toBeNull();
+    });
+  });
+
+  describe('marking multiple files', () => {
+    function respondWithFiles() {
+      respondWithOtherEntryFiles({
+        image_files: [
+          {id: 5, file_name: 'one.png', state: 'processed'},
+          {id: 6, file_name: 'two.png', state: 'processed'},
+          {id: 7, file_name: 'nested.png', state: 'processed', folder_perma_id: 10}
+        ],
+        video_files: [
+          {id: 5, file_name: 'clip.mp4', state: 'encoded'}
+        ]
+      }, [
+        {id: 1, perma_id: 10, name: 'Photos'}
+      ]);
+    }
+
+    function markButton(getByText) {
+      return name => within(getByText(name).closest('li'))
+        .getByRole('button', {name: /^Select (for reuse|multiple files)$/});
+    }
+
+    it('passes marked files of different types to callback', async () => {
+      currentEntry();
+      respondWithFiles();
+      const user = userEvent.setup();
+      const callback = jest.fn();
+
+      const {getByText, getByRole} = renderWithOtherEntry(new FilesExplorerView({callback}));
+      await user.click(markButton(getByText)('one.png'));
+      await user.click(markButton(getByText)('clip.mp4'));
+      await user.click(getByRole('button', {name: 'Reuse 2 files'}));
+
+      const [otherEntry, files] = callback.mock.calls[0];
+
+      expect(otherEntry.id).toBe(2);
+      expect(files.map(file => file.get('file_name'))).toEqual(['one.png', 'clip.mp4']);
+    });
+
+    it('displays number of marked files', async () => {
+      currentEntry();
+      respondWithFiles();
+      const user = userEvent.setup();
+
+      const {getByText, queryByText} = renderWithOtherEntry(new FilesExplorerView({}));
+      await user.click(markButton(getByText)('one.png'));
+      await user.click(markButton(getByText)('two.png'));
+
+      expect(queryByText('2 files selected')).not.toBeNull();
+    });
+
+    it('hides filter bar while marking', async () => {
+      currentEntry();
+      respondWithFiles();
+      const user = userEvent.setup();
+
+      const {getByText, getByLabelText} = renderWithOtherEntry(new FilesExplorerView({}));
+      await user.click(markButton(getByText)('one.png'));
+
+      expect(getByLabelText('Filter files and folders')).not.toBeVisible();
+    });
+
+    it('supports ending marking', async () => {
+      currentEntry();
+      respondWithFiles();
+      const user = userEvent.setup();
+
+      const {getByText, getByRole, queryByText, getByLabelText} =
+        renderWithOtherEntry(new FilesExplorerView({}));
+      await user.click(markButton(getByText)('one.png'));
+      await user.click(markButton(getByText)('two.png'));
+      await user.click(getByRole('button', {name: 'End selection'}));
+
+      expect(queryByText('2 files selected')).toBeNull();
+      expect(getByLabelText('Filter files and folders')).toBeVisible();
+      expect(getByRole('button', {name: 'OK'})).not.toBeDisabled();
+    });
+
+    it('resets marks when entering folder', async () => {
+      currentEntry();
+      respondWithFiles();
+      const user = userEvent.setup();
+
+      const {getByText, getByRole, queryByText} = renderWithOtherEntry(new FilesExplorerView({}));
+      await user.click(markButton(getByText)('one.png'));
+      await user.click(markButton(getByText)('two.png'));
+      await user.click(getByText('Photos'));
+
+      expect(queryByText('2 files selected')).toBeNull();
+      expect(getByRole('button', {name: 'OK'})).toBeDisabled();
+    });
+
+    it('resets marks when other entry is selected', async () => {
+      currentEntry();
+      respondWithJson('/editor/entries', [{id: 2, title: 'Other'}, {id: 3, title: 'Third'}]);
+      respondWithJson('/editor/entries/2/files', {
+        image_files: [{id: 5, file_name: 'one.png', state: 'processed'}]
+      });
+      respondWithJson('/editor/entries/2/file_folders', []);
+      respondWithJson('/editor/entries/3/files', {
+        image_files: [{id: 8, file_name: 'third.png', state: 'processed'}]
+      });
+      respondWithJson('/editor/entries/3/file_folders', []);
+      const user = userEvent.setup();
+
+      const {getByText, queryByText} = render(new FilesExplorerView({}));
+      testContext.server.respond();
+      await user.click(getByText('Other'));
+      testContext.server.respond();
+      await user.click(markButton(getByText)('one.png'));
+      await user.click(getByText('Third'));
+      testContext.server.respond();
+
+      expect(queryByText('1 file selected')).toBeNull();
+    });
+
+    it('previews file on click without changing marks', async () => {
+      currentEntry();
+      respondWithFiles();
+      const user = userEvent.setup();
+
+      const {getByText, getByRole, queryByText} = renderWithOtherEntry(new FilesExplorerView({}));
+      await user.click(markButton(getByText)('one.png'));
+      await user.click(getByText('two.png'));
+
+      expect(queryByText('1 file selected')).not.toBeNull();
+      expect(getByRole('heading', {name: 'two.png'})).not.toBeNull();
     });
   });
 });

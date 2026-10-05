@@ -82,9 +82,55 @@
     }
   }
 
+  .explorer_files-end_marking {
+    @include cancel-icon;
+
+    flex: none;
+    width: space(6);
+    padding: space(1) 0;
+    border: none;
+    border-radius: rounded();
+    background-color: transparent;
+    color: var(--ui-primary-color-light);
+    line-height: 16px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--ui-on-surface-color-lightest);
+      color: var(--ui-primary-color);
+    }
+  }
+
   .explorer_files {
-    &-filter_bar {
+    &-toolbar {
       grid-column: 2 / 4;
+      display: grid;
+
+      > * {
+        grid-area: 1 / 1;
+      }
+
+      > [hidden] {
+        display: flex;
+        visibility: hidden;
+      }
+    }
+
+    &-marking_bar {
+      display: flex;
+      align-items: center;
+      gap: space(2);
+      margin-bottom: space(2);
+      padding: space(1) space(2);
+      border-radius: rounded();
+      background-color: var(--ui-selection-color-lighter);
+    }
+
+    &-marking_bar_text {
+      flex: 1;
+    }
+
+    &-filter_bar {
       display: flex;
       align-items: center;
       gap: space(4);

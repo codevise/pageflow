@@ -24,10 +24,19 @@ export const ExplorerFilesView = Marionette.ItemView.extend({
   className: 'explorer_files',
 
   ui: {
+    filterBar: '.explorer_files-filter_bar',
+    markingBar: '.explorer_files-marking_bar',
+    markingBarText: '.explorer_files-marking_bar_text',
     search: '.explorer_files-search',
     pills: '.explorer_files-pills',
     breadcrumb: '.explorer_files-breadcrumb',
     gallery: '.explorer_files-gallery'
+  },
+
+  events: {
+    'click .explorer_files-end_marking': function() {
+      this.options.markedFiles.reset();
+    }
   },
 
   initialize: function() {
@@ -48,7 +57,12 @@ export const ExplorerFilesView = Marionette.ItemView.extend({
       ignoreAbsentFileTypes: true
     });
 
-    this.listenTo(this.fileListing, 'change:folder', this.renderBreadcrumb);
+    this.listenTo(this.fileListing, 'change:folder', function() {
+      this.options.markedFiles.reset();
+      this.renderBreadcrumb();
+    });
+
+    this.listenTo(this.options.markedFiles, 'add remove reset', this.updateMarkingBar);
 
     this.loading = true;
 
@@ -77,6 +91,17 @@ export const ExplorerFilesView = Marionette.ItemView.extend({
     }), {to: this.ui.pills});
 
     this.renderGallery();
+    this.updateMarkingBar();
+  },
+
+  updateMarkingBar: function() {
+    var count = this.options.markedFiles.length;
+
+    this.ui.filterBar.prop('hidden', !!count);
+    this.ui.markingBar.prop('hidden', !count);
+    this.ui.markingBarText.text(
+      I18n.t('pageflow.editor.views.explorer_files_view.marked_files', {count})
+    );
   },
 
   selectFolder: function(folder) {
@@ -116,6 +141,7 @@ export const ExplorerFilesView = Marionette.ItemView.extend({
       itemViewOptions: {
         selection: this.options.selection,
         currentEntry: this.options.currentEntry,
+        markedFiles: this.options.markedFiles,
         onSelectFolder: this.selectFolder.bind(this)
       },
       blankSlateViewConstructor: BlankSlateView,
