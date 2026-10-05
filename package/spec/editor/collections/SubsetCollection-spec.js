@@ -11,6 +11,24 @@ describe('SubsetCollection', () => {
     }
   });
 
+  it('keeps models matching the filter when parent is set with remove option', () => {
+    var parentCollection = new ParentCollection();
+    var subsetCollection = new SubsetCollection({
+      parent: parentCollection,
+
+      filter: function(item) {
+        return item.get('inSubset');
+      }
+    });
+
+    parentCollection.set([
+      {id: 1, position: 0, inSubset: true},
+      {id: 2, position: 1, inSubset: true}
+    ], {remove: true});
+
+    expect(subsetCollection.pluck('id')).toEqual([1, 2]);
+  });
+
   it('propagates sort to parent', () => {
     var parentCollection = new ParentCollection([
       {position: 0, inSubset: true},
