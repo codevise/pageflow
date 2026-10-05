@@ -12,7 +12,7 @@ import 'support/toHaveScaleCategory';
 import 'support/toHaveColor';
 
 describe('Counter', () => {
-  function renderCounter(configuration = {}) {
+  function renderCounter(configuration = {}, options = {}) {
     const baseConfiguration = {
       targetValue: 10,
       startValue: 0,
@@ -27,9 +27,27 @@ describe('Counter', () => {
         contentElementId={5}
         contentElementWidth={contentElementWidths.md}
         sectionProps={{}}
-      />
+      />,
+      options
     );
   }
+
+  it('does not render a blank description', () => {
+    const {container} = renderCounter({
+      description: [{type: 'paragraph', children: [{text: ''}]}]
+    });
+
+    expect(container.querySelector(`.${styles.wrapper}`).children).toHaveLength(1);
+  });
+
+  it('renders a blank description when selected', () => {
+    const {container} = renderCounter(
+      {description: [{type: 'paragraph', children: [{text: ''}]}]},
+      {inlineEditing: {isSelected: true}}
+    );
+
+    expect(container.querySelector(`.${styles.wrapper}`).children).toHaveLength(2);
+  });
 
   it('renders unit with counterUnit scale category', () => {
     const {getByText} = renderCounter({unit: 'kg'});
@@ -214,7 +232,10 @@ describe('Counter', () => {
     });
 
     it('applies centerRagged alignment from sectionProps layout by default', () => {
-      const {container} = renderCounterWithOptions({}, {sectionProps: {layout: 'centerRagged'}});
+      const {container} = renderCounterWithOptions(
+        {description: [{type: 'paragraph', children: [{text: 'Some text'}]}]},
+        {sectionProps: {layout: 'centerRagged'}}
+      );
       const wrapper = container.querySelector('[class*="wrapper"]');
       const numberWrapper = container.querySelector('[class*="number"]');
       const descriptionDiv = wrapper.lastChild;
@@ -254,7 +275,10 @@ describe('Counter', () => {
 
     it('centers description text when textAlign is centerRagged', () => {
       const {container} = renderCounterWithOptions(
-        {textAlign: 'centerRagged'},
+        {
+          textAlign: 'centerRagged',
+          description: [{type: 'paragraph', children: [{text: 'Some text'}]}]
+        },
         {width: contentElementWidths.md}
       );
       const wrapper = container.querySelector('[class*="wrapper"]');
@@ -305,7 +329,10 @@ describe('Counter', () => {
 
     it('right aligns description text when textAlign is right', () => {
       const {container} = renderCounterWithOptions(
-        {textAlign: 'right'},
+        {
+          textAlign: 'right',
+          description: [{type: 'paragraph', children: [{text: 'Some text'}]}]
+        },
         {width: contentElementWidths.md}
       );
       const wrapper = container.querySelector('[class*="wrapper"]');

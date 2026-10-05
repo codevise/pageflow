@@ -9,7 +9,8 @@ import {
   useI18n,
   useLocale,
   paletteColor,
-  contentElementWidths
+  contentElementWidths,
+  utils
 } from 'pageflow-scrolled/frontend';
 
 import styles from './Counter.module.css';
@@ -38,7 +39,7 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
   const intervalRef = useRef();
   const timeoutRef = useRef();
 
-  const {isEditable} = useContentElementEditorState();
+  const {isEditable, isSelected} = useContentElementEditorState();
 
   const animate = useCallback(() => {
     setAnimated(true);
@@ -175,17 +176,18 @@ export function Counter({configuration, contentElementId, contentElementWidth, s
             </span>
           </Text>
         </div>
-        <div className={styles[descriptionAlignment]}
-             style={{color: paletteColor(configuration.descriptionColor)}}>
-          <EditableText value={configuration.description}
-                        contentElementId={contentElementId}
-                        className={styles.description}
-                        onChange={description => updateConfiguration({description})}
-                        onlyParagraphs={true}
-                        scaleCategory="counterDescription"
-                        typographySize={configuration.descriptionSize || 'md'}
-                        placeholder={t('pageflow_scrolled.inline_editing.type_description')} />
-        </div>
+        {(isSelected || !utils.isBlankEditableTextValue(configuration.description)) &&
+         <div className={styles[descriptionAlignment]}
+              style={{color: paletteColor(configuration.descriptionColor)}}>
+           <EditableText value={configuration.description}
+                         contentElementId={contentElementId}
+                         className={styles.description}
+                         onChange={description => updateConfiguration({description})}
+                         onlyParagraphs={true}
+                         scaleCategory="counterDescription"
+                         typographySize={configuration.descriptionSize || 'md'}
+                         placeholder={t('pageflow_scrolled.inline_editing.type_description')} />
+         </div>}
       </div>
     </div>
   );
