@@ -15,7 +15,11 @@ export const OtherEntry = Backbone.Model.extend({
     this.fileTypes = options?.fileTypes || editor.fileTypes;
   },
 
-  getFileCollection: function(fileType) {
+  getFileCollection: function(fileTypeOrFileTypeName) {
+    var fileType = fileTypeOrFileTypeName.collectionName ?
+                   fileTypeOrFileTypeName :
+                   this.fileTypes.findByCollectionName(fileTypeOrFileTypeName);
+
     if (!this.files[fileType.collectionName]) {
       this.files[fileType.collectionName] = FilesCollection.createForFileType(fileType, [], {entry: this});
     }

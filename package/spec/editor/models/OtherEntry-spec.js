@@ -12,6 +12,18 @@ describe('OtherEntry', () => {
 
       expect(collection.url()).toBe('/editor/entries/34/files/image_files');
     });
+
+    it('supports looking up file collection by collection name', () => {
+      var fileTypes = support.factories.fileTypes(function() {
+        this.withImageFileType();
+      });
+      var entry = new OtherEntry({id: 34}, {fileTypes});
+
+      var collection = entry.getFileCollection('image_files');
+
+      expect(collection).toBe(entry.getFileCollection(fileTypes.findByCollectionName('image_files')));
+      expect(collection.url()).toBe('/editor/entries/34/files/image_files');
+    });
   });
 
   describe('#fetchFiles', () => {
