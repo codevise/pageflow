@@ -82,6 +82,41 @@
     }
   }
 
+  .explorer_files {
+    &-filter_bar {
+      grid-column: 2 / 4;
+      display: flex;
+      align-items: center;
+      gap: space(4);
+    }
+
+    &-pills {
+      flex: 1;
+      min-width: 0;
+
+      .file_type_pills-group {
+        padding-top: 0;
+      }
+    }
+
+    &-search {
+      flex: 1 1 space(40);
+      min-width: space(24);
+      max-width: 30%;
+
+      .list_search_field {
+        margin-top: 0;
+      }
+
+      .list_search_field-placeholder {
+        right: space(2);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
   .file_details_panel {
     grid-column: 3;
     grid-row: -2 / -1;

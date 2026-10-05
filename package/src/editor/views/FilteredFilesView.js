@@ -218,6 +218,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       label: this.searchLabel(),
       hintTranslationKey: this.searchHintTranslationKey(),
       listHighlight: this.listHighlight,
+      hotkey: true,
       ariaControlsId: 'filtered_files',
       autoFocus: !!this.options.selectionHandler
     }), {to: this.ui.filterBar});

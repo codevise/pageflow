@@ -1640,6 +1640,9 @@ en:
           scroll_hint: Scroll down to continue
         explorer_files_view:
           no_files: This story does not contain any files.
+          no_matches: No file matches the search term.
+          search: Filter files and folders
+          search_hint: Search files
         file_item_view:
           confirm_destroy: Really delete this file?
         file_meta_data_item_value_view:

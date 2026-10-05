@@ -24,6 +24,9 @@ describe('FilesExplorerView', () => {
     'pageflow.editor.templates.files_explorer.ok': 'OK',
     'pageflow.editor.templates.files_explorer_blank_slate.choose_hint': 'Please choose a story.',
     'pageflow.editor.views.explorer_files_view.no_files': 'This story does not contain any files.',
+    'pageflow.editor.views.explorer_files_view.no_matches': 'No file matches the search term.',
+    'pageflow.editor.views.explorer_files_view.search': 'Filter files and folders',
+    'pageflow.editor.views.explorer_files_view.search_hint': 'Search files',
     'pageflow.editor.views.folder_breadcrumb_view.label': 'Folder path',
     'pageflow.editor.views.folder_breadcrumb_view.reset': 'Leave folder'
   });
@@ -402,6 +405,67 @@ describe('FilesExplorerView', () => {
       testContext.server.respond();
 
       expect(queryByText('third.png')).not.toBeNull();
+    });
+  });
+
+  describe('search', () => {
+    function respondWithSearchableFiles() {
+      respondWithOtherEntryFiles({
+        image_files: [
+          {id: 5, display_name: 'tree.png', state: 'processed'},
+          {id: 6, display_name: 'house.png', state: 'processed'},
+          {id: 7, display_name: 'nested tree.png', state: 'processed', folder_perma_id: 10}
+        ]
+      }, [
+        {id: 1, perma_id: 10, name: 'Photos'},
+        {id: 2, perma_id: 11, name: 'Trees'}
+      ]);
+    }
+
+    it('filters files of all folders by search term', async () => {
+      currentEntry();
+      respondWithSearchableFiles();
+      const user = userEvent.setup();
+
+      const {getByLabelText, queryByText} = renderWithOtherEntry(new FilesExplorerView({}));
+      await user.type(getByLabelText('Filter files and folders'), 'tree');
+
+      expect(queryByText('tree.png')).not.toBeNull();
+      expect(queryByText('nested tree.png')).not.toBeNull();
+      expect(queryByText('house.png')).toBeNull();
+      expect(queryByText('Photos')).toBeNull();
+    });
+
+    it('displays search hint', async () => {
+      currentEntry();
+      respondWithSearchableFiles();
+
+      const {queryByText} = renderWithOtherEntry(new FilesExplorerView({}));
+
+      expect(queryByText('Search files')).not.toBeNull();
+    });
+
+    it('displays blank slate if no file matches search term', async () => {
+      currentEntry();
+      respondWithSearchableFiles();
+      const user = userEvent.setup();
+
+      const {getByLabelText, queryByText} = renderWithOtherEntry(new FilesExplorerView({}));
+      await user.type(getByLabelText('Filter files and folders'), 'nothing');
+
+      expect(queryByText('No file matches the search term.')).not.toBeNull();
+    });
+
+    it('displays no files blank slate again once search term is cleared', async () => {
+      currentEntry();
+      respondWithOtherEntryFiles({});
+      const user = userEvent.setup();
+
+      const {getByLabelText, queryByText} = renderWithOtherEntry(new FilesExplorerView({}));
+      await user.type(getByLabelText('Filter files and folders'), 'x');
+      await user.clear(getByLabelText('Filter files and folders'));
+
+      expect(queryByText('This story does not contain any files.')).not.toBeNull();
     });
   });
 });

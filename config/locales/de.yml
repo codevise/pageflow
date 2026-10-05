@@ -1652,6 +1652,9 @@ de:
           scroll_hint: Scrollen, um weiterzulesen
         explorer_files_view:
           no_files: In diesem Beitrag gibt es keine Dateien.
+          no_matches: Keine Datei entspricht dem Suchbegriff.
+          search: Dateien und Ordner filtern
+          search_hint: Dateien durchsuchen
         file_item_view:
           confirm_destroy: Datei wirklich löschen?
         file_meta_data_item_value_view:

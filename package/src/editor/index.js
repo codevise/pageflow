@@ -170,6 +170,7 @@ export * from './views/FilesBlankSlateView';
 export * from './views/FilesListItemView';
 export * from './views/FilteredFilesView';
 export * from './views/FolderBreadcrumbView';
+export * from './views/ListSearchFieldView';
 export * from './views/FolderItemView';
 export * from './views/MoveToFolderDialogView';
 export * from './views/DropDownButtonItemView';

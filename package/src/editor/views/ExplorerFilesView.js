@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
 import {CollectionView} from 'pageflow/ui';
@@ -7,10 +8,12 @@ import {editor} from '../base';
 
 import {FileFolder} from '../models/FileFolder';
 import {FileListing} from '../models/FileListing';
+import {Search} from '../models/Search';
 import {ExplorerFileItemView} from './ExplorerFileItemView';
 import {ExplorerFolderItemView} from './ExplorerFolderItemView';
 import {FileTypePillsView} from './FileTypePillsView';
 import {FolderBreadcrumbView} from './FolderBreadcrumbView';
+import {ListSearchFieldView} from './ListSearchFieldView';
 import {LoadingView} from './LoadingView';
 
 import template from '../templates/explorerFiles.jst';
@@ -21,6 +24,7 @@ export const ExplorerFilesView = Marionette.ItemView.extend({
   className: 'explorer_files',
 
   ui: {
+    search: '.explorer_files-search',
     pills: '.explorer_files-pills',
     breadcrumb: '.explorer_files-breadcrumb',
     gallery: '.explorer_files-gallery'
@@ -31,12 +35,15 @@ export const ExplorerFilesView = Marionette.ItemView.extend({
       return fileType.topLevelType;
     });
 
+    this.search = new Search({}, {attribute: 'display_name'});
+
     this.fileListing = new FileListing({}, {
       collections: this.fileTypes.map(function(fileType) {
         return this.options.entry.getFileCollection(fileType);
       }, this),
       fileFolders: this.options.entry.fileFolders,
       fileTypeSelection: this.options.fileTypeSelection,
+      search: this.search,
       hideEmptyFolders: true,
       ignoreAbsentFileTypes: true
     });
@@ -57,6 +64,12 @@ export const ExplorerFilesView = Marionette.ItemView.extend({
   },
 
   onRender: function() {
+    this.appendSubview(new ListSearchFieldView({
+      search: this.search,
+      label: I18n.t('pageflow.editor.views.explorer_files_view.search'),
+      hintTranslationKey: 'pageflow.editor.views.explorer_files_view.search_hint'
+    }), {to: this.ui.search});
+
     this.appendSubview(new FileTypePillsView({
       entry: this.options.entry,
       fileTypes: this.fileTypes,
@@ -105,11 +118,10 @@ export const ExplorerFilesView = Marionette.ItemView.extend({
         currentEntry: this.options.currentEntry,
         onSelectFolder: this.selectFolder.bind(this)
       },
-      blankSlateViewConstructor: Marionette.ItemView.extend({
-        template: blankSlateTemplate,
-        tagName: 'li',
-        className: 'blank_slate'
-      })
+      blankSlateViewConstructor: BlankSlateView,
+      blankSlateViewOptions: {
+        search: this.search
+      }
     }));
 
     this.ui.gallery.append(this.galleryView.el);
@@ -130,6 +142,24 @@ function GalleryItemView(options) {
 
   return new ExplorerFileItemView(options);
 }
+
+const BlankSlateView = Marionette.ItemView.extend({
+  template: blankSlateTemplate,
+  tagName: 'li',
+  className: 'blank_slate',
+
+  initialize: function() {
+    this.listenTo(this.options.search, 'change:term', this.render);
+  },
+
+  serializeData: function() {
+    return {
+      text: I18n.t(this.options.search.get('term') ?
+                   'pageflow.editor.views.explorer_files_view.no_matches' :
+                   'pageflow.editor.views.explorer_files_view.no_files')
+    };
+  }
+});
 
 const LoadingGalleryView = Marionette.View.extend({
   tagName: 'ul',

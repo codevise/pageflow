@@ -36,8 +36,10 @@ export const ListSearchFieldView = Marionette.ItemView.extend({
       this.ui.input.attr('aria-controls', this.options.ariaControlsId);
     }
 
-    this.handleDocumentKeyDown = this.handleDocumentKeyDown.bind(this);
-    $(document).on('keydown', this.handleDocumentKeyDown);
+    if (this.options.hotkey) {
+      this.handleDocumentKeyDown = this.handleDocumentKeyDown.bind(this);
+      $(document).on('keydown', this.handleDocumentKeyDown);
+    }
 
     if (this.options.autoFocus) {
       setTimeout(() => this.ui.input.focus(), 0);
@@ -45,7 +47,9 @@ export const ListSearchFieldView = Marionette.ItemView.extend({
   },
 
   onClose() {
-    $(document).off('keydown', this.handleDocumentKeyDown);
+    if (this.options.hotkey) {
+      $(document).off('keydown', this.handleDocumentKeyDown);
+    }
   },
 
   label() {
