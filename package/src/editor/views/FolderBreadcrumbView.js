@@ -8,7 +8,8 @@ export const FolderBreadcrumbView = Marionette.ItemView.extend({
   className: 'folder_breadcrumb',
 
   ui: {
-    path: '.folder_breadcrumb-path'
+    path: '.folder_breadcrumb-path',
+    root: '.folder_breadcrumb-root'
   },
 
   events: {
@@ -28,6 +29,16 @@ export const FolderBreadcrumbView = Marionette.ItemView.extend({
   },
 
   onRender: function() {
+    if (this.options.rootLabel) {
+      this.ui.root
+        .attr('aria-label', this.options.rootLabel)
+        .addClass('has_label')
+        .append($('<span />', {
+          'class': 'folder_breadcrumb-root_label',
+          text: this.options.rootLabel
+        }));
+    }
+
     this.options.fileFolders.ancestorsOf(this.model).forEach(function(folder) {
       this.appendSegment(this.parentSegment(folder));
     }, this);

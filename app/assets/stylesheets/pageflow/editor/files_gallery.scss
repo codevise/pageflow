@@ -59,6 +59,18 @@ ul.files_gallery {
     background-color: var(--ui-on-surface-color-lightest);
   }
 
+  .explorer_folder_item-pictogram {
+    @include background-icon-center(var(--ui-primary-color-light), 48px);
+    @include folder-icon;
+
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    border-radius: rounded();
+    background-color: var(--ui-on-surface-color-lightest);
+  }
+
   .file_name {
     margin-top: 5px;
     display: block;

@@ -13,7 +13,7 @@
   &.dialog .panels {
     display: grid;
     grid-template-columns: 20% minmax(space(40), 1fr) minmax(0, space(64));
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr);
   }
 
   .files_panel,

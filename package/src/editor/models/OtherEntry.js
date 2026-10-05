@@ -2,6 +2,7 @@ import Backbone from 'backbone';
 
 import {editor} from '../base';
 
+import {FileFoldersCollection} from '../collections/FileFoldersCollection';
 import {FilesCollection} from '../collections/FilesCollection';
 
 export const OtherEntry = Backbone.Model.extend({
@@ -12,6 +13,7 @@ export const OtherEntry = Backbone.Model.extend({
 
   initialize: function(attributes, options) {
     this.files = {};
+    this.fileFolders = new FileFoldersCollection([], {entry: this});
     this.fileTypes = options?.fileTypes || editor.fileTypes;
   },
 

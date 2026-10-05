@@ -23,7 +23,9 @@ describe('FilesExplorerView', () => {
     'pageflow.editor.files.tabs.video_files': 'Videos',
     'pageflow.editor.templates.files_explorer.ok': 'OK',
     'pageflow.editor.templates.files_explorer_blank_slate.choose_hint': 'Please choose a story.',
-    'pageflow.editor.views.explorer_files_view.no_files': 'This story does not contain any files.'
+    'pageflow.editor.views.explorer_files_view.no_files': 'This story does not contain any files.',
+    'pageflow.editor.views.folder_breadcrumb_view.label': 'Folder path',
+    'pageflow.editor.views.folder_breadcrumb_view.reset': 'Leave folder'
   });
 
   beforeEach(() => {
@@ -45,13 +47,16 @@ describe('FilesExplorerView', () => {
     });
   }
 
-  function respondWithOtherEntryFiles(files) {
-    testContext.server.respondWith('GET', '/editor/entries',
+  function respondWithOtherEntryFiles(files, fileFolders = []) {
+    respondWithJson('/editor/entries', [{id: 2, title: 'Other'}]);
+    respondWithJson('/editor/entries/2/files', files);
+    respondWithJson('/editor/entries/2/file_folders', fileFolders);
+  }
+
+  function respondWithJson(url, body) {
+    testContext.server.respondWith('GET', url,
                                    [200, {'Content-Type': 'application/json'},
-                                    JSON.stringify([{id: 2, title: 'Other'}])]);
-    testContext.server.respondWith('GET', '/editor/entries/2/files',
-                                   [200, {'Content-Type': 'application/json'},
-                                    JSON.stringify(files)]);
+                                    JSON.stringify(body)]);
   }
 
   function renderWithOtherEntry(view) {
@@ -208,19 +213,15 @@ describe('FilesExplorerView', () => {
   });
 
   describe('when changing selected entry', () => {
-    function respondWith(url, body) {
-      testContext.server.respondWith('GET', url,
-                                     [200, {'Content-Type': 'application/json'},
-                                      JSON.stringify(body)]);
-    }
-
     function respondWithEntries(filesOfThirdEntry) {
-      respondWith('/editor/entries', [{id: 2, title: 'Other'}, {id: 3, title: 'Third'}]);
-      respondWith('/editor/entries/2/files', {
+      respondWithJson('/editor/entries', [{id: 2, title: 'Other'}, {id: 3, title: 'Third'}]);
+      respondWithJson('/editor/entries/2/files', {
         image_files: [{id: 5, file_name: 'other.png', state: 'processed'}],
         video_files: [{id: 6, file_name: 'other.mp4', state: 'encoded'}]
       });
-      respondWith('/editor/entries/3/files', filesOfThirdEntry);
+      respondWithJson('/editor/entries/2/file_folders', []);
+      respondWithJson('/editor/entries/3/files', filesOfThirdEntry);
+      respondWithJson('/editor/entries/3/file_folders', []);
     }
 
     it('preserves file type filter', async () => {
@@ -256,6 +257,147 @@ describe('FilesExplorerView', () => {
       await user.click(getByText('Other'));
       testContext.server.respond();
       await user.click(getByRole('button', {name: 'Videos'}));
+      await user.click(getByText('Third'));
+      testContext.server.respond();
+
+      expect(queryByText('third.png')).not.toBeNull();
+    });
+  });
+
+  describe('folders', () => {
+    function respondWithFilesInFolders() {
+      respondWithOtherEntryFiles({
+        image_files: [
+          {id: 5, file_name: 'top.png', state: 'processed'},
+          {id: 6, file_name: 'nested.png', state: 'processed', folder_perma_id: 10},
+          {id: 7, file_name: 'deeper.png', state: 'processed', folder_perma_id: 11}
+        ],
+        video_files: [
+          {id: 8, file_name: 'clip.mp4', state: 'encoded', folder_perma_id: 12}
+        ]
+      }, [
+        {id: 1, perma_id: 10, name: 'Photos'},
+        {id: 2, perma_id: 11, name: 'Holidays', parent_folder_perma_id: 10},
+        {id: 3, perma_id: 12, name: 'Clips'},
+        {id: 4, perma_id: 13, name: 'Empty'}
+      ]);
+    }
+
+    it('lists top level folders and files outside of folders', () => {
+      currentEntry();
+      respondWithFilesInFolders();
+
+      const {queryByText} = renderWithOtherEntry(new FilesExplorerView({}));
+
+      expect(queryByText('Photos')).not.toBeNull();
+      expect(queryByText('Clips')).not.toBeNull();
+      expect(queryByText('top.png')).not.toBeNull();
+      expect(queryByText('Holidays')).toBeNull();
+      expect(queryByText('nested.png')).toBeNull();
+    });
+
+    it('lists folders before files', () => {
+      currentEntry();
+      respondWithFilesInFolders();
+
+      const {getByText} = renderWithOtherEntry(new FilesExplorerView({}));
+
+      expect(getByText('Photos').compareDocumentPosition(getByText('top.png')))
+        .toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    });
+
+    it('hides folders without files', () => {
+      currentEntry();
+      respondWithFilesInFolders();
+
+      const {queryByText} = renderWithOtherEntry(new FilesExplorerView({}));
+
+      expect(queryByText('Empty')).toBeNull();
+    });
+
+    it('hides folders without files of selected type', async () => {
+      currentEntry();
+      respondWithFilesInFolders();
+      const user = userEvent.setup();
+
+      const {getByRole, queryByText} = renderWithOtherEntry(new FilesExplorerView({}));
+      await user.click(getByRole('button', {name: 'Videos'}));
+
+      expect(queryByText('Photos')).toBeNull();
+      expect(queryByText('Clips')).not.toBeNull();
+    });
+
+    it('lists subfolders and files of folder once entered', async () => {
+      currentEntry();
+      respondWithFilesInFolders();
+      const user = userEvent.setup();
+
+      const {getByText, queryByText} = renderWithOtherEntry(new FilesExplorerView({}));
+      await user.click(getByText('Photos'));
+
+      expect(queryByText('Holidays')).not.toBeNull();
+      expect(queryByText('nested.png')).not.toBeNull();
+      expect(queryByText('top.png')).toBeNull();
+      expect(queryByText('Clips')).toBeNull();
+    });
+
+    it('displays breadcrumb of entered folder', async () => {
+      currentEntry();
+      respondWithFilesInFolders();
+      const user = userEvent.setup();
+
+      const {getByText, getByRole} = renderWithOtherEntry(new FilesExplorerView({}));
+      await user.click(getByText('Photos'));
+      await user.click(getByText('Holidays'));
+
+      expect(getByRole('navigation', {name: 'Folder path'}))
+        .toHaveTextContent('Other PhotosHolidays');
+    });
+
+    it('supports leaving folder via breadcrumb', async () => {
+      currentEntry();
+      respondWithFilesInFolders();
+      const user = userEvent.setup();
+
+      const {getByText, getByRole, queryByText, queryByRole} =
+        renderWithOtherEntry(new FilesExplorerView({}));
+      await user.click(getByText('Photos'));
+      await user.click(getByRole('button', {name: 'Other'}));
+
+      expect(queryByText('top.png')).not.toBeNull();
+      expect(queryByRole('navigation', {name: 'Folder path'})).toBeNull();
+    });
+
+    it('does not select folders', async () => {
+      currentEntry();
+      respondWithFilesInFolders();
+      const user = userEvent.setup();
+
+      const {getByText, getByRole} = renderWithOtherEntry(new FilesExplorerView({}));
+      await user.click(getByText('top.png'));
+      await user.click(getByText('Photos'));
+
+      expect(getByRole('button', {name: 'OK'})).toBeDisabled();
+    });
+
+    it('starts at top level when other entry is selected', async () => {
+      currentEntry();
+      respondWithJson('/editor/entries', [{id: 2, title: 'Other'}, {id: 3, title: 'Third'}]);
+      respondWithJson('/editor/entries/2/files', {
+        image_files: [{id: 6, file_name: 'nested.png', state: 'processed', folder_perma_id: 10}]
+      });
+      respondWithJson('/editor/entries/2/file_folders', [{id: 1, perma_id: 10, name: 'Photos'}]);
+      respondWithJson('/editor/entries/3/files', {
+        image_files: [{id: 9, file_name: 'third.png', state: 'processed'}]
+      });
+      respondWithJson('/editor/entries/3/file_folders', []);
+      const user = userEvent.setup();
+
+      const {getByText, queryByText} = render(new FilesExplorerView({}));
+      testContext.server.respond();
+      await user.click(getByText('Other'));
+      testContext.server.respond();
+      await user.click(getByText('Photos'));
       await user.click(getByText('Third'));
       testContext.server.respond();
 

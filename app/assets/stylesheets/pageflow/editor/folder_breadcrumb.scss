@@ -21,6 +21,12 @@
     cursor: pointer;
   }
 
+  &-root_label {
+    margin-left: space(2);
+    color: var(--ui-on-surface-color-light);
+    text-decoration: underline;
+  }
+
   &-separator {
     @include right-open-icon;
 
