@@ -10,7 +10,7 @@ import styles from 'contentElements/heading/Heading.module.css';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('Heading', () => {
-  function renderHeading({configuration, width, sectionProps} = {}) {
+  function renderHeading({configuration, width, sectionProps, inlineEditing} = {}) {
     return renderInContentElement(
       <Heading
         configuration={{
@@ -20,9 +20,33 @@ describe('Heading', () => {
         contentElementId={5}
         contentElementWidth={width || contentElementWidths.md}
         sectionProps={{sectionIndex: 1, ...sectionProps}}
-      />
+      />,
+      {inlineEditing}
     );
   }
+
+  it('does not render blank tagline and subtitle', () => {
+    const {queryAllByRole} = renderHeading({
+      configuration: {
+        tagline: [{type: 'heading', children: [{text: ''}]}],
+        subtitle: [{type: 'heading', children: [{text: ''}]}]
+      }
+    });
+
+    expect(queryAllByRole('doc-subtitle')).toHaveLength(0);
+  });
+
+  it('renders blank tagline and subtitle when selected', () => {
+    const {queryAllByRole} = renderHeading({
+      configuration: {
+        tagline: [{type: 'heading', children: [{text: ''}]}],
+        subtitle: [{type: 'heading', children: [{text: ''}]}]
+      },
+      inlineEditing: {isSelected: true}
+    });
+
+    expect(queryAllByRole('doc-subtitle')).toHaveLength(2);
+  });
 
   it('centers heading with width lg when constrainContentWidth is set', () => {
     const {container} = renderHeading({
