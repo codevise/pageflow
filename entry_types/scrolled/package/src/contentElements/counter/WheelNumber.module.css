@@ -25,8 +25,9 @@
 .wheel {
   position: absolute;
   inset: 0;
-  top: min(0px, calc((1lh - var(--extended-height)) / 2));
-  bottom: min(0px, calc((1lh - var(--extended-height)) / 2));
+  /* Keep the zero length typed: the minifier strips the unit from 0px. */
+  top: min(0lh, calc((1lh - var(--extended-height)) / 2));
+  bottom: min(0lh, calc((1lh - var(--extended-height)) / 2));
   display: grid;
   align-items: center;
   overflow: hidden;
