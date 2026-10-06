@@ -2,22 +2,34 @@
   display: inline-flex;
 }
 
-.wheel {
+.column {
   --mask-gutter: 0.15em;
   --mask-fade: 0.075em;
   --extended-height: calc(1cap + var(--mask-gutter) + var(--mask-gutter));
 
+  position: relative;
   display: inline-grid;
+}
+
+.sizer {
+  grid-area: 1 / 1;
+  align-self: baseline;
+  visibility: hidden;
+}
+
+.anchor {
+  position: absolute;
+  inset: 0;
+}
+
+.wheel {
+  position: absolute;
+  inset: 0;
+  top: min(0px, calc((1lh - var(--extended-height)) / 2));
+  bottom: min(0px, calc((1lh - var(--extended-height)) / 2));
+  display: grid;
   align-items: center;
   overflow: hidden;
-  height: max(
-    1lh,
-    var(--extended-height)
-  );
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-top: min(0px, calc((1lh - var(--extended-height)) / 2));
-  margin-bottom: min(0px, calc((1lh - var(--extended-height)) / 2));
   mask-image: linear-gradient(
     to bottom,
     transparent calc(var(--mask-gutter) - var(--mask-fade)),
@@ -26,6 +38,21 @@
     transparent calc(100% - var(--mask-gutter) + var(--mask-fade))
   );
   mask-repeat: no-repeat;
+}
+
+@supports (text-box: trim-both cap alphabetic) {
+  .anchor {
+    position: relative;
+    grid-area: 1 / 1;
+    align-self: baseline;
+    height: 0;
+  }
+
+  .wheel {
+    top: auto;
+    bottom: calc(-1 * var(--mask-gutter));
+    height: var(--extended-height);
+  }
 }
 
 .wheel > span {
