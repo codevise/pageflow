@@ -11,24 +11,54 @@ module Pageflow
     end
 
     describe '#index' do
-      it 'returns entries json' do
+      it 'returns entries user is member of' do
         user = create(:user)
-        entry = DraftEntry.new(create(:entry), build_stubbed(:revision))
-        allow(DraftEntry).to receive(:accessible_by).and_return([entry])
+        entry = create(:entry, with_previewer: user)
+        create(:entry)
 
         sign_in(user, scope: :user)
         get(:index, format: 'json')
 
-        expect(response.body).to include_json([
-                                                {id: entry.id}
-                                              ])
+        expect(JSON.parse(response.body).map { |e| e['id'] }).to eq([entry.id])
+      end
+
+      it 'returns entries of accounts user is member of' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, account:)
+
+        sign_in(user, scope: :user)
+        get(:index, format: 'json')
+
+        expect(JSON.parse(response.body).map { |e| e['id'] }).to eq([entry.id])
+      end
+
+      it 'returns entries only once if user is member of entry and account' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, account:, with_editor: user)
+
+        sign_in(user, scope: :user)
+        get(:index, format: 'json')
+
+        expect(JSON.parse(response.body).map { |e| e['id'] }).to eq([entry.id])
+      end
+
+      it 'only returns entries admins are member of' do
+        user = create(:user, :admin)
+        entry = create(:entry, with_previewer: user)
+        create(:entry)
+
+        sign_in(user, scope: :user)
+        get(:index, format: 'json')
+
+        expect(JSON.parse(response.body).map { |e| e['id'] }).to eq([entry.id])
       end
 
       it 'uses entry title instead of title of draft' do
         user = create(:user)
-        entry = create(:entry, title: 'Campaign')
+        entry = create(:entry, title: 'Campaign', with_previewer: user)
         entry.draft.update!(title: '')
-        allow(DraftEntry).to receive(:accessible_by).and_return([DraftEntry.new(entry)])
 
         sign_in(user, scope: :user)
         get(:index, format: 'json')

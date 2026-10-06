@@ -9,7 +9,9 @@ module Pageflow
       before_action :authenticate_user!
 
       def index
-        @entries = DraftEntry.accessible_by(current_ability, :use_files)
+        @entries = EntryPolicy::Scope.new(current_user, Entry.includes(:draft))
+                                     .previewer_or_above
+                                     .map { |entry| DraftEntry.new(entry) }
         respond_with(@entries)
       end
 
