@@ -24,6 +24,18 @@ module Pageflow
                                               ])
       end
 
+      it 'uses entry title instead of title of draft' do
+        user = create(:user)
+        entry = create(:entry, title: 'Campaign')
+        entry.draft.update!(title: '')
+        allow(DraftEntry).to receive(:accessible_by).and_return([DraftEntry.new(entry)])
+
+        sign_in(user, scope: :user)
+        get(:index, format: 'json')
+
+        expect(response.body).to include_json([{id: entry.id, title: 'Campaign'}])
+      end
+
       it 'requires user to be signed in' do
         get :index, format: 'json'
 
