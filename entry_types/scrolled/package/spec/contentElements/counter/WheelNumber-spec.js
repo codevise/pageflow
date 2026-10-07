@@ -2,6 +2,7 @@ import React from 'react';
 import {render} from '@testing-library/react';
 
 import {WheelNumber} from 'contentElements/counter/WheelNumber';
+import styles from 'contentElements/counter/WheelNumber.module.css';
 
 import '@testing-library/jest-dom/extend-expect';
 
@@ -20,11 +21,28 @@ describe('WheelNumber', () => {
   it('renders 3 wheels with 10 digits each for 3-digit target value', () => {
     const {container} = renderWheelNumber();
 
-    const digitSpans = Array.from(container.querySelectorAll('span')).filter(span =>
+    const digitSpans = Array.from(container.querySelectorAll('[style*="--digit"]')).filter(span =>
       /^\d$/.test(span.textContent)
     );
 
     expect(digitSpans.length).toBe(30); // 3 wheels × 10 digits
+  });
+
+  it('reserves the width of every digit outside the animated viewport', () => {
+    const {container} = renderWheelNumber({value: 75, targetValue: 75});
+
+    const columns = container.querySelectorAll(`.${styles.column}`);
+    expect(columns.length).toBe(2);
+    columns.forEach(column => {
+      const sizers = Array.from(column.querySelectorAll(`.${styles.sizer}`));
+      expect(sizers.map(sizer => sizer.textContent)).toEqual(
+        ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+      );
+      sizers.forEach(sizer => {
+        expect(sizer).toHaveAttribute('aria-hidden', 'true');
+        expect(sizer.closest(`.${styles.wheel}`)).toBeNull();
+      });
+    });
   });
 
   it('sets rotation values to show correct digits when value equals target', () => {
@@ -33,7 +51,7 @@ describe('WheelNumber', () => {
       targetValue: 123
     });
 
-    const zeroDigits = Array.from(container.querySelectorAll('span')).filter(span =>
+    const zeroDigits = Array.from(container.querySelectorAll('[style*="--digit"]')).filter(span =>
       span.textContent === '0'
     );
 
