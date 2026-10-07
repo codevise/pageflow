@@ -14,6 +14,31 @@ module Pageflow
         expect(video_files).to include(video_file)
       end
 
+      it 'does not add second usage for file already used in destination entry' do
+        source_entry = DraftEntry.new(create(:entry))
+        video_file = create(:video_file, used_in: source_entry.draft)
+        destination_entry = DraftEntry.new(create(:entry))
+        create(:file_usage, revision: destination_entry.draft, file: video_file)
+
+        FileReuse.new(destination_entry, source_entry, BuiltInFileType.video, video_file.id).save!
+
+        expect(destination_entry.draft.file_usages.where(file: video_file).count).to eq(1)
+      end
+
+      it 'does not add second usage for nested file already used in destination entry' do
+        source_entry = DraftEntry.new(create(:entry))
+        video_file = create(:video_file, used_in: source_entry.draft)
+        text_track_file = create(:text_track_file,
+                                 parent_file: video_file,
+                                 used_in: source_entry.draft)
+        destination_entry = DraftEntry.new(create(:entry))
+        create(:file_usage, revision: destination_entry.draft, file: text_track_file)
+
+        FileReuse.new(destination_entry, source_entry, BuiltInFileType.video, video_file.id).save!
+
+        expect(destination_entry.draft.file_usages.where(file: text_track_file).count).to eq(1)
+      end
+
       it 'copies configuration from source usage' do
         source_entry = DraftEntry.new(create(:entry))
         file = create(:video_file,

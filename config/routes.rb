@@ -55,15 +55,17 @@ Pageflow::Engine.routes.draw do
       end
 
       resources :entries, only: [] do
+        get 'files', to: 'files#index', as: :all_files
+
         resources :files,
                   path: 'files/:collection_name',
-                  only: [:index, :create, :update, :destroy] do
-          post :reuse, on: :collection
+                  only: [:create, :update, :destroy] do
           post :retry, on: :member
           put :publish, on: :member
         end
 
         resources :file_folders, only: [:index, :create, :update, :destroy]
+        resources :file_reuses, only: [:create]
 
         get '/file_import/:file_import_name/search' => 'file_import#search'
         post '/file_import/:file_import_name/files_meta_data' => 'file_import#files_meta_data'

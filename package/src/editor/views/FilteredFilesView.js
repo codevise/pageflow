@@ -8,15 +8,13 @@ import {DropDownButtonView} from './DropDownButtonView';
 
 import {editor} from '../base';
 
-import {CombinedFilesCollection} from '../collections/CombinedFilesCollection';
-import {ConcatenatedCollection} from '../collections/ConcatenatedCollection';
 import {ListSelection} from '../collections/ListSelection';
-import {SubsetCollection} from '../collections/SubsetCollection';
 import {FilesBlankSlateView} from './FilesBlankSlateView';
 import {FilesListItemView} from './FilesListItemView';
 import {FileTypePillsView} from './FileTypePillsView';
 import {FolderBreadcrumbView} from './FolderBreadcrumbView';
 import {FileFolder} from '../models/FileFolder';
+import {FileListing} from '../models/FileListing';
 import {Search} from '../models/Search';
 import {ListHighlight} from '../models/ListHighlight';
 import {ListSearchFieldView} from './ListSearchFieldView';
@@ -92,60 +90,17 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       }, this);
     }
 
-    this.combinedFiles = new CombinedFilesCollection({
-      collections: this.filteredCollections || collections
+    this.fileListing = new FileListing({folder: this.options.folder}, {
+      collections: this.filteredCollections || collections,
+      fileFolders: this.options.fileFolders,
+      fileTypeSelection: this.options.fileTypeSelection,
+      search: this.search
     });
 
-    if (this.options.fileTypeSelection) {
-      this.selectedFiles = new SubsetCollection({
-        parent: this.combinedFiles,
-        filter: this.matchesFileTypeSelection.bind(this)
-      });
+    this.combinedFiles = this.fileListing.files;
+    this.selectedFiles = this.fileListing.selectedFiles;
 
-      this.listenTo(this.options.fileTypeSelection, 'change:collectionNames', function() {
-        this.selectedFiles.updateFilter(this.matchesFileTypeSelection.bind(this));
-      });
-    }
-
-    if (this.options.fileFolders) {
-      this.folderFiles = new SubsetCollection({
-        parent: this.selectedFiles || this.combinedFiles,
-        filter: this.matchesFolder.bind(this),
-        watchAttribute: 'folder_perma_id'
-      });
-
-      this.visibleFolders = new SubsetCollection({
-        parent: this.options.fileFolders,
-        filter: this.isVisibleFolder.bind(this),
-        watchAttribute: 'parent_folder_perma_id'
-      });
-
-      this.listenTo(this.search, 'change:term', function() {
-        this.folderFiles.updateFilter(this.matchesFolder.bind(this));
-        this.updateVisibleFolders();
-      });
-
-      this.listenTo(this.combinedFiles,
-                    'add remove change:folder_perma_id',
-                    this.updateVisibleFolders);
-
-      if (this.options.fileTypeSelection) {
-        this.listenTo(this.options.fileTypeSelection,
-                      'change:collectionNames',
-                      this.updateVisibleFolders);
-      }
-    }
-
-    this.searchFilteredCollection = this.search.applyTo(this.folderFiles ||
-                                                       this.selectedFiles ||
-                                                       this.combinedFiles);
-
-    // Folders and files form one list, so that keyboard navigation
-    // reaches both and the blank slate only appears once neither is
-    // left.
-    this.listItems = new ConcatenatedCollection({
-      collections: [this.visibleFolders, this.searchFilteredCollection].filter(Boolean)
-    });
+    this.listItems = this.fileListing.listItems;
 
     if (this.options.selectionHandler) {
       this.listHighlight = new ListHighlight({}, {collection: this.listItems});
@@ -263,6 +218,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
       label: this.searchLabel(),
       hintTranslationKey: this.searchHintTranslationKey(),
       listHighlight: this.listHighlight,
+      hotkey: true,
       ariaControlsId: 'filtered_files',
       autoFocus: !!this.options.selectionHandler
     }), {to: this.ui.filterBar});
@@ -387,7 +343,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
   },
 
   selectionContainsNonEmptyFolder: function() {
-    var files = this.selectedFiles || this.combinedFiles;
+    var files = this.selectedFiles;
 
     return this.listSelection.some(function(model) {
       return model instanceof FileFolder &&
@@ -440,7 +396,7 @@ export const FilteredFilesView = Marionette.ItemView.extend({
         onSelect: this.options.onSelectFolder,
         folder: this.options.folder,
         fileFolders: this.options.fileFolders,
-        files: this.selectedFiles || this.combinedFiles,
+        files: this.selectedFiles,
         listSelection: this.listSelection,
         selectionHandler: this.options.selectionHandler,
         listHighlight: this.listHighlight,
@@ -483,72 +439,11 @@ export const FilteredFilesView = Marionette.ItemView.extend({
     return this.options.fileTypes[0];
   },
 
-  matchesFileTypeSelection: function(file) {
-    return this.options.fileTypeSelection.matches(file);
-  },
-
-  // Searching the root list looks into all folders. Inside a folder,
-  // searching stays scoped to that folder.
-  matchesFolder: function(file) {
-    if (this.searchesAllFolders()) {
-      return true;
-    }
-
-    return file.get('folder_perma_id') === this.folderPermaId();
-  },
-
-  // Folder name hits are only of interest while searching the root list.
-  // Inside a folder, subfolders would just be noise among the file hits.
-  isVisibleFolder: function(folder) {
-    if (this.search.get('term')) {
-      return this.searchesAllFolders() &&
-             this.search.matchesValue(folder.get('name')) &&
-             this.containsSelectedFileTypes(folder);
-    }
-
-    if (folder.get('parent_folder_perma_id') !== this.folderPermaId()) {
-      return false;
-    }
-
-    return folder.isNew() || this.containsSelectedFileTypes(folder);
-  },
-
-  // Filtering by file type would otherwise keep listing folders which
-  // turn out empty once entered.
-  containsSelectedFileTypes: function(folder) {
-    if (!this.selectedFiles || !this.options.fileTypeSelection.get('collectionNames').length) {
-      return true;
-    }
-
-    var permaIds = this.options.fileFolders.descendantPermaIdsOf(folder);
-
-    return this.selectedFiles.some(function(file) {
-      return permaIds.indexOf(file.get('folder_perma_id')) >= 0;
-    });
-  },
-
-  updateVisibleFolders: function() {
-    this.visibleFolders.updateFilter(this.isVisibleFolder.bind(this));
-  },
-
-  searchesAllFolders: function() {
-    return !this.options.folder && !!this.search.get('term');
-  },
-
-  folderPermaId: function() {
-    return this.options.folder ? this.options.folder.get('perma_id') : null;
-  },
-
   onClose: function() {
     Marionette.ItemView.prototype.onClose.call(this);
 
+    this.fileListing.dispose();
     this.filteredCollections?.forEach(collection => collection.dispose());
-    this.selectedFiles?.dispose();
-    this.folderFiles?.dispose();
-    this.visibleFolders?.dispose();
-    this.combinedFiles.dispose();
-    this.searchFilteredCollection.dispose();
-    this.listItems.dispose();
   }
 });
 

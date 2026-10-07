@@ -3,7 +3,7 @@ import Marionette from 'backbone.marionette';
 import {FileMetaDataItemValueView, FileMetaDataOverlayView} from 'pageflow/editor';
 
 import * as support from '$support';
-import {FileMetaDataTable, FileStageItem} from '$support/dominos/editor';
+import {FileMetaDataTable} from '$support/dominos/editor';
 import {renderBackboneView as render} from 'pageflow/testHelpers';
 
 describe('FileMetaDataOverlayView', () => {
@@ -17,8 +17,6 @@ describe('FileMetaDataOverlayView', () => {
   });
 
   support.useFakeTranslations({
-    'pageflow.editor.templates.file_item.source': 'Source',
-    'pageflow.editor.templates.file_item.download': 'Download',
     'pageflow.editor.views.file_references.header': 'Referenced by'
   });
 
@@ -67,46 +65,6 @@ describe('FileMetaDataOverlayView', () => {
       .toEqual(expect.arrayContaining(['200x100px']));
   });
 
-  it('renders meta data items with custom view and options', () => {
-    const file = support.factories.file({dimension: '200x100px'});
-
-    const view = overlayView(file, {
-      metaDataAttributes: [
-        {
-          name: 'dimension',
-          valueView: FileMetaDataItemValueView.extend({
-            getText: function() {
-              return this.model.get(this.options.name) + this.options.suffix;
-            }
-          }),
-          valueViewOptions: {
-            suffix: '!!'
-          }
-        }
-      ]
-    });
-
-    render(view);
-
-    expect(FileMetaDataTable.find(view).values())
-      .toEqual(expect.arrayContaining(['200x100px!!']));
-  });
-
-  it('links to download_url', () => {
-    const file = support.factories.file({
-      original_url: '/path/file.png',
-      display_name: 'My File',
-      state: 'processed'
-    });
-
-    const view = overlayView(file);
-
-    const {getByRole} = render(view);
-
-    expect(getByRole('link', {name: 'Download'}).getAttribute('href'))
-      .toBe('/path/file.png?download=My%20File');
-  });
-
   const PreviewView = Marionette.ItemView.extend({
     template: () => '<span class="preview_stand_in"></span>'
   });
@@ -142,58 +100,7 @@ describe('FileMetaDataOverlayView', () => {
     render(view);
 
     expect(view.$el.find('.preview_stand_in').length).toBe(0);
-    expect(view.$el.find('.file_meta_data_overlay-preview')).not.toBeVisible();
-  });
-
-  it('hides the preview for file types without preview view', () => {
-    const view = overlayView(support.factories.file({id: 123, state: 'processed'}));
-
-    render(view);
-    view.open();
-
-    expect(view.$el.find('.file_meta_data_overlay-preview')).not.toBeVisible();
-  });
-
-  it('hides the preview while the file is still processing', () => {
-    const view = overlayView(fileWithPreview({state: 'processing'}));
-
-    render(view);
-    view.open();
-
-    expect(view.$el.find('.preview_stand_in').length).toBe(0);
-    expect(view.$el.find('.file_meta_data_overlay-preview')).not.toBeVisible();
-  });
-
-  it('renders the preview once the file has been processed', () => {
-    const file = fileWithPreview({state: 'processing'});
-    const view = overlayView(file);
-
-    render(view);
-    view.open();
-    file.set('state', 'processed');
-
-    expect(view.$el.find('.preview_stand_in').length).toBe(1);
-  });
-
-  it('shows only the stage the file is waiting on', () => {
-    const file = support.factories.file({id: 123, state: 'uploading'});
-
-    const view = overlayView(file);
-
-    render(view);
-
-    expect(FileStageItem.findAll(view).length).toBe(1);
-  });
-
-  it('hides stages once the file is ready', () => {
-    const file = support.factories.file({id: 123, state: 'processed'});
-
-    const view = overlayView(file);
-
-    render(view);
-
-    expect(FileStageItem.findAll(view).length).toBe(0);
-    expect(view.$el.find('.file_stage_items')).not.toBeVisible();
+    expect(view.$el.find('.file_details-preview')).not.toBeVisible();
   });
 
   it('is closed initially', () => {
@@ -264,7 +171,7 @@ describe('FileMetaDataOverlayView', () => {
       define(view.el, 'offsetHeight', contentHeight);
       define(view.ui.content[0], 'offsetHeight', contentHeight);
       define(view.ui.content[0], 'scrollHeight', contentHeight);
-      jest.spyOn(view.ui.preview, 'outerHeight').mockReturnValue(previewHeight);
+      jest.spyOn(view.detailsView.ui.preview, 'outerHeight').mockReturnValue(previewHeight);
 
       view.applyAvailableHeight({availableHeight});
 

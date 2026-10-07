@@ -1,14 +1,15 @@
 ul.files_gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-auto-rows: max-content;
+  gap: 2px;
   margin-top: 10px;
 
   > li {
-    margin-bottom: 2px;
     position: relative;
     overflow: hidden;
-    float: left;
     text-align: center;
     padding: space(2);
-    width: 120px;
     cursor: pointer;
     border: solid 3px transparent;
     border-radius: rounded();
@@ -18,8 +19,11 @@ ul.files_gallery {
     }
 
     &.active {
-      background-color: var(--ui-selection-color-lighter);
       border: solid 3px var(--ui-selection-color);
+    }
+
+    &.active:not(.marking) {
+      background-color: var(--ui-selection-color-lighter);
     }
 
     &.disabled {
@@ -29,6 +33,65 @@ ul.files_gallery {
 
       @include background-icon-right(var(--ui-primary-color), 22px, 18px);
       @include check-icon;
+    }
+  }
+
+  > li.marked {
+    background-color: var(--ui-selection-color-lighter);
+  }
+
+  > li:hover .explorer_file_item-mark,
+  .explorer_file_item-mark:focus-visible {
+    opacity: 0.8;
+  }
+
+  > li.marking .explorer_file_item-mark {
+    @include fa-circle-icon;
+    opacity: 0.8;
+  }
+
+  > li.marking:not(.marked):hover {
+    background-color: transparent;
+  }
+
+  > li.marking .explorer_file_item-mark:hover {
+    @include fa-check-circle-icon;
+  }
+
+  > li.marked .explorer_file_item-mark {
+    @include fa-check-circle-icon;
+
+    opacity: 1;
+  }
+
+  // Top right corner of the 100px wide thumbnail centered in the item.
+  .explorer_file_item-mark {
+    @include fa-check-circle-icon;
+
+    position: absolute;
+    top: space(3);
+    left: calc(50% + 50px - #{space(7)});
+    width: space(6);
+    height: space(6);
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    color: var(--ui-on-primary-color);
+    filter: drop-shadow(0 0 2px #00000077);
+    font-size: 22px;
+    font-weight: bold;
+    line-height: space(6);
+    cursor: pointer;
+    opacity: 0;
+  }
+
+  > li.blank_slate,
+  > li.loading {
+    grid-column: 1 / -1;
+    cursor: default;
+
+    &:hover {
+      background-color: transparent;
     }
   }
 
@@ -45,6 +108,19 @@ ul.files_gallery {
     margin: auto;
     border-radius: rounded();
     overflow: hidden;
+    background-color: var(--ui-on-surface-color-lightest);
+  }
+
+  .explorer_folder_item-pictogram {
+    @include background-icon-center(var(--ui-primary-color-light), 48px);
+    @include folder-icon;
+
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    border-radius: rounded();
+    background-color: var(--ui-on-surface-color-lightest);
   }
 
   .file_name {

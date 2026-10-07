@@ -10,17 +10,25 @@ module Pageflow
       @folder_perma_id = folder_perma_id
     end
 
-    def save! # rubocop:todo Metrics/AbcSize
-      destination_entry.use_file(file, folder_perma_id: @folder_perma_id)
+    def save!
+      use_file_unless_used(file, folder_perma_id: @folder_perma_id)
 
       file_type.nested_file_types.each do |nested_file_type|
         source_entry.find_files(nested_file_type.model).each do |nested_file|
           next if nested_file.parent_file_id != file.id ||
                   nested_file.parent_file_model_type != file.model_name.name
 
-          destination_entry.use_file(nested_file)
+          use_file_unless_used(nested_file)
         end
       end
+    end
+
+    private
+
+    def use_file_unless_used(file, **)
+      return if destination_entry.draft.file_usages.exists?(file: file.to_model)
+
+      destination_entry.use_file(file, **)
     end
   end
 end

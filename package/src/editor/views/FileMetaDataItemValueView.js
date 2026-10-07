@@ -18,6 +18,11 @@ import template from '../templates/fileMetaDataItemValueView.jst';
  *   Dispaly a link to open the specified tab of the file settings
  *   dialog.
  *
+ * @param {boolean} [options.readOnly]
+ *   Never display edit links, for example when displaying files of
+ *   other entries. Subclasses that offer other ways to edit the file
+ *   should respect this option as well.
+ *
  * @since 12.0
  *
  * @class
@@ -62,7 +67,8 @@ export const FileMetaDataItemValueView = Marionette.ItemView.extend({
   },
 
   toggleEditLink: function() {
-    this.ui.editLink.toggle(!!this.options.settingsDialogTabLink &&
+    this.ui.editLink.toggle(!this.options.readOnly &&
+                            !!this.options.settingsDialogTabLink &&
                             !this.model.isNew());
   }
 });

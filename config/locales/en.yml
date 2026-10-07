@@ -1504,12 +1504,10 @@ en:
           no_files: There are no files yet. You can upload one to get started.
         files_explorer:
           cancel: Cancel
-          ok: Ok
+          ok: Reuse
           reuse_files: Reuse files from other stories
         files_explorer_blank_slate:
           choose_hint: Please choose a story.
-        files_gallery_blank_slate:
-          no_files: This story does not contain any files of this type.
         help:
           close: Close
           title: Help
@@ -1640,6 +1638,18 @@ en:
           show_editor: Show editor panel
         entry_preview_view:
           scroll_hint: Scroll down to continue
+        explorer_file_item_view:
+          mark: Select for reuse
+          start_marking: Select multiple files
+        explorer_files_view:
+          end_marking: End selection
+          marked_files:
+            one: 1 file selected
+            other: '%{count} files selected'
+          no_files: This story does not contain any files.
+          no_matches: No file matches the search term.
+          search: Filter files and folders
+          search_hint: Search files
         file_item_view:
           confirm_destroy: Really delete this file?
         file_meta_data_item_value_view:
@@ -1651,6 +1661,10 @@ en:
         files_blank_slate_view:
           empty_folder: 'This folder does not contain any files, yet.'
           no_matches: 'No file matches the current filter.'
+        files_explorer_view:
+          reuse_files:
+            one: Reuse 1 file
+            other: 'Reuse %{count} files'
         files_view:
           add: Add
           authenticating: Authenticating

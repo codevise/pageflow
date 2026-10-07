@@ -15,8 +15,12 @@ module Pageflow
         if user.admin?
           scope.all
         else
-          query.with_role_at_least(:previewer)
+          previewer_or_above
         end
+      end
+
+      def previewer_or_above
+        query.with_role_at_least(:previewer)
       end
 
       def editor_or_above

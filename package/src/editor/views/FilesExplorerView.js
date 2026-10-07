@@ -1,20 +1,20 @@
 import Backbone from 'backbone';
+import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
-import _ from 'underscore';
-
-import {CollectionView, TabsView} from 'pageflow/ui';
 
 import {app} from '../app';
-import {editor} from '../base';
 
-import {ExplorerFileItemView} from './ExplorerFileItemView';
+import {ListSelection} from '../collections/ListSelection';
+import {FileTypeSelection} from '../models/FileTypeSelection';
+
+import {ExplorerFileDetailsView} from './ExplorerFileDetailsView';
+import {ExplorerFilesView} from './ExplorerFilesView';
 import {OtherEntriesCollectionView} from './OtherEntriesCollectionView';
 import {dialogView} from './mixins/dialogView';
 
 import {state} from '$state';
 
 import template from '../templates/filesExplorer.jst';
-import filesGalleryBlankSlateTemplate from '../templates/filesGalleryBlankSlate.jst';
 import filesExplorerBlankSlateTemplate from '../templates/filesExplorerBlankSlate.jst';
 
 export const FilesExplorerView = Marionette.ItemView.extend({
@@ -24,16 +24,16 @@ export const FilesExplorerView = Marionette.ItemView.extend({
   mixins: [dialogView],
 
   ui: {
-    entriesPanel: '.entries_panel',
+    entriesList: '.entries_panel-list',
     filesPanel: '.files_panel',
+    fileDetailsPanel: '.file_details_panel',
     okButton: '.ok'
   },
 
   events: {
     'click .ok': function() {
       if (this.options.callback) {
-        this.options.callback(this.selection.get('entry'),
-                              this.selection.get('file'));
+        this.options.callback(this.selection.get('entry'), this.selectedFiles());
       }
       this.close();
     }
@@ -41,76 +41,70 @@ export const FilesExplorerView = Marionette.ItemView.extend({
 
   initialize: function() {
     this.selection = new Backbone.Model();
-    this.listenTo(this.selection, 'change:entry', function() {
-      this.tabsView.refresh();
-    });
+    this.markedFiles = new ListSelection();
+    this.fileTypeSelection = new FileTypeSelection();
+    this.listenTo(this.selection, 'change:entry', this.renderFiles);
 
-    // check if the OK button should be enabled.
-    this.listenTo(this.selection, 'change', function(selection, options) {
-      this.ui.okButton.prop('disabled', !this.selection.get('file'));
-    });
+    this.listenTo(this.selection, 'change', this.updateOkButton);
+    this.listenTo(this.markedFiles, 'add remove reset', this.updateOkButton);
+  },
+
+  selectedFiles: function() {
+    return this.markedFiles.length ?
+           this.markedFiles.models.slice() :
+           [this.selection.get('file')];
+  },
+
+  updateOkButton: function() {
+    this.ui.okButton.prop('disabled', !this.markedFiles.length && !this.selection.get('file'));
+    this.ui.okButton.text(this.markedFiles.length ?
+                          I18n.t('pageflow.editor.views.files_explorer_view.reuse_files',
+                                 {count: this.markedFiles.length}) :
+                          I18n.t('pageflow.editor.templates.files_explorer.ok'));
   },
 
   onRender: function() {
     this.subview(new OtherEntriesCollectionView({
-      el: this.ui.entriesPanel,
+      el: this.ui.entriesList,
       selection: this.selection
     }));
 
-    this.tabsView = new TabsView({
-      model: this.model,
-      i18n: 'pageflow.editor.files.tabs',
-      defaultTab: this.options.tabName
-    });
+    this.renderFiles();
 
-    editor.fileTypes.each(function(fileType) {
-      if (fileType.topLevelType) {
-        this.tab(fileType);
-      }
-    }, this);
+    this.appendSubview(new ExplorerFileDetailsView({
+      selection: this.selection
+    }), {to: this.ui.fileDetailsPanel});
 
-    this.ui.filesPanel.append(this.subview(this.tabsView).el);
-
-    this.ui.okButton.prop('disabled', true);
+    this.updateOkButton();
   },
 
-  tab: function(fileType) {
-    this.tabsView.tab(fileType.collectionName, _.bind(function() {
-      var collection = this._collection(fileType);
-      var disabledIds = state.entry.getFileCollection(fileType).pluck('id');
+  renderFiles: function() {
+    var entry = this.selection.get('entry');
 
-      return new CollectionView({
-        tagName: 'ul',
-        className: 'files_gallery',
-        collection: collection,
-        itemViewConstructor: ExplorerFileItemView,
-        itemViewOptions: {
-          selection: this.selection,
-          disabledIds: disabledIds
-        },
-        blankSlateViewConstructor: this._blankSlateConstructor()
-      });
-    }, this));
-  },
+    this.markedFiles.reset();
 
-  _collection: function(fileType) {
-    var collection,
-        entry = this.selection.get('entry');
-
-    if (entry) {
-      collection = entry.getFileCollection(fileType);
-      collection.fetch();
-    } else {
-      collection = new Backbone.Collection();
+    if (this.filesView) {
+      this.filesView.close();
     }
-    return collection;
-  },
 
-  _blankSlateConstructor: function() {
-    return Marionette.ItemView.extend({
-      template: this.selection.get('entry') ? filesGalleryBlankSlateTemplate : filesExplorerBlankSlateTemplate
-    });
+    this.filesView = this.subview(entry ?
+                                  new ExplorerFilesView({
+                                    entry: entry,
+                                    currentEntry: state.entry,
+                                    selection: this.selection,
+                                    markedFiles: this.markedFiles,
+                                    fileTypeSelection: this.fileTypeSelection
+                                  }) :
+                                  new BlankSlateView());
+
+    this.ui.filesPanel.append(this.filesView.el);
   }
+});
+
+const BlankSlateView = Marionette.ItemView.extend({
+  template: filesExplorerBlankSlateTemplate,
+  tagName: 'ul',
+  className: 'files_gallery'
 });
 
 FilesExplorerView.open = function(options) {

@@ -123,10 +123,10 @@ export const Entry = Backbone.Model.extend({
     return this.scaffoldStoryline(_.extend({depth: 'page'}, options)).page;
   },
 
-  reuseFile: function(otherEntry, file, options) {
+  reuseFiles: function(otherEntry, files, options) {
     var entry = this;
 
-    FileReuse.submit(otherEntry, file, {
+    FileReuse.submit(otherEntry, files, {
       entry: entry,
       folderPermaId: (options || {}).folderPermaId,
 

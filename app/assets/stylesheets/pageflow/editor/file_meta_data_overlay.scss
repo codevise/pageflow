@@ -22,14 +22,6 @@
     padding: space(2);
   }
 
-  &-preview {
-    display: block;
-    margin-bottom: space(2);
-    border-radius: rounded();
-    overflow: hidden;
-    background-color: var(--ui-on-surface-color-lightest);
-  }
-
   // Rotating a square leaves the two edges facing the thumbnail
   // visible, so the arrow continues the border of the overlay.
   &-arrow {

@@ -1516,12 +1516,10 @@ de:
           no_files: Es wurden noch keine Dateien hochgeladen.
         files_explorer:
           cancel: Abbrechen
-          ok: Ok
+          ok: Übernehmen
           reuse_files: Dateien wiederverwenden
         files_explorer_blank_slate:
           choose_hint: Bitte wähle einen Beitrag aus.
-        files_gallery_blank_slate:
-          no_files: In diesem Beitrag gibt es keine Dateien dieses Typs.
         help:
           close: Schließen
           title: Hilfe
@@ -1652,6 +1650,18 @@ de:
           show_editor: Editorleiste einblenden
         entry_preview_view:
           scroll_hint: Scrollen, um weiterzulesen
+        explorer_file_item_view:
+          mark: Zum Übernehmen auswählen
+          start_marking: Mehrere Dateien auswählen
+        explorer_files_view:
+          end_marking: Auswahl beenden
+          marked_files:
+            one: 1 Datei ausgewählt
+            other: '%{count} Dateien ausgewählt'
+          no_files: In diesem Beitrag gibt es keine Dateien.
+          no_matches: Keine Datei entspricht dem Suchbegriff.
+          search: Dateien und Ordner filtern
+          search_hint: Dateien durchsuchen
         file_item_view:
           confirm_destroy: Datei wirklich löschen?
         file_meta_data_item_value_view:
@@ -1663,6 +1673,10 @@ de:
         files_blank_slate_view:
           empty_folder: 'Dieser Ordner enthält noch keine Dateien.'
           no_matches: 'Keine Datei entspricht dem aktuellen Filter.'
+        files_explorer_view:
+          reuse_files:
+            one: 1 Datei übernehmen
+            other: '%{count} Dateien übernehmen'
         files_view:
           add: Hinzufügen
           authenticating: Authentifizieren

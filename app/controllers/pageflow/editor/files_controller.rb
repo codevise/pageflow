@@ -7,12 +7,8 @@ module Pageflow
       before_action :authenticate_user!
 
       def index
-        entry = DraftEntry.find(params[:entry_id])
-
-        authorize!(:use_files, entry.to_model)
-        @files = entry.find_files(file_type.model)
-
-        respond_with(:editor, @files)
+        @entry = DraftEntry.find(params[:entry_id])
+        authorize!(:use_files, @entry.to_model)
       end
 
       def create
@@ -27,19 +23,6 @@ module Pageflow
       rescue ActiveRecord::RecordInvalid, DraftEntry::InvalidForeignKeyCustomAttributeError => e
         debug_log_with_backtrace(e)
         head :unprocessable_entity
-      end
-
-      def reuse
-        entry = DraftEntry.find(params[:entry_id])
-        file_reuse = build_file_reuse(entry)
-
-        authorize!(:edit, entry.to_model)
-        authorize!(:use, file_reuse.file.to_model)
-        verify_edit_lock!(entry)
-
-        file_reuse.save!
-
-        redirect_to(editor_entry_url(entry))
       end
 
       def retry
@@ -97,18 +80,6 @@ module Pageflow
                    .merge(file_configuration_params)
                    .merge(file_parent_file_params)
                    .merge(file_custom_params)
-      end
-
-      def build_file_reuse(entry)
-        FileReuse.new(entry,
-                      DraftEntry.find(file_reuse_params[:other_entry_id]),
-                      file_type,
-                      file_reuse_params[:file_id],
-                      folder_perma_id: file_reuse_params[:folder_perma_id])
-      end
-
-      def file_reuse_params
-        params.require(:file_reuse).permit(:other_entry_id, :file_id, :folder_perma_id)
       end
 
       def update_params

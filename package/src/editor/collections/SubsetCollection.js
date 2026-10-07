@@ -25,7 +25,7 @@ export const SubsetCollection = Backbone.Collection.extend({
 
     this.listenTo(this.parent, 'add', function(model, collection, options) {
       if (!adding && this.predicate(model)) {
-        this.add(model, options);
+        this.add(model, _.extend({}, options, {remove: false}));
       }
     });
 

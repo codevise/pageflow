@@ -6,21 +6,24 @@ export const FileReuse = Backbone.Model.extend({
 
   initialize: function(attributes, options) {
     this.entry = options.entry;
-    this.collectionName = options.fileType.collectionName;
   },
 
   url: function() {
-    return '/editor/entries/' + this.entry.get('id') + '/files/' + this.collectionName + '/reuse';
+    return '/editor/entries/' + this.entry.get('id') + '/file_reuses';
   }
 });
 
-FileReuse.submit = function(otherEntry, file, options) {
+FileReuse.submit = function(otherEntry, files, options) {
   new FileReuse({
     other_entry_id: otherEntry.get('id'),
-    file_id: file.get('id'),
-    folder_perma_id: options.folderPermaId
+    folder_perma_id: options.folderPermaId,
+    files: files.map(function(file) {
+      return {
+        collection_name: file.fileType().collectionName,
+        id: file.get('id')
+      };
+    })
   }, {
-    entry: options.entry,
-    fileType: file.fileType()
+    entry: options.entry
   }).save(null, options);
 };

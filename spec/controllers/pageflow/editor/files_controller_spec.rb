@@ -6,59 +6,78 @@ module Pageflow
     render_views
 
     describe '#index' do
-      it 'returns list of files of entry' do
+      it 'returns files of entry grouped by collection name' do
         user = create(:user)
         entry = create(:entry, with_previewer: user)
-        file = create(:image_file)
-        create(:file_usage, revision: entry.draft, file:)
+        image_file = create(:image_file, used_in: entry.draft)
+        video_file = create(:video_file, used_in: entry.draft)
 
         sign_in(user, scope: :user)
-        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
+        get(:index, params: {entry_id: entry.id}, format: 'json')
 
-        expect(response.body).to include_json([
-                                                {id: file.id}
-                                              ])
+        expect(response.body).to include_json(image_files: [{id: image_file.id}],
+                                              video_files: [{id: video_file.id}])
       end
 
-      it 'returns list of files of account' do
+      it 'includes nested files' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        video_file = create(:video_file, used_in: entry.draft)
+        text_track_file = create(:text_track_file,
+                                 parent_file: video_file,
+                                 used_in: entry.draft)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(
+          text_track_files: [{id: text_track_file.id, parent_file_id: video_file.id}]
+        )
+      end
+
+      it 'includes empty lists for file types without files' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.body).to include_json(audio_files: [])
+      end
+
+      it 'does not include files of other entries' do
+        user = create(:user)
+        entry = create(:entry, with_previewer: user)
+        create(:image_file, used_in: create(:entry).draft)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(JSON.parse(response.body)['image_files']).to eq([])
+      end
+
+      it 'returns files of entries of account' do
         user = create(:user)
         account = create(:account, with_previewer: user)
         entry = create(:entry, account:)
-        file = create(:image_file)
-        create(:file_usage, revision: entry.draft, file:)
+        file = create(:image_file, used_in: entry.draft)
 
         sign_in(user, scope: :user)
-        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
+        get(:index, params: {entry_id: entry.id}, format: 'json')
 
-        expect(response.body).to include_json([
-                                                {id: file.id}
-                                              ])
-      end
-
-      it 'does not allow to list files of unaccessible entry' do
-        user = create(:user)
-        entry = create(:entry)
-        file = create(:image_file)
-        create(:file_usage, revision: entry.draft, file:)
-
-        sign_in(user, scope: :user)
-        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
-
-        expect(response.status).to eq(403)
+        expect(response.body).to include_json(image_files: [{id: file.id}])
       end
 
       it 'omits direct upload config for uploaded files' do
         user = create(:user)
-        account = create(:account, with_previewer: user)
-        entry = create(:entry, account:)
-        file = create(:image_file)
-        create(:file_usage, revision: entry.draft, file:)
+        entry = create(:entry, with_previewer: user)
+        create(:image_file, used_in: entry.draft)
 
         sign_in(user, scope: :user)
-        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
+        get(:index, params: {entry_id: entry.id}, format: 'json')
 
         expect(response.body).not_to include_json(
-          [{direct_upload_config: a_kind_of(Hash)}]
+          image_files: [{direct_upload_config: a_kind_of(Hash)}]
         )
       end
 
@@ -68,18 +87,26 @@ module Pageflow
         file = create(:text_track_file, used_in: entry.draft)
 
         sign_in(user, scope: :user)
-        get(:index,
-            params: {entry_id: entry.id, collection_name: 'text_track_files'},
-            format: 'json')
+        get(:index, params: {entry_id: entry.id}, format: 'json')
 
-        expect(response.body).to include_json([
-                                                {created_at: file.created_at.utc.iso8601(0)}
-                                              ])
+        expect(response.body).to include_json(
+          text_track_files: [{created_at: file.created_at.utc.iso8601(0)}]
+        )
+      end
+
+      it 'does not allow to list files of unaccessible entry' do
+        user = create(:user)
+        entry = create(:entry)
+
+        sign_in(user, scope: :user)
+        get(:index, params: {entry_id: entry.id}, format: 'json')
+
+        expect(response.status).to eq(403)
       end
 
       it 'requires user to be signed in' do
         entry = create(:entry)
-        get(:index, params: {entry_id: entry.id, collection_name: 'image_files'}, format: 'json')
+        get(:index, params: {entry_id: entry.id}, format: 'json')
 
         expect(response.status).to eq(401)
       end
@@ -560,123 +587,6 @@ module Pageflow
              format: 'json')
 
         expect(entry.image_files.first).to be_processing
-      end
-    end
-
-    describe '#reuse' do
-      it 'creates file usage for draft of given entry' do
-        user = create(:user)
-        entry = create(:entry, with_editor: user)
-        other_entry = create(:entry, with_previewer: user)
-        file = create(:image_file, used_in: other_entry.draft)
-
-        sign_in(user, scope: :user)
-        acquire_edit_lock(user, entry)
-
-        post(:reuse,
-             params: {
-               entry_id: entry.id,
-               collection_name: 'image_files',
-               file_reuse: {
-                 other_entry_id: other_entry.id,
-                 file_id: file.id
-               }
-             },
-             format: 'json')
-
-        expect(entry.draft.image_files).to include(file)
-      end
-
-      it 'puts reused file into requested folder' do
-        user = create(:user)
-        entry = create(:entry, with_editor: user)
-        other_entry = create(:entry, with_previewer: user)
-        file = create(:image_file, used_in: other_entry.draft)
-        folder = create(:file_folder, revision: entry.draft)
-
-        sign_in(user, scope: :user)
-        acquire_edit_lock(user, entry)
-
-        post(:reuse,
-             params: {
-               entry_id: entry.id,
-               collection_name: 'image_files',
-               file_reuse: {
-                 other_entry_id: other_entry.id,
-                 file_id: file.id,
-                 folder_perma_id: folder.perma_id
-               }
-             },
-             format: 'json')
-
-        expect(entry.draft.find_file(file.class, file.id).folder_perma_id)
-          .to eq(folder.perma_id)
-      end
-
-      it 'cannot add file of unaccessible entry' do
-        user = create(:user)
-        entry = create(:entry, with_manager: user)
-        other_entry = create(:entry)
-        file = create(:image_file, used_in: other_entry.draft)
-
-        sign_in(user, scope: :user)
-        acquire_edit_lock(user, entry)
-
-        post(:reuse,
-             params: {
-               entry_id: entry.id,
-               collection_name: 'image_files',
-               file_reuse: {
-                 other_entry_id: other_entry.id,
-                 file_id: file.id
-               }
-             },
-             format: 'json')
-
-        expect(response.status).to eq(403)
-      end
-
-      it 'cannot add file to unaccessible entry' do
-        user = create(:user)
-        entry = create(:entry, with_previewer: user)
-        other_entry = create(:entry, with_manager: user)
-        file = create(:image_file, used_in: other_entry.draft)
-
-        sign_in(user, scope: :user)
-        acquire_edit_lock(user, entry)
-
-        post(:reuse,
-             params: {
-               entry_id: entry.id,
-               collection_name: 'image_files',
-               file_reuse: {
-                 other_entry_id: other_entry.id,
-                 file_id: file.id
-               }
-             },
-             format: 'json')
-
-        expect(response.status).to eq(403)
-      end
-
-      it 'requires user to be signed in' do
-        user = create(:user, :admin)
-        entry = create(:entry, with_manager: user)
-        other_entry = create(:entry, with_manager: user)
-        file = create(:image_file, used_in: other_entry.draft)
-
-        post(:reuse,
-             params: {
-               entry_id: entry.id,
-               collection_name: 'image_files',
-               file_reuse: {
-                 other_entry_id: other_entry.id,
-                 file_id: file.id
-               }
-             },
-             format: 'json')
-
-        expect(response.status).to eq(401)
       end
     end
 

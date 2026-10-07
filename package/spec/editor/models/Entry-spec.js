@@ -66,84 +66,83 @@ describe('Entry', () => {
     });
   });
 
-  describe('#reuseFile', () => {
+  describe('#reuseFiles', () => {
     support.useFakeXhr(() => testContext);
 
-    it('posts file usage to server', () => {
-      var imageFiles = FilesCollection.createForFileType(testContext.imageFileType, [{id: 12}]);
-      var entry = testContext.buildEntry({id: 1}, {
-        files: {
-          image_files: new Backbone.Collection()
-        }
+    function filesOfOtherEntry() {
+      const fileTypes = support.factories.fileTypes(function() {
+        this.withImageFileType();
+        this.withVideoFileType();
+        this.withTextTrackFileType();
       });
-      var otherEntry = testContext.buildEntry({id: 2}, {
-        files: {
-          image_files: new Backbone.Collection()
-        }
-      });
-      var file = imageFiles.first();
 
-      entry.reuseFile(otherEntry, file);
+      return {
+        imageFile: FilesCollection.createForFileType(
+          fileTypes.findByCollectionName('image_files'), [{id: 12}]
+        ).first(),
+        videoFile: FilesCollection.createForFileType(
+          fileTypes.findByCollectionName('video_files'), [{id: 13}]
+        ).first()
+      };
+    }
 
-      expect(testContext.requests[0].url).toBe('/editor/entries/1/files/image_files/reuse');
+    it('posts files of all types in a single request', () => {
+      const {imageFile, videoFile} = filesOfOtherEntry();
+      const entry = testContext.buildEntry({id: 1}, {filesAttributes: {image_files: []}});
+      const otherEntry = new Backbone.Model({id: 2});
+
+      entry.reuseFiles(otherEntry, [imageFile, videoFile]);
+
+      expect(testContext.requests.length).toBe(1);
+      expect(testContext.requests[0].url).toBe('/editor/entries/1/file_reuses');
       expect(JSON.parse(testContext.requests[0].requestBody)).toEqual({
         file_reuse: {
-          file_id: 12,
-          other_entry_id: 2
+          other_entry_id: 2,
+          files: [
+            {collection_name: 'image_files', id: 12},
+            {collection_name: 'video_files', id: 13}
+          ]
         }
       });
     });
 
     it('posts folder perma id when reusing into folder', () => {
-      var imageFiles = FilesCollection.createForFileType(testContext.imageFileType, [{id: 12}]);
-      var entry = testContext.buildEntry({id: 1}, {
-        files: {
-          image_files: new Backbone.Collection()
-        }
-      });
-      var otherEntry = testContext.buildEntry({id: 2}, {
-        files: {
-          image_files: new Backbone.Collection()
-        }
-      });
+      const {imageFile} = filesOfOtherEntry();
+      const entry = testContext.buildEntry({id: 1}, {filesAttributes: {image_files: []}});
+      const otherEntry = new Backbone.Model({id: 2});
 
-      entry.reuseFile(otherEntry, imageFiles.first(), {folderPermaId: 5});
+      entry.reuseFiles(otherEntry, [imageFile], {folderPermaId: 5});
 
       expect(JSON.parse(testContext.requests[0].requestBody)).toEqual({
         file_reuse: {
-          file_id: 12,
           other_entry_id: 2,
-          folder_perma_id: 5
+          folder_perma_id: 5,
+          files: [{collection_name: 'image_files', id: 12}]
         }
       });
     });
 
-    it('adds file to files collection on success', () => {
-      var entry = testContext.buildEntry({id: 1}, {
+    it('adds files to files collection on success', () => {
+      const {imageFile} = filesOfOtherEntry();
+      const entry = testContext.buildEntry({id: 1}, {
         files: {
           image_files: FilesCollection.createForFileType(testContext.imageFileType, [])
         }
       });
-      var imageFiles = FilesCollection.createForFileType(testContext.imageFileType, [{}]);
-      var otherEntry = testContext.buildEntry({id: 2}, {
-        files: {
-          image_files: imageFiles
-        }
-      });
-      var file = imageFiles.first();
+      const otherEntry = new Backbone.Model({id: 2});
 
-      testContext.server.respondWith('POST', '/editor/entries/1/files/image_files/reuse',
-                              [200, {'Content-Type': 'application/json'}, JSON.stringify({
-                                image_files: [{id: 234}]
-                              })]);
+      testContext.server.respondWith('POST', '/editor/entries/1/file_reuses',
+                                     [200, {'Content-Type': 'application/json'}, JSON.stringify({
+                                       image_files: [{id: 234}]
+                                     })]);
 
-      entry.reuseFile(otherEntry, file);
+      entry.reuseFiles(otherEntry, [imageFile]);
       testContext.server.respond();
 
-      var imageFile = entry.getFileCollection(testContext.imageFileType).first();
+      const reusedFile = entry.getFileCollection(testContext.imageFileType).first();
 
-      expect(imageFile.id).toBe(234);
-      expect(imageFile.fileType()).toBe(testContext.imageFileType);
+      expect(reusedFile.id).toBe(234);
+      expect(reusedFile.fileType()).toBe(testContext.imageFileType);
     });
   });
 

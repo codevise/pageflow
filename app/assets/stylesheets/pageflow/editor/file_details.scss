@@ -1,0 +1,9 @@
+.file_details {
+  &-preview {
+    display: block;
+    margin-bottom: space(2);
+    border-radius: rounded();
+    overflow: hidden;
+    background-color: var(--ui-on-surface-color-lightest);
+  }
+}
