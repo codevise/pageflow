@@ -17,6 +17,11 @@ module Pageflow
       def update
         authorize!(:destroy, @entry.to_model)
       end
+
+      def show
+        @folders = authorized_scope(:browse, Folder)
+        head :ok
+      end
     end
 
     it 'requires authentication' do
@@ -147,6 +152,31 @@ module Pageflow
            format: 'json')
 
       expect(response.status).to eq(204)
+    end
+
+    it 'provides policy scopes of registered policies' do
+      folder_policy = Class.new do
+        const_set(:Scope, Class.new do
+          def initialize(_user, scope)
+            @scope = scope
+          end
+
+          def browse
+            @scope.where(name: 'visible')
+          end
+        end)
+      end
+      pageflow_configure do |config|
+        config.permissions.policies.register(folder_policy, model: Folder, actions: [:browse])
+      end
+      entry = create(:entry)
+      folder = create(:folder, name: 'visible')
+      create(:folder, name: 'hidden')
+
+      authorize_for_editor_controller(entry)
+      get(:show, params: {entry_id: entry, id: 1}, format: 'json')
+
+      expect(assigns(:folders)).to eq([folder])
     end
   end
 end

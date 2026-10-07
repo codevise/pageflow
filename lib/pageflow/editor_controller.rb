@@ -35,6 +35,11 @@ module Pageflow
 
     private
 
+    def authorized_scope(action, scope)
+      Pageflow.config.permissions.policies.authorized_scope(current_ability, current_user,
+                                                            action, scope)
+    end
+
     def verify_edit_lock
       verify_edit_lock!(@entry)
     end
