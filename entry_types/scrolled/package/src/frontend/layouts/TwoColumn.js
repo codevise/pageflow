@@ -11,7 +11,7 @@ import {widths, widthName} from './widths';
 import styles from './TwoColumn.module.css';
 
 export function TwoColumn(props) {
-  const shouldInline = useShouldInlineSticky();
+  const shouldInline = useShouldInlineSticky(props.constrainContentWidth);
 
   return (
     <div className={classNames(styles.root, styles[props.align],
@@ -31,7 +31,7 @@ TwoColumn.defaultProps = {
   align: 'left'
 }
 
-function useShouldInlineSticky() {
+function useShouldInlineSticky(constrainContentWidth) {
   const theme = useTheme();
   const root = theme.options.properties?.root || {};
 
@@ -42,7 +42,7 @@ function useShouldInlineSticky() {
   };
 
   return function(width) {
-    return width <= widths.md ? shouldInline[widths.md] : shouldInline[width];
+    return constrainContentWidth || width <= widths.md ? shouldInline[widths.md] : shouldInline[width];
   }
 }
 

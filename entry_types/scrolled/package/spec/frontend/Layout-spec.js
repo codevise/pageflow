@@ -536,6 +536,41 @@ describe('Layout', () => {
         );
       });
 
+      describe.each(['side', 'sticky'])('with constrained %s elements', position => {
+        it.each([
+          [1001, '[POSITION md 1 ][POSITION lg 2 ][POSITION xl 3 ]'],
+          [1000, '[inline md 1 2 ][inline lg 3 ]']
+        ])('uses the M breakpoint for all widths at %ipx', (viewportWidth, expected) => {
+          window.matchMedia.mockViewportWidth(viewportWidth);
+          const items = [
+            {id: 1, type: 'probe', position},
+            {id: 2, type: 'probe', position, width: 1},
+            {id: 3, type: 'probe', position, width: 2}
+          ];
+          const {container} = renderInEntry(
+            <Layout sectionProps={{layout: 'left'}} constrainContentWidth items={items}>
+              {(children, {position, width}) =>
+                <div>{position} {widthName(width)} {children}</div>}
+            </Layout>,
+            {
+              seed: {
+                themeOptions: {
+                  properties: {
+                    root: {
+                      twoColumnStickyBreakpoint: '1000px',
+                      twoColumnStickyLgBreakpoint: '1200px',
+                      twoColumnStickyXlBreakpoint: '1400px'
+                    }
+                  }
+                }
+              }
+            }
+          );
+
+          expect(container.textContent).toEqual(expected.replace(/POSITION/g, position));
+        });
+      });
+
       it('decreases size when inlining wide side elements', () => {
         const items = [
           {id: 1, type: 'probe', position: 'side'},
