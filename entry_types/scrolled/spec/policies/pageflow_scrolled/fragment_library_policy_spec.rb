@@ -28,7 +28,7 @@ module PageflowScrolled
 
         libraries = FragmentLibraryPolicy::Scope.new(user, FragmentLibrary.all).read
 
-        expect(libraries.map(&:id)).to include(entry.id)
+        expect(libraries.map(&:id)).to eq([entry.id])
       end
 
       it 'narrows passed scope' do

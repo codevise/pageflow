@@ -6,21 +6,20 @@ module PageflowScrolled
       it 'includes entries marked as shared fragment library' do
         entry = create(:entry, type_name: 'scrolled', fragment_library: 'shared')
 
-        expect(FragmentLibrary.all.map(&:id)).to include(entry.id)
+        expect(FragmentLibrary.all.map(&:id)).to eq([entry.id])
       end
 
       it 'skips entries that are not fragment libraries' do
-        entry = create(:entry, type_name: 'scrolled')
+        create(:entry, type_name: 'scrolled')
 
-        expect(FragmentLibrary.all.map(&:id)).not_to include(entry.id)
+        expect(FragmentLibrary.all.to_a).to be_empty
       end
 
       it 'orders libraries by creation' do
-        account = create(:account)
-        first = create(:entry, type_name: 'scrolled', account:, fragment_library: 'shared')
-        second = create(:entry, type_name: 'scrolled', account:, fragment_library: 'shared')
+        first = create(:entry, type_name: 'scrolled', fragment_library: 'shared')
+        second = create(:entry, type_name: 'scrolled', fragment_library: 'shared')
 
-        expect(FragmentLibrary.where(account:).map(&:id)).to eq([first.id, second.id])
+        expect(FragmentLibrary.all.map(&:id)).to eq([first.id, second.id])
       end
 
       it 'can be narrowed to account' do
