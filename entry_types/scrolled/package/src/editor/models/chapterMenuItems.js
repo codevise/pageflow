@@ -1,6 +1,8 @@
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
-import {DestroyMenuItem} from 'pageflow/editor';
+import {app, DestroyMenuItem} from 'pageflow/editor';
+
+import {ExtractFragmentDialogView} from '../views/ExtractFragmentDialogView';
 
 export const CopyPermalinkMenuItem = Backbone.Model.extend({
   initialize(attributes, {entry, chapter}) {
@@ -13,6 +15,40 @@ export const CopyPermalinkMenuItem = Backbone.Model.extend({
     navigator.clipboard.writeText(
       this.entry.getChapterPermalink(this.chapter)
     );
+  }
+});
+
+export const ExtractFragmentMenuItem = Backbone.Model.extend({
+  initialize(attributes, {chapter}) {
+    this.chapter = chapter;
+    this.update('extract_fragment', {disabled: false});
+  },
+
+  selected() {
+    ExtractFragmentDialogView.show({
+      chapter: this.chapter,
+      onSubmit: title => this.extract(title)
+    });
+  },
+
+  extract(title) {
+    this.update('extracting_fragment', {disabled: true});
+
+    return this.chapter.extractToFragmentLibrary({title}).then(
+      () => this.update('extracted_fragment', {disabled: true}),
+      ({status}) => {
+        this.update('extract_fragment', {disabled: false});
+        app.trigger('error', {
+          message: t(status === 403 ?
+                     'extract_fragment_forbidden' :
+                     'extract_fragment_failed')
+        });
+      }
+    );
+  },
+
+  update(labelKey, {disabled}) {
+    this.set({label: t(labelKey), disabled});
   }
 });
 
@@ -48,3 +84,7 @@ export const DestroyChapterMenuItem = DestroyMenuItem.extend({
     );
   }
 });
+
+function t(key) {
+  return I18n.t(`pageflow_scrolled.editor.chapter_menu_items.${key}`);
+}

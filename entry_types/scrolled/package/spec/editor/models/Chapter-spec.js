@@ -1,7 +1,8 @@
 import 'pageflow-scrolled/editor';
+import Backbone from 'backbone';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {factories, setupGlobals, useFakeTranslations} from 'pageflow/testHelpers';
-import {useFakeXhr, normalizeSeed} from 'support';
+import {useFakeXhr, useEditorGlobals, normalizeSeed} from 'support';
 
 describe('Chapter', () => {
   let testContext;
@@ -270,6 +271,155 @@ describe('Chapter', () => {
       const section = chapter.duplicateSection(chapter.sections.first());
 
       expect(section.configuration.get('layout')).toBeUndefined();
+    });
+  });
+
+  describe('#insertFragment', () => {
+    const {createEntry} = useEditorGlobals();
+
+    beforeEach(() => {
+      testContext.entry = createEntry({
+        chapters: [{id: 10}],
+        sections: [{id: 100, chapterId: 10, position: 0}]
+      });
+    });
+
+    useFakeXhr(() => testContext);
+
+    const fragment = new Backbone.Model({libraryId: 3, chapterPermaId: 700});
+
+    function respond(server, sections) {
+      server.respond(
+        'POST', '/editor/entries/1/scrolled/chapters/10/fragment_insertions',
+        [201, {'Content-Type': 'application/json'}, JSON.stringify(sections)]
+      );
+      server.respond(
+        'GET', '/editor/entries/1',
+        [200, {'Content-Type': 'application/json'}, JSON.stringify({image_files: []})]
+      );
+    }
+
+    it('posts library entry id and chapter perma id', () => {
+      const {entry, requests} = testContext;
+
+      entry.chapters.first().insertFragment(fragment);
+
+      expect(requests[0].method).toBe('POST');
+      expect(requests[0].url)
+        .toBe('/editor/entries/1/scrolled/chapters/10/fragment_insertions');
+      expect(requests[0].requestBody)
+        .toContain('fragment%5Bchapter_perma_id%5D=700');
+    });
+
+    it('adds returned sections and content elements', () => {
+      const {entry, server} = testContext;
+      const chapter = entry.chapters.first();
+
+      chapter.insertFragment(fragment);
+      respond(server, [
+        {
+          id: 101,
+          permaId: 501,
+          chapterId: 10,
+          position: 1,
+          configuration: {transition: 'fade'},
+          contentElements: [{id: 1000, permaId: 601, sectionId: 101, typeName: 'heading'}]
+        },
+        {
+          id: 102,
+          permaId: 502,
+          chapterId: 10,
+          position: 2,
+          configuration: {},
+          contentElements: []
+        }
+      ]);
+
+      expect(chapter.sections.pluck('id')).toEqual([100, 101, 102]);
+      expect(chapter.sections.get(101).configuration.get('transition')).toEqual('fade');
+      expect(entry.contentElements.pluck('id')).toEqual([1000]);
+      expect(chapter.sections.get(101).contentElements.pluck('id')).toEqual([1000]);
+    });
+
+    it('refreshes files before adding sections', () => {
+      const {entry, server} = testContext;
+      const chapter = entry.chapters.first();
+      const order = [];
+
+      entry.listenTo(entry, 'use:files', () => order.push('files'));
+      entry.listenTo(entry.sections, 'add', () => order.push('sections'));
+
+      chapter.insertFragment(fragment);
+      respond(server, [
+        {id: 101, permaId: 501, chapterId: 10, position: 1, configuration: {},
+         contentElements: []}
+      ]);
+
+      expect(order).toEqual(['files', 'sections']);
+    });
+
+    it('selects first inserted section', () => {
+      const {entry, server} = testContext;
+      const chapter = entry.chapters.first();
+      const selected = [];
+
+      entry.listenTo(entry, 'selectSection', section => selected.push(section.id));
+
+      chapter.insertFragment(fragment);
+      respond(server, [
+        {id: 101, permaId: 501, chapterId: 10, position: 1, configuration: {},
+         contentElements: []},
+        {id: 102, permaId: 502, chapterId: 10, position: 2, configuration: {},
+         contentElements: []}
+      ]);
+
+      expect(selected).toEqual([101]);
+    });
+  });
+
+  describe('#extractToFragmentLibrary', () => {
+    beforeEach(() => {
+      testContext.entry = factories.entry(ScrolledEntry, {id: 1}, {
+        entryTypeSeed: normalizeSeed({
+          chapters: [{id: 10}]
+        })
+      });
+    });
+
+    setupGlobals({
+      entry: () => testContext.entry
+    });
+
+    useFakeXhr(() => testContext);
+
+    it('posts to fragment extractions of chapter', () => {
+      const {entry, requests} = testContext;
+
+      entry.chapters.first().extractToFragmentLibrary();
+
+      expect(requests[0].method).toBe('POST');
+      expect(requests[0].url)
+        .toBe('/editor/entries/1/scrolled/chapters/10/fragment_extractions');
+    });
+
+    it('posts given title', () => {
+      const {entry, requests} = testContext;
+
+      entry.chapters.first().extractToFragmentLibrary({title: 'Opening'});
+
+      expect(requests[0].requestBody).toContain('title=Opening');
+    });
+
+    it('resolves once library responds without body', async () => {
+      const {entry, server} = testContext;
+
+      const extraction = entry.chapters.first().extractToFragmentLibrary();
+      server.respond(
+        'POST', '/editor/entries/1/scrolled/chapters/10/fragment_extractions',
+        [201, {}, '']
+      );
+
+      await expect(extraction).resolves.toBeUndefined();
     });
   });
 

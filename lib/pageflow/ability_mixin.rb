@@ -284,6 +284,8 @@ module Pageflow
         UserPolicy.new(user, user_to_delete).delete_own_user?
       end
 
+      registered_policy_abilities(user)
+
       return unless user.admin?
 
       can [:create, :configure_folder_on], Account
@@ -298,6 +300,18 @@ module Pageflow
       can :manage, Site
       can :manage, EntryTemplate
       can :manage, ::User
+    end
+
+    private
+
+    def registered_policy_abilities(user)
+      Pageflow.config.permissions.policies.each do |registration|
+        registration.actions.each do |action|
+          can action, registration.model do |record|
+            registration.policy.new(user, record).public_send(:"#{action}?")
+          end
+        end
+      end
     end
   end
 end

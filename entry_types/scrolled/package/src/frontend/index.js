@@ -18,6 +18,7 @@ import {loadInlineEditingExtensions} from './inlineEditing';
 import {loadCommentingExtensions} from './commenting';
 import {loadDashUnlessHlsSupported} from './dash';
 import {registerConsentVendors} from './thirdPartyConsent';
+import {isSameOriginMessage} from '../shared/isSameOriginMessage';
 
 import {browser, consent, features} from 'pageflow/frontend';
 import {api} from './api';
@@ -190,7 +191,7 @@ global.pageflowScrolledRegisterUpdateSeedHandler = function() {
   }
 
   function receive(message) {
-    if (window.location.href.indexOf(message.origin) === 0) {
+    if (isSameOriginMessage(message)) {
       if (message.data.type === 'UPDATE_SEED') {
         render(message.data.payload);
       }

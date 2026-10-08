@@ -61,6 +61,7 @@ json.config do
   json.origin_url options[:origin_url] if options[:origin_url]
   json.load_inline_editing true if options[:load_inline_editing]
   json.load_commenting true if options[:load_commenting]
+  json.accept_collection_resets true if options[:accept_collection_resets]
 end
 
 unless options[:skip_i18n]

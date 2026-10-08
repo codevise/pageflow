@@ -77,7 +77,42 @@
 .destroyingIndicator { composes: destroyingIndicator from './outline.module.css';  }
 .failedIndicator     { composes: failedIndicator from './outline.module.css'; }
 
+.addButtons {
+  composes: button from './outline.module.css';
+  display: inline-flex;
+}
+
 .addSection {
   composes: addButton from './buttons.module.css';
-  composes: button from './outline.module.css';
+}
+
+.insertFragment {
+  composes: primaryIconButton from './buttons.module.css';
+  position: relative;
+  cursor: pointer;
+}
+
+.addButtons .addSection:not(:last-child) {
+  padding-right: 12px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.addButtons .insertFragment {
+  padding: 0 12px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.addButtons .insertFragment::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 5px;
+  bottom: 5px;
+  border-left: solid 1px var(--ui-on-primary-color-lighter);
+}
+
+.insertFragmentIcon {
+  display: block;
 }

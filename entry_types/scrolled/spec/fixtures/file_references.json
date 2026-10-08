@@ -1,0 +1,185 @@
+{
+  "comment": [
+    "Cases for resolving file reference locations against a configuration.",
+    "Read by entry_types/scrolled/spec/pageflow_scrolled/file_references_spec.rb and by",
+    "entry_types/scrolled/package/spec/shared/collectFileReferences-spec.js, so",
+    "that both implementations stay in step. Path segments of references are",
+    "compared as strings."
+  ],
+  "cases": [
+    {
+      "name": "finds reference in top level property",
+      "locations": [{"path": ["image"], "collection": "imageFiles"}],
+      "configuration": {"image": 5},
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["image"], "active": true}
+      ]
+    },
+    {
+      "name": "skips property that is not set",
+      "locations": [{"path": ["image"], "collection": "imageFiles"}],
+      "configuration": {},
+      "references": []
+    },
+    {
+      "name": "skips property that is null",
+      "locations": [{"path": ["image"], "collection": "imageFiles"}],
+      "configuration": {"image": null},
+      "references": []
+    },
+    {
+      "name": "skips value that is not a perma id",
+      "locations": [{"path": ["backdrop", "image"], "collection": "imageFiles"}],
+      "configuration": {"backdrop": {"image": "#ff0000"}},
+      "references": []
+    },
+    {
+      "name": "returns empty list without locations",
+      "locations": [],
+      "configuration": {"image": 5},
+      "references": []
+    },
+    {
+      "name": "finds reference in nested object",
+      "locations": [{"path": ["tooltip", "image"], "collection": "imageFiles"}],
+      "configuration": {"tooltip": {"image": 5}},
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["tooltip", "image"], "active": true}
+      ]
+    },
+    {
+      "name": "skips nested path that is not set",
+      "locations": [{"path": ["tooltip", "image"], "collection": "imageFiles"}],
+      "configuration": {},
+      "references": []
+    },
+    {
+      "name": "finds references in array items and resolves wildcards to indices",
+      "locations": [{"path": ["areas", "*", "image"], "collection": "imageFiles"}],
+      "configuration": {"areas": [{"image": 5}, {}, {"image": 6}]},
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["areas", "0", "image"], "active": true},
+        {"collectionName": "imageFiles", "permaId": 6, "path": ["areas", "2", "image"], "active": true}
+      ]
+    },
+    {
+      "name": "finds references in values of map with dynamic keys and resolves wildcards to keys",
+      "locations": [{"path": ["tooltipTexts", "*", "image"], "collection": "imageFiles"}],
+      "configuration": {"tooltipTexts": {"1": {"image": 5}, "2": {"image": 6}}},
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["tooltipTexts", "1", "image"], "active": true},
+        {"collectionName": "imageFiles", "permaId": 6, "path": ["tooltipTexts", "2", "image"], "active": true}
+      ]
+    },
+    {
+      "name": "marks reference active when condition value matches",
+      "locations": [{
+        "path": ["backdropVideo"],
+        "collection": "videoFiles",
+        "activeIf": {"path": ["backdropType"], "value": "video"}
+      }],
+      "configuration": {"backdropType": "video", "backdropVideo": 5},
+      "references": [
+        {"collectionName": "videoFiles", "permaId": 5, "path": ["backdropVideo"], "active": true}
+      ]
+    },
+    {
+      "name": "marks reference inactive when condition value differs",
+      "locations": [{
+        "path": ["backdropVideo"],
+        "collection": "videoFiles",
+        "activeIf": {"path": ["backdropType"], "value": "video"}
+      }],
+      "configuration": {"backdropType": "image", "backdropVideo": 5},
+      "references": [
+        {"collectionName": "videoFiles", "permaId": 5, "path": ["backdropVideo"], "active": false}
+      ]
+    },
+    {
+      "name": "supports negated condition value",
+      "locations": [{
+        "path": ["backdropImage"],
+        "collection": "imageFiles",
+        "activeIf": {"path": ["backdropType"], "not": "video"}
+      }],
+      "configuration": {"backdropType": "image", "backdropImage": 5},
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["backdropImage"], "active": true}
+      ]
+    },
+    {
+      "name": "supports list of condition values",
+      "locations": [{
+        "path": ["image"],
+        "collection": "imageFiles",
+        "activeIf": {"path": ["backdropType"], "not": ["video", "color"]}
+      }],
+      "configuration": {"backdropType": "color", "image": 5},
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["image"], "active": false}
+      ]
+    },
+    {
+      "name": "marks reference inactive when other property required to be present is missing",
+      "locations": [{
+        "path": ["areas", "*", "portraitImage"],
+        "collection": "imageFiles",
+        "activeIf": {"path": ["portraitBackground"], "present": true}
+      }],
+      "configuration": {"areas": [{"portraitImage": 5}]},
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["areas", "0", "portraitImage"], "active": false}
+      ]
+    },
+    {
+      "name": "reads condition value from configuration root",
+      "locations": [{
+        "path": ["areas", "*", "portraitImage"],
+        "collection": "imageFiles",
+        "activeIf": {"path": ["portraitBackground"], "present": true}
+      }],
+      "configuration": {"portraitBackground": 7, "areas": [{"portraitImage": 5}]},
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["areas", "0", "portraitImage"], "active": true}
+      ]
+    },
+    {
+      "name": "reads condition value from nested path",
+      "locations": [{
+        "path": ["backdrop", "image"],
+        "collection": "imageFiles",
+        "activeIf": {"path": ["backdrop", "video"], "present": false}
+      }],
+      "configuration": {"backdrop": {"image": 5, "video": 6}},
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["backdrop", "image"], "active": false}
+      ]
+    },
+    {
+      "name": "marks reference inactive when one condition of a list fails",
+      "locations": [{
+        "path": ["image"],
+        "collection": "imageFiles",
+        "activeIf": [{"path": ["color"], "present": false},
+                     {"path": ["video"], "present": false}]
+      }],
+      "configuration": {"image": 5, "video": 6},
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["image"], "active": false}
+      ]
+    },
+    {
+      "name": "marks reference active when all conditions of a list hold",
+      "locations": [{
+        "path": ["image"],
+        "collection": "imageFiles",
+        "activeIf": [{"path": ["color"], "present": false},
+                     {"path": ["video"], "present": false}]
+      }],
+      "configuration": {"image": 5},
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["image"], "active": true}
+      ]
+    }
+  ]
+}

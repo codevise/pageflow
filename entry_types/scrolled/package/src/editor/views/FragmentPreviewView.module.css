@@ -1,0 +1,42 @@
+.root {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.device {
+  --bezel-x: 10px;
+  --bezel-y: 10px;
+  position: absolute;
+  box-sizing: border-box;
+  padding: calc(var(--bezel-y) * var(--fragment-preview-frame-scale, 1))
+           calc(var(--bezel-x) * var(--fragment-preview-frame-scale, 1));
+  border: solid 1px var(--ui-primary-color);
+  border-radius: calc(10px * var(--fragment-preview-frame-scale, 1));
+  background: var(--ui-primary-color);
+}
+
+.phone .device {
+  --bezel-x: 5px;
+}
+
+.screen {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  box-sizing: border-box;
+  border: solid 1px var(--ui-on-surface-color);
+  border-radius: 2px;
+  background: #222;
+}
+
+.iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+  background: #fff;
+  transform-origin: top left;
+  transform: scale(var(--fragment-preview-scale, 1));
+}

@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
 
@@ -116,6 +117,49 @@ export const Chapter = Backbone.Model.extend({
 
     this.sections.sort();
     return newSection;
+  },
+
+  insertFragment(fragment) {
+    return $.ajax({
+      url: `${this.url()}/fragment_insertions`,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        fragment: {
+          entry_id: fragment.get('libraryId'),
+          chapter_perma_id: fragment.get('chapterPermaId')
+        }
+      }
+    }).then(
+      sections => this.entry.refreshFiles().then(() => this.addFragmentSections(sections))
+    );
+  },
+
+  extractToFragmentLibrary({title} = {}) {
+    return Promise.resolve($.ajax({
+      url: `${this.url()}/fragment_extractions`,
+      type: 'POST',
+      data: {title}
+    })).then(() => undefined);
+  },
+
+  addFragmentSections(sectionsAttributes) {
+    const sections = sectionsAttributes.map(({contentElements, ...attributes}) => {
+      this.sections.add(attributes, {contentElements: this.entry.contentElements});
+
+      this.entry.contentElements.add(contentElements);
+
+      return this.sections.get(attributes.id);
+    });
+
+    this.sections.sort();
+
+    if (sections.length) {
+      this.entry.trigger('selectSection', sections[0]);
+      this.entry.trigger('scrollToSection', sections[0]);
+    }
+
+    return sections;
   },
 
   duplicateSection(section) {

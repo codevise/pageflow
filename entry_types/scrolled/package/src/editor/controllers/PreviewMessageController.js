@@ -4,6 +4,7 @@ import {ReviewMessageHandler} from 'pageflow-scrolled/review';
 import {watchCollections} from 'pageflow-scrolled/entryState';
 import {InsertContentElementDialogView} from '../views/InsertContentElementDialogView'
 import {SelectLinkDestinationDialogView} from '../views/SelectLinkDestinationDialogView'
+import {isSameOriginMessage} from '../../shared/isSameOriginMessage';
 
 export const PreviewMessageController = Object.extend({
   initialize({entry, iframeWindow, editor}) {
@@ -32,7 +33,7 @@ export const PreviewMessageController = Object.extend({
       this.iframeWindow.postMessage(message, window.location.origin);
     };
 
-    if (window.location.href.indexOf(message.origin) === 0) {
+    if (message.source === this.iframeWindow && isSameOriginMessage(message)) {
       if (message.data.type === 'READY') {
         if (!this.ready) {
           this.ready = true;

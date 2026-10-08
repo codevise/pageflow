@@ -14,7 +14,14 @@ import {
   postSelectLinkDestinationMessage
 } from 'frontend/inlineEditing/postMessage';
 import {setupGlobals} from 'pageflow/testHelpers';
-import {normalizeSeed, factories, createIframeWindow, tick, useFakeXhr} from 'support';
+import {
+  normalizeSeed,
+  factories,
+  createIframeWindow,
+  simulateMessagesFrom,
+  tick,
+  useFakeXhr
+} from 'support';
 import {enableFetchMocks} from 'jest-fetch-mock';
 
 enableFetchMocks();
@@ -30,6 +37,8 @@ describe('PreviewMessageController', () => {
   afterEach(() => {
     // Remove post message event listener
     controller.dispose();
+
+    jest.restoreAllMocks();
   });
 
   setupGlobals({
@@ -39,7 +48,7 @@ describe('PreviewMessageController', () => {
 
   it('responds to READY message sent by iframe with ACK message', () => {
     const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     return expect(new Promise(resolve => {
@@ -57,7 +66,7 @@ describe('PreviewMessageController', () => {
     fetch.mockResponse(JSON.stringify({currentUser: {id: 1}, commentThreads: []}));
 
     const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
 
     controller = new PreviewMessageController({entry, iframeWindow});
 
@@ -76,7 +85,7 @@ describe('PreviewMessageController', () => {
 
   it('sets current section index in model on CHANGE_SECTION message', () => {
     const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     return expect(new Promise(resolve => {
@@ -85,9 +94,38 @@ describe('PreviewMessageController', () => {
     })).resolves.toBe(4);
   });
 
-  it('sets current excursion id in model on CHANGE_SECTION message', () => {
+  it('ignores message from other window', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
     const iframeWindow = createIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    window.dispatchEvent(new MessageEvent('message', {
+      data: {type: 'CHANGE_SECTION', payload: {sectionIndex: 4}},
+      origin: window.location.origin,
+      source: createIframeWindow()
+    }));
+    await tick();
+
+    expect(entry.get('currentSectionIndex')).toBeUndefined();
+  });
+
+  it('ignores message from origin that is a prefix of own origin', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    const iframeWindow = createSendingIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    window.dispatchEvent(new MessageEvent('message', {
+      data: {type: 'CHANGE_SECTION', payload: {sectionIndex: 4}},
+      origin: window.location.origin.slice(0, -1)
+    }));
+    await tick();
+
+    expect(entry.get('currentSectionIndex')).toBeUndefined();
+  });
+
+  it('sets current excursion id in model on CHANGE_SECTION message', () => {
+    const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     return expect(new Promise(resolve => {
@@ -102,7 +140,7 @@ describe('PreviewMessageController', () => {
         sections: [{id: 1}, {id: 2}, {id: 3}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -124,7 +162,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 5}, {id: 6}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -147,7 +185,7 @@ describe('PreviewMessageController', () => {
         sections: [{id: 1}, {id: 2}, {id: 3}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -168,7 +206,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -185,7 +223,7 @@ describe('PreviewMessageController', () => {
 
   it('posts SELECT_COMMENT_THREAD message on selectCommentThread event', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -203,7 +241,7 @@ describe('PreviewMessageController', () => {
 
   it('forwards selectNewThread events to iframe as SELECT newThread', async () => {
     const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -238,7 +276,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -263,7 +301,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -290,7 +328,7 @@ describe('PreviewMessageController', () => {
         sections: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -311,7 +349,7 @@ describe('PreviewMessageController', () => {
         sections: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -332,7 +370,7 @@ describe('PreviewMessageController', () => {
         sections: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -353,7 +391,7 @@ describe('PreviewMessageController', () => {
         sections: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -379,7 +417,7 @@ describe('PreviewMessageController', () => {
       }],
       entryTypeSeed: normalizeSeed()
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -400,7 +438,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -422,7 +460,7 @@ describe('PreviewMessageController', () => {
       })
     });
     entry.reviewSession = factories.reviewSession();
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -449,7 +487,7 @@ describe('PreviewMessageController', () => {
       })
     });
     entry.reviewSession = factories.reviewSession();
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -476,7 +514,7 @@ describe('PreviewMessageController', () => {
       })
     });
     entry.reviewSession = factories.reviewSession();
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -507,7 +545,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -529,7 +567,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -545,7 +583,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
     const listener = jest.fn();
     editor.on('navigate', listener);
@@ -565,7 +603,7 @@ describe('PreviewMessageController', () => {
         sections: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -581,7 +619,7 @@ describe('PreviewMessageController', () => {
         sections: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -593,7 +631,7 @@ describe('PreviewMessageController', () => {
   it('navigates to edit widget route on SELECTED message for widget role', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry);
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -609,7 +647,7 @@ describe('PreviewMessageController', () => {
         sections: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -625,7 +663,7 @@ describe('PreviewMessageController', () => {
         sections: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -641,7 +679,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -655,7 +693,7 @@ describe('PreviewMessageController', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed()
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -669,7 +707,7 @@ describe('PreviewMessageController', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed()
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -693,7 +731,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -709,7 +747,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -725,7 +763,7 @@ describe('PreviewMessageController', () => {
         sections: [{id: 5, permaId: 50}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -741,7 +779,7 @@ describe('PreviewMessageController', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     const path = await new Promise(resolve => {
@@ -764,7 +802,7 @@ describe('PreviewMessageController', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     const navigate = jest.fn();
@@ -793,7 +831,7 @@ describe('PreviewMessageController', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     const navigate = jest.fn();
@@ -820,7 +858,7 @@ describe('PreviewMessageController', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     const navigate = jest.fn();
@@ -842,7 +880,7 @@ describe('PreviewMessageController', () => {
   it('sets highlightedThreadId on entry on SELECTED contentElementComments', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -859,7 +897,7 @@ describe('PreviewMessageController', () => {
     const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
     entry.set('highlightedThreadId', 5);
 
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -874,7 +912,7 @@ describe('PreviewMessageController', () => {
   it('sets selectedCommentsSubject on SELECTED contentElementComments', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -891,7 +929,7 @@ describe('PreviewMessageController', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({contentElements: [{id: 4}]})
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -908,7 +946,7 @@ describe('PreviewMessageController', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({sections: [{id: 5, permaId: 50}]})
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -926,7 +964,7 @@ describe('PreviewMessageController', () => {
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({sections: [{id: 5, permaId: 50}]})
       });
-      const iframeWindow = createIframeWindow();
+      const iframeWindow = createSendingIframeWindow();
       controller = new PreviewMessageController({entry, iframeWindow, editor});
 
       return expect(new Promise(resolve => {
@@ -941,7 +979,7 @@ describe('PreviewMessageController', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({contentElements: [{id: 4, permaId: 100}]})
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -963,7 +1001,7 @@ describe('PreviewMessageController', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed({sections: [{id: 5, permaId: 50}]})
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -984,7 +1022,7 @@ describe('PreviewMessageController', () => {
     const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
     entry.set('selectedCommentsSubject', {subjectType: 'ContentElement', id: 9});
 
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     return expect(new Promise(resolve => {
@@ -1001,7 +1039,7 @@ describe('PreviewMessageController', () => {
     const entry = factories.entry(ScrolledEntry, {}, {
       entryTypeSeed: normalizeSeed()
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     const range = {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}};
@@ -1029,7 +1067,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     return expect(new Promise(resolve => {
@@ -1056,7 +1094,7 @@ describe('PreviewMessageController', () => {
          comments: []}
       ]
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     const threadChange = new Promise(resolve =>
@@ -1091,7 +1129,7 @@ describe('PreviewMessageController', () => {
       }],
       entryTypeSeed: normalizeSeed()
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     return expect(new Promise(resolve => {
@@ -1116,7 +1154,7 @@ describe('PreviewMessageController', () => {
         chapters: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -1144,7 +1182,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -1167,7 +1205,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -1195,7 +1233,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 5}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     return expect(new Promise(resolve => {
@@ -1213,7 +1251,7 @@ describe('PreviewMessageController', () => {
         contentElements: []
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     return expect(() => {
@@ -1227,7 +1265,7 @@ describe('PreviewMessageController', () => {
         contentElements: [{id: 1}]
       })
     });
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -1275,7 +1313,7 @@ describe('PreviewMessageController', () => {
     it('sends what the editor displays after READY', async () => {
       const entry = createEntry();
       entry.commentDisplayFilter.set({resolution: 'all', alwaysShowComments: false});
-      const iframeWindow = createIframeWindow();
+      const iframeWindow = createSendingIframeWindow();
       controller = new PreviewMessageController({entry, iframeWindow});
 
       const payloads = recordPayloads(iframeWindow);
@@ -1287,7 +1325,7 @@ describe('PreviewMessageController', () => {
 
     it('sends the resolution when the reviewer changes the filter', async () => {
       const entry = createEntry();
-      const iframeWindow = createIframeWindow();
+      const iframeWindow = createSendingIframeWindow();
       controller = new PreviewMessageController({entry, iframeWindow});
 
       const payloads = recordPayloads(iframeWindow);
@@ -1301,7 +1339,7 @@ describe('PreviewMessageController', () => {
 
     it('sends along that comments only show for the selection', async () => {
       const entry = createEntry();
-      const iframeWindow = createIframeWindow();
+      const iframeWindow = createSendingIframeWindow();
       controller = new PreviewMessageController({entry, iframeWindow});
 
       const payloads = recordPayloads(iframeWindow);
@@ -1321,7 +1359,7 @@ describe('PreviewMessageController', () => {
       })
     });
 
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -1341,7 +1379,7 @@ describe('PreviewMessageController', () => {
       entryTypeSeed: normalizeSeed()
     });
 
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -1361,7 +1399,7 @@ describe('PreviewMessageController', () => {
       entryTypeSeed: normalizeSeed()
     });
 
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -1377,7 +1415,7 @@ describe('PreviewMessageController', () => {
       entryTypeSeed: normalizeSeed()
     });
 
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -1401,7 +1439,7 @@ describe('PreviewMessageController', () => {
       })
     });
 
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -1433,7 +1471,7 @@ describe('PreviewMessageController', () => {
       })
     });
 
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -1465,7 +1503,7 @@ describe('PreviewMessageController', () => {
       })
     });
 
-    const iframeWindow = createIframeWindow();
+    const iframeWindow = createSendingIframeWindow();
     controller = new PreviewMessageController({entry, iframeWindow, editor});
 
     await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
@@ -1506,4 +1544,10 @@ function postReadyMessageAndWaitForAcknowledgement(iframeWindow) {
 
     iframeWindow.addEventListener('message', handler);
   });
+}
+
+function createSendingIframeWindow() {
+  const iframeWindow = createIframeWindow();
+  simulateMessagesFrom(iframeWindow);
+  return iframeWindow;
 }

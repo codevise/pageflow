@@ -22,3 +22,19 @@ export function createIframeWindow() {
   dom.reconfigure({windowTop: window, url: window.location.origin});
   return dom.window;
 }
+
+export function simulateMessagesFrom(sourceWindow) {
+  jest.spyOn(window, 'postMessage').mockImplementation((data, targetOrigin) => {
+    if (targetOrigin !== '*' && targetOrigin !== window.location.origin) {
+      return;
+    }
+
+    setTimeout(() => {
+      window.dispatchEvent(new MessageEvent('message', {
+        data,
+        origin: window.location.origin,
+        source: sourceWindow
+      }));
+    }, 0);
+  });
+}

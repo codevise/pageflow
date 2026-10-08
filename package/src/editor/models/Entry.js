@@ -137,6 +137,15 @@ export const Entry = Backbone.Model.extend({
     });
   },
 
+  refreshFiles: function() {
+    var entry = this;
+
+    return Backbone.$.getJSON(this.url()).then(function(response) {
+      entry._setFiles(response, {merge: false, remove: false});
+      entry.trigger('use:files');
+    });
+  },
+
   getFileCollection: function(fileTypeOrFileTypeName) {
     return this.files[fileTypeOrFileTypeName.collectionName || fileTypeOrFileTypeName];
   },

@@ -4,6 +4,8 @@ de:
       feature_name: Kommentare
     datawrapper_chart_embed_opt_in:
       feature_name: Opt-in für Datawrapper Embeds
+    fragments:
+      feature_name: Fragmente
     image_srcset:
       feature_name: Responsive Bild-Srcset
     defaultNavigation:
@@ -177,6 +179,7 @@ de:
         text: Während Pageflow stories auf allen modernen Browsern und Geräten funktionieren, benötigt der Pageflow Editor einen Desktop-Computer mit einer aktuellen Version von Chrome, Firefox, Safari oder Edge.
       chapter_item:
         add_section: Neuer Abschnitt
+        insert_fragment: Fragment einfügen
         drag_hint: Ziehen, um das Kapitel zu verschieben
         save_error: Beim Speichern des Kapitels ist ein Fehler aufgetreten.
         chapter: Kapitel
@@ -1233,6 +1236,11 @@ de:
         save: Speichern
       chapter_menu_items:
         copy_permalink: Permalink kopieren
+        extract_fragment: Zu geteilten Fragmenten hinzufügen
+        extract_fragment_failed: Das Kapitel konnte nicht zu den geteilten Fragmenten hinzugefügt werden.
+        extract_fragment_forbidden: Sie dürfen den geteilten Fragmenten dieses Kontos keine Kapitel hinzufügen.
+        extracted_fragment: Zu geteilten Fragmenten hinzugefügt
+        extracting_fragment: Wird zu geteilten Fragmenten hinzugefügt...
         move_to_main: In Kapitel umwandeln
         move_to_excursions: In Exkurs umwandeln
       destroy_chapter_menu_item:
@@ -1377,6 +1385,20 @@ de:
         header: Gliederung
         finish_reorder_chapters: Umsortieren beenden
         reorder_chapters: "Kapitel umsortieren..."
+      extract_fragment:
+        cancel: Abbrechen
+        header: Zu geteilten Fragmenten hinzufügen
+        name: Name des Fragments
+        shared_hint: Fragmente werden mit allen Beiträgen des Kontos und allen Mitgliedern mit Bearbeitungsrechten geteilt.
+        submit: Hinzufügen
+      fragment_library:
+        blank_slate: Noch keine Fragmente vorhanden.
+        cancel: Abbrechen
+        header: Fragment einfügen
+        insert: Einfügen
+        shared: Geteilte Fragmente
+        shared_hint: Für alle Mitglieder und Beiträge des Kontos
+        unnamed: Unbenanntes Fragment
       inline_file_rights_menu_item:
         label: Rechteangabe an dieser Stelle ausblenden
       insert_content_element:
@@ -1681,6 +1703,8 @@ de:
         entry: "Einstellungen"
         label: "%{chapter} - %{subject}"
         section: "Abschnitt %{number}"
+    fragment_library:
+      title: "Geteilte Fragmente von %{account_name}"
     help_entries:
       content_elements:
         menu_item: Inhaltselemente

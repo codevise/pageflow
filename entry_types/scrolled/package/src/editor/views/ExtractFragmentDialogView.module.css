@@ -1,0 +1,27 @@
+.form {
+  width: 400px;
+  max-width: 90vw;
+}
+
+.form .field {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.input {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.form .hint {
+  margin-bottom: 20px;
+}
+
+.submit {
+  composes: addButton from './buttons.module.css';
+}

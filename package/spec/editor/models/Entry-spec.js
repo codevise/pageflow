@@ -146,6 +146,45 @@ describe('Entry', () => {
     });
   });
 
+  describe('#refreshFiles', () => {
+    support.useFakeXhr(() => testContext);
+
+    it('adds files of entry to files collection', () => {
+      var entry = testContext.buildEntry({id: 1}, {
+        files: {
+          image_files: FilesCollection.createForFileType(testContext.imageFileType, [])
+        }
+      });
+
+      testContext.server.respondWith('GET', '/editor/entries/1',
+                                     [200, {'Content-Type': 'application/json'},
+                                      JSON.stringify({image_files: [{id: 234}]})]);
+
+      entry.refreshFiles();
+      testContext.server.respond();
+
+      expect(entry.getFileCollection(testContext.imageFileType).pluck('id')).toEqual([234]);
+    });
+
+    it('keeps files that are not part of the response', () => {
+      var entry = testContext.buildEntry({id: 1}, {
+        files: {
+          image_files: FilesCollection.createForFileType(testContext.imageFileType, [{id: 12}])
+        }
+      });
+
+      testContext.server.respondWith('GET', '/editor/entries/1',
+                                     [200, {'Content-Type': 'application/json'},
+                                      JSON.stringify({image_files: [{id: 234}]})]);
+
+      entry.refreshFiles();
+      testContext.server.respond();
+
+      expect(entry.getFileCollection(testContext.imageFileType).pluck('id'))
+        .toEqual([12, 234]);
+    });
+  });
+
   describe('#parse', () => {
     it('updates files in files collections', () => {
       var entry = testContext.buildEntry({id: 1}, {

@@ -39,6 +39,25 @@ describe('ReviewMessageHandler', () => {
     });
   });
 
+  it('ignores message from origin that is a prefix of own origin', async () => {
+    const session = fakeReviewSession();
+
+    ReviewMessageHandler.create({session, targetWindow: window});
+
+    window.dispatchEvent(new MessageEvent('message', {
+      data: {
+        type: 'CREATE_COMMENT_THREAD',
+        payload: {subjectType: 'CE', subjectId: 10, body: 'Test'}
+      },
+      origin: window.location.origin.slice(0, -1),
+      source: window
+    }));
+
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(session.createThread).not.toHaveBeenCalled();
+  });
+
   it('passes subjectRange through to session.createThread', async () => {
     const session = fakeReviewSession();
     const subjectRange = {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 12}};

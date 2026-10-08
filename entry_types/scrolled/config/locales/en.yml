@@ -4,6 +4,8 @@ en:
       feature_name: Comments
     datawrapper_chart_embed_opt_in:
       feature_name: Opt-in for Datawrapper embeds
+    fragments:
+      feature_name: Fragments
     image_srcset:
       feature_name: Responsive image srcset
     defaultNavigation:
@@ -177,6 +179,7 @@ en:
         text: While Pageflow stories work on all modern browsers and devices, the Pageflow editor requires a desktop computer running a recent version of Chrome, Firefox, Safari or Edge.
       chapter_item:
         add_section: New section
+        insert_fragment: Insert fragment
         drag_hint: Drag to move chapter
         save_error: There was an error while saving this chapter.
         chapter: Chapter
@@ -1216,6 +1219,11 @@ en:
         save: Save
       chapter_menu_items:
         copy_permalink: Copy permalink
+        extract_fragment: Add to shared fragments
+        extract_fragment_failed: The chapter could not be added to the shared fragments.
+        extract_fragment_forbidden: You are not allowed to add chapters to the shared fragments of this account.
+        extracted_fragment: Added to shared fragments
+        extracting_fragment: Adding to shared fragments...
         move_to_main: Turn into chapter
         move_to_excursions: Turn into excursion
       destroy_chapter_menu_item:
@@ -1360,6 +1368,20 @@ en:
         header: Outline
         finish_reorder_chapters: Finish reordering
         reorder_chapters: "Reorder chapters..."
+      extract_fragment:
+        cancel: Cancel
+        header: Add to shared fragments
+        name: Name of the fragment
+        shared_hint: Fragments are shared across all entries of the account and all its members with editor access.
+        submit: Add
+      fragment_library:
+        blank_slate: No fragments yet.
+        cancel: Cancel
+        header: Insert fragment
+        insert: Insert
+        shared: Shared fragments
+        shared_hint: For all members and entries of the account
+        unnamed: Untitled fragment
       inline_file_rights_menu_item:
         label: Hide rights information here
       insert_content_element:
@@ -1662,6 +1684,8 @@ en:
         entry: "Settings"
         label: "%{chapter} - %{subject}"
         section: "Section %{number}"
+    fragment_library:
+      title: "Shared fragments of %{account_name}"
     help_entries:
       content_elements:
         menu_item: Content Elements
