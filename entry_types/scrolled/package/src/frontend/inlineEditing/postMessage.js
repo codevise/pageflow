@@ -58,10 +58,11 @@ export function postUpdateTransientContentElementStateMessage({id, state}) {
   );
 }
 
-export function postSelectLinkDestinationMessage() {
+export function postSelectLinkDestinationMessage(link, {allowRemove} = {}) {
   window.parent.postMessage(
     {
-      type: 'SELECT_LINK_DESTINATION'
+      type: 'SELECT_LINK_DESTINATION',
+      payload: {link: link || undefined, allowRemove}
     },
     window.location.origin
   );

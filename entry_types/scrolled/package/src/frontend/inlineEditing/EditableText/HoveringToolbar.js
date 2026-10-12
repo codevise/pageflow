@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from 'react';
-import {Editor, Transforms} from 'slate';
 import {ReactEditor, useSlate} from 'slate-react';
 
 import {useFloating, FloatingPortal, shift, offset} from '@floating-ui/react';
@@ -10,6 +9,7 @@ import {useSelectLinkDestination} from '../useSelectLinkDestination';
 import {useFloatingPortalRoot} from '../../FloatingPortalRootProvider';
 import {useEffectiveSelection} from './useEffectiveSelection';
 import {isMarkActive, toggleMark} from './marks';
+import {applyLink, getActiveLink} from './links';
 
 import BoldIcon from '../images/bold.svg';
 import UnderlineIcon from '../images/underline.svg';
@@ -106,7 +106,7 @@ function renderToolbar(editor, t, selectLinkDestination) {
     {
       name: 'link',
       text: isButtonActive(editor, 'link') ?
-            t('pageflow_scrolled.inline_editing.remove_link') :
+            t('pageflow_scrolled.inline_editing.edit_link') :
             t('pageflow_scrolled.inline_editing.insert_link'),
       icon: LinkIcon
     }
@@ -120,14 +120,9 @@ function renderToolbar(editor, t, selectLinkDestination) {
 
 function handleButtonClick(editor, format, selectLinkDestination) {
   if (format === 'link') {
-    if (isLinkActive(editor)) {
-      unwrapLink(editor);
-    }
-    else {
-      selectLinkDestination().then(({href, openInNewTab}) => {
-        wrapLink(editor, href, openInNewTab);
-      }, () => {});
-    }
+    selectLinkDestination(getActiveLink(editor), {allowRemove: true}).then(link => {
+      applyLink(editor, link);
+    }, () => {});
   }
   else {
     toggleMark(editor, format);
@@ -136,30 +131,9 @@ function handleButtonClick(editor, format, selectLinkDestination) {
 
 function isButtonActive(editor, format) {
   if (format === 'link') {
-    return isLinkActive(editor);
+    return !!getActiveLink(editor);
   }
   else {
     return isMarkActive(editor, format);
   }
-}
-
-function unwrapLink(editor) {
-  Transforms.unwrapNodes(editor, {match: n => n.type === 'link'});
-}
-
-function wrapLink(editor, href, openInNewTab) {
-  const link = {
-    type: 'link',
-    href,
-    openInNewTab,
-    children: [],
-  };
-
-  Transforms.wrapNodes(editor, link, {split: true});
-  Transforms.collapse(editor, {edge: 'end'});
-}
-
-function isLinkActive(editor) {
-  const [link] = Editor.nodes(editor, {match: n => n.type === 'link'});
-  return !!link;
 }

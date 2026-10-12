@@ -32,7 +32,8 @@ export function EditableLink({
   }
 
   function handleSelectLinkDestination() {
-    selectLinkDestination().then(onChange, () => {});
+    selectLinkDestination(href ? {href, openInNewTab} : null, {allowRemove})
+      .then(onChange, () => {});
   }
 
   function handleRemoveLink() {

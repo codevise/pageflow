@@ -4,7 +4,7 @@ import {isSameOriginMessage} from '../../shared/isSameOriginMessage';
 let abortPreviousCall;
 
 export function useSelectLinkDestination() {
-  return () => {
+  return (link, options) => {
     return new Promise((resolve, reject) => {
       if (abortPreviousCall) {
         abortPreviousCall();
@@ -15,7 +15,7 @@ export function useSelectLinkDestination() {
         reject();
       }
 
-      postSelectLinkDestinationMessage();
+      postSelectLinkDestinationMessage(link, options);
       window.addEventListener('message', receive);
 
       function receive(message) {
@@ -25,6 +25,12 @@ export function useSelectLinkDestination() {
 
             window.removeEventListener('message', receive);
             resolve(message.data.payload);
+          }
+          else if (message.data.type === 'LINK_DESTINATION_REMOVED') {
+            abortPreviousCall = null;
+
+            window.removeEventListener('message', receive);
+            resolve(null);
           }
         }
       }

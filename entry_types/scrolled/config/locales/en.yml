@@ -1845,6 +1845,7 @@ en:
       insert_content_element:
         after: Insert new element below
         before: Insert new element above
+      edit_link: Edit link
       insert_link: Insert link
       link_tooltip:
         chapter_number: Chapter %{number}

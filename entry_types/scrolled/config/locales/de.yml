@@ -2018,6 +2018,7 @@ de:
       insert_content_element:
         after: Neues Element unterhalb einfügen
         before: Neues Element oberhalb einfügen
+      edit_link: Link bearbeiten
       insert_link: Link einfügen
       link_tooltip:
         chapter_number: Kapitel %{number}

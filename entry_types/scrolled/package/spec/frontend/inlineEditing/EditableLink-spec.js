@@ -139,6 +139,58 @@ describe('EditableLink', () => {
     await waitFor(() => expect(onChange).toHaveBeenCalledWith('new link'));
   });
 
+  it('passes current link when clicking change link button', async () => {
+    const selectLinkDestination = jest.fn().mockResolvedValue('new link');
+    useSelectLinkDestination.mockReturnValue(selectLinkDestination);
+    const user = userEvent.setup();
+    render(
+      <EditableLink href="https://example.com" openInNewTab actionButtonVisible={true}>
+        Some link
+      </EditableLink>
+    );
+
+    await user.click(screen.getByRole('button', {name: 'Change link destination'}));
+
+    expect(selectLinkDestination).toHaveBeenCalledWith({
+      href: 'https://example.com',
+      openInNewTab: true
+    }, {allowRemove: false});
+  });
+
+  it('allows removing link in dialog if allowRemove is true', async () => {
+    const selectLinkDestination = jest.fn().mockResolvedValue('new link');
+    useSelectLinkDestination.mockReturnValue(selectLinkDestination);
+    const user = userEvent.setup();
+    render(
+      <EditableLink href="https://example.com" allowRemove={true} actionButtonVisible={true}>
+        Some link
+      </EditableLink>
+    );
+
+    await user.click(screen.getByRole('button', {name: 'Change link destination'}));
+
+    expect(selectLinkDestination).toHaveBeenCalledWith(expect.anything(), {allowRemove: true});
+  });
+
+  it('triggers onChange with null when link is removed in dialog', async () => {
+    const selectLinkDestination = jest.fn().mockResolvedValue(null);
+    useSelectLinkDestination.mockReturnValue(selectLinkDestination);
+    const onChange = jest.fn();
+    const user = userEvent.setup();
+    render(
+      <EditableLink href="https://example.com"
+                    allowRemove={true}
+                    actionButtonVisible={true}
+                    onChange={onChange}>
+        Some link
+      </EditableLink>
+    );
+
+    await user.click(screen.getByRole('button', {name: 'Change link destination'}));
+
+    await waitFor(() => expect(onChange).toHaveBeenCalledWith(null));
+  });
+
   it('triggers onChange with null when clicking remove link button', async () => {
     const onChange = jest.fn();
     const user = userEvent.setup();
