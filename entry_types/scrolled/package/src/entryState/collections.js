@@ -24,7 +24,9 @@ export function watchCollections(entry, {dispatch}) {
 }
 
 function collectionSpecs(entry) {
-  const {storylines, chapters, sections, contentElements, widgets, files} = entry;
+  const {
+    storylines, chapters, sections, contentElements, widgets, files, linkableEntries
+  } = entry;
 
   return [
     {
@@ -69,6 +71,12 @@ function collectionSpecs(entry) {
       attributes: ['id', 'permaId', 'typeName', 'sectionId'],
       keyAttribute: 'permaId',
       includeConfiguration: true
+    },
+    {
+      collection: linkableEntries,
+      name: 'linkedEntries',
+      attributes: ['id', {permaId: 'id'}, 'title', 'url', 'previewUrl', 'publicationState'],
+      keyAttribute: 'permaId'
     },
     {
       // Only sync widgets whose frontend packs the server loads in the editor.
