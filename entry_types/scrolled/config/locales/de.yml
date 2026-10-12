@@ -1385,6 +1385,12 @@ de:
         header: Gliederung
         finish_reorder_chapters: Umsortieren beenden
         reorder_chapters: "Kapitel umsortieren..."
+      entry_select:
+        no_matches: Keine passenden Beiträge
+        not_published: Nicht veröffentlicht
+        password_protected: Passwortgeschützt
+        placeholder: Beitrag auswählen
+        show_entries: Beiträge anzeigen
       extract_fragment:
         cancel: Abbrechen
         header: Zu geteilten Fragmenten hinzufügen

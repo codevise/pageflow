@@ -1368,6 +1368,12 @@ en:
         header: Outline
         finish_reorder_chapters: Finish reordering
         reorder_chapters: "Reorder chapters..."
+      entry_select:
+        no_matches: No matching stories
+        not_published: Not published
+        password_protected: Password protected
+        placeholder: Select story
+        show_entries: Show stories
       extract_fragment:
         cancel: Cancel
         header: Add to shared fragments
