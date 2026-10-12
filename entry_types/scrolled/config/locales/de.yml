@@ -2133,3 +2133,8 @@ de:
         yesterday: Gestern
         no_activity_yet: Noch keine Aktivität
         show_more: Mehr anzeigen
+      link_tooltip:
+        not_published: Noch nicht veröffentlicht
+        open_draft_preview: Vorschau des Entwurfs öffnen
+        open_preview: Vorschau öffnen
+        password_protected: Passwortgeschützt

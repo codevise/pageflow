@@ -13,6 +13,7 @@ import {AddCommentModeProvider} from './AddCommentModeProvider';
 import {CommentingVisibilityProvider} from './CommentingVisibilityProvider';
 import {SelectedSubjectProvider} from './SelectedSubjectProvider';
 import {FloatingToolbar} from './FloatingToolbar';
+import {LinkTooltipProvider} from './LinkTooltip';
 
 const resolutionStorageKey = 'pageflow.scrolled.commentsResolution';
 
@@ -27,7 +28,9 @@ export function EntryDecorator({commentingInitialState, children}) {
           <CommentDisplayFilterProvider {...commentDisplayFilter}>
             <SelectedSubjectProvider>
               <AddCommentModeProvider>
-                {children}
+                <LinkTooltipProvider>
+                  {children}
+                </LinkTooltipProvider>
                 <FloatingToolbar />
               </AddCommentModeProvider>
             </SelectedSubjectProvider>

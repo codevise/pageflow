@@ -7,7 +7,11 @@ import {
   useLinkedEntryUrl
 } from 'pageflow-scrolled/entryState';
 
-export function Link({attributes, children, href, openInNewTab}) {
+import {extensible} from './extensionRegistry';
+
+export const Link = extensible('Link', PlainLink);
+
+export function PlainLink({attributes, children, href, openInNewTab}) {
   const embedOriginUrl = useEmbedOriginUrl();
 
   if (href?.entry) {

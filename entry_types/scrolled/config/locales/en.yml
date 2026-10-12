@@ -1960,3 +1960,8 @@ en:
         yesterday: Yesterday
         no_activity_yet: No activity yet
         show_more: Show more
+      link_tooltip:
+        not_published: Not published yet
+        open_draft_preview: Open draft preview
+        open_preview: Open preview
+        password_protected: Password protected
