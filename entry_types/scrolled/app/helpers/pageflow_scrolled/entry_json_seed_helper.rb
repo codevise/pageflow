@@ -12,6 +12,7 @@ module PageflowScrolled
     include Pageflow::PublicI18n::LocalesHelper
     include PageflowScrolled::I18nHelper
     include PageflowScrolled::ThemesHelper
+    include PageflowScrolled::LinkedEntriesHelper
 
     def scrolled_entry_json_seed_script_tag(scrolled_entry, options = {})
       seed_json = render_json do |json|
@@ -28,6 +29,7 @@ module PageflowScrolled
       revision = scrolled_entry.revision
       sections = scrolled_entry_json_seed_sections(scrolled_entry, options)
       content_elements = scrolled_entry_json_seed_content_elements(revision, sections)
+      widgets = scrolled_entry.resolve_widgets(insert_point: :react)
       entry_config = Pageflow.config_for(scrolled_entry)
 
       json.partial!('pageflow_scrolled/entry_json_seed/entry',
@@ -42,7 +44,9 @@ module PageflowScrolled
                       content_elements,
                       include_unused: options[:include_unused_file_reference_locations]
                     ),
-                    widgets: scrolled_entry.resolve_widgets(insert_point: :react),
+                    linked_entries: scrolled_linked_entries(scrolled_entry,
+                                                            content_elements + widgets),
+                    widgets:,
                     options:)
     end
 

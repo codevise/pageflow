@@ -1748,6 +1748,220 @@ module PageflowScrolled
         end
       end
 
+      context 'linked entries' do
+        it 'renders empty collection by default' do
+          entry = create(:published_entry, type_name: 'scrolled')
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(collections: {linkedEntries: []})
+        end
+
+        it 'renders ids, titles and urls of published linked entries' do
+          account = create(:account)
+          linked_entry = create(:published_entry,
+                                type_name: 'scrolled',
+                                account:,
+                                title: 'linked-entry')
+          entry = create(:published_entry, type_name: 'scrolled', account:)
+          create(:content_element,
+                 revision: entry.revision,
+                 configuration: {value: [link_node(entry_id: linked_entry.id)]})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(collections: {
+                                           linkedEntries: [
+                                             {
+                                               id: linked_entry.id,
+                                               permaId: linked_entry.id,
+                                               title: 'linked-entry',
+                                               url: 'http://test.host/linked-entry'
+                                             }
+                                           ]
+                                         })
+        end
+
+        it 'does not render preview urls in published entry' do
+          account = create(:account)
+          linked_entry = create(:published_entry, type_name: 'scrolled', account:)
+          entry = create(:published_entry, type_name: 'scrolled', account:)
+          create(:content_element,
+                 revision: entry.revision,
+                 configuration: {value: [link_node(entry_id: linked_entry.id)]})
+
+          result = render(helper, entry)
+
+          expect(JSON.parse(result)['collections']['linkedEntries'][0].keys)
+            .to contain_exactly('id', 'permaId', 'title', 'url')
+        end
+
+        it 'renders future url of unpublished linked entry of published entry' do
+          account = create(:account)
+          linked_entry = create(:draft_entry,
+                                type_name: 'scrolled',
+                                account:,
+                                title: 'draft-entry')
+          entry = create(:published_entry, type_name: 'scrolled', account:)
+          create(:content_element,
+                 revision: entry.revision,
+                 configuration: {value: [link_node(entry_id: linked_entry.id)]})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(collections: {
+                                           linkedEntries: [
+                                             {
+                                               id: linked_entry.id,
+                                               url: 'http://test.host/draft-entry'
+                                             }
+                                           ]
+                                         })
+        end
+
+        it 'renders entries linked from widgets' do
+          pageflow_configure do |config|
+            config.widget_types.register(ReactWidgetType.new(name: 'customNavigation',
+                                                             role: 'header'))
+          end
+
+          account = create(:account)
+          linked_entry = create(:published_entry, type_name: 'scrolled', account:)
+          entry = create(:published_entry, type_name: 'scrolled', account:)
+          create(:widget,
+                 subject: entry.revision,
+                 type_name: 'customNavigation',
+                 role: 'header',
+                 configuration: {links: [link_node(entry_id: linked_entry.id)]})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(collections: {
+                                           linkedEntries: [{id: linked_entry.id}]
+                                         })
+        end
+
+        it 'renders linked entries of other entry types' do
+          account = create(:account)
+          linked_entry = create(:published_entry,
+                                type_name: 'paged',
+                                account:,
+                                title: 'paged-entry')
+          entry = create(:published_entry, type_name: 'scrolled', account:)
+          create(:content_element,
+                 revision: entry.revision,
+                 configuration: {value: [link_node(entry_id: linked_entry.id)]})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(collections: {
+                                           linkedEntries: [
+                                             {
+                                               id: linked_entry.id,
+                                               url: 'http://test.host/paged-entry'
+                                             }
+                                           ]
+                                         })
+        end
+
+        it 'skips links without valid signature' do
+          account = create(:account)
+          linked_entry = create(:published_entry, type_name: 'scrolled', account:)
+          entry = create(:published_entry, type_name: 'scrolled', account:)
+          create(:content_element,
+                 revision: entry.revision,
+                 configuration: {
+                   value: [link_node(entry_id: linked_entry.id, signature: 'forged')]
+                 })
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(collections: {linkedEntries: []})
+        end
+
+        it 'skips linked entries of other accounts' do
+          linked_entry = create(:published_entry, type_name: 'scrolled')
+          entry = create(:published_entry, type_name: 'scrolled')
+          create(:content_element,
+                 revision: entry.revision,
+                 configuration: {value: [link_node(entry_id: linked_entry.id)]})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(collections: {linkedEntries: []})
+        end
+
+        it 'renders preview urls and publication states for draft entry' do
+          account = create(:account)
+          published_linked_entry = create(:published_entry,
+                                          type_name: 'scrolled',
+                                          account:,
+                                          title: 'published-linked-entry')
+          protected_linked_entry = create(:published_entry,
+                                          type_name: 'scrolled',
+                                          account:,
+                                          title: 'protected-linked-entry',
+                                          revision_attributes: {password_protected: true})
+          draft_linked_entry = create(:draft_entry,
+                                      type_name: 'scrolled',
+                                      account:,
+                                      title: 'draft-linked-entry')
+          entry = create(:draft_entry, type_name: 'scrolled', account:)
+          create(:content_element,
+                 revision: entry.revision,
+                 configuration: {
+                   value: [
+                     link_node(entry_id: published_linked_entry.id),
+                     link_node(entry_id: protected_linked_entry.id),
+                     link_node(entry_id: draft_linked_entry.id)
+                   ]
+                 })
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(
+            collections: {
+              linkedEntries: [
+                {
+                  id: published_linked_entry.id,
+                  url: 'http://test.host/published-linked-entry',
+                  previewUrl: '/admin/entries/published-linked-entry/preview',
+                  publicationState: 'published_without_password_protection'
+                },
+                {
+                  id: protected_linked_entry.id,
+                  publicationState: 'published_with_password_protection'
+                },
+                {
+                  id: draft_linked_entry.id,
+                  url: 'http://test.host/draft-linked-entry',
+                  previewUrl: '/admin/entries/draft-linked-entry/preview',
+                  publicationState: 'not_published'
+                }
+              ]
+            }
+          )
+        end
+
+        it 'renders signatures for draft entry to let editors link entries again' do
+          account = create(:account)
+          linked_entry = create(:published_entry, type_name: 'scrolled', account:)
+          entry = create(:draft_entry, type_name: 'scrolled', account:)
+          create(:content_element,
+                 revision: entry.revision,
+                 configuration: {value: [link_node(entry_id: linked_entry.id)]})
+
+          result = render(helper, entry)
+          signature = JSON.parse(result)['collections']['linkedEntries'][0]['signature']
+
+          expect(EntryLinkSignature.valid?(linked_entry.id, signature)).to eq(true)
+        end
+
+        def link_node(entry_id:, signature: PageflowScrolled::EntryLinkSignature.generate(entry_id))
+          {type: 'link', href: {entry: entry_id, signature:}, children: [{text: 'Link'}]}
+        end
+      end
+
       context 'embed' do
         it 'renders false by default' do
           entry = create(:published_entry,
