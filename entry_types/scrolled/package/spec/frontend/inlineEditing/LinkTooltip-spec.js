@@ -14,7 +14,14 @@ describe('LinkTooltip', () => {
     'pageflow_scrolled.inline_editing.link_tooltip.opens_in_same_tab': 'Opens in same tab',
     'pageflow_scrolled.inline_editing.link_tooltip.chapter_number': 'Chapter %{number}',
     'pageflow_scrolled.inline_editing.link_tooltip.excursion_with_title': 'Excursion: %{title}',
-    'pageflow_scrolled.inline_editing.link_tooltip.untitled_excursion': 'Untitled Excursion'
+    'pageflow_scrolled.inline_editing.link_tooltip.untitled_excursion': 'Untitled Excursion',
+    'pageflow_scrolled.inline_editing.link_tooltip.unavailable_entry': 'Unavailable story',
+    'pageflow_scrolled.inline_editing.link_tooltip.publication_states.not_published':
+      'Not published yet',
+    'pageflow_scrolled.inline_editing.link_tooltip.publication_states.published_with_password_protection':
+      'Password protected',
+    'pageflow_scrolled.inline_editing.link_tooltip.open_preview': 'Open preview',
+    'pageflow_scrolled.inline_editing.link_tooltip.open_draft_preview': 'Open draft preview'
   });
 
   beforeEach(() => {
@@ -160,6 +167,163 @@ describe('LinkTooltip', () => {
     await user.hover(getByText('A link'));
 
     expect(queryByRole('link')).toHaveAttribute('href', '#section-5');
+  });
+
+  describe('for link to other entry', () => {
+    function renderLinkPreview(href, {linkedEntry, openInNewTab} = {}) {
+      return renderInEntry(
+        <LinkTooltipProvider>
+          <LinkPreview href={href} openInNewTab={openInNewTab}>
+            A link
+          </LinkPreview>
+        </LinkTooltipProvider>,
+        {seed: {linkedEntries: linkedEntry ? [{id: 7, ...linkedEntry}] : []}}
+      );
+    }
+
+    it('displays title linking to url of entry', async () => {
+      const {getByText, getByRole} = renderLinkPreview({entry: 7}, {
+        linkedEntry: {title: 'Other story', url: 'https://example.com/other'}
+      });
+
+      const user = userEvent.setup();
+      await user.hover(getByText('A link'));
+
+      expect(getByRole('link', {name: 'Other story'}))
+        .toHaveAttribute('href', 'https://example.com/other');
+      expect(getByRole('link', {name: 'Other story'})).toHaveAttribute('target', '_blank');
+    });
+
+    it('displays note about opening link in same tab', async () => {
+      const {getByText} = renderLinkPreview({entry: 7}, {
+        linkedEntry: {title: 'Other story', url: 'https://example.com/other'}
+      });
+
+      const user = userEvent.setup();
+      await user.hover(getByText('A link'));
+
+      expect(getByText('Opens in same tab')).toBeInTheDocument();
+    });
+
+    it('displays note about opening link in new tab', async () => {
+      const {getByText} = renderLinkPreview({entry: 7}, {
+        linkedEntry: {title: 'Other story', url: 'https://example.com/other'},
+        openInNewTab: true
+      });
+
+      const user = userEvent.setup();
+      await user.hover(getByText('A link'));
+
+      expect(getByText('Opens in new tab')).toBeInTheDocument();
+    });
+
+    it('offers preview of unpublished entry', async () => {
+      const {getByText, getByRole} = renderLinkPreview({entry: 7}, {
+        linkedEntry: {
+          title: 'Other story',
+          url: 'https://example.com/other',
+          previewUrl: '/admin/entries/other/preview',
+          publicationState: 'not_published'
+        }
+      });
+
+      const user = userEvent.setup();
+      await user.hover(getByText('A link'));
+
+      expect(getByText('Not published yet')).toBeInTheDocument();
+      expect(getByRole('link', {name: 'Open preview'}))
+        .toHaveAttribute('href', '/admin/entries/other/preview');
+      expect(getByRole('link', {name: 'Open preview'})).toHaveAttribute('target', '_blank');
+    });
+
+    it('displays publication state after title', async () => {
+      const {getByText} = renderLinkPreview({entry: 7}, {
+        linkedEntry: {
+          title: 'Other story',
+          url: 'https://example.com/other',
+          previewUrl: '/admin/entries/other/preview',
+          publicationState: 'published_with_password_protection'
+        }
+      });
+
+      const user = userEvent.setup();
+      await user.hover(getByText('A link'));
+
+      expect(getByText('Other story').nextSibling).toHaveTextContent('Password protected');
+    });
+
+    it('does not link title of unpublished entry', async () => {
+      const {getByText, queryByRole} = renderLinkPreview({entry: 7}, {
+        linkedEntry: {
+          title: 'Other story',
+          url: 'https://example.com/other',
+          previewUrl: '/admin/entries/other/preview',
+          publicationState: 'not_published'
+        }
+      });
+
+      const user = userEvent.setup();
+      await user.hover(getByText('A link'));
+
+      expect(getByText('Other story')).toBeInTheDocument();
+      expect(queryByRole('link', {name: 'Other story'})).toBeNull();
+    });
+
+    it('offers draft preview of published entry without pill', async () => {
+      const {getByText, queryByText, getByRole} = renderLinkPreview({entry: 7}, {
+        linkedEntry: {
+          title: 'Other story',
+          url: 'https://example.com/other',
+          previewUrl: '/admin/entries/other/preview',
+          publicationState: 'published_without_password_protection'
+        }
+      });
+
+      const user = userEvent.setup();
+      await user.hover(getByText('A link'));
+
+      expect(queryByText('Published')).toBeNull();
+      expect(getByRole('link', {name: 'Open draft preview'}))
+        .toHaveAttribute('href', '/admin/entries/other/preview');
+    });
+
+    it('offers draft preview of password protected entry', async () => {
+      const {getByText, getByRole} = renderLinkPreview({entry: 7}, {
+        linkedEntry: {
+          title: 'Other story',
+          url: 'https://example.com/other',
+          previewUrl: '/admin/entries/other/preview',
+          publicationState: 'published_with_password_protection'
+        }
+      });
+
+      const user = userEvent.setup();
+      await user.hover(getByText('A link'));
+
+      expect(getByText('Password protected')).toBeInTheDocument();
+      expect(getByRole('link', {name: 'Open draft preview'}))
+        .toHaveAttribute('href', '/admin/entries/other/preview');
+    });
+
+    it('does not display publication state without preview url', async () => {
+      const {getByText, queryByRole} = renderLinkPreview({entry: 7}, {
+        linkedEntry: {title: 'Other story', url: 'https://example.com/other'}
+      });
+
+      const user = userEvent.setup();
+      await user.hover(getByText('A link'));
+
+      expect(queryByRole('link', {name: /preview/})).toBeNull();
+    });
+
+    it('displays note for unavailable entry', async () => {
+      const {getByText} = renderLinkPreview({entry: 7});
+
+      const user = userEvent.setup();
+      await user.hover(getByText('A link'));
+
+      expect(getByText('Unavailable story')).toBeInTheDocument();
+    });
   });
 
   it('displays tooltip for file link', async () => {

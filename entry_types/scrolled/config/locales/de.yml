@@ -2025,8 +2025,14 @@ de:
         deleted_chapter: Gelöschtes Kapitel
         deleted_file: Gelöschte Datei
         excursion_with_title: "Exkurs: %{title}"
+        open_draft_preview: Vorschau des Entwurfs öffnen
+        open_preview: Vorschau öffnen
         opens_in_new_tab: Öffnet in neuem Tab
         opens_in_same_tab: Öffnet außerhalb des Editors im selben Tab
+        publication_states:
+          not_published: Noch nicht veröffentlicht
+          published_with_password_protection: Passwortgeschützt
+        unavailable_entry: Nicht verfügbarer Beitrag
         untitled_excursion: Unbenannter Exkurs
         visit_chapter: Gehe zu Kapitel
         visit_excursion: Gehe zu Exkurs

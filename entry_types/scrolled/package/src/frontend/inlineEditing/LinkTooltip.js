@@ -12,7 +12,12 @@ import {
 } from '@floating-ui/react';
 
 import {useI18n} from '../i18n';
-import {useChapter, useDownloadableFile, useMainStoryline} from 'pageflow-scrolled/entryState';
+import {
+  useChapter,
+  useDownloadableFile,
+  useLinkedEntry,
+  useMainStoryline
+} from 'pageflow-scrolled/entryState';
 import {SectionThumbnail} from '../SectionThumbnail';
 import {useFloatingPortalRoot} from '../FloatingPortalRootProvider';
 import {useStorylineActivity} from '../storylineActivity';
@@ -160,7 +165,12 @@ export function LinkTooltip({disabled, setFloating, floatingStyles, floatingCont
 }
 
 function LinkDestination({href, openInNewTab}) {
-  if (href?.chapter) {
+  if (href?.entry) {
+    return (
+      <LinkedEntryLinkDestination entryId={href.entry} openInNewTab={openInNewTab} />
+    );
+  }
+  else if (href?.chapter) {
     return (
       <ChapterLinkDestination permaId={href.chapter} />
     )
@@ -231,9 +241,69 @@ function SectionLinkDestination({permaId}) {
   );
 }
 
-function ExternalLinkDestination({href, openInNewTab}) {
+function LinkedEntryLinkDestination({entryId, openInNewTab}) {
+  const linkedEntry = useLinkedEntry(entryId);
   const {t} = useI18n({locale: 'ui'});
 
+  if (!linkedEntry) {
+    return (
+      <span>{t('pageflow_scrolled.inline_editing.link_tooltip.unavailable_entry')}</span>
+    );
+  }
+
+  return (
+    <>
+      <div className={styles.entry}>
+        {linkedEntry.publicationState === 'not_published' ?
+         <span>{linkedEntry.title}</span> :
+         <a href={linkedEntry.url}
+            target="_blank"
+            rel="noopener noreferrer">
+           {linkedEntry.title}
+           <ExternalLinkIcon width={10} height={10} />
+         </a>}
+        {linkedEntry.previewUrl && <PublicationStatePill linkedEntry={linkedEntry} />}
+      </div>
+      {linkedEntry.previewUrl && <PreviewLink linkedEntry={linkedEntry} />}
+      <NewTabHint openInNewTab={openInNewTab} />
+    </>
+  );
+}
+
+function PublicationStatePill({linkedEntry}) {
+  const {t} = useI18n({locale: 'ui'});
+
+  if (!pillPublicationStates.includes(linkedEntry.publicationState)) {
+    return null;
+  }
+
+  return (
+    <span className={styles.pill}>
+      {t(`pageflow_scrolled.inline_editing.link_tooltip.publication_states.${linkedEntry.publicationState}`)}
+    </span>
+  );
+}
+
+const pillPublicationStates = ['not_published', 'published_with_password_protection'];
+
+function PreviewLink({linkedEntry}) {
+  const {t} = useI18n({locale: 'ui'});
+
+  return (
+    <div className={styles.previewLink}>
+      <a href={linkedEntry.previewUrl}
+         target="_blank"
+         rel="noopener noreferrer">
+        {linkedEntry.publicationState === 'not_published' ?
+         t('pageflow_scrolled.inline_editing.link_tooltip.open_preview') :
+         t('pageflow_scrolled.inline_editing.link_tooltip.open_draft_preview')}
+        <ExternalLinkIcon width={10} height={10} />
+      </a>
+    </div>
+  );
+}
+
+function ExternalLinkDestination({href, openInNewTab}) {
   return (
     <>
       <a href={href}
@@ -242,12 +312,20 @@ function ExternalLinkDestination({href, openInNewTab}) {
         {href}
         <ExternalLinkIcon width={10} height={10} />
       </a>
-      <div className={styles.newTab}>
-        {openInNewTab ?
-         t('pageflow_scrolled.inline_editing.link_tooltip.opens_in_new_tab') :
-         t('pageflow_scrolled.inline_editing.link_tooltip.opens_in_same_tab')}
-      </div>
+      <NewTabHint openInNewTab={openInNewTab} />
     </>
+  );
+}
+
+function NewTabHint({openInNewTab}) {
+  const {t} = useI18n({locale: 'ui'});
+
+  return (
+    <div className={styles.newTab}>
+      {openInNewTab ?
+       t('pageflow_scrolled.inline_editing.link_tooltip.opens_in_new_tab') :
+       t('pageflow_scrolled.inline_editing.link_tooltip.opens_in_same_tab')}
+    </div>
   );
 }
 
