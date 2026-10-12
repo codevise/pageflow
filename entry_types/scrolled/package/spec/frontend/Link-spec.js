@@ -115,6 +115,58 @@ describe('Link', () => {
     });
   });
 
+  describe('with href to other entry', () => {
+    it('renders link to linked entry', () => {
+      const {getByRole} = renderInEntry(
+        <Link href={{entry: 5}}>Click</Link>,
+        {
+          seed: {
+            linkedEntries: [{id: 5, url: 'http://example.com/other'}]
+          }
+        }
+      );
+
+      expect(getByRole('link')).toHaveAttribute('href', 'http://example.com/other');
+      expect(getByRole('link')).not.toHaveAttribute('target');
+    });
+
+    it('renders link without href for unknown entry', () => {
+      const {getByText} = renderInEntry(
+        <Link href={{entry: 5}}>Click</Link>
+      );
+
+      expect(getByText('Click')).not.toHaveAttribute('href');
+    });
+
+    it('sets target _top in embed mode', () => {
+      const {getByRole} = renderInEntry(
+        <Link href={{entry: 5}}>Click</Link>,
+        {
+          seed: {
+            embed: true,
+            originUrl: 'http://example.com/my-entry',
+            linkedEntries: [{id: 5, url: 'http://example.com/other'}]
+          }
+        }
+      );
+
+      expect(getByRole('link')).toHaveAttribute('target', '_top');
+    });
+
+    it('sets target _blank when openInNewTab is true', () => {
+      const {getByRole} = renderInEntry(
+        <Link href={{entry: 5}} openInNewTab>Click</Link>,
+        {
+          seed: {
+            linkedEntries: [{id: 5, url: 'http://example.com/other'}]
+          }
+        }
+      );
+
+      expect(getByRole('link')).toHaveAttribute('target', '_blank');
+    });
+  });
+
   describe('with file href', () => {
     it('renders download link with target blank', () => {
       const {getByRole} = renderInEntry(

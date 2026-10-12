@@ -1,11 +1,26 @@
 import React from 'react';
 
-import {useChapter, useDownloadableFile, useEmbedOriginUrl} from 'pageflow-scrolled/entryState';
+import {
+  useChapter,
+  useDownloadableFile,
+  useEmbedOriginUrl,
+  useLinkedEntryUrl
+} from 'pageflow-scrolled/entryState';
 
 export function Link({attributes, children, href, openInNewTab}) {
   const embedOriginUrl = useEmbedOriginUrl();
 
-  if (href?.chapter) {
+  if (href?.entry) {
+    return (
+      <LinkedEntryLink attributes={attributes}
+                       destination={href}
+                       openInNewTab={openInNewTab}
+                       embedOriginUrl={embedOriginUrl}>
+        {children}
+      </LinkedEntryLink>
+    );
+  }
+  else if (href?.chapter) {
     return (
       <ChapterLink attributes={attributes}
                    chapterPermaId={href.chapter}>
@@ -43,6 +58,17 @@ function ChapterLink({attributes, children, chapterPermaId}) {
 
   return <a {...attributes}
             href={`#${chapter?.chapterSlug || ''}`}>
+    {children}
+  </a>;
+}
+
+function LinkedEntryLink({attributes, children, destination, openInNewTab, embedOriginUrl}) {
+  const href = useLinkedEntryUrl(destination);
+  const targetAttributes = getTargetAttributes({href, openInNewTab, embedOriginUrl});
+
+  return <a {...attributes}
+            {...targetAttributes}
+            href={href}>
     {children}
   </a>;
 }

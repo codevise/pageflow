@@ -60,6 +60,7 @@ export function normalizeSeed({
   originUrl,
   fileLicenses,
   entryTranslations,
+  linkedEntries,
   fileReferenceLocations,
   ...customFiles
 } = {}) {
@@ -120,6 +121,10 @@ export function normalizeSeed({
     },
     collections: {
       entries: normalizedEntries,
+      linkedEntries: (linkedEntries || []).map(linkedEntry => ({
+        permaId: linkedEntry.id,
+        ...linkedEntry
+      })),
       imageFiles: normalizeCollection(imageFiles, {
         isReady: true,
         basename: 'image',
