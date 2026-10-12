@@ -1,0 +1,111 @@
+.accordion_view {
+  display: flex;
+  flex-direction: column;
+  gap: space(2);
+  min-height: 0;
+
+  &-section {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--ui-on-surface-color-lighter);
+    border-radius: rounded();
+  }
+
+  &-section-fill {
+    &[open],
+    &.accordion_view-section-selected {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    > .accordion_view-content {
+      flex: 1 1 auto;
+    }
+  }
+
+  &-section[open],
+  &-section-selected {
+    > .accordion_view-header {
+      border-bottom: 1px solid var(--ui-on-surface-color-lightest);
+      border-radius: rounded() rounded() 0 0;
+    }
+  }
+
+  &-selectable_section > .accordion_view-header {
+    background: var(--ui-secondary-surface-color);
+  }
+
+  &-section-selected > .accordion_view-header {
+    background: var(--ui-selection-color-lighter);
+  }
+
+  &-section[open] > .accordion_view-summary::before {
+    transform: rotate(0deg);
+  }
+
+  &-header {
+    display: flex;
+    align-items: flex-start;
+    gap: space(2);
+    margin: 0;
+    padding: space(3) space(4);
+    border-radius: rounded();
+    line-height: 20px;
+    cursor: pointer;
+    background: var(--ui-primary-color-lightest);
+
+    input[type="radio"] {
+      flex: none;
+      width: 16px;
+      height: 16px;
+      margin: 2px 0 0;
+    }
+  }
+
+  &-summary {
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::before {
+      content: "";
+      flex: none;
+      align-self: center;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--ui-on-surface-color-light);
+      transform: rotate(-90deg);
+      transition: transform 0.2s;
+    }
+  }
+
+  &-header_text {
+    display: flex;
+    flex-direction: column;
+    gap: space(1);
+  }
+
+  &-title {
+    font-weight: 600;
+  }
+
+  &-description {
+    color: var(--ui-on-surface-color-light);
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    gap: space(3);
+    padding: space(4);
+    min-height: 0;
+    color: var(--ui-on-surface-color);
+
+    &[hidden] {
+      display: none;
+    }
+  }
+}

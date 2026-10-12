@@ -31,6 +31,7 @@ export * from './views/CollectionView';
 export * from './views/ConfigurationEditorView';
 export * from './views/TableView';
 export * from './views/TabsView';
+export * from './views/AccordionView';
 export * from './views/TooltipView';
 
 export * from './views/inputs/CheckBoxGroupInputView';

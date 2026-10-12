@@ -116,6 +116,7 @@ toc:
     description: |
       General purpose Backbone views exported by `pageflow/ui`.
     children:
+      - AccordionView
       - ConfigurationEditorView
       - FileMetaDataItemValueView
       - TabsView
