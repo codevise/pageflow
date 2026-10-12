@@ -43,14 +43,35 @@ export function fragmentsOfLibrary(library) {
 
 function fragmentCollections(collections, chapter, sections) {
   const sectionIds = sections.map(section => section.id);
+  const contentElements = collections.contentElements.filter(
+    contentElement => sectionIds.includes(contentElement.sectionId)
+  );
+  const linkedEntryIds = contentElements.flatMap(
+    contentElement => entryIdsOfLinks(contentElement.configuration)
+  );
 
   return {
     ...collections,
     chapters: [chapter],
     sections,
-    contentElements: collections.contentElements.filter(
-      contentElement => sectionIds.includes(contentElement.sectionId)
+    contentElements,
+    linkedEntries: (collections.linkedEntries || []).filter(
+      linkedEntry => linkedEntryIds.includes(linkedEntry.id)
     ),
     widgets: []
   };
+}
+
+function entryIdsOfLinks(value) {
+  if (Array.isArray(value)) {
+    return value.flatMap(entryIdsOfLinks);
+  }
+  else if (value && typeof value === 'object') {
+    return [
+      ...(value.href?.entry ? [value.href.entry] : []),
+      ...Object.values(value).flatMap(entryIdsOfLinks)
+    ];
+  }
+
+  return [];
 }

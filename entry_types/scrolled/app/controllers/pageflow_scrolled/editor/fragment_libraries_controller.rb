@@ -5,6 +5,7 @@ module PageflowScrolled
       include Pageflow::EditorController
 
       helper Pageflow::FilesHelper
+      helper PageflowScrolled::LinkedEntriesHelper
 
       before_action do
         head :not_found unless @entry.feature_state('fragments')

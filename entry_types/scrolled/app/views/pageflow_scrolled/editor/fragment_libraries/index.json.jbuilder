@@ -30,6 +30,11 @@ json.array!(@libraries) do |library|
       end
     end
 
+    json.linked_entries(scrolled_linked_entries(library.entry,
+                                                library.content_elements)) do |linked_entry|
+      json.partial!('pageflow_scrolled/entry_json_seed/linked_entry', **linked_entry)
+    end
+
     files_json_seed(json, library.entry)
   end
 end

@@ -110,6 +110,39 @@ module PageflowScrolled
                                               }])
       end
 
+      it 'includes entries linked from library' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, type_name: 'scrolled', account:, with_editor: user,
+                               with_feature: 'fragments')
+        library = create(:entry, type_name: 'scrolled', account:, fragment_library: 'shared')
+        linked_entry = create(:entry, type_name: 'scrolled', account:, title: 'Linked story')
+        create(:content_element,
+               revision: library.draft,
+               configuration: {
+                 value: [{
+                   type: 'link',
+                   href: {entry: linked_entry.id,
+                          signature: EntryLinkSignature.generate(linked_entry.id)},
+                   children: [{text: 'x'}]
+                 }]
+               })
+
+        sign_in_and_lock(entry, user)
+        get(:index, params: {entry_type: 'scrolled', entry_id: entry}, format: 'json')
+
+        expect(response.body)
+          .to include_json([{
+                             collections: {
+                               linkedEntries: [{
+                                 id: linked_entry.id,
+                                 url: 'http://test.host/linked-story',
+                                 previewUrl: '/admin/entries/linked-story/preview'
+                               }]
+                             }
+                           }])
+      end
+
       it 'includes files of library' do
         user = create(:user)
         account = create(:account, with_previewer: user)
