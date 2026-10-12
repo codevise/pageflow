@@ -1443,16 +1443,26 @@ de:
         motif: Motiv
       select_link_destination:
         cancel: Abbrechen
-        create: Erstellen
-        enter_url: Verwende eine URL als Ziel
+        create: Link erstellen
         header: Link erstellen
+        kinds:
+          file:
+            description: Lasse Leser eine Datei herunterladen
+            title: Datei-Download
+          other_entry:
+            description: Verlinke einen Beitrag dieses Kontos, auch vor der Veröffentlichung
+            title: Anderer Beitrag
+          this_entry:
+            description: Lasse Leser zu einem anderen Teil dieses Beitrags springen
+            title: Kapitel oder Abschnitt dieses Beitrags
+          url:
+            description: Verlinke eine beliebige Seite im Internet
+            title: Andere Website
         open_in_new_tab: In neuem Tab öffnen
-        or: oder
-        select_chapter_or_section: Wähle ein Kapitel oder einen Abschnitt als Ziel aus
-        select_file: Biete eine Datei zum Download an
-        select_file_description: Lasse Leser eine Datei herunterladen, wenn sie auf den Link klicken.
         select_in_sidebar: Datei auswählen
         selection_label: Datei zum Herunterladen
+        story: Beitrag
+        url: URL
       select_move_destination:
         cancel: Abbrechen
         header_insertPosition: Abschnitt verschieben

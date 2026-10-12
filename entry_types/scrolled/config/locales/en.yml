@@ -1426,16 +1426,26 @@ en:
         motif: Motif
       select_link_destination:
         cancel: Cancel
-        create: Create
-        enter_url: Use external URL as destination
+        create: Create link
         header: Create link
+        kinds:
+          file:
+            description: Let readers download a file
+            title: File download
+          other_entry:
+            description: Link to a story of this account, also before it is published
+            title: Another story
+          this_entry:
+            description: Let readers jump to another part of this story
+            title: Chapter or section of this story
+          url:
+            description: Link to any page on the internet
+            title: Other website
         open_in_new_tab: Open in new tab
-        or: or
-        select_chapter_or_section: Select chapter or section as destination
-        select_file: Provide file download
-        select_file_description: Let readers download a file when they click the link.
         select_in_sidebar: Select file
         selection_label: a file to download
+        story: Story
+        url: URL
       select_move_destination:
         cancel: Cancel
         header_insertPosition: Move section

@@ -1,0 +1,9 @@
+.view {
+  display: flex;
+  flex-direction: column;
+  gap: space(3);
+}
+
+.entrySelectContainer {}
+
+.openInNewTabContainer {}

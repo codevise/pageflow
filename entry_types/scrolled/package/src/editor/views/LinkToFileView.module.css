@@ -1,0 +1,3 @@
+.selectFileButton {
+  composes: selectFileButton from './buttons.module.css';
+}
