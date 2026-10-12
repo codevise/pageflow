@@ -43,6 +43,9 @@ describe('SelectLinkDestinationDialogView', () => {
     'pageflow_scrolled.editor.select_link_destination.open_in_new_tab': 'Open in new tab',
     'pageflow_scrolled.editor.select_link_destination.create': 'Create link',
     'pageflow_scrolled.editor.select_link_destination.header': 'Create link',
+    'pageflow_scrolled.editor.select_link_destination.edit_header': 'Edit link',
+    'pageflow_scrolled.editor.select_link_destination.save': 'Save',
+    'pageflow_scrolled.editor.select_link_destination.remove': 'Remove link',
     'pageflow_scrolled.editor.select_link_destination.select_in_sidebar': 'Select file',
     'pageflow_scrolled.editor.select_link_destination.selection_label': 'a file to download',
     'pageflow_scrolled.editor.select_link_destination.cancel': 'Cancel'
@@ -401,6 +404,130 @@ describe('SelectLinkDestinationDialogView', () => {
 
     expect(listener).toHaveBeenCalledWith({
       href: {file: {permaId: 10, collectionName: 'imageFiles'}}
+    });
+  });
+
+  describe('with existing link', () => {
+    function renderDialog(link, {
+      seed, onSelect = jest.fn(), onRemove = jest.fn(), allowRemove, ...options
+    } = {}) {
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed(seed),
+        ...options
+      });
+      const view = new SelectLinkDestinationDialogView({
+        entry, link, allowRemove, onSelect, onRemove
+      });
+
+      return render(view);
+    }
+
+    it('renders edit header and save button', () => {
+      const {getByRole, queryByRole} = renderDialog({href: 'https://example.com'});
+
+      expect(getByRole('heading', {name: 'Edit link'})).toBeInTheDocument();
+      expect(getByRole('button', {name: 'Save'})).toBeInTheDocument();
+      expect(queryByRole('button', {name: 'Create link'})).toBeNull();
+    });
+
+    it('does not offer removing new links', () => {
+      const {queryByRole} = renderDialog(undefined, {allowRemove: true});
+
+      expect(queryByRole('button', {name: 'Remove link'})).toBeNull();
+    });
+
+    it('does not offer removing links unless allowed', () => {
+      const {queryByRole} = renderDialog({href: 'https://example.com'});
+
+      expect(queryByRole('button', {name: 'Remove link'})).toBeNull();
+    });
+
+    it('calls onRemove when remove button is clicked', async () => {
+      const onRemove = jest.fn();
+      const onSelect = jest.fn();
+      const user = userEvent.setup();
+      const {getByRole} = renderDialog({href: 'https://example.com'}, {
+        allowRemove: true, onRemove, onSelect
+      });
+      await user.click(getByRole('button', {name: 'Remove link'}));
+
+      expect(onRemove).toHaveBeenCalled();
+      expect(onSelect).not.toHaveBeenCalled();
+    });
+
+    it('preselects url', async () => {
+      const onSelect = jest.fn();
+      const user = userEvent.setup();
+      const result = renderDialog({href: 'https://example.com', openInNewTab: true}, {onSelect});
+
+      expect(result.getByRole('radio', {name: /Other website/})).toBeChecked();
+      expect(result.getByLabelText('URL')).toHaveValue('https://example.com');
+      expect(panel(result, /Other website/).getByLabelText('Open in new tab')).toBeChecked();
+
+      await user.click(result.getByRole('button', {name: 'Save'}));
+
+      expect(onSelect).toHaveBeenCalledWith({href: 'https://example.com', openInNewTab: true});
+    });
+
+    it('preselects chapter of this entry', async () => {
+      const onSelect = jest.fn();
+      const user = userEvent.setup();
+      const result = renderDialog({href: {chapter: 10}}, {
+        seed: {chapters: [{id: 1, permaId: 10, configuration: {title: 'Intro'}}]},
+        onSelect
+      });
+
+      expect(result.getByRole('radio', {name: /Chapter or section of this story/})).toBeChecked();
+
+      await user.click(result.getByRole('button', {name: 'Save'}));
+
+      expect(onSelect).toHaveBeenCalledWith({href: {chapter: 10}});
+    });
+
+    it('preselects file', async () => {
+      const onSelect = jest.fn();
+      const user = userEvent.setup();
+      const result = renderDialog({href: {file: {permaId: 10, collectionName: 'imageFiles'}}}, {
+        onSelect,
+        fileTypes: factories.fileTypesWithImageFileType(),
+        filesAttributes: {
+          image_files: [{id: 1, perma_id: 10, file_name: 'report.jpg'}]
+        }
+      });
+
+      expect(result.getByRole('radio', {name: /File download/})).toBeChecked();
+      expect(result.getByText('report.jpg')).toBeInTheDocument();
+
+      await user.click(result.getByRole('button', {name: 'Save'}));
+
+      expect(onSelect).toHaveBeenCalledWith({
+        href: {file: {permaId: 10, collectionName: 'imageFiles'}}
+      });
+    });
+
+    it('preselects other entry and keeps signature', async () => {
+      const onSelect = jest.fn();
+      const user = userEvent.setup();
+      const result = renderDialog({href: {entry: 9, signature: 'signed-9'}, openInNewTab: true}, {
+        seed: {linkedEntries: [{id: 9, title: 'Linked story', url: '/linked'}]},
+        onSelect
+      });
+
+      expect(result.getByRole('radio', {name: /Another story/})).toBeChecked();
+      expect(result.getByRole('combobox', {name: 'Story'})).toHaveValue('Linked story');
+
+      await user.click(result.getByRole('button', {name: 'Save'}));
+
+      expect(onSelect).toHaveBeenCalledWith({
+        href: {entry: 9, signature: 'signed-9'},
+        openInNewTab: true
+      });
+    });
+
+    it('fetches entries when other entry is preselected', () => {
+      renderDialog({href: {entry: 9, signature: 'signed-9'}});
+
+      expect(testContext.requests).toHaveLength(1);
     });
   });
 });

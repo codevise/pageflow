@@ -1427,6 +1427,7 @@ en:
       select_link_destination:
         cancel: Cancel
         create: Create link
+        edit_header: Edit link
         file: File
         header: Create link
         kinds:
@@ -1444,6 +1445,8 @@ en:
             title: Other website
         no_file_selected: No file selected
         open_in_new_tab: Open in new tab
+        remove: Remove link
+        save: Save
         select_in_sidebar: Select file
         selection_label: a file to download
         story: Story

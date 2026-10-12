@@ -1444,6 +1444,7 @@ de:
       select_link_destination:
         cancel: Abbrechen
         create: Link erstellen
+        edit_header: Link bearbeiten
         file: Datei
         header: Link erstellen
         kinds:
@@ -1461,6 +1462,8 @@ de:
             title: Andere Website
         no_file_selected: Keine Datei ausgewählt
         open_in_new_tab: In neuem Tab öffnen
+        remove: Link entfernen
+        save: Speichern
         select_in_sidebar: Datei auswählen
         selection_label: Datei zum Herunterladen
         story: Beitrag

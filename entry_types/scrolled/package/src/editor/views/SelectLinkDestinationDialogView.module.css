@@ -32,6 +32,12 @@
   margin-top: space(4);
 }
 
+.removeButton {
+  composes: destructiveIconButton from './buttons.module.css';
+  composes: trash icon from './icons.module.css';
+  margin-right: auto;
+}
+
 .createButton {
   composes: saveButton from './buttons.module.css';
 }

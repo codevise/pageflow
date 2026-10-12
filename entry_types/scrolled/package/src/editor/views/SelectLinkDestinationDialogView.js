@@ -1,4 +1,5 @@
 import I18n from 'i18n-js';
+import _ from 'underscore';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 
@@ -14,18 +15,27 @@ import dialogViewStyles from './mixins/dialogView.module.css';
 import styles from './SelectLinkDestinationDialogView.module.css';
 
 export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
-  template: () => `
+  template: data => `
     <div class="${dialogViewStyles.backdrop}">
       <div class="editor ${dialogViewStyles.box} ${styles.box}">
         <h1 class="${dialogViewStyles.header}">
-          ${I18n.t('pageflow_scrolled.editor.select_link_destination.header')}
+          ${data.editing ?
+            I18n.t('pageflow_scrolled.editor.select_link_destination.edit_header') :
+            I18n.t('pageflow_scrolled.editor.select_link_destination.header')}
         </h1>
 
         <div class="${styles.accordionContainer}"></div>
 
         <div class="${styles.footer}">
+          ${data.removable ? `
+            <button type="button" class="${styles.removeButton}">
+              ${I18n.t('pageflow_scrolled.editor.select_link_destination.remove')}
+            </button>
+          ` : ''}
           <button type="button" class="${styles.createButton}" disabled>
-            ${I18n.t('pageflow_scrolled.editor.select_link_destination.create')}
+            ${data.editing ?
+              I18n.t('pageflow_scrolled.editor.select_link_destination.save') :
+              I18n.t('pageflow_scrolled.editor.select_link_destination.create')}
           </button>
           <button type="button" class="${dialogViewStyles.close}">
             ${I18n.t('pageflow_scrolled.editor.select_link_destination.cancel')}
@@ -54,16 +64,39 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
           this.apply(link);
         }
       }
+    },
+
+    'click removeButton': function() {
+      this.options.onRemove();
+      this.close();
     }
   }),
 
+  serializeData() {
+    return {
+      editing: !!this.options.link,
+      removable: !!this.options.link && !!this.options.allowRemove
+    };
+  },
+
   initialize() {
-    this.selection = new Backbone.Model({kind: 'thisEntry'});
-    this.outlineSelection = new Backbone.Model();
-    this.otherEntryLink = new Backbone.Model();
+    const {href, openInNewTab} = this.options.link || {};
+
+    this.selection = new Backbone.Model({kind: kindOf(href)});
+    this.outlineSelection = new Backbone.Model(
+      href && kindOf(href) === 'thisEntry' ? _.pick(href, 'chapter', 'section') : {}
+    );
+    this.otherEntryLink = new Backbone.Model(
+      href && href.entry ?
+      {entryId: href.entry, signature: href.signature, openInNewTab} :
+      {}
+    );
     this.otherEntryLink.modelName = 'otherEntryLink';
-    this.externalLink = new Backbone.Model();
+    this.externalLink = new Backbone.Model(
+      typeof href === 'string' ? {url: href, openInNewTab} : {}
+    );
     this.externalLink.modelName = 'externalLink';
+    this.fileHref = href && href.file;
 
     this.listenTo(this.selection, 'change', this.updateCreateButton);
     this.listenTo(this.selection, 'change:kind', this.fetchLinkableEntries);
@@ -105,6 +138,7 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
 
     accordion.section(sectionTitle('file'), sectionOptions('file'), function() {
       this.view(LinkToFileView, {
+        file: dialog.file(),
         onSelectFile: () => dialog.selectFile()
       });
     });
@@ -124,6 +158,21 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
     });
 
     this.appendSubview(accordion, {to: this.ui.accordionContainer});
+    this.updateCreateButton();
+    this.fetchLinkableEntries();
+  },
+
+  file() {
+    if (!this.fileHref) {
+      return null;
+    }
+
+    const collectionName = this.fileHref.collectionName.replace(
+      /[A-Z]/g, letter => `_${letter.toLowerCase()}`
+    );
+    const collection = this.options.entry.getFileCollection(collectionName);
+
+    return collection ? collection.getByPermaId(this.fileHref.permaId) : null;
   },
 
   fetchLinkableEntries() {
@@ -145,6 +194,8 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
       return null;
     case 'otherEntry':
       return otherEntryLink(this.otherEntryLink.attributes);
+    case 'file':
+      return this.fileHref ? {href: {file: this.fileHref}} : null;
     case 'url':
       if (!this.externalLink.get('url')) {
         return null;
@@ -198,6 +249,20 @@ const OutlineContainerView = Marionette.View.extend({
     return this;
   }
 });
+
+function kindOf(href) {
+  if (typeof href === 'string') {
+    return 'url';
+  }
+  else if (href && href.file) {
+    return 'file';
+  }
+  else if (href && href.entry) {
+    return 'otherEntry';
+  }
+
+  return 'thisEntry';
+}
 
 function otherEntryLink({entryId, signature, openInNewTab}) {
   if (!entryId || !signature) {

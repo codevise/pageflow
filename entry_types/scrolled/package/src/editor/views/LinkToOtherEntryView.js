@@ -19,6 +19,7 @@ export const LinkToOtherEntryView = Marionette.ItemView.extend({
   onRender() {
     this.appendSubview(new EntrySelectView({
       collection: this.options.entry.linkableEntries,
+      selectedEntryId: this.model.get('entryId'),
       label: I18n.t('pageflow_scrolled.editor.select_link_destination.story'),
       onSelect: linkableEntry => this.selectEntry(linkableEntry)
     }), {to: this.ui.entrySelectContainer});
