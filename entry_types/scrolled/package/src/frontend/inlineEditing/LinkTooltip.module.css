@@ -43,6 +43,42 @@
   right: 0;
 }
 
+.entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+}
+
+.entry a {
+  color: #fff;
+}
+
+.entry a svg {
+  padding-left: 7px;
+}
+
+.previewLink {
+  padding: 0 10px 10px;
+}
+
+.pill {
+  margin-block: space(-1);
+  padding: space(1) space(2);
+  border-radius: rounded(full);
+  background-color: var(--ui-warning-color);
+  color: var(--ui-on-warning-color);
+  font-size: 0.85em;
+}
+
+.previewLink a {
+  color: #fff;
+}
+
+.previewLink a svg {
+  padding-left: 7px;
+}
+
 .newTab {
   opacity: 0.7;
   padding: 0 10px 10px;

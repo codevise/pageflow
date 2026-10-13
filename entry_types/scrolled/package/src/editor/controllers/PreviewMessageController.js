@@ -269,12 +269,18 @@ export const PreviewMessageController = Object.extend({
       else if (message.data.type === 'SELECT_LINK_DESTINATION') {
         SelectLinkDestinationDialogView.show({
           entry: this.entry,
+          link: message.data.payload?.link,
+          allowRemove: message.data.payload?.allowRemove,
 
           onSelect(result){
             postMessage({
               type: 'LINK_DESTINATION_SELECTED',
               payload: result
             });
+          },
+
+          onRemove() {
+            postMessage({type: 'LINK_DESTINATION_REMOVED'});
           }
         });
       }

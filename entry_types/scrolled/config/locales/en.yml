@@ -1368,6 +1368,12 @@ en:
         header: Outline
         finish_reorder_chapters: Finish reordering
         reorder_chapters: "Reorder chapters..."
+      entry_select:
+        no_matches: No matching stories
+        not_published: Not published
+        password_protected: Password protected
+        placeholder: Select story
+        show_entries: Show stories
       extract_fragment:
         cancel: Cancel
         header: Add to shared fragments
@@ -1420,16 +1426,31 @@ en:
         motif: Motif
       select_link_destination:
         cancel: Cancel
-        create: Create
-        enter_url: Use external URL as destination
+        create: Create link
+        edit_header: Edit link
+        file: File
         header: Create link
+        kinds:
+          file:
+            description: Let readers download a file
+            title: File download
+          other_entry:
+            description: Link to a story of this account, also before it is published
+            title: Another story
+          this_entry:
+            description: Let readers jump to another part of this story
+            title: Chapter or section of this story
+          url:
+            description: Link to any page on the internet
+            title: Other website
+        no_file_selected: No file selected
         open_in_new_tab: Open in new tab
-        or: or
-        select_chapter_or_section: Select chapter or section as destination
-        select_file: Provide file download
-        select_file_description: Let readers download a file when they click the link.
+        remove: Remove link
+        save: Save
         select_in_sidebar: Select file
         selection_label: a file to download
+        story: Story
+        url: URL
       select_move_destination:
         cancel: Cancel
         header_insertPosition: Move section
@@ -1824,14 +1845,21 @@ en:
       insert_content_element:
         after: Insert new element below
         before: Insert new element above
+      edit_link: Edit link
       insert_link: Insert link
       link_tooltip:
         chapter_number: Chapter %{number}
         deleted_chapter: Deleted chapter
         deleted_file: Deleted file
         excursion_with_title: "Excursion: %{title}"
+        open_draft_preview: Open draft preview
+        open_preview: Open preview
         opens_in_new_tab: Opens in new tab
         opens_in_same_tab: Outside editor, will open in same tab
+        publication_states:
+          not_published: Not published yet
+          published_with_password_protection: Password protected
+        unavailable_entry: Unavailable story
         untitled_excursion: Untitled excursion
         visit_chapter: Go to chapter
         visit_excursion: Go to excursion
@@ -1932,3 +1960,8 @@ en:
         yesterday: Yesterday
         no_activity_yet: No activity yet
         show_more: Show more
+      link_tooltip:
+        not_published: Not published yet
+        open_draft_preview: Open draft preview
+        open_preview: Open preview
+        password_protected: Password protected

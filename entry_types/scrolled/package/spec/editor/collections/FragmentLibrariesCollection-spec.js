@@ -98,6 +98,45 @@ describe('FragmentLibrariesCollection', () => {
       expect(collections.storylines).toHaveLength(1);
     });
 
+    it('contain only entries linked from content elements of the fragment', () => {
+      const libraries = new FragmentLibrariesCollection([
+        {
+          id: 3,
+          collections: {
+            storylines: [],
+            chapters: [
+              {id: 1, permaId: 100, configuration: {}},
+              {id: 2, permaId: 200, configuration: {}}
+            ],
+            sections: [
+              {id: 10, permaId: 1000, chapterId: 1},
+              {id: 11, permaId: 1100, chapterId: 2}
+            ],
+            contentElements: [
+              {
+                id: 20, permaId: 2000, sectionId: 10,
+                configuration: {
+                  value: [{type: 'paragraph', children: [
+                    {type: 'link', href: {entry: 5, signature: 's'}, children: [{text: 'x'}]}
+                  ]}]
+                }
+              },
+              {
+                id: 21, permaId: 2100, sectionId: 11,
+                configuration: {itemLinks: {a: {href: {entry: 6, signature: 's'}}}}
+              }
+            ],
+            linkedEntries: [{id: 5, title: 'Five'}, {id: 6, title: 'Six'}]
+          }
+        }
+      ]);
+
+      const fragments = libraries.sharedFragments();
+
+      expect(fragments.first().get('collections').linkedEntries.map(e => e.id)).toEqual([5]);
+      expect(fragments.last().get('collections').linkedEntries.map(e => e.id)).toEqual([6]);
+    });
+
     it('contain no widgets', () => {
       const {collections} = libraries().sharedFragments().first().attributes;
 

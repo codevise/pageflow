@@ -4,6 +4,7 @@ export {useCutOff} from './cutoff';
 export {useEmbedOriginUrl} from './embedOriginUrl';
 export {useShareProviders, useShareUrl} from './sharing';
 export {useEntryTranslations} from './entryTranslations';
+export {useLinkedEntry, useLinkedEntryUrl} from './linkedEntries';
 export {
   useDarkWidgets,
   useEntryMetadata

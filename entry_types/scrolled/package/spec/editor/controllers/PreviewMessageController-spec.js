@@ -702,6 +702,42 @@ describe('PreviewMessageController', () => {
     })).resolves.toMatchObject({onSelect: expect.any(Function)});
   });
 
+  it('passes current link and allowRemove option to link destination dialog', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed()
+    });
+    const iframeWindow = createSendingIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      jest.spyOn(SelectLinkDestinationDialogView, 'show').mockImplementation(resolve);
+      postSelectLinkDestinationMessage({href: {chapter: 10}}, {allowRemove: true});
+    })).resolves.toMatchObject({link: {href: {chapter: 10}}, allowRemove: true});
+  });
+
+  it('sends LINK_DESTINATION_REMOVED message when remove callback passed to link destination dialog is invoked', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed()
+    });
+    const iframeWindow = createSendingIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'LINK_DESTINATION_REMOVED') {
+          resolve(event.data.type);
+        }
+      });
+
+      jest.spyOn(SelectLinkDestinationDialogView, 'show').mockImplementation(
+        ({onRemove}) => onRemove()
+      );
+      postSelectLinkDestinationMessage({href: {chapter: 10}});
+    })).resolves.toEqual('LINK_DESTINATION_REMOVED');
+  });
+
   it('sends LINK_DESTINATION_SELECTED message when callback passed to link destination dialog is invoked', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {

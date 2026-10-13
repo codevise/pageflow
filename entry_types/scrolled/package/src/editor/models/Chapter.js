@@ -130,9 +130,12 @@ export const Chapter = Backbone.Model.extend({
           chapter_perma_id: fragment.get('chapterPermaId')
         }
       }
-    }).then(
-      sections => this.entry.refreshFiles().then(() => this.addFragmentSections(sections))
-    );
+    }).then(sections => {
+      this.entry.linkableEntries.set(fragment.get('collections')?.linkedEntries || [],
+                                     {remove: false});
+
+      return this.entry.refreshFiles().then(() => this.addFragmentSections(sections));
+    });
   },
 
   extractToFragmentLibrary({title} = {}) {

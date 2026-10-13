@@ -1,0 +1,44 @@
+.linkTooltip {
+  position: absolute;
+  z-index: 11;
+  white-space: nowrap;
+  background-color: #222;
+  color: #fff;
+  border-radius: 4px;
+  font-family: var(--ui-font-family);
+  font-size: var(--ui-font-size);
+  line-height: 1;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.linkTooltip > svg {
+  fill: #222;
+}
+
+.pill {
+  margin-block: space(-1);
+  padding: space(1) space(2);
+  border-radius: rounded(full);
+  background-color: var(--ui-warning-color);
+  color: var(--ui-on-warning-color);
+  font-size: 0.85em;
+}
+
+.entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+}
+
+.previewLink {
+  padding: 0 10px 10px;
+}
+
+.previewLink a {
+  color: #fff;
+}
+
+.previewLink a svg {
+  padding-left: 7px;
+}

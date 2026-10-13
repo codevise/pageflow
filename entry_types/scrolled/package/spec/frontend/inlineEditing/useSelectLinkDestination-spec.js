@@ -12,9 +12,33 @@ describe('useSelectLinkDestination', () => {
     selectLinkDestination().catch(() => {});
 
     expect(window.parent.postMessage).toHaveBeenCalledWith(
-      {type: 'SELECT_LINK_DESTINATION'},
+      expect.objectContaining({type: 'SELECT_LINK_DESTINATION'}),
       expect.anything()
     );
+  });
+
+  it('passes current link and allowRemove option in SELECT_LINK_DESTINATION message', () => {
+    const {result} = renderHook(() => useSelectLinkDestination());
+    const selectLinkDestination = result.current;
+    selectLinkDestination({href: {chapter: 10}}, {allowRemove: true}).catch(() => {});
+
+    expect(window.parent.postMessage).toHaveBeenCalledWith(
+      {
+        type: 'SELECT_LINK_DESTINATION',
+        payload: {link: {href: {chapter: 10}}, allowRemove: true}
+      },
+      expect.anything()
+    );
+  });
+
+  it('returns function returns promise which resolves with null on LINK_DESTINATION_REMOVED message', () => {
+    const {result} = renderHook(() => useSelectLinkDestination());
+    const selectLinkDestination = result.current;
+    const promise = selectLinkDestination({href: {chapter: 10}});
+
+    window.postMessage({type: 'LINK_DESTINATION_REMOVED'}, '*');
+
+    return expect(promise).resolves.toBeNull();
   });
 
   it('returns function returns promise which resolves on LINK_DESTINATION_SELECTED message', () => {

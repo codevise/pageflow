@@ -11,3 +11,7 @@
 .secondary_icon_button {
   @include icon-button;
 }
+
+.destructive_icon_button {
+  @include icon-button("destructive");
+}

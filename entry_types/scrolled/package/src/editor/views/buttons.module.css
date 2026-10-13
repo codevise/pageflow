@@ -8,6 +8,10 @@
   composes: secondary_icon_button from global;
 }
 
+.destructiveIconButton {
+  composes: destructive_icon_button from global;
+}
+
 .unstyledButton {
   border: 0;
   text-align: initial;

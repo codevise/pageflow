@@ -1,137 +1,34 @@
-import React, {useContext, useEffect, useState, createContext, useMemo, useRef} from 'react';
+import React from 'react';
 import classNames from 'classnames';
-import {
-  useFloating,
-  FloatingPortal,
-  FloatingArrow,
-  arrow,
-  shift,
-  offset,
-  inline,
-  autoUpdate
-} from '@floating-ui/react';
+import {FloatingArrow} from '@floating-ui/react';
 
 import {useI18n} from '../i18n';
-import {useChapter, useDownloadableFile, useMainStoryline} from 'pageflow-scrolled/entryState';
+import {
+  useChapter,
+  useDownloadableFile,
+  useLinkedEntry,
+  useMainStoryline
+} from 'pageflow-scrolled/entryState';
 import {SectionThumbnail} from '../SectionThumbnail';
-import {useFloatingPortalRoot} from '../FloatingPortalRootProvider';
-import {useStorylineActivity} from '../storylineActivity';
+import {
+  LinkTooltipProvider as SharedLinkTooltipProvider,
+  useLinkTooltip
+} from '../../shared/linkTooltip';
 
 import styles from './LinkTooltip.module.css';
 
 import ExternalLinkIcon from './images/externalLink.svg';
 
-const UpdateContext = createContext();
+export {LinkPreview} from '../../shared/linkTooltip';
 
 export function LinkTooltipProvider(props) {
-  const update = useContext(UpdateContext);
-
-  if (update) {
-    return props.children;
-  }
-  else {
-    return (
-      <LinkTooltipProviderInner {...props} />
-    );
-  }
-}
-
-export function LinkTooltipProviderInner({
-  disabled, position, floatingStrategy, onClick, children, align = 'left', gap = 10
-}) {
-  const storylineMode = useStorylineActivity();
-  const [state, setState] = useState();
-
-  const arrowRef = useRef();
-
-  const {refs, floatingStyles, context: floatingContext} = useFloating({
-    strategy: floatingStrategy,
-    placement: `${position === 'below' ? 'bottom' : 'top'}${align === 'left' ? '-start' : ''}`,
-    middleware: [
-      offset(gap),
-      shift(),
-      arrow({element: arrowRef, padding: 10}),
-      inline()
-    ],
-    whileElementsMounted: autoUpdate
-  });
-
-  const update = useMemo(() => {
-    let timeout;
-
-    return {
-      activate(href, openInNewTab, linkRef) {
-        clearTimeout(timeout);
-        timeout = null;
-
-        refs.setReference(linkRef.current);
-
-        setState({
-          href,
-          openInNewTab
-        });
-      },
-
-      keep() {
-        clearTimeout(timeout);
-        timeout = null;
-      },
-
-      deactivate({delay = 200} = {}) {
-        if (!timeout) {
-          timeout = setTimeout(() => {
-            timeout = null;
-            setState(null)
-          }, delay);
-        }
-      }
-    }
-  }, [refs]);
-
-  useEffect(() => {
-    if (storylineMode !== 'active') {
-      update.deactivate({delay: 0})
-    }
-  }, [storylineMode, update])
-
   return (
-    <UpdateContext.Provider value={update}>
-      <FloatingPortal root={useFloatingPortalRoot()}>
-        <LinkTooltip state={state}
-                     setFloating={refs.setFloating}
-                     floatingStyles={floatingStyles}
-                     floatingContext={floatingContext}
-                     arrowRef={arrowRef}
-                     onClick={onClick}
-                     disabled={disabled} />
-      </FloatingPortal>
-      {children}
-    </UpdateContext.Provider>
-  );
-}
-
-export function LinkPreview({disabled, href, openInNewTab, children, className}) {
-  const {activate, deactivate} = useContext(UpdateContext);
-  const ref = useRef();
-
-  useEffect(() => {
-    if (disabled) {
-      deactivate({delay: 0})
-    }
-  }, [disabled, deactivate])
-
-  return (
-    <span ref={ref}
-          className={className}
-          onMouseEnter={() => !disabled && activate(href, openInNewTab, ref)}
-          onMouseLeave={() => !disabled && deactivate()}>
-      {children}
-    </span>
+    <SharedLinkTooltipProvider {...props} tooltip={LinkTooltip} />
   );
 }
 
 export function LinkTooltip({disabled, setFloating, floatingStyles, floatingContext, arrowRef, onClick, state}) {
-  const {keep, deactivate} = useContext(UpdateContext);
+  const {keep, deactivate} = useLinkTooltip();
 
   if (disabled || !state || !state.href) {
     return null;
@@ -160,7 +57,12 @@ export function LinkTooltip({disabled, setFloating, floatingStyles, floatingCont
 }
 
 function LinkDestination({href, openInNewTab}) {
-  if (href?.chapter) {
+  if (href?.entry) {
+    return (
+      <LinkedEntryLinkDestination entryId={href.entry} openInNewTab={openInNewTab} />
+    );
+  }
+  else if (href?.chapter) {
     return (
       <ChapterLinkDestination permaId={href.chapter} />
     )
@@ -231,9 +133,69 @@ function SectionLinkDestination({permaId}) {
   );
 }
 
-function ExternalLinkDestination({href, openInNewTab}) {
+function LinkedEntryLinkDestination({entryId, openInNewTab}) {
+  const linkedEntry = useLinkedEntry(entryId);
   const {t} = useI18n({locale: 'ui'});
 
+  if (!linkedEntry) {
+    return (
+      <span>{t('pageflow_scrolled.inline_editing.link_tooltip.unavailable_entry')}</span>
+    );
+  }
+
+  return (
+    <>
+      <div className={styles.entry}>
+        {linkedEntry.publicationState === 'not_published' ?
+         <span>{linkedEntry.title}</span> :
+         <a href={linkedEntry.url}
+            target="_blank"
+            rel="noopener noreferrer">
+           {linkedEntry.title}
+           <ExternalLinkIcon width={10} height={10} />
+         </a>}
+        {linkedEntry.previewUrl && <PublicationStatePill linkedEntry={linkedEntry} />}
+      </div>
+      {linkedEntry.previewUrl && <PreviewLink linkedEntry={linkedEntry} />}
+      <NewTabHint openInNewTab={openInNewTab} />
+    </>
+  );
+}
+
+function PublicationStatePill({linkedEntry}) {
+  const {t} = useI18n({locale: 'ui'});
+
+  if (!pillPublicationStates.includes(linkedEntry.publicationState)) {
+    return null;
+  }
+
+  return (
+    <span className={styles.pill}>
+      {t(`pageflow_scrolled.inline_editing.link_tooltip.publication_states.${linkedEntry.publicationState}`)}
+    </span>
+  );
+}
+
+const pillPublicationStates = ['not_published', 'published_with_password_protection'];
+
+function PreviewLink({linkedEntry}) {
+  const {t} = useI18n({locale: 'ui'});
+
+  return (
+    <div className={styles.previewLink}>
+      <a href={linkedEntry.previewUrl}
+         target="_blank"
+         rel="noopener noreferrer">
+        {linkedEntry.publicationState === 'not_published' ?
+         t('pageflow_scrolled.inline_editing.link_tooltip.open_preview') :
+         t('pageflow_scrolled.inline_editing.link_tooltip.open_draft_preview')}
+        <ExternalLinkIcon width={10} height={10} />
+      </a>
+    </div>
+  );
+}
+
+function ExternalLinkDestination({href, openInNewTab}) {
   return (
     <>
       <a href={href}
@@ -242,12 +204,20 @@ function ExternalLinkDestination({href, openInNewTab}) {
         {href}
         <ExternalLinkIcon width={10} height={10} />
       </a>
-      <div className={styles.newTab}>
-        {openInNewTab ?
-         t('pageflow_scrolled.inline_editing.link_tooltip.opens_in_new_tab') :
-         t('pageflow_scrolled.inline_editing.link_tooltip.opens_in_same_tab')}
-      </div>
+      <NewTabHint openInNewTab={openInNewTab} />
     </>
+  );
+}
+
+function NewTabHint({openInNewTab}) {
+  const {t} = useI18n({locale: 'ui'});
+
+  return (
+    <div className={styles.newTab}>
+      {openInNewTab ?
+       t('pageflow_scrolled.inline_editing.link_tooltip.opens_in_new_tab') :
+       t('pageflow_scrolled.inline_editing.link_tooltip.opens_in_same_tab')}
+    </div>
   );
 }
 

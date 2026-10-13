@@ -115,6 +115,10 @@ unless options[:skip_collections]
       end
     end
 
+    json.linked_entries(linked_entries) do |linked_entry|
+      json.partial!('pageflow_scrolled/entry_json_seed/linked_entry', **linked_entry)
+    end
+
     json.widgets do
       json.array!(widgets) do |widget|
         json.partial! 'pageflow_scrolled/entry_json_seed/widget',

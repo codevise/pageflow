@@ -6,70 +6,38 @@
   max-width: 700px;
   height: 100vh;
   max-height: 1000px;
+  box-sizing: border-box;
 }
 
-.urlContainer {
+.accordionContainer {
+  flex: 1;
+  min-height: 0;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  white-space: nowrap;
+  flex-direction: column;
 }
 
-.urlContainer > :first-child {
-  width: 100%;
-}
-
-.or {
-  position: relative;
-  margin: 0 auto space(4);
-  padding: 0 space(2);
-  color: var(--ui-on-surface-color-light);
-}
-
-.or::before,
-.or::after {
-  content: "";
-  display: block;
-  position: absolute;
-  top: 50%;
-  width: space(8);
-  border-top: solid 1px var(--ui-on-surface-color-lighter);
-}
-
-.or::before {
-  right: 100%;
-}
-
-.or::after {
-  left: 100%;
-}
-
-.urlContainer,
-.openInNewTabContainer {
-  width: 100%;
-}
-
-.createButton {
-  composes: saveButton from './buttons.module.css';
+.accordionContainer > * {
+  flex: 1;
 }
 
 .outlineContainer {
-  width: 100%;
   flex: 1;
   container-type: size;
 }
 
-.fileContainer {
+.footer {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-bottom: space(4);
+  justify-content: flex-end;
+  gap: space(2);
+  margin-top: space(4);
 }
 
-.fileContainer > :first-child {
-  flex: 1
+.removeButton {
+  composes: destructiveIconButton from './buttons.module.css';
+  composes: trash icon from './icons.module.css';
+  margin-right: auto;
 }
 
-.selectFileButton {
-  composes: selectFileButton from './buttons.module.css';
+.createButton {
+  composes: saveButton from './buttons.module.css';
 }

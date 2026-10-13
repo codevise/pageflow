@@ -1385,6 +1385,12 @@ de:
         header: Gliederung
         finish_reorder_chapters: Umsortieren beenden
         reorder_chapters: "Kapitel umsortieren..."
+      entry_select:
+        no_matches: Keine passenden Beiträge
+        not_published: Nicht veröffentlicht
+        password_protected: Passwortgeschützt
+        placeholder: Beitrag auswählen
+        show_entries: Beiträge anzeigen
       extract_fragment:
         cancel: Abbrechen
         header: Zu geteilten Fragmenten hinzufügen
@@ -1437,16 +1443,31 @@ de:
         motif: Motiv
       select_link_destination:
         cancel: Abbrechen
-        create: Erstellen
-        enter_url: Verwende eine URL als Ziel
+        create: Link erstellen
+        edit_header: Link bearbeiten
+        file: Datei
         header: Link erstellen
+        kinds:
+          file:
+            description: Lasse Leser eine Datei herunterladen
+            title: Datei-Download
+          other_entry:
+            description: Verlinke einen Beitrag dieses Kontos, auch vor der Veröffentlichung
+            title: Anderer Beitrag
+          this_entry:
+            description: Lasse Leser zu einem anderen Teil dieses Beitrags springen
+            title: Kapitel oder Abschnitt dieses Beitrags
+          url:
+            description: Verlinke eine beliebige Seite im Internet
+            title: Andere Website
+        no_file_selected: Keine Datei ausgewählt
         open_in_new_tab: In neuem Tab öffnen
-        or: oder
-        select_chapter_or_section: Wähle ein Kapitel oder einen Abschnitt als Ziel aus
-        select_file: Biete eine Datei zum Download an
-        select_file_description: Lasse Leser eine Datei herunterladen, wenn sie auf den Link klicken.
+        remove: Link entfernen
+        save: Speichern
         select_in_sidebar: Datei auswählen
         selection_label: Datei zum Herunterladen
+        story: Beitrag
+        url: URL
       select_move_destination:
         cancel: Abbrechen
         header_insertPosition: Abschnitt verschieben
@@ -1997,14 +2018,21 @@ de:
       insert_content_element:
         after: Neues Element unterhalb einfügen
         before: Neues Element oberhalb einfügen
+      edit_link: Link bearbeiten
       insert_link: Link einfügen
       link_tooltip:
         chapter_number: Kapitel %{number}
         deleted_chapter: Gelöschtes Kapitel
         deleted_file: Gelöschte Datei
         excursion_with_title: "Exkurs: %{title}"
+        open_draft_preview: Vorschau des Entwurfs öffnen
+        open_preview: Vorschau öffnen
         opens_in_new_tab: Öffnet in neuem Tab
         opens_in_same_tab: Öffnet außerhalb des Editors im selben Tab
+        publication_states:
+          not_published: Noch nicht veröffentlicht
+          published_with_password_protection: Passwortgeschützt
+        unavailable_entry: Nicht verfügbarer Beitrag
         untitled_excursion: Unbenannter Exkurs
         visit_chapter: Gehe zu Kapitel
         visit_excursion: Gehe zu Exkurs
@@ -2105,3 +2133,8 @@ de:
         yesterday: Gestern
         no_activity_yet: Noch keine Aktivität
         show_more: Mehr anzeigen
+      link_tooltip:
+        not_published: Noch nicht veröffentlicht
+        open_draft_preview: Vorschau des Entwurfs öffnen
+        open_preview: Vorschau öffnen
+        password_protected: Passwortgeschützt

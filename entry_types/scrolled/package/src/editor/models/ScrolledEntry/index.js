@@ -12,6 +12,7 @@ import {
   SectionsCollection,
   ContentElementsCollection
 } from '../../collections';
+import {LinkableEntriesCollection} from '../../collections/LinkableEntriesCollection';
 
 import {CommentDisplayFilter} from '../CommentDisplayFilter';
 import {ContentElement} from '../ContentElement';
@@ -74,6 +75,8 @@ export const ScrolledEntry = Entry.extend({
                                                 entry: this});
 
     this.sections.sort();
+
+    this.linkableEntries = new LinkableEntriesCollection(seed.collections.linkedEntries);
 
     this.cutoff = new Cutoff({entry: this});
 

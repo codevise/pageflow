@@ -98,6 +98,7 @@ function buildEntry(entry, contentElement, item, getPreviewConfiguration) {
     metadata: entry.metadata,
     widgets: entry.widgets,
     files: entry.files,
+    linkableEntries: entry.linkableEntries,
 
     storylines: entry.storylines,
     chapters: new Backbone.Collection([section.chapter]),

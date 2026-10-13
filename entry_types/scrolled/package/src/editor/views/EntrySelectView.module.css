@@ -1,0 +1,100 @@
+.container {
+  position: relative;
+}
+
+.label {
+  display: block;
+  margin-bottom: space(1);
+  font-weight: bold;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 2.5rem;
+}
+
+.inputWrapper .button[aria-haspopup] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  width: 2.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  cursor: pointer;
+}
+
+.inputWrapper .button[aria-haspopup][aria-expanded],
+.inputWrapper .button[aria-haspopup]:focus {
+  box-shadow: none;
+}
+
+.options {
+  position: absolute;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  left: 0;
+  top: 100%;
+  z-index: 3;
+  padding: 1px;
+  margin: 0;
+  list-style: none;
+  border: solid 1px var(--ui-on-surface-color-lighter);
+  border-radius: rounded(sm);
+  box-shadow: var(--ui-box-shadow);
+  background-color: var(--ui-surface-color);
+  cursor: default;
+  user-select: none;
+}
+
+.options:focus {
+  outline: 0;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: space(2);
+  padding: space(1);
+}
+
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pill {
+  flex-shrink: 0;
+  padding: space(0.5) space(2);
+  border-radius: rounded(full);
+  background-color: var(--ui-on-surface-color-lightest);
+  color: var(--ui-on-surface-color-light);
+  font-size: 0.8em;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+.activeOption {
+  background-color: var(--ui-selection-color-light);
+}
+
+.noMatches {
+  padding: space(1);
+  color: var(--ui-on-surface-color-light);
+}
