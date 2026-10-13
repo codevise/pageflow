@@ -92,6 +92,10 @@ module Pageflow
       def ransackable_attributes(_auth_object = nil)
         %w[first_name last_name email]
       end
+
+      def ransackable_associations(_auth_object = nil)
+        []
+      end
     end
 
     private
