@@ -9,9 +9,35 @@
   list-style: none;
 }
 
+.item {
+  position: relative;
+}
+
+.link {
+  display: block;
+}
+
 .item img {
   display: block;
   width: auto;
   max-width: 100%;
   height: var(--theme-logo-list-logo-height, 3rem);
+}
+
+.outlined::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: solid 1px currentColor;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.outlined:hover::before,
+.highlighted::before {
+  opacity: 0.5;
+}
+
+.selected::before {
+  opacity: 1;
 }

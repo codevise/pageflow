@@ -27,6 +27,7 @@ export const ItemsListView = Marionette.Layout.extend({
       label: I18n.t('pageflow_scrolled.editor.content_elements.logoList.items.label'),
       collection: this.collection,
       sortable: true,
+      highlight: true,
 
       onEdit: (model) => {
         editor.navigate(

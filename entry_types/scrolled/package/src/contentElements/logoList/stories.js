@@ -12,5 +12,16 @@ storiesOfContentElement(module, {
       {id: 5, image: filePermaId('imageFiles', 'churchBefore')},
       {id: 6, image: filePermaId('imageFiles', 'churchAfter')}
     ]
-  }
+  },
+  variants: [
+    {
+      name: 'With links',
+      configuration: {
+        itemLinks: {
+          1: {href: 'https://www.pageflow.io', openInNewTab: true},
+          3: {href: 'https://www.pageflow.io', openInNewTab: true}
+        }
+      }
+    }
+  ]
 });

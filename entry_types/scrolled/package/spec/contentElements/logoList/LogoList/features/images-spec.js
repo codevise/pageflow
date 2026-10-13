@@ -5,7 +5,7 @@ import {LogoList} from 'contentElements/logoList/LogoList';
 
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
 
-describe('LogoList', () => {
+describe('LogoList images', () => {
   const imageFileUrlTemplates = {
     medium: ':id_partition/medium/image.webp',
     original: ':id_partition/original/:basename.:extension'

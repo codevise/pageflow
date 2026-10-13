@@ -1,4 +1,5 @@
 import Backbone from 'backbone';
+import _ from 'underscore';
 import {editor} from 'pageflow/editor';
 
 import {Item} from './Item';
@@ -11,10 +12,21 @@ export const ItemsCollection = Backbone.Collection.extend({
     this.entry = options.entry;
     this.contentElement = options.contentElement;
     this.listenTo(this, 'add change remove sort', this.updateConfiguration);
+    this.listenTo(this, 'remove', this.pruneItemLinks);
   },
 
   updateConfiguration() {
     this.contentElement.configuration.set('items', this.toJSON());
+  },
+
+  pruneItemLinks() {
+    this.contentElement.configuration.set(
+      'itemLinks',
+      _.pick(
+        this.contentElement.configuration.get('itemLinks') || {},
+        ...this.pluck('id')
+      )
+    );
   },
 
   selectImage() {

@@ -12,6 +12,19 @@ export const Item = Backbone.Model.extend({
     return this.imageFile()?.title();
   },
 
+  highlight() {
+    this.collection.contentElement.postCommand({
+      type: 'HIGHLIGHT_ITEM',
+      index: this.collection.indexOf(this)
+    });
+  },
+
+  resetHighlight() {
+    this.collection.contentElement.postCommand({
+      type: 'RESET_ITEM_HIGHLIGHT'
+    });
+  },
+
   imageFile() {
     return this.collection.entry.imageFiles.getByPermaId(this.get('image'));
   }

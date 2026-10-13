@@ -27,4 +27,23 @@ describe('logoList ItemsCollection', () => {
 
     expect(contentElement.configuration.get('items')).toEqual([{id: 2}]);
   });
+
+  it('prunes item links when item is removed', () => {
+    const contentElement = factories.contentElement({
+      configuration: {
+        items: [{id: 1}, {id: 2}],
+        itemLinks: {
+          1: {href: 'https://acme.example.com'},
+          2: {href: 'https://globex.example.com'}
+        }
+      }
+    });
+    const itemsCollection = ItemsCollection.forContentElement(contentElement);
+
+    itemsCollection.remove(1);
+
+    expect(contentElement.configuration.get('itemLinks')).toEqual({
+      2: {href: 'https://globex.example.com'}
+    });
+  });
 });
