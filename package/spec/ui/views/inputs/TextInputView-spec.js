@@ -101,6 +101,22 @@ describe('pageflow.TextInputView', () => {
     expect(input).toHaveAttr('placeholder', 'otherValue');
   });
 
+  it('updates placeholder when attribute of other model changes', () => {
+    var placeholderModel = new Backbone.Model({name: 'old'});
+    var model = new Backbone.Model({});
+    var textInputView = new TextInputView({
+      model: model,
+      propertyName: 'name',
+      placeholderModel: placeholderModel
+    });
+
+    textInputView.render();
+    var input = textInputView.$el.find('input');
+    placeholderModel.set('name', 'new');
+
+    expect(input).toHaveAttr('placeholder', 'new');
+  });
+
   describe('max length validation', () => {
     describe('for existing data exceeding specified maxLength', () => {
       it('skips validation', () => {

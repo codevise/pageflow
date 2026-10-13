@@ -26,6 +26,30 @@ module PageflowScrolled
       end
     end
 
+    describe 'logo_list_content_element feature', type: :helper do
+      before { helper.extend(PacksHelper) }
+
+      it 'registers frontend pack for entries using logo lists' do
+        entry = create(:published_entry,
+                       type_name: 'scrolled',
+                       with_feature: 'logo_list_content_element')
+        create(:content_element, revision: entry.revision, type_name: 'logoList')
+
+        result = helper.scrolled_frontend_packs(entry, entry_mode: :published)
+
+        expect(result).to include('pageflow-scrolled/contentElements/logoList-frontend')
+      end
+
+      it 'does not register frontend pack for entries without the feature' do
+        entry = create(:published_entry, type_name: 'scrolled')
+        create(:content_element, revision: entry.revision, type_name: 'logoList')
+
+        result = helper.scrolled_frontend_packs(entry, entry_mode: :published)
+
+        expect(result).not_to include('pageflow-scrolled/contentElements/logoList-frontend')
+      end
+    end
+
     describe 'file_rights_from_references feature' do
       it 'is enabled by default' do
         entry = build(:entry, type_name: 'scrolled', features_configuration: {})

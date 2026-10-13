@@ -86,6 +86,8 @@ de:
       feature_name: iframe-Embed Inhaltselement
     legacy_social_embed_content_elements:
       feature_name: Legacy Twitter und TikTok Inhaltselemente
+    logo_list_content_element:
+      feature_name: Logo-Liste Inhaltselement
     lottie_animation_content_element:
       feature_name: Lottie-Animation-Inhaltselement
     scrolled_entry_fragment_caching:
@@ -777,6 +779,41 @@ de:
           name: Video
           tabs:
             general: Video
+        logoList:
+          attributes:
+            marquee:
+              label: Endlos scrollen
+              inline_help: |-
+                Logos bewegen sich in einer Endlosschleife über den
+                Bildschirm. Die Animation pausiert bei Mausberührung
+                und solange ein Logo den Tastaturfokus hat. Bei
+                bevorzugter Bewegungsreduzierung wird stattdessen
+                eine statische Liste angezeigt.
+            staggered:
+              label: Versetzt
+              inline_help: Jedes zweite Logo vertikal versetzt anzeigen.
+          description: Reihe von Partner- oder Kunden-Logos
+          items:
+            add: Hinzufügen
+            label: Logos
+          name: Logo-Liste
+          tabs:
+            general: Logo-Liste
+          edit_item:
+            back: Zurück
+            confirm_destroy: Soll das Logo wirklich gelöscht werden?
+            destroy: Logo löschen
+            attributes:
+              alt:
+                label: Alt-Text
+                inline_help: |-
+                  Ersetzt den Alt-Text der Bilddatei für dieses Logo.
+                  Bei verlinkten Logos sollte er das Linkziel
+                  beschreiben, z.B. "Website von ACME".
+              image:
+                label: Bild
+            tabs:
+              item: Logo
         lottieAnimation:
           attributes:
             id:

@@ -341,6 +341,25 @@ describe('Image', () => {
     expect(getByRole('img')).toHaveAttribute('alt', 'water');
   });
 
+  it('prefers alt text passed as prop', () => {
+    const {getByRole} = renderInEntry(
+      () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})}
+                   alt="ocean" />,
+      {
+        seed: {
+          imageFileUrlTemplates: {
+            large: ':id_partition/image.jpg'
+          },
+          imageFiles: [
+            {id: 1, permaId: 100, configuration: {alt: 'water'}}
+          ]
+        }
+      }
+    );
+
+    expect(getByRole('img')).toHaveAttribute('alt', 'ocean');
+  });
+
   it('render empty alt attr', () => {
     const {getByRole} = renderInEntry(
       () => <Image imageFile={useFile({collectionName: 'imageFiles', permaId: 100})} />,

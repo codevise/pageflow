@@ -18,6 +18,8 @@ import {ImageStructuredData} from './ImageStructuredData';
  * @param {boolean} [props.preferSvg] - Use original if image is SVG.
  * @param {boolean} [props.fill=true] - Position absolute and fill parent.
  * @param {boolean} [props.fit=cover] - `"contain"` or `"cover"`.
+ * @param {string} [props.alt] - Alt text to use instead of the one
+ *   configured for the image file.
  */
 export function Image({imageFile, ...props}) {
   if (imageFile && imageFile.isReady && props.load) {
@@ -42,7 +44,7 @@ function renderImageTag(props, imageFile) {
          src={imageSrc(imageFile, props)}
          srcSet={imageSrcSet(imageFile, props)}
          sizes={imageSizes(imageFile, props)}
-         alt={imageFile.configuration.alt ? imageFile.configuration.alt : ''}
+         alt={props.alt || imageFile.configuration.alt || ''}
          width={props.width}
          height={props.height}
          style={{
