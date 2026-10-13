@@ -764,6 +764,23 @@ en:
           name: Video
           tabs:
             general: Video
+        logoList:
+          description: Row of partner or client logos
+          items:
+            add: Add
+            label: Logos
+          name: Logo List
+          tabs:
+            general: Logo List
+          edit_item:
+            back: Back
+            confirm_destroy: Are you sure you want to delete this logo?
+            destroy: Delete logo
+            attributes:
+              image:
+                label: Image
+            tabs:
+              item: Logo
         lottieAnimation:
           attributes:
             id:

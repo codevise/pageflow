@@ -779,6 +779,23 @@ de:
           name: Video
           tabs:
             general: Video
+        logoList:
+          description: Reihe von Partner- oder Kunden-Logos
+          items:
+            add: Hinzufügen
+            label: Logos
+          name: Logo-Liste
+          tabs:
+            general: Logo-Liste
+          edit_item:
+            back: Zurück
+            confirm_destroy: Soll das Logo wirklich gelöscht werden?
+            destroy: Logo löschen
+            attributes:
+              image:
+                label: Bild
+            tabs:
+              item: Logo
         lottieAnimation:
           attributes:
             id:

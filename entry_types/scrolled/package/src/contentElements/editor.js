@@ -20,5 +20,6 @@ import './question/editor'
 import './counter/editor'
 import './quote/editor'
 import './infoTable/editor'
+import './logoList/editor'
 
 import './review';
