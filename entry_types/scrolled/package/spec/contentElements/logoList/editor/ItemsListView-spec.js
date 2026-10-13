@@ -35,8 +35,18 @@ describe('logoList ItemsListView', () => {
 
     render(view);
 
-    return {view};
+    return {view, contentElement};
   }
+
+  it('selects the item being edited in the preview', () => {
+    const {view, contentElement} = setup();
+    contentElement.postCommand = jest.fn();
+
+    getAllByTitle(view.el, 'Edit')[1].click();
+
+    expect(contentElement.postCommand)
+      .toHaveBeenCalledWith({type: 'SET_SELECTED_ITEM', index: 1});
+  });
 
   it('navigates to the item being edited', () => {
     const {view} = setup();

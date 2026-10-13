@@ -16,7 +16,7 @@ import styles from './LogoList.module.css';
 
 export function LogoList({configuration}) {
   const {shouldLoad} = useContentElementLifecycle();
-  const {isSelected} = useContentElementEditorState();
+  const {isSelected, setTransientState} = useContentElementEditorState();
   const updateConfiguration = useContentElementConfigurationUpdate();
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -31,10 +31,14 @@ export function LogoList({configuration}) {
     else if (command.type === 'RESET_ITEM_HIGHLIGHT') {
       setHighlightedIndex(-1);
     }
+    else if (command.type === 'SET_SELECTED_ITEM') {
+      setSelectedItemId(items[command.index]?.id || null);
+    }
   });
 
   function handleItemClick(event, id) {
     if (isSelected) {
+      setTransientState({selectedItemId: id});
       setSelectedItemId(id);
       event.preventDefault();
     }
@@ -42,6 +46,7 @@ export function LogoList({configuration}) {
 
   function handleListClick(event) {
     if (!event.defaultPrevented) {
+      setTransientState({selectedItemId: null});
       setSelectedItemId(null);
     }
   }

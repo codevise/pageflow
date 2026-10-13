@@ -16,6 +16,11 @@ export const SidebarEditItemView = EditConfigurationView.extend({
     return `/scrolled/content_elements/${this.options.contentElement.get('id')}`;
   },
 
+  goBack() {
+    this.options.contentElement.postCommand({type: 'SET_SELECTED_ITEM', index: -1});
+    EditConfigurationView.prototype.goBack.call(this);
+  },
+
   getActionsMenuItems() {
     return [new DestroyItemMenuItem({}, {
       collection: this.options.collection,

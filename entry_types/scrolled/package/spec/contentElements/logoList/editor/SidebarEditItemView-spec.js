@@ -54,6 +54,17 @@ describe('logoList SidebarEditItemView', () => {
     );
   });
 
+  it('deselects item in the preview when going back', () => {
+    const {view} = renderView();
+    view.options.contentElement.postCommand = jest.fn();
+
+    view.render();
+    view.goBack();
+
+    expect(view.options.contentElement.postCommand)
+      .toHaveBeenCalledWith({type: 'SET_SELECTED_ITEM', index: -1});
+  });
+
   it('displays alt text of image file as placeholder', () => {
     const {view} = renderView({itemId: 2});
 

@@ -30,6 +30,11 @@ export const ItemsListView = Marionette.Layout.extend({
       highlight: true,
 
       onEdit: (model) => {
+        this.options.contentElement.postCommand({
+          type: 'SET_SELECTED_ITEM',
+          index: this.collection.indexOf(model)
+        });
+
         editor.navigate(
           `/scrolled/logoLists/${this.options.contentElement.id}/${model.id}`,
           {trigger: true}
