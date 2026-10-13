@@ -86,6 +86,8 @@ en:
       feature_name: iframe embed content element
     legacy_social_embed_content_elements:
       feature_name: Legacy Twitter and TikTok content elements
+    logo_list_content_element:
+      feature_name: Logo list content element
     lottie_animation_content_element:
       feature_name: Lottie animation content element
     scrolled_entry_fragment_caching:

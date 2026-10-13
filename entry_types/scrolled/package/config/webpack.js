@@ -73,6 +73,12 @@ module.exports = {
         'pageflow-scrolled/contentElements/lottieAnimation-frontend.css'
       ]
     },
+    'pageflow-scrolled/contentElements/logoList-frontend': {
+      import: [
+        'pageflow-scrolled/contentElements/logoList-frontend',
+        'pageflow-scrolled/contentElements/logoList-frontend.css'
+      ]
+    },
     'pageflow-scrolled/widgets/defaultNavigation': {
       import: [
         'pageflow-scrolled/widgets/defaultNavigation',

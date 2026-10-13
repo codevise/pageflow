@@ -1,0 +1,17 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--theme-logo-list-gap, 2rem 3rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: var(--theme-logo-list-logo-height, 3rem);
+}
