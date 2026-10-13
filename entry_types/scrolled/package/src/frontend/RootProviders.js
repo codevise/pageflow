@@ -15,6 +15,7 @@ import {CurrentSectionProvider} from './useCurrentChapter';
 import {ExtensionsProvider} from './extensionRegistry';
 import {ScrollTargetEmitterProvider} from './useScrollTarget';
 import {ActiveExcursionProvider} from './useActiveExcursion';
+import {FullscreenStateProvider} from './fullscreenState';
 
 export function RootProviders({seed, consent = consentApi, children}) {
   return (
@@ -31,7 +32,9 @@ export function RootProviders({seed, consent = consentApi, children}) {
                         <ConsentProvider consent={consent}>
                           <ScrollTargetEmitterProvider>
                             <ActiveExcursionProvider>
-                              {children}
+                              <FullscreenStateProvider>
+                                {children}
+                              </FullscreenStateProvider>
                             </ActiveExcursionProvider>
                           </ScrollTargetEmitterProvider>
                         </ConsentProvider>

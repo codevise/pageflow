@@ -1,6 +1,4 @@
 import React, {
-  createContext,
-  useContext,
   useState,
   useCallback,
   useEffect,
@@ -16,15 +14,6 @@ import {
 } from 'pageflow-scrolled/frontend';
 
 import styles from './FullscreenVideo.module.css';
-
-const FullscreenActiveContext = createContext(false);
-
-// Whether the surrounding video is currently displayed in fullscreen.
-// Lets descendants (e.g. the lifecycle handlers) tell an entering
-// fullscreen apart from the element scrolling out of the viewport.
-export function useFullscreenActive() {
-  return useContext(FullscreenActiveContext);
-}
 
 // Wraps a video player and adds a corner button that toggles real
 // device fullscreen. Uses the Fullscreen API via screenfull where
@@ -115,15 +104,13 @@ export function FullscreenVideo({playerState, keepButtonVisible, children}) {
   }, [getVideoElement]);
 
   return (
-    <FullscreenActiveContext.Provider value={isFullscreen}>
-      <div ref={containerRef} className={styles.container}>
-        {children}
-        <div className={classNames(styles.button, {[styles.fadedOut]: fadedOut})}>
-          <ToggleFullscreenCornerButton isFullscreen={isFullscreen}
-                                        onEnter={enterFullscreen}
-                                        onExit={exitFullscreen} />
-        </div>
+    <div ref={containerRef} className={styles.container}>
+      {children}
+      <div className={classNames(styles.button, {[styles.fadedOut]: fadedOut})}>
+        <ToggleFullscreenCornerButton isFullscreen={isFullscreen}
+                                      onEnter={enterFullscreen}
+                                      onExit={exitFullscreen} />
       </div>
-    </FullscreenActiveContext.Provider>
+    </div>
   );
 }

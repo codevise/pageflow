@@ -24,7 +24,7 @@ import {
 } from 'pageflow-scrolled/frontend';
 
 import {MutedIndicator} from './MutedIndicator';
-import {FullscreenVideo, useFullscreenActive} from './FullscreenVideo';
+import {FullscreenVideo} from './FullscreenVideo';
 
 import {
   getLifecycleHandlers,
@@ -229,10 +229,9 @@ function PlayerWithControlBar({
   applyContentElementBoxStyles
 }) {
   const {isEditable, isSelected} = useContentElementEditorState();
-  const isFullscreen = useFullscreenActive();
 
   const {shouldLoad, shouldPrepare} = useContentElementLifecycle(
-    getLifecycleHandlers({configuration, playerActions, mediaMuted: media.muted, isFullscreen})
+    getLifecycleHandlers({configuration, playerActions, mediaMuted: media.muted})
   );
 
   useAudioFocus({

@@ -1,4 +1,4 @@
-export function getLifecycleHandlers({configuration, playerActions, mediaMuted, isFullscreen}) {
+export function getLifecycleHandlers({configuration, playerActions, mediaMuted}) {
   return {
     onVisible() {
       if (configuration.playbackMode === 'loop') {
@@ -15,9 +15,7 @@ export function getLifecycleHandlers({configuration, playerActions, mediaMuted, 
     },
 
     onDeactivate() {
-      // Entering fullscreen can move the element out of the viewport
-      // center and trigger a spurious deactivation. Keep playing then.
-      if (configuration.playbackMode !== 'loop' && !isFullscreen) {
+      if (configuration.playbackMode !== 'loop') {
         playerActions.fadeOutAndPause(400);
       }
     },

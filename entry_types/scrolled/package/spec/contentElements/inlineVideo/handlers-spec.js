@@ -192,18 +192,6 @@ describe('getLifecycleHandlers', () => {
 
       expect(playerActions.calls).toEqual([]);
     });
-
-    it('is no-op while fullscreen', () => {
-      const configuration = {playbackMode: 'autoplay'};
-      const playerActions = getPlayerActions();
-
-      const {onDeactivate} = getLifecycleHandlers({
-        configuration, playerActions, mediaMuted: false, isFullscreen: true
-      });
-      onDeactivate();
-
-      expect(playerActions.calls).toEqual([]);
-    });
   });
 
   describe('onInvisible', () => {
