@@ -1,6 +1,7 @@
 import I18n from 'i18n-js';
 
 import {editor} from 'pageflow-scrolled/editor';
+import {CheckBoxInputView} from 'pageflow/ui';
 
 import {ItemsListView} from './ItemsListView';
 import {ItemsCollection} from './models/ItemsCollection';
@@ -58,6 +59,8 @@ editor.contentElementTypes.register('logoList', {
         contentElement,
         collection: ItemsCollection.forContentElement(this.model.parent, entry)
       });
+      this.input('marquee', CheckBoxInputView);
+      this.input('staggered', CheckBoxInputView);
       this.group('ContentElementPosition', {entry});
     });
   }

@@ -55,9 +55,42 @@ export function LogoList({configuration}) {
     updateConfiguration({itemLinks: {...itemLinks, [id]: value}});
   }
 
+  function handleMarqueeFocus(event) {
+    event.target.scrollIntoView({block: 'nearest', inline: 'nearest'});
+  }
+
+  function handleMarqueeBlur(event) {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      event.currentTarget.scrollLeft = 0;
+    }
+  }
+
+  const marquee = configuration.marquee && !isSelected;
+
   return (
     <LinkTooltipProvider position="above" align="center" gap={5}>
-      <ul className={styles.list} onClick={handleListClick}>
+      {marquee ? renderMarquee() : renderList()}
+    </LinkTooltipProvider>
+  );
+
+  function renderMarquee() {
+    return (
+      <div className={styles.marquee}
+           style={{'--logo-count': items.length}}
+           onFocus={handleMarqueeFocus}
+           onBlur={handleMarqueeBlur}>
+        {renderList()}
+        {renderList({inert: ''})}
+      </div>
+    );
+  }
+
+  function renderList(attributes) {
+    return (
+      <ul className={classNames(styles.list,
+                                {[styles.staggered]: configuration.staggered})}
+          onClick={handleListClick}
+          {...attributes}>
         {items.map((item, index) =>
           <Logo key={item.id}
                 image={item.image}
@@ -71,8 +104,8 @@ export function LogoList({configuration}) {
                 onLinkChange={value => handleLinkChange(item.id, value)} />
         )}
       </ul>
-    </LinkTooltipProvider>
-  );
+    );
+  }
 }
 
 function Logo({image, alt, link, load, outlined, highlighted, selected, onClick, onLinkChange}) {

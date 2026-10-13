@@ -15,6 +15,14 @@ storiesOfContentElement(module, {
   },
   variants: [
     {
+      name: 'Marquee',
+      configuration: {marquee: true}
+    },
+    {
+      name: 'Staggered',
+      configuration: {staggered: true}
+    },
+    {
       name: 'With links',
       configuration: {
         itemLinks: {

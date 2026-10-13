@@ -765,6 +765,17 @@ en:
           tabs:
             general: Video
         logoList:
+          attributes:
+            marquee:
+              label: Scroll continuously
+              inline_help: |-
+                Logos move across the screen in an endless loop. The
+                animation pauses on hover and while a logo has
+                keyboard focus. Visitors who prefer reduced motion see
+                a static list instead.
+            staggered:
+              label: Staggered
+              inline_help: Offset every other logo vertically.
           description: Row of partner or client logos
           items:
             add: Add

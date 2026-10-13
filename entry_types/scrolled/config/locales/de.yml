@@ -780,6 +780,18 @@ de:
           tabs:
             general: Video
         logoList:
+          attributes:
+            marquee:
+              label: Endlos scrollen
+              inline_help: |-
+                Logos bewegen sich in einer Endlosschleife über den
+                Bildschirm. Die Animation pausiert bei Mausberührung
+                und solange ein Logo den Tastaturfokus hat. Bei
+                bevorzugter Bewegungsreduzierung wird stattdessen
+                eine statische Liste angezeigt.
+            staggered:
+              label: Versetzt
+              inline_help: Jedes zweite Logo vertikal versetzt anzeigen.
           description: Reihe von Partner- oder Kunden-Logos
           items:
             add: Hinzufügen
