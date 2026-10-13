@@ -15,6 +15,9 @@
         "image": {
           "type": "integer",
           "x-fileCollection": "image_files"
+        },
+        "alt": {
+          "type": "string"
         }
       }
     }

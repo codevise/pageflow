@@ -56,6 +56,7 @@ export function LogoList({configuration}) {
         {items.map((item, index) =>
           <Logo key={item.id}
                 image={item.image}
+                alt={item.alt}
                 link={itemLinks[item.id]}
                 load={shouldLoad}
                 outlined={isSelected}
@@ -69,7 +70,7 @@ export function LogoList({configuration}) {
   );
 }
 
-function Logo({image, link, load, outlined, highlighted, selected, onClick, onLinkChange}) {
+function Logo({image, alt, link, load, outlined, highlighted, selected, onClick, onLinkChange}) {
   const {isEditable} = useContentElementEditorState();
   const imageFile = useFile({collectionName: 'imageFiles', permaId: image});
 
@@ -85,6 +86,7 @@ function Logo({image, link, load, outlined, highlighted, selected, onClick, onLi
         onClick={onClick}>
       {renderLink(
         <Image imageFile={imageFile}
+               alt={alt}
                load={load}
                variant="medium"
                preferSvg={true}

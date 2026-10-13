@@ -792,6 +792,12 @@ de:
             confirm_destroy: Soll das Logo wirklich gelöscht werden?
             destroy: Logo löschen
             attributes:
+              alt:
+                label: Alt-Text
+                inline_help: |-
+                  Ersetzt den Alt-Text der Bilddatei für dieses Logo.
+                  Bei verlinkten Logos sollte er das Linkziel
+                  beschreiben, z.B. "Website von ACME".
               image:
                 label: Bild
             tabs:

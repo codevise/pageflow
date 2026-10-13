@@ -1,4 +1,5 @@
 import {EditConfigurationView, DestroyMenuItem, FileInputView} from 'pageflow/editor';
+import {TextInputView} from 'pageflow/ui';
 
 export const SidebarEditItemView = EditConfigurationView.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.content_elements.logoList.edit_item',
@@ -33,6 +34,9 @@ export const SidebarEditItemView = EditConfigurationView.extend({
           contentElementId: contentElement.get('id')
         },
         positioning: false
+      });
+      this.input('alt', TextInputView, {
+        placeholderModel: this.model.imageFile()?.configuration
       });
     });
   }

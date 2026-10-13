@@ -17,7 +17,8 @@
  *
  * @param {Backbone.Model} [options.placeholderModel]
  *   Obtain placeholder by looking up the configured `propertyName`
- *   inside a given model.
+ *   inside a given model. The placeholder is updated whenever this
+ *   attribute changes.
  */
 export const inputWithPlaceholderText = {
   onRender: function() {
@@ -26,6 +27,12 @@ export const inputWithPlaceholderText = {
     if (this.options.placeholderBinding) {
       this.listenTo(this.model,
                     'change:' + this.options.placeholderBinding,
+                    this.updatePlaceholder);
+    }
+
+    if (this.options.placeholderModel) {
+      this.listenTo(this.options.placeholderModel,
+                    'change:' + this.options.propertyName,
                     this.updatePlaceholder);
     }
   },

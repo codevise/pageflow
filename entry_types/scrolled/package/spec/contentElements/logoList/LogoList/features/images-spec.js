@@ -52,6 +52,15 @@ describe('LogoList images', () => {
     expect(getByRole('img', {name: 'ACME Inc.'})).toBeInTheDocument();
   });
 
+  it('prefers alt text of item', () => {
+    const {getByRole} = renderLogoList({
+      configuration: {items: [{id: 1, image: 100, alt: 'ACME website'}]},
+      imageFiles: [{id: 1, permaId: 100, configuration: {alt: 'ACME Inc.'}}]
+    });
+
+    expect(getByRole('img', {name: 'ACME website'})).toBeInTheDocument();
+  });
+
   it('passes image dimensions to preserve aspect ratio', () => {
     const {getByRole} = renderLogoList({
       configuration: {items: [{id: 1, image: 100}]},
