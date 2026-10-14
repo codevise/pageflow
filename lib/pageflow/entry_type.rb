@@ -5,7 +5,7 @@ module Pageflow
   class EntryType
     # @api private
     attr_reader :name, :frontend_app, :editor_fragment_renderer, :configuration, :editor_app,
-                :theme_files, :web_app_manifest
+                :theme_asset_resolver, :theme_files, :web_app_manifest
 
     # @param name [String] A unique name.
     #
@@ -22,6 +22,9 @@ module Pageflow
     #   interface used by editor Backbone collections. Mounted at
     #   `/editor/entries/:id/<entry_type_name>/`
     #
+    # @param theme_asset_resolver [#preview_image_url, #preview_thumbnail_url,
+    #   #publisher_logo_url] Resolves URLs of theme assets used by core.
+    #
     # @param theme_files [Hash] A hash of the following form defining
     #   what files can be uploaded when customizing themes of the
     #   entry type and which Paperclip styles shall be processed:
@@ -31,12 +34,14 @@ module Pageflow
     # @param web_app_manifest [#call] Receives published entry and
     #   returns JSON for webmanifest file.
     def initialize(name:, frontend_app:, editor_fragment_renderer:, configuration:, editor_app: nil,
+                   theme_asset_resolver: SprocketsThemeAssetResolver.new,
                    theme_files: {}, web_app_manifest: nil)
       @name = name
       @frontend_app = frontend_app
       @editor_fragment_renderer = editor_fragment_renderer
       @configuration = configuration
       @editor_app = editor_app
+      @theme_asset_resolver = theme_asset_resolver
       @theme_files = theme_files
       @web_app_manifest = web_app_manifest
     end

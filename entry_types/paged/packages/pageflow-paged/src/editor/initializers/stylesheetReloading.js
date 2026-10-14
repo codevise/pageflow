@@ -14,7 +14,6 @@ editor.addInitializer(function(options) {
   });
 
   state.entry.metadata.on('change:theme_name', function() {
-    var theme = state.entry.getTheme();
-    stylesheet.update('theme', theme.get('stylesheet_path'));
+    stylesheet.update('theme', state.entry.getThemeStylesheetPath());
   });
 });

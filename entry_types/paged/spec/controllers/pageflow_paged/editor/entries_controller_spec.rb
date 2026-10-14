@@ -17,6 +17,28 @@ module PageflowPaged
       Rails.application.class.routes.url_helpers
     end
 
+    describe 'editor fragments' do
+      it 'renders the theme stylesheet in the head fragment' do
+        entry = Pageflow::DraftEntry.find(create(:entry).id)
+
+        result = PageflowPaged.entry_type.editor_fragment_renderer.head_fragment(entry)
+
+        expect(result).to have_selector('link[data-name="theme"]', visible: false)
+      end
+
+      it 'includes theme stylesheet paths in the seed fragment' do
+        entry = Pageflow::DraftEntry.find(create(:entry).id)
+
+        result = JSON.parse(
+          PageflowPaged.entry_type.editor_fragment_renderer.seed_fragment(entry)
+        )
+
+        expect(result.dig('theme_stylesheet_paths', 'default')).to(
+          match(%r{/assets/pageflow/themes/default-[a-f0-9]+\.css})
+        )
+      end
+    end
+
     describe '#partials' do
       it 'reponds with success' do
         entry = create(:entry)
