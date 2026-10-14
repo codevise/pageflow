@@ -8,6 +8,7 @@ import {
 } from 'pageflow-scrolled/entryState';
 
 import {extensible} from './extensionRegistry';
+import {useActiveExcursion} from './useActiveExcursion';
 
 export const Link = extensible('Link', PlainLink);
 
@@ -33,10 +34,12 @@ export function PlainLink({attributes, children, href, openInNewTab}) {
     );
   }
   else if (href?.section) {
-    return <a {...attributes}
-              href={`#section-${href.section}`}>
-      {children}
-    </a>;
+    return (
+      <HashLink attributes={attributes}
+                hash={`section-${href.section}`}>
+        {children}
+      </HashLink>
+    );
   }
   if (href?.file) {
     return (
@@ -60,8 +63,25 @@ export function PlainLink({attributes, children, href, openInNewTab}) {
 function ChapterLink({attributes, children, chapterPermaId}) {
   const chapter = useChapter({permaId: chapterPermaId});
 
+  return (
+    <HashLink attributes={attributes}
+              hash={chapter?.chapterSlug || ''}>
+      {children}
+    </HashLink>
+  );
+}
+
+function HashLink({attributes, children, hash}) {
+  const {followHashLink} = useActiveExcursion();
+
+  function handleClick(event) {
+    attributes?.onClick?.(event);
+    followHashLink(event, hash);
+  }
+
   return <a {...attributes}
-            href={`#${chapter?.chapterSlug || ''}`}>
+            href={`#${hash}`}
+            onClick={handleClick}>
     {children}
   </a>;
 }

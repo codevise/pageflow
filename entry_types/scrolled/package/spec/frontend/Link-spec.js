@@ -1,11 +1,18 @@
 import {Link} from 'frontend/Link';
+import {useActiveExcursion} from 'frontend/useActiveExcursion';
 
 import React from 'react';
+import {act, fireEvent} from '@testing-library/react';
 
 import {renderInEntry} from 'support';
+import {changeLocationHash} from 'support/changeLocationHash';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('Link', () => {
+  beforeEach(() => {
+    window.location.hash = '#initial';
+  });
+
   describe('with string href', () => {
     it('does not set target by default', () => {
       const {getByRole} = renderInEntry(
@@ -97,6 +104,73 @@ describe('Link', () => {
       expect(getByRole('link')).toHaveAttribute('href', '#the-intro');
       expect(getByRole('link')).not.toHaveAttribute('target');
     });
+
+    it('activates excursion without native fragment navigation', () => {
+      const {getByRole, getByTestId} = renderInEntry(
+        <>
+          <Link href={{chapter: 11}}>Click</Link>
+          <ActiveExcursionTitle />
+        </>,
+        {seed: storylinesSeed}
+      );
+
+      const defaultPrevented = !fireEvent.click(getByRole('link'));
+
+      expect(defaultPrevented).toBe(true);
+      expect(window.location.hash).toEqual('#excursion');
+      expect(getByTestId('activeExcursion')).toHaveTextContent('excursion');
+    });
+
+    it('keeps native fragment navigation for main storyline chapter', () => {
+      const {getByRole} = renderInEntry(
+        <Link href={{chapter: 10}}>Click</Link>,
+        {seed: storylinesSeed}
+      );
+
+      const defaultPrevented = !fireEvent.click(getByRole('link'));
+
+      expect(defaultPrevented).toBe(false);
+    });
+
+    it('calls onClick passed via attributes', () => {
+      const onClick = jest.fn();
+      const {getByRole} = renderInEntry(
+        <Link href={{chapter: 11}} attributes={{onClick}}>Click</Link>,
+        {seed: storylinesSeed}
+      );
+
+      fireEvent.click(getByRole('link'));
+
+      expect(onClick).toHaveBeenCalled();
+    });
+
+    it('keeps default prevented by onClick passed via attributes', () => {
+      const {getByRole, getByTestId} = renderInEntry(
+        <>
+          <Link href={{chapter: 11}}
+                attributes={{onClick: event => event.preventDefault()}}>
+            Click
+          </Link>
+          <ActiveExcursionTitle />
+        </>,
+        {seed: storylinesSeed}
+      );
+
+      fireEvent.click(getByRole('link'));
+
+      expect(getByTestId('activeExcursion')).toHaveTextContent('none');
+    });
+
+    it('keeps native behavior when clicked with modifier key', () => {
+      const {getByRole} = renderInEntry(
+        <Link href={{chapter: 11}}>Click</Link>,
+        {seed: storylinesSeed}
+      );
+
+      const defaultPrevented = !fireEvent.click(getByRole('link'), {metaKey: true});
+
+      expect(defaultPrevented).toBe(false);
+    });
   });
 
   describe('with section href', () => {
@@ -112,6 +186,50 @@ describe('Link', () => {
 
       expect(getByRole('link')).toHaveAttribute('href', '#section-10');
       expect(getByRole('link')).not.toHaveAttribute('target');
+    });
+
+    it('activates excursion without native fragment navigation', () => {
+      const {getByRole, getByTestId} = renderInEntry(
+        <>
+          <Link href={{section: 1010}}>Click</Link>
+          <ActiveExcursionTitle />
+        </>,
+        {seed: storylinesSeed}
+      );
+
+      const defaultPrevented = !fireEvent.click(getByRole('link'));
+
+      expect(defaultPrevented).toBe(true);
+      expect(window.location.hash).toEqual('#section-1010');
+      expect(getByTestId('activeExcursion')).toHaveTextContent('excursion');
+    });
+
+    it('keeps native fragment navigation for main storyline section', () => {
+      const {getByRole} = renderInEntry(
+        <Link href={{section: 1000}}>Click</Link>,
+        {seed: storylinesSeed}
+      );
+
+      const defaultPrevented = !fireEvent.click(getByRole('link'));
+
+      expect(defaultPrevented).toBe(false);
+    });
+
+    it('returns from excursion without native fragment navigation', () => {
+      const {getByRole, getByTestId} = renderInEntry(
+        <>
+          <Link href={{section: 1000}}>Click</Link>
+          <ActiveExcursionTitle />
+        </>,
+        {seed: storylinesSeed}
+      );
+
+      act(() => changeLocationHash('#excursion'));
+      const defaultPrevented = !fireEvent.click(getByRole('link'));
+
+      expect(defaultPrevented).toBe(true);
+      expect(window.location.hash).toEqual('#section-1000');
+      expect(getByTestId('activeExcursion')).toHaveTextContent('none');
     });
   });
 
@@ -190,3 +308,28 @@ describe('Link', () => {
     });
   });
 });
+
+const storylinesSeed = {
+  storylines: [
+    {id: 1, configuration: {main: true}},
+    {id: 2}
+  ],
+  chapters: [
+    {id: 10, permaId: 10, storylineId: 1, configuration: {title: 'intro'}},
+    {id: 11, permaId: 11, storylineId: 2, configuration: {title: 'excursion'}}
+  ],
+  sections: [
+    {id: 100, permaId: 1000, chapterId: 10},
+    {id: 101, permaId: 1010, chapterId: 11}
+  ]
+};
+
+function ActiveExcursionTitle() {
+  const {activeExcursion} = useActiveExcursion();
+
+  return (
+    <div data-testid="activeExcursion">
+      {activeExcursion ? activeExcursion.title : 'none'}
+    </div>
+  );
+}
