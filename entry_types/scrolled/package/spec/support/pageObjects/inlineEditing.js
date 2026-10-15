@@ -24,7 +24,27 @@ export function renderEntry({commenting, ...options} = {}) {
   return {
     ...result,
     queryAllCommentBadges: () =>
-      result.queryAllByRole('status').map(createCommentBadgePageObject)
+      result.queryAllByRole('status').map(createCommentBadgePageObject),
+
+    simulateSelectMessage(payload) {
+      act(() => {
+        window.dispatchEvent(new MessageEvent('message', {
+          data: {type: 'SELECT', payload},
+          origin: window.location.origin
+        }));
+      });
+    },
+
+    getTransientContentElementState(id) {
+      return window.parent.postMessage.mock.calls
+        .map(([message]) => message)
+        .filter(message =>
+          message.type === 'UPDATE_TRANSIENT_CONTENT_ELEMENT_STATE' &&
+          message.payload.id === id
+        )
+        .map(message => message.payload.state)
+        .pop();
+    }
   };
 }
 

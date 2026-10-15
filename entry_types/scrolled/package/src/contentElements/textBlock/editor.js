@@ -161,7 +161,7 @@ editor.contentElementTypes.register('textBlock', {
   handleDestroy(contentElement) {
     const transientState = contentElement.get('transientState') || {};
 
-    if (!transientState.editableTextIsSingleBlock) {
+    if (!transientState.editableTextSelectionCoversAllBlocks) {
       contentElement.postCommand({type: 'REMOVE'});
       return false;
     }

@@ -91,7 +91,7 @@ function CommentingEditableText({
             typographyVariant={typographyVariant}
             typographySize={typographySize}>
         <Slate editor={editor}
-               value={value || defaultValue}
+               value={value?.length ? value : defaultValue}
                onChange={() => {}}>
           <Editable key={(subjectRange ? 'highlighted' : 'plain') + threads.length}
                     onMouseUp={handleMouseUp}

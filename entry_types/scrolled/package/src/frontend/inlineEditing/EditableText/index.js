@@ -113,11 +113,12 @@ export const EditableText = React.memo(function EditableText({
     getTrackedSubjectRanges
   } = useCommenting(editor);
 
-  const [cachedValue, setCachedValue] = useCachedValue(value, {
-    defaultValue: [{
-      type: 'paragraph',
-      children: [{ text: '' }],
-    }],
+  const emptyValue = useMemo(() => [{
+    type: 'paragraph',
+    children: [{text: ''}]
+  }], []);
+
+  const [cachedValue, setCachedValue] = useCachedValue(value?.length ? value : emptyValue, {
     onDebouncedChange: nextValue => {
       if (onChange) {
         onChange(nextValue, {commentThreadSubjectRanges: getTrackedSubjectRanges()});
