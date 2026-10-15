@@ -173,21 +173,23 @@ module Pageflow
       expect(entry.permalink).to have_attributes(slug: 'my-example')
     end
 
-    it 'does not enforce uniqueness when generating default slug' do
+    it 'appends suffix to default slug if taken in directory' do
       account = create(:account)
       permalink_directory = create(
         :permalink_directory,
         site: account.default_site
       )
-      create(
-        :entry,
-        account:,
-        permalink_attributes: {
-          slug: 'my-example',
-          directory: permalink_directory
-        }
-      )
-      entry = build(
+      ['my-example', 'my-example-2'].each do |slug|
+        create(
+          :entry,
+          account:,
+          permalink_attributes: {
+            slug:,
+            directory: permalink_directory
+          }
+        )
+      end
+      entry = create(
         :entry,
         account:,
         title: 'My Example',
@@ -197,7 +199,44 @@ module Pageflow
         }
       )
 
-      expect(entry).to have(1).error_on('permalink.slug')
+      expect(entry.permalink).to have_attributes(slug: 'my-example-3')
+    end
+
+    it 'ignores slugs in other directories when generating default slug' do
+      account = create(:account)
+      create(
+        :entry,
+        account:,
+        permalink_attributes: {
+          slug: 'my-example',
+          directory_path: 'de/'
+        }
+      )
+      entry = create(
+        :entry,
+        account:,
+        title: 'My Example',
+        permalink_attributes: {
+          slug: '',
+          directory_path: 'en/'
+        }
+      )
+
+      expect(entry.permalink).to have_attributes(slug: 'my-example')
+    end
+
+    it 'keeps own slug when generating default slug on update' do
+      entry = create(
+        :entry,
+        title: 'My Example',
+        permalink_attributes: {
+          slug: 'my-example'
+        }
+      )
+
+      entry.update(permalink_attributes: {slug: ''})
+
+      expect(entry.permalink).to have_attributes(slug: 'my-example')
     end
 
     it 'creates permalink redirect when slug changes' do

@@ -88,6 +88,16 @@ module Pageflow
           I18n.t(type, scope: 'activerecord.values.pageflow/entry.type_names')
         end
       end
+
+      def permalink_slug_placeholder(entry, permalink, except:)
+        directory = permalink.directory
+
+        unless directory&.site_id == entry.site_id
+          directory = entry.site.permalink_directories.first
+        end
+
+        Permalink.default_slug_for(entry, directory:, except:)
+      end
     end
   end
 end

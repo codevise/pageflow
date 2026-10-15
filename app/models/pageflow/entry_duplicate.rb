@@ -21,7 +21,6 @@ module Pageflow
       passed_slug = new_entry.permalink&.slug
 
       saved = ActiveRecord::Base.transaction do
-        assign_default_permalink_slug
         next false unless new_entry.save
 
         copy_draft
@@ -57,24 +56,7 @@ module Pageflow
       directory = original_entry.permalink&.directory
       return unless directory && directory.site_id == entry.site_id
 
-      entry.build_permalink(directory:)
-    end
-
-    def assign_default_permalink_slug
-      permalink = new_entry.permalink
-      return if !permalink&.directory || permalink.slug.present?
-
-      base_slug = new_entry.default_permalink_slug
-      return if base_slug.blank?
-
-      permalink.slug = unique_slug(permalink.directory, base_slug)
-    end
-
-    def unique_slug(directory, base_slug)
-      (1..)
-        .lazy
-        .map { |index| index == 1 ? base_slug : "#{base_slug}-#{index}" }
-        .find { |slug| !directory.permalinks.exists?(slug:) }
+      entry.build_permalink(directory:, slug: '')
     end
 
     def copy_draft

@@ -24,13 +24,20 @@ module Pageflow
 
     attr_accessor :allow_root_path
 
+    def self.default_slug_for(entry, directory:, except: nil)
+      base_slug = entry.default_permalink_slug
+      return base_slug if base_slug.blank? || !directory
+
+      directory.first_available_slug(base_slug, except:)
+    end
+
     private
 
     def set_default_slug
       return unless slug == ''
       return if allow_emtpy_slug?
 
-      self.slug = entry.default_permalink_slug
+      self.slug = Permalink.default_slug_for(entry, directory:, except: id)
     end
 
     def allow_emtpy_slug?

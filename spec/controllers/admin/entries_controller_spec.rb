@@ -2162,6 +2162,94 @@ describe Admin::EntriesController do
                           '[data-placeholder="some-title"]')
     end
 
+    it 'appends suffix to placeholder if default slug is taken in passed directory' do
+      account = create(:account)
+      create(:permalink_directory, site: account.default_site, path: 'en/')
+      directory = create(:permalink_directory, site: account.default_site, path: 'de/')
+      create(:entry, account:, permalink_attributes: {slug: 'some-title', directory:})
+
+      sign_in(create(:user, :publisher, on: account))
+      get(:permalink_inputs,
+          params: {
+            entry: {
+              account_id: account,
+              title: 'Some Title',
+              permalink_attributes: {directory_id: directory.id}
+            }
+          })
+
+      expect(response.body)
+        .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
+                          '[data-placeholder="some-title-2"]')
+    end
+
+    it 'checks placeholder against first directory of site if none is passed' do
+      account = create(:account)
+      create(:permalink_directory, site: account.default_site, path: 'en/')
+      directory = create(:permalink_directory, site: account.default_site, path: 'de/')
+      create(:entry, account:, permalink_attributes: {slug: 'some-title', directory:})
+
+      sign_in(create(:user, :publisher, on: account))
+      get(:permalink_inputs,
+          params: {
+            entry: {
+              account_id: account,
+              title: 'Some Title'
+            }
+          })
+
+      expect(response.body)
+        .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
+                          '[data-placeholder="some-title-2"]')
+    end
+
+    it 'ignores passed directory of other site for placeholder' do
+      account = create(:account)
+      create(:permalink_directory, site: account.default_site, path: 'en/')
+      directory_of_other_site = create(:permalink_directory)
+      create(:entry,
+             site: directory_of_other_site.site,
+             account: directory_of_other_site.site.account,
+             permalink_attributes: {slug: 'some-title', directory: directory_of_other_site})
+
+      sign_in(create(:user, :publisher, on: account))
+      get(:permalink_inputs,
+          params: {
+            entry: {
+              account_id: account,
+              title: 'Some Title',
+              permalink_attributes: {directory_id: directory_of_other_site.id}
+            }
+          })
+
+      expect(response.body)
+        .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
+                          '[data-placeholder="some-title"]')
+    end
+
+    it 'does not treat slug of passed permalink as taken for placeholder' do
+      account = create(:account)
+      directory = create(:permalink_directory, site: account.default_site, path: 'en/')
+      entry = create(:entry,
+                     account:,
+                     permalink_attributes: {slug: 'some-title', directory:})
+
+      sign_in(create(:user, :publisher, on: account))
+      get(:permalink_inputs,
+          params: {
+            permalink_id: entry.permalink.id,
+            entry: {
+              account_id: account,
+              title: 'Some Title',
+              permalink_attributes: {directory_id: directory.id}
+            }
+          })
+
+      expect(response.body)
+        .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
+                          '[data-placeholder="some-title"]')
+    end
+
     it 'renders hidden permalink field without inputs if no permalink directories' do
       account = create(:account)
 

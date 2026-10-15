@@ -54,5 +54,37 @@ module Pageflow
         expect(permalink_directory).to be_valid
       end
     end
+
+    describe '#first_available_slug' do
+      it 'returns base slug if not taken' do
+        directory = create(:permalink_directory)
+
+        expect(directory.first_available_slug('some-title')).to eq('some-title')
+      end
+
+      it 'appends first free suffix' do
+        directory = create(:permalink_directory)
+        ['some-title', 'some-title-3'].each do |slug|
+          create(:permalink, directory:, slug:)
+        end
+
+        expect(directory.first_available_slug('some-title')).to eq('some-title-2')
+      end
+
+      it 'ignores slugs that only share prefix' do
+        directory = create(:permalink_directory)
+        create(:permalink, directory:, slug: 'some-title-extra')
+
+        expect(directory.first_available_slug('some-title')).to eq('some-title')
+      end
+
+      it 'ignores excepted permalink' do
+        directory = create(:permalink_directory)
+        permalink = create(:permalink, directory:, slug: 'some-title')
+
+        expect(directory.first_available_slug('some-title', except: permalink.id))
+          .to eq('some-title')
+      end
+    end
   end
 end
