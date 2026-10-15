@@ -1,5 +1,6 @@
 import 'contentElements/textBlock/editor';
 import {editor} from 'editor';
+import {ContentElement} from 'editor/models/ContentElement';
 
 describe('contentElements/textBlock/editor', () => {
   const type = editor.contentElementTypes.findByTypeName('textBlock');
@@ -129,4 +130,31 @@ describe('contentElements/textBlock/editor', () => {
     });
   });
 
+  describe('#handleDestroy', () => {
+    it('removes selected blocks if selection does not cover all blocks', () => {
+      const contentElement = new ContentElement({
+        typeName: 'textBlock',
+        transientState: {editableTextSelectionCoversAllBlocks: false}
+      });
+      jest.spyOn(contentElement, 'postCommand');
+
+      const result = type.handleDestroy(contentElement);
+
+      expect(contentElement.postCommand).toHaveBeenCalledWith({type: 'REMOVE'});
+      expect(result).toBe(false);
+    });
+
+    it('lets content element be deleted if selection covers all blocks', () => {
+      const contentElement = new ContentElement({
+        typeName: 'textBlock',
+        transientState: {editableTextSelectionCoversAllBlocks: true}
+      });
+      jest.spyOn(contentElement, 'postCommand');
+
+      const result = type.handleDestroy(contentElement);
+
+      expect(contentElement.postCommand).not.toHaveBeenCalled();
+      expect(result).not.toBe(false);
+    });
+  });
 });

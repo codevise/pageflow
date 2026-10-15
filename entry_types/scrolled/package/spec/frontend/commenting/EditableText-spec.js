@@ -33,6 +33,17 @@ describe('commenting EditableText', () => {
     expect(entry.queryByText('Select text to comment')).not.toBeInTheDocument();
   });
 
+  it('renders empty paragraph if value is empty array', () => {
+    const entry = renderEntry({
+      contentElement: {
+        ui: <EditableText value={[]} />,
+        typeOptions: {inlineComments: true}
+      }
+    });
+
+    expect(entry.container.querySelector('[data-slate-node="element"]')).toBeInTheDocument();
+  });
+
   it('shows hint in add comment mode', async () => {
     const user = userEvent.setup();
     const entry = renderEntry({

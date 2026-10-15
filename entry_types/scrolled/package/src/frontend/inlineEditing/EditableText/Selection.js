@@ -119,7 +119,8 @@ export function Selection(props) {
     }
 
     setTransientState({
-      editableTextIsSingleBlock: editor.children.length <= 1,
+      editableTextSelectionCoversAllBlocks:
+        start === 0 && end === editor.children.length - 1,
       exampleNode: getUniformSelectedNode(editor, 'type'),
       typographyVariant: getUniformSelectedNode(editor, 'variant')?.variant,
       typographySize: getUniformSelectedNode(editor, 'size')?.size,

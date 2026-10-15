@@ -36,6 +36,16 @@ describe('inline editing EditableText placeholder', () => {
     expect(entry.queryByText('Some placeholder')).toBeInTheDocument();
   });
 
+  it('renders placeholder if value is empty array', () => {
+    const entry = renderEntry({
+      contentElement: {
+        ui: <EditableText value={[]} placeholder="Some placeholder" />
+      }
+    });
+
+    expect(entry.queryByText('Some placeholder')).toBeInTheDocument();
+  });
+
   it('does not render placeholder if value is present', () => {
     const entry = renderEntry({
       contentElement: {
