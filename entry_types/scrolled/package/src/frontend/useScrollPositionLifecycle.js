@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import {useOnScreen} from './useOnScreen';
 import {useDelayedBoolean} from './useDelayedBoolean';
 import {useStorylineActivity} from './storylineActivity';
+import {useHeldDuringFullscreen} from './useHeldDuringFullscreen';
 
 import styles from './useScrollPositionLifecycle.module.css';
 
@@ -86,9 +87,9 @@ export function createScrollPositionLifecycleProvider(Context) {
     // observers above fire.
     const isActive = isVisibleFinal && shouldBeActive && inForeground;
 
-    const value = useMemo(() => ({
+    const value = useHeldDuringFullscreen(useMemo(() => ({
       shouldLoad, shouldPrepare, isVisible: isVisibleFinal, isActive, inForeground}
-    ), [shouldLoad, shouldPrepare, isVisibleFinal, isActive, inForeground]);
+    ), [shouldLoad, shouldPrepare, isVisibleFinal, isActive, inForeground]));
 
     return (
       <div ref={ref} className={classNames(styles.wrapper)}>

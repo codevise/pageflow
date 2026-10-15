@@ -4,6 +4,7 @@ import {ContentElementEditorStateContext} from '../useContentElementEditorState'
 import {useEditorSelection} from './EditorState';
 import {postUpdateTransientContentElementStateMessage} from './postMessage';
 import {useStorylineActivity} from '../storylineActivity';
+import {shallowEqual} from '../utils/shallowEqual';
 
 export function ContentElementEditorStateProvider({id, permaId, children}) {
   const {isSelected, select, range} = useEditorSelection(
@@ -52,11 +53,4 @@ export function ContentElementEditorStateProvider({id, permaId, children}) {
       {children}
     </ContentElementEditorStateContext.Provider>
   )
-}
-
-function shallowEqual(obj1, obj2) {
-  return Object.keys(obj1).length === Object.keys(obj2).length &&
-         Object.keys(obj1).every(key =>
-           Object.prototype.hasOwnProperty.call(obj2, key) && obj1[key] === obj2[key]
-         );
 }
