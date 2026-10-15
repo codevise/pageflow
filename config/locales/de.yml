@@ -901,10 +901,18 @@ de:
             one: 1 ungelesenes Thema
             other: "%{count} ungelesene Themen"
         confirm_depublish: Soll der Beitrag wirklich depubliziert werden?
-        confirm_duplicate: Beitrag wirklich duplizieren?
         confirm_restore: Soll der Beitrag wirklich auf den Stand dieser Revision zurückgesetzt werden? Vor dem Zurücksetzen wird eine automatische Sicherung des aktuellen Standes erstellt.
         depublish: Beitrag depublizieren
         duplicate: Beitrag kopieren
+        duplicate_form:
+          copy_memberships: Mitglieder übernehmen
+          copy_memberships_description: Alle, die Zugriff auf den ursprünglichen Beitrag haben, erhalten mit derselben Rolle auch Zugriff auf die Kopie.
+          memberships: Mitglieder
+          memberships_hint: Mitglieder ohne Mitgliedschaft im ausgewählten Account werden nicht übernommen.
+          skip_memberships: Ohne Mitglieder beginnen
+          skip_memberships_description: Nur Benutzer mit einer Rolle im Account können auf die Kopie zugreifen.
+          submit: Beitrag kopieren
+          title: „%{title}“ kopieren
         edit: Bearbeiten
         edit_config: Konfiguration ändern
         edit_revision: Ändern

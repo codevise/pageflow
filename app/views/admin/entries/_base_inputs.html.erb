@@ -1,0 +1,24 @@
+<%= form.input(:title,
+               hint: entry.site.permalink_directories.blank? &&
+                     I18n.t('pageflow.admin.entries.title_hint')) %>
+
+<% if account_input_shown_for?(entry) %>
+  <%= form.input(:account,
+                 as: :searchable_select,
+                 include_blank: false,
+                 ajax: {
+                   resource: Pageflow::Entry,
+                   collection_name: :eligible_accounts
+                 },
+                 input_html: {class: 'entry_account_input'}) %>
+<%end %>
+
+<%= render('admin/entries/site_input',
+           entry:,
+           form:) %>
+
+<%= form.fields_for(:permalink, permalink) do |permalink_form| %>
+  <%= render('admin/entries/permalink_inputs',
+             entry:,
+             form: permalink_form) %>
+<% end %>

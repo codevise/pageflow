@@ -14,6 +14,7 @@ module Dom
             select(Pageflow::Folder.find(options[:folder_id]).name,
                    from: 'entry_folder_id')
           end
+          choose('duplicate_copy_memberships_0') if options[:copy_memberships] == false
           find('[name="commit"]').click
         end
       end

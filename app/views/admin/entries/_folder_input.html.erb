@@ -1,0 +1,6 @@
+<% if authorized?(:configure_folder_for, entry) %>
+  <% folder_collection = collection_for_folders(entry.account, entry.folder) %>
+  <%= form.input(:folder,
+                 collection: folder_collection,
+                 include_blank: true) unless folder_collection.empty? %>
+<% end %>

@@ -1,33 +1,80 @@
 module Pageflow
-  EntryDuplicate = Struct.new(:original_entry) do
-    def create!
-      ActiveRecord::Base.transaction do
-        create_entry
+  # @api private
+  class EntryDuplicate
+    attr_reader :original_entry, :new_entry
 
-        copy_permalink
+    def self.of(entry, attributes: {}, copy_memberships: true)
+      new(entry, attributes:, copy_memberships:)
+    end
+
+    def initialize(original_entry, attributes: {}, copy_memberships: true)
+      @original_entry = original_entry
+      @copy_memberships = copy_memberships
+      @new_entry = build_entry(attributes)
+    end
+
+    def copy_memberships?
+      @copy_memberships
+    end
+
+    def save
+      passed_slug = new_entry.permalink&.slug
+
+      saved = ActiveRecord::Base.transaction do
+        assign_default_permalink_slug
+        next false unless new_entry.save
+
         copy_draft
-        copy_memberships
+        copy_memberships if copy_memberships?
+
+        true
       end
+
+      new_entry.permalink.slug = passed_slug if !saved && new_entry.permalink
+      saved
+    end
+
+    def create!
+      raise ActiveRecord::RecordInvalid, new_entry unless save
 
       new_entry
     end
 
-    def self.of(entry)
-      new(entry)
-    end
-
     private
 
-    attr_reader :new_entry
+    def build_entry(attributes)
+      Entry.new(default_attributes).tap do |entry|
+        entry.assign_attributes(attributes)
 
-    def create_entry
-      @new_entry = Entry.create!(new_attributes)
+        entry.site = entry.account.default_site if entry.site.account_id != entry.account_id
+        entry.folder = nil if entry.folder && entry.folder.account_id != entry.account_id
+
+        build_permalink_in_original_directory(entry) unless entry.permalink
+      end
     end
 
-    def copy_permalink
-      return if original_entry.permalink.blank?
+    def build_permalink_in_original_directory(entry)
+      directory = original_entry.permalink&.directory
+      return unless directory && directory.site_id == entry.site_id
 
-      new_entry.create_permalink!(directory: original_entry.permalink.directory)
+      entry.build_permalink(directory:)
+    end
+
+    def assign_default_permalink_slug
+      permalink = new_entry.permalink
+      return if !permalink&.directory || permalink.slug.present?
+
+      base_slug = new_entry.default_permalink_slug
+      return if base_slug.blank?
+
+      permalink.slug = unique_slug(permalink.directory, base_slug)
+    end
+
+    def unique_slug(directory, base_slug)
+      (1..)
+        .lazy
+        .map { |index| index == 1 ? base_slug : "#{base_slug}-#{index}" }
+        .find { |slug| !directory.permalinks.exists?(slug:) }
     end
 
     def copy_draft
@@ -37,17 +84,24 @@ module Pageflow
     end
 
     def copy_memberships
-      original_entry.memberships.each do |membership|
-        Membership.create(user: membership.user, role: membership.role.to_sym, entity: new_entry)
+      memberships_of_target_account_members.each do |membership|
+        Membership.create!(user: membership.user, role: membership.role.to_sym, entity: new_entry)
       end
     end
 
-    def new_attributes
+    def memberships_of_target_account_members
+      original_entry
+        .memberships
+        .where(user_id: new_entry.account.memberships.select(:user_id))
+    end
+
+    def default_attributes
       {
         type_name: original_entry.type_name,
-        title: new_title,
+        title: default_title,
         account: original_entry.account,
         site: original_entry.site,
+        folder: original_entry.folder,
         features_configuration: original_entry.features_configuration,
         perma_id_counter: original_entry.perma_id_counter,
 
@@ -55,7 +109,7 @@ module Pageflow
       }
     end
 
-    def new_title
+    def default_title
       I18n.t('pageflow.entry.duplicated_title', title: original_entry.title)
     end
   end

@@ -78,6 +78,11 @@ module Pageflow
         t("#{scope}.tooltip", summary: parts.join(', '))
       end
 
+      def account_input_shown_for?(entry)
+        authorized?(:update_account_on, entry) &&
+          account_policy_scope.entry_creatable.many?
+      end
+
       def entry_type_collection(entry_types = Pageflow.config.entry_types)
         entry_types.map(&:name).index_by do |type|
           I18n.t(type, scope: 'activerecord.values.pageflow/entry.type_names')
