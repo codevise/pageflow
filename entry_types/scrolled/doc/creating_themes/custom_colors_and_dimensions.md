@@ -262,6 +262,19 @@ below figures like inline images and videos.
 | ---- | ----------- |
 | `image_gallery_scroll_button_size` | Size of the scroll buttons displayed on the left and right of the image gallery. |
 
+### Counter
+
+| Name | Description |
+| ---- | ----------- |
+| `counter_wheel_mask_vertical_offset` | Vertical adjustment of the wheel animation's fade mask in browsers without `text-box: trim-both cap alphabetic` support. Defaults to `0em`. Positive lengths move the mask down; negative lengths move it up. Does not move the digits or affect layout. Ignored in browsers with trimming support, which align the mask automatically. |
+
+Use a small font-relative length to compensate for the counter font's
+geometry, for example `counter_wheel_mask_vertical_offset: '-0.05em'`
+in the theme's `root` properties. The corresponding CSS custom property
+is `--theme-counter-wheel-mask-vertical-offset`; it can also be set in a
+counter typography variant. This shifts the fade regions within the
+wheel's clipping area, rather than enlarging that area.
+
 ### Inline Video Controls
 
 | Name | Description |
