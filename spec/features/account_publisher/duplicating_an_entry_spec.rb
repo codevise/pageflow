@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-feature 'as entry publisher, duplicating an entry' do
+feature 'as account publisher, duplicating an entry' do
   scenario 'entry is duplicated with selected title' do
     entry = create(:entry, title: 'Test Entry')
-    Dom::Admin::Page.sign_in_as(:publisher, on: entry)
+    Dom::Admin::Page.sign_in_as(:publisher, on: entry.account)
 
     visit(admin_entry_path(entry))
     Dom::Admin::EntryPage.first.duplicate_button.click
@@ -14,7 +14,7 @@ feature 'as entry publisher, duplicating an entry' do
 
   scenario 'leaving duplicate form without submitting' do
     entry = create(:entry, title: 'Test Entry')
-    Dom::Admin::Page.sign_in_as(:publisher, on: entry)
+    Dom::Admin::Page.sign_in_as(:publisher, on: entry.account)
 
     visit(admin_entry_path(entry))
 

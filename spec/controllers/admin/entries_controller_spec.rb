@@ -1721,7 +1721,8 @@ describe Admin::EntriesController do
   describe 'get #duplicate' do
     it 'renders form with default title and does not create entry' do
       user = create(:user)
-      entry = create(:entry, title: 'Some Title', with_publisher: user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry, account:, title: 'Some Title')
 
       sign_in(user, scope: :user)
 
@@ -1731,9 +1732,9 @@ describe Admin::EntriesController do
       expect(response.body).to have_field('entry_title', with: 'Copy of Some Title')
     end
 
-    it 'does not allow entry editor to see form' do
+    it 'does not allow entry publisher to see form' do
       user = create(:user)
-      entry = create(:entry, with_editor: user)
+      entry = create(:entry, with_publisher: user)
 
       sign_in(user, scope: :user)
       get(:duplicate, params: {id: entry.id})
@@ -1797,9 +1798,21 @@ describe Admin::EntriesController do
       }.not_to(change { Pageflow::Entry.count })
     end
 
-    it 'allows entry publisher to duplicate entry' do
+    it 'does not allow entry publisher to duplicate entry' do
       user = create(:user)
       entry = create(:entry, with_publisher: user)
+
+      sign_in(user, scope: :user)
+
+      expect {
+        post(:duplicate, params: {id: entry.id})
+      }.not_to(change { Pageflow::Entry.count })
+    end
+
+    it 'allows account publisher to duplicate entry' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
 
@@ -1821,7 +1834,8 @@ describe Admin::EntriesController do
 
     it 'redirects to admin page of new entry' do
       user = create(:user)
-      entry = create(:entry, with_publisher: user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
       post(:duplicate, params: {id: entry.id})
@@ -1831,8 +1845,9 @@ describe Admin::EntriesController do
 
     it 'uses passed title and permalink slug' do
       user = create(:user)
+      account = create(:account, with_publisher: user)
       entry = create(:entry,
-                     with_publisher: user,
+                     account:,
                      permalink_attributes: {slug: 'some-slug', directory_path: 'en/'})
 
       sign_in(user, scope: :user)
@@ -1854,17 +1869,20 @@ describe Admin::EntriesController do
 
     it 'copies memberships by default' do
       user = create(:user)
-      entry = create(:entry, with_publisher: user)
+      account = create(:account, with_publisher: user)
+      member = create(:user)
+      entry = create(:entry, account:, with_editor: member)
 
       sign_in(user, scope: :user)
       post(:duplicate, params: {id: entry.id})
 
-      expect(Pageflow::Entry.last.users).to include(user)
+      expect(Pageflow::Entry.last.users).to include(member)
     end
 
     it 'supports skipping memberships' do
       user = create(:user)
-      entry = create(:entry, with_publisher: user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry, account:, with_editor: create(:user))
 
       sign_in(user, scope: :user)
       post(:duplicate, params: {id: entry.id, duplicate: {copy_memberships: '0'}})
@@ -1894,17 +1912,6 @@ describe Admin::EntriesController do
       post(:duplicate, params: {id: entry.id, entry: {account_id: other_account.id}})
 
       expect(Pageflow::Entry.last.account).to eq(account)
-    end
-
-    it 'does not allow entry publisher to place duplicate in other account' do
-      user = create(:user)
-      entry = create(:entry, with_publisher: user)
-      other_account = create(:account, with_publisher: user)
-
-      sign_in(user, scope: :user)
-      post(:duplicate, params: {id: entry.id, entry: {account_id: other_account.id}})
-
-      expect(Pageflow::Entry.last.account).to eq(entry.account)
     end
 
     it 'allows account publisher to place duplicate in other site of account' do
@@ -1955,7 +1962,8 @@ describe Admin::EntriesController do
 
     it 're-renders form and does not create entry if title is blank' do
       user = create(:user)
-      entry = create(:entry, with_publisher: user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
 
