@@ -28,6 +28,8 @@ module PageflowScrolled
 
     nested_revision_components :chapters
 
+    scope :excluding_trash, -> { where.not(role: 'trash').or(where(role: nil)) }
+
     def role
       super || (configuration['main'] ? 'main' : 'excursions')
     end
@@ -39,6 +41,19 @@ module PageflowScrolled
     def self.create_defaults(draft)
       create!(revision: draft, role: 'main')
       create!(revision: draft, role: 'excursions', position: 1)
+    end
+
+    def self.all_for_revision(revision)
+      super.excluding_trash
+    end
+
+    def self.find_or_create_trash_for(revision)
+      revision.with_lock do
+        where(revision:, role: 'trash').first ||
+          create!(revision:,
+                  role: 'trash',
+                  position: where(revision:).maximum(:position).to_i + 1)
+      end
     end
 
     private

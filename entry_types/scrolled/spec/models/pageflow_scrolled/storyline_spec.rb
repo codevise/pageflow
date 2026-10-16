@@ -54,5 +54,44 @@ module PageflowScrolled
         expect(storyline.role).to eq('excursions')
       end
     end
+
+    describe '.all_for_revision' do
+      it 'excludes trash storyline' do
+        entry = create(:entry, type_name: 'scrolled')
+        Storyline.find_or_create_trash_for(entry.draft)
+
+        storylines = Storyline.all_for_revision(entry.draft)
+
+        expect(storylines.map(&:role)).to eq(%w[main excursions])
+      end
+
+      it 'includes storylines without role' do
+        revision = create(:revision)
+        storyline = create(:scrolled_storyline, revision:, role: nil)
+
+        storylines = Storyline.all_for_revision(revision)
+
+        expect(storylines).to eq([storyline])
+      end
+    end
+
+    describe '.find_or_create_trash_for' do
+      it 'creates trash storyline after existing storylines' do
+        entry = create(:entry, type_name: 'scrolled')
+
+        trash_storyline = Storyline.find_or_create_trash_for(entry.draft)
+
+        expect(trash_storyline).to have_attributes(role: 'trash', position: 2)
+      end
+
+      it 'returns existing trash storyline' do
+        entry = create(:entry, type_name: 'scrolled')
+        trash_storyline = Storyline.find_or_create_trash_for(entry.draft)
+
+        result = Storyline.find_or_create_trash_for(entry.draft)
+
+        expect(result).to eq(trash_storyline)
+      end
+    end
   end
 end

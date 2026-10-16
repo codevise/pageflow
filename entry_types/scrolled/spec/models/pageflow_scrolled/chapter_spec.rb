@@ -26,6 +26,17 @@ module PageflowScrolled
 
         expect(result).to eq([chapter1, chapter2])
       end
+
+      it 'excludes chapters in trash storyline' do
+        revision = create(:revision)
+        chapter = create(:scrolled_chapter, revision:)
+        trash_storyline = Storyline.find_or_create_trash_for(revision)
+        create(:scrolled_chapter, storyline: trash_storyline)
+
+        result = Chapter.all_for_revision(revision)
+
+        expect(result).to eq([chapter])
+      end
     end
 
     describe '.create_section' do

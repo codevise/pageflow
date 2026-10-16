@@ -53,6 +53,7 @@ module PageflowScrolled
           PageflowScrolled::Chapter
           .joins(:storyline)
           .where(pageflow_scrolled_storylines: {revision_id: revision_ids})
+          .merge(PageflowScrolled::Storyline.excluding_trash)
           .order(PageflowScrolled::Chapter::POSITION_ORDER)
           .select('pageflow_scrolled_chapters.*', 'pageflow_scrolled_storylines.revision_id')
           .group_by(&:revision_id)

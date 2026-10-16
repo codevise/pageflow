@@ -65,6 +65,43 @@ module PageflowScrolled
         end
       end
 
+      context 'trash' do
+        it 'omits trashed content from published entries' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          create(:content_element, revision: entry.revision)
+          trashed_content_element = create_trashed_content_element(entry.revision)
+
+          result = JSON.parse(render(helper, entry))
+
+          expect(result['collections']['storylines'].pluck('id'))
+            .not_to include(trashed_content_element.section.chapter.storyline_id)
+          expect(result['collections']['chapters'].pluck('id'))
+            .not_to include(trashed_content_element.section.chapter_id)
+          expect(result['collections']['sections'].pluck('id'))
+            .not_to include(trashed_content_element.section_id)
+          expect(result['collections']['contentElements'].pluck('id'))
+            .not_to include(trashed_content_element.id)
+        end
+
+        it 'omits trashed content from draft entries' do
+          entry = create(:draft_entry, type_name: 'scrolled')
+          trashed_content_element = create_trashed_content_element(entry.revision)
+
+          result = JSON.parse(render(helper, entry, include_hidden_sections: true))
+
+          expect(result['collections']['sections'].pluck('id'))
+            .not_to include(trashed_content_element.section_id)
+          expect(result['collections']['contentElements'].pluck('id'))
+            .not_to include(trashed_content_element.id)
+        end
+
+        def create_trashed_content_element(revision)
+          trash_storyline = Storyline.find_or_create_trash_for(revision)
+          chapter = create(:scrolled_chapter, storyline: trash_storyline)
+          create(:content_element, section: create(:section, chapter:))
+        end
+      end
+
       context 'entries' do
         it 'renders single-element entry array' do
           entry = create(:published_entry,
