@@ -1,6 +1,23 @@
 import Backbone from 'backbone';
 
 export const TrashItem = Backbone.Model.extend({
+  firstSectionPermaId() {
+    return this.get('sections')[0]?.permaId;
+  },
+
+  seed(entrySeed) {
+    const sections = this.get('sections');
+
+    return {
+      ...entrySeed,
+      collections: {
+        ...entrySeed.collections,
+        sections: sections.map(({contentElements, ...section}) => section),
+        contentElements: sections.flatMap(section => section.contentElements)
+      }
+    };
+  },
+
   restore() {
     const {parent, position} = this.restoreTarget(this.collection.entry.chapters,
                                                   chapter => chapter.sections);

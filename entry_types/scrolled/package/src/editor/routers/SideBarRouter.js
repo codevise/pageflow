@@ -5,6 +5,7 @@ export const SideBarRouter = Marionette.AppRouter.extend({
     'scrolled/comments?tab=:tab': 'comments',
     'scrolled/comments': 'comments',
     'scrolled/comments/activity': 'commentActivity',
+    'scrolled/trash': 'trash',
     'scrolled/chapters/:id': 'chapter',
     'scrolled/sections/:id/transition': 'sectionTransition',
     'scrolled/sections/:id/paddings?position=:position': 'sectionPaddings',

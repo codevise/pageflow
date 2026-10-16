@@ -10,6 +10,7 @@ import {EditContentElementView} from '../views/EditContentElementView';
 import {CommentsView} from '../views/CommentsView';
 import {CommentActivityView} from '../views/CommentActivityView';
 import {NewThreadView} from '../views/NewThreadView';
+import {TrashView} from '../views/TrashView';
 
 export const SideBarController = Marionette.Controller.extend({
   initialize: function(options) {
@@ -62,6 +63,12 @@ export const SideBarController = Marionette.Controller.extend({
     this.region.show(new CommentActivityView({
       entry: this.entry,
       editor
+    }));
+  },
+
+  trash: function() {
+    this.region.show(new TrashView({
+      entry: this.entry
     }));
   },
 

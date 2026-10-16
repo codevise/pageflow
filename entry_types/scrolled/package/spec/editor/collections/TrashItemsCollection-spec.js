@@ -28,6 +28,25 @@ describe('TrashItemsCollection', () => {
     expect(entry.trashItems.pluck('id')).toEqual([5]);
   });
 
+  it('provides seed with sections and content elements of trash item', () => {
+    testContext.entry = createEntry({});
+    const {entry} = testContext;
+    entry.trashItems.add({
+      id: 5,
+      sections: [
+        {id: 50, permaId: 500, contentElements: [{id: 60, permaId: 600, sectionId: 50}]}
+      ]
+    });
+
+    const seed = entry.trashItems.get(5).seed({config: {}, collections: {chapters: []}});
+
+    expect(seed.config).toEqual({});
+    expect(seed.collections.chapters).toEqual([]);
+    expect(seed.collections.sections).toEqual([{id: 50, permaId: 500}]);
+    expect(seed.collections.contentElements)
+      .toEqual([{id: 60, permaId: 600, sectionId: 50}]);
+  });
+
   describe('#restore', () => {
     beforeEach(() => {
       testContext.entry = createEntry({

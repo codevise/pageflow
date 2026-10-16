@@ -1781,6 +1781,16 @@ de:
         back: Kommentare
         tabs:
           newComment: Neues Thema
+      trash_view:
+        back: Gliederung
+        blank_slate: Aus diesem Beitrag wurde noch nichts gelöscht.
+        hint: Aus diesem Beitrag gelöschte Abschnitte können hier wiederhergestellt werden.
+        load_failed: Gelöschte Inhalte konnten nicht geladen werden.
+        origin: "Abschnitt aus %{chapter}"
+        origin_missing: Abschnitt aus einem gelöschten Kapitel
+        restore: Wiederherstellen
+        restore_failed: Der Abschnitt konnte nicht wiederhergestellt werden.
+        trashed_at: "Gelöscht %{time}"
       configuration_places:
         entry: "Einstellungen"
         label: "%{chapter} - %{subject}"

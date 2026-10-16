@@ -1,7 +1,15 @@
 import {watchCollection} from '../collections';
 
 export function watchCollections(entry, {dispatch}) {
-  const teardownFns = collectionSpecs(entry).map(
+  return watchSpecs([...collectionSpecs(entry), ...fileCollectionSpecs(entry)], dispatch);
+}
+
+export function watchFileCollections(entry, {dispatch}) {
+  return watchSpecs(fileCollectionSpecs(entry), dispatch);
+}
+
+function watchSpecs(specs, dispatch) {
+  const teardownFns = specs.map(
     ({collection, ...spec}) => watchCollection(collection, {...spec, dispatch})
   );
 
@@ -12,7 +20,7 @@ export function watchCollections(entry, {dispatch}) {
 
 function collectionSpecs(entry) {
   const {
-    storylines, chapters, sections, contentElements, widgets, files, linkedEntries
+    storylines, chapters, sections, contentElements, widgets, linkedEntries
   } = entry;
 
   return [
@@ -75,27 +83,32 @@ function collectionSpecs(entry) {
       attributes: [{typeName: 'type_name'}, 'role', {permaId: 'role'}],
       keyAttribute: 'permaId',
       includeConfiguration: true
-    },
-    ...Object.keys(files).map(collectionName => ({
-      collection: files[collectionName],
-      name: camelize(collectionName),
-      attributes: ['id', {permaId: 'perma_id'}, 'width', 'height',
-                   'basename', 'extension', 'rights',
-                   {displayName: [
-                     'display_name', 'file_name',
-                     (displayName, fileName) => displayName || fileName
-                   ]},
-                   {processedExtension: 'processed_extension'},
-                   {isReady: 'is_ready'},
-                   {variants: variants => variants && variants.map(variant => camelize(variant))},
-                   {durationInMs: 'duration_in_ms'},
-                   {parentFileId: 'parent_file_id'},
-                   {parentFileModelType: 'parent_file_model_type'},
-                   {isReferenced: 'is_referenced'}],
-      keyAttribute: 'permaId',
-      includeConfiguration: true
-    }))
+    }
   ];
+}
+
+function fileCollectionSpecs(entry) {
+  const {files} = entry;
+
+  return Object.keys(files).map(collectionName => ({
+    collection: files[collectionName],
+    name: camelize(collectionName),
+    attributes: ['id', {permaId: 'perma_id'}, 'width', 'height',
+                 'basename', 'extension', 'rights',
+                 {displayName: [
+                   'display_name', 'file_name',
+                   (displayName, fileName) => displayName || fileName
+                 ]},
+                 {processedExtension: 'processed_extension'},
+                 {isReady: 'is_ready'},
+                 {variants: variants => variants && variants.map(variant => camelize(variant))},
+                 {durationInMs: 'duration_in_ms'},
+                 {parentFileId: 'parent_file_id'},
+                 {parentFileModelType: 'parent_file_model_type'},
+                 {isReferenced: 'is_referenced'}],
+    keyAttribute: 'permaId',
+    includeConfiguration: true
+  }));
 }
 
 function camelize(snakeCase) {
