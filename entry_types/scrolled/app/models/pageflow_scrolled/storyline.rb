@@ -56,6 +56,12 @@ module PageflowScrolled
       end
     end
 
+    def self.after_copy(revision, purpose:)
+      return if %i[snapshot restore].include?(purpose)
+
+      where(revision:, role: 'trash').destroy_all
+    end
+
     private
 
     def sections_before(section)

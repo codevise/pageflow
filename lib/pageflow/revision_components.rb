@@ -5,16 +5,23 @@ module Pageflow
     def initialize
       @revision_components = []
       @create_defaults_hooks = []
+      @after_copy_hooks = []
     end
 
-    def register(revision_component, create_defaults: false)
+    def register(revision_component, create_defaults: false, after_copy: false)
       return if @revision_components.include?(revision_component)
 
       @revision_components << revision_component
 
-      return unless create_defaults
+      if create_defaults
+        @create_defaults_hooks << ->(revision) { revision_component.create_defaults(revision) }
+      end
 
-      @create_defaults_hooks << ->(revision) { revision_component.create_defaults(revision) }
+      return unless after_copy
+
+      @after_copy_hooks << lambda do |revision, purpose|
+        revision_component.after_copy(revision, purpose:)
+      end
     end
 
     def each(&)
@@ -23,6 +30,10 @@ module Pageflow
 
     def create_defaults(revision)
       @create_defaults_hooks.each { |hook| hook.call(revision) }
+    end
+
+    def after_copy(revision, purpose:)
+      @after_copy_hooks.each { |hook| hook.call(revision, purpose) }
     end
   end
 end

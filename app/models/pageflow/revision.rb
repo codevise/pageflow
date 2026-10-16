@@ -171,7 +171,7 @@ module Pageflow
     # Public interface for copying a revision
     #
     # @since 15.1
-    def copy
+    def copy(purpose: :duplicate)
       revision = dup
 
       yield(revision) if block_given?
@@ -190,6 +190,7 @@ module Pageflow
                              [FileFolder, FileUsage]
       )
 
+      Pageflow.config_for(revision.entry).revision_components.after_copy(revision, purpose:)
       revision
     end
 

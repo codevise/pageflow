@@ -194,7 +194,7 @@ module PageflowScrolled
         c.file_types.register(Pageflow::BuiltInFileType.audio)
         c.file_types.register(Pageflow::BuiltInFileType.other)
 
-        c.revision_components.register(Storyline, create_defaults: true)
+        c.revision_components.register(Storyline, create_defaults: true, after_copy: true)
 
         ['tikTokEmbed', 'twitterEmbed', 'hotspots', 'socialEmbed',
          'videoEmbed', 'inlineBeforeAfter'].each do |name|
