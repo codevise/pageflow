@@ -149,6 +149,21 @@ describe('pageflow.SliderInputView', () => {
     expect(callback).toHaveBeenCalled();
   });
 
+  it('calls onInteractionEnd on slidestop', () => {
+    var model = new Model();
+    var callback = jest.fn();
+    var view = new SliderInputView({
+      model: model,
+      propertyName: 'value',
+      onInteractionEnd: callback
+    });
+
+    view.render();
+    view.$el.trigger('slidestop');
+
+    expect(callback).toHaveBeenCalled();
+  });
+
   it('updates displayed value on slide', () => {
     var model = new Model();
     var view = new SliderInputView({

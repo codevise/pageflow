@@ -76,7 +76,11 @@ editor.contentElementTypes.register('logoList', {
           texts: marqueeSpeedScale.texts,
           defaultValue: marqueeSpeedScale.defaultValue,
           saveOnSlide: true,
-          visibleBinding: 'marquee'
+          visibleBinding: 'marquee',
+          onInteractionStart: () =>
+            contentElement.postCommand({type: 'START_MARQUEE_PREVIEW'}),
+          onInteractionEnd: () =>
+            contentElement.postCommand({type: 'STOP_MARQUEE_PREVIEW'})
         });
       }
 

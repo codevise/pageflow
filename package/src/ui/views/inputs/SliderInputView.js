@@ -30,6 +30,12 @@ import template from '../../templates/inputs/sliderInput.jst';
  *   Already update the model while dragging the handle - not only after
  *   handle has been released.
  *
+ * @param {function} [options.onInteractionStart]
+ *   Called when the user starts dragging the handle.
+ *
+ * @param {function} [options.onInteractionEnd]
+ *   Called when the user releases the handle.
+ *
  * @param {string} [options.icon]
  *   Path to an icon image to display before the label.
  *
@@ -54,6 +60,7 @@ export const SliderInputView = Marionette.ItemView.extend({
 
   events: {
     'slidestart': 'handleSlideStart',
+    'slidestop': 'handleSlideStop',
     'slidechange': 'save',
     'slide': 'handleSlide'
   },
@@ -95,6 +102,12 @@ export const SliderInputView = Marionette.ItemView.extend({
   handleSlideStart() {
     if (this.options.onInteractionStart) {
       this.options.onInteractionStart();
+    }
+  },
+
+  handleSlideStop() {
+    if (this.options.onInteractionEnd) {
+      this.options.onInteractionEnd();
     }
   },
 

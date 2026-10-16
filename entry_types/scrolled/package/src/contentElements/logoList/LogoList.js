@@ -20,6 +20,7 @@ export function LogoList({configuration}) {
   const updateConfiguration = useContentElementConfigurationUpdate();
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [marqueePreview, setMarqueePreview] = useState(false);
 
   const items = configuration.items || [];
   const itemLinks = configuration.itemLinks || {};
@@ -33,6 +34,12 @@ export function LogoList({configuration}) {
     }
     else if (command.type === 'SET_SELECTED_ITEM') {
       setSelectedItemId(items[command.index]?.id || null);
+    }
+    else if (command.type === 'START_MARQUEE_PREVIEW') {
+      setMarqueePreview(true);
+    }
+    else if (command.type === 'STOP_MARQUEE_PREVIEW') {
+      setMarqueePreview(false);
     }
   });
 
@@ -65,7 +72,7 @@ export function LogoList({configuration}) {
     }
   }
 
-  const marquee = configuration.marquee && !isSelected;
+  const marquee = configuration.marquee && (!isSelected || marqueePreview);
 
   return (
     <LinkTooltipProvider position="above" align="center" gap={5}>
