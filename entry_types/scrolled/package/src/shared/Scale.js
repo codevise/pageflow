@@ -17,6 +17,7 @@ export function Scale({
   return {
     values,
     texts,
+    cssValues,
     defaultValue: getDefaultValue()
   };
 

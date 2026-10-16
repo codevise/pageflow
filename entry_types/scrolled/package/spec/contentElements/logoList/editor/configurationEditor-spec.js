@@ -11,9 +11,10 @@ describe('logoList configuration editor', () => {
     'logoListMarqueeSpeed-md': '1'
   };
 
-  function render({configuration = {}, themeProperties = {}} = {}) {
+  function render({configuration = {}, themeProperties = {}, themeTranslations} = {}) {
     const entry = createEntry({
       themeOptions: {properties: {root: themeProperties}},
+      themeTranslations,
       contentElements: [{id: 1, typeName: 'logoList', configuration}]
     });
     const contentElement = entry.contentElements.get(1);
@@ -55,6 +56,27 @@ describe('logoList configuration editor', () => {
     const {configurationEditor} = render({themeProperties: marqueeSpeedScale});
 
     expect(configurationEditor.visibleInputPropertyNames()).not.toContain('marqueeSpeed');
+  });
+
+  it('labels marquee speed steps with multipliers', () => {
+    const {configurationEditor} = render({
+      configuration: {marquee: true, marqueeSpeed: 'lg'},
+      themeProperties: {...marqueeSpeedScale, 'logoListMarqueeSpeed-lg': '1.5'}
+    });
+
+    expect(SliderInput.findByPropertyName('marqueeSpeed', {inView: configurationEditor})
+      .displayedValue()).toEqual('1.5×');
+  });
+
+  it('prefers translated marquee speed labels', () => {
+    const {configurationEditor} = render({
+      configuration: {marquee: true, marqueeSpeed: 'md'},
+      themeProperties: marqueeSpeedScale,
+      themeTranslations: {scales: {logoListMarqueeSpeed: {md: 'Normal'}}}
+    });
+
+    expect(SliderInput.findByPropertyName('marqueeSpeed', {inView: configurationEditor})
+      .displayedValue()).toEqual('Normal');
   });
 
   it('hides marquee speed input if theme does not define scale', () => {

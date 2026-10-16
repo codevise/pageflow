@@ -53,6 +53,29 @@ describe('ScrolledEntry', () => {
       expect(scale.texts).toEqual(['Small', 'Medium', 'Large']);
     });
 
+    it('returns css values of scale steps', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementMargin-sm': '0.5rem',
+                  'contentElementMargin-md': '1rem'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const scale = entry.getScale('contentElementMargin');
+
+      expect(scale.cssValues).toEqual(['0.5rem', '1rem']);
+    });
+
     describe('defaultValue', () => {
       it('is undefined when no default is set', () => {
         const entry = factories.entry(

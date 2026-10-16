@@ -73,7 +73,9 @@ editor.contentElementTypes.register('logoList', {
       if (marqueeSpeedScale.values.length) {
         this.input('marqueeSpeed', SliderInputView, {
           values: marqueeSpeedScale.values,
-          texts: marqueeSpeedScale.texts,
+          texts: marqueeSpeedScale.texts.map((text, index) =>
+            text || multiplierText(marqueeSpeedScale.cssValues[index])
+          ),
           defaultValue: marqueeSpeedScale.defaultValue,
           saveOnSlide: true,
           visibleBinding: 'marquee',
@@ -111,6 +113,10 @@ editor.registerFileSelectionHandler('logoListItem', function(options) {
     return '/scrolled/logoLists/' + contentElement.id + '/' + options.id;
   };
 });
+
+function multiplierText(value) {
+  return `${Number(value).toLocaleString(I18n.locale)}×`;
+}
 
 function attributeLabel(propertyName) {
   return I18n.t(`${propertyName}.label`, {

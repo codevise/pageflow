@@ -1579,12 +1579,6 @@ de:
           md: M
           lg: L
           xl: XL
-        logoListMarqueeSpeed:
-          xs: Sehr langsam
-          sm: Langsam
-          md: Normal
-          lg: Schnell
-          xl: Sehr schnell
       content_element_text_inline_file_rights_attributes:
         showTextInlineFileRightsBackdrop:
           label: "Abblendung hinter Rechteangabe"

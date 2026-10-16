@@ -1561,12 +1561,6 @@ en:
           md: M
           lg: L
           xl: XL
-        logoListMarqueeSpeed:
-          xs: Very slow
-          sm: Slow
-          md: Normal
-          lg: Fast
-          xl: Very fast
       content_element_text_inline_file_rights_attributes:
         showTextInlineFileRightsBackdrop:
           label: "Backdrop behind inline file rights"
