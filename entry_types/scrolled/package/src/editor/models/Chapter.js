@@ -176,6 +176,25 @@ export const Chapter = Backbone.Model.extend({
     return newSection;
   },
 
+  restoreSection(trashItem, {position}) {
+    const section = this.addSection({position}, {
+      url: `${trashItem.url()}/restore`,
+      skipDefaults: true,
+      wait: true,
+      success: () => {
+        this.sections.each(sibling => {
+          if (sibling !== section && sibling.get('position') >= position) {
+            sibling.set('position', sibling.get('position') + 1);
+          }
+        });
+
+        this.sections.sort();
+      }
+    });
+
+    return section;
+  },
+
   moveSection(section, {after, before} = {}) {
     const targetSection = after || before;
     const sourceChapter = section.chapter;
