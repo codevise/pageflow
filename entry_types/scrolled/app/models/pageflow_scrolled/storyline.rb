@@ -33,8 +33,8 @@ module PageflowScrolled
     end
 
     def self.create_defaults(draft)
-      create!(revision: draft, configuration: {main: true})
-      create!(revision: draft, position: 1)
+      create!(revision: draft, role: 'main', configuration: {main: true})
+      create!(revision: draft, role: 'excursions', position: 1)
     end
 
     private

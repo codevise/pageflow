@@ -12,6 +12,14 @@ module PageflowScrolled
         expect(storylines.map(&:position)).to eq([0, 1])
       end
 
+      it 'assigns main and excursions roles to default storylines' do
+        entry = create(:entry, type_name: 'scrolled')
+
+        storylines = Storyline.all_for_revision(entry.draft)
+
+        expect(storylines.map(&:role)).to eq(%w[main excursions])
+      end
+
       it 'copies a duplicate of itself to new revision' do
         Pageflow.config.revision_components.register(Storyline)
         revision = create(:revision)
