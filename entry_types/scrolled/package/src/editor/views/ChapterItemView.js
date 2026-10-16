@@ -23,7 +23,6 @@ export const ChapterItemView = Marionette.Layout.extend({
        <span class="${styles.number}"></span>
        <span class="${styles.title}"></span>
        <span class="${styles.creatingIndicator}" />
-       <span class="${styles.destroyingIndicator}" />
        <span class="${styles.failedIndicator}"
              title="${I18n.t('pageflow_scrolled.editor.chapter_item.save_error')}" />
      </a>

@@ -48,10 +48,9 @@
   composes: blink from './animations.module.css';
 }
 
-.destroyingIndicator {
-  composes: indicator;
-  composes: trash from './icons.module.css';
-  composes: blink from './animations.module.css';
+.destroying {
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
 }
 
 .failedIndicator {
