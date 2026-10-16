@@ -20,6 +20,7 @@ export function LogoList({configuration}) {
   const updateConfiguration = useContentElementConfigurationUpdate();
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [marqueePreview, setMarqueePreview] = useState(false);
 
   const items = configuration.items || [];
   const itemLinks = configuration.itemLinks || {};
@@ -33,6 +34,12 @@ export function LogoList({configuration}) {
     }
     else if (command.type === 'SET_SELECTED_ITEM') {
       setSelectedItemId(items[command.index]?.id || null);
+    }
+    else if (command.type === 'START_MARQUEE_PREVIEW') {
+      setMarqueePreview(true);
+    }
+    else if (command.type === 'STOP_MARQUEE_PREVIEW') {
+      setMarqueePreview(false);
     }
   });
 
@@ -65,7 +72,7 @@ export function LogoList({configuration}) {
     }
   }
 
-  const marquee = configuration.marquee && !isSelected;
+  const marquee = configuration.marquee && (!isSelected || marqueePreview);
 
   return (
     <LinkTooltipProvider position="above" align="center" gap={5}>
@@ -76,7 +83,8 @@ export function LogoList({configuration}) {
   function renderMarquee() {
     return (
       <div className={styles.marquee}
-           style={{'--logo-count': items.length}}
+           style={{'--logo-count': items.length,
+                   '--marquee-speed': scaleProperty('marquee-speed', configuration.marqueeSpeed)}}
            onFocus={handleMarqueeFocus}
            onBlur={handleMarqueeBlur}>
         {renderList()}
@@ -89,6 +97,7 @@ export function LogoList({configuration}) {
     return (
       <ul className={classNames(styles.list,
                                 {[styles.staggered]: configuration.staggered})}
+          style={{'--logo-height': scaleProperty('logo-height', configuration.logoHeight)}}
           onClick={handleListClick}
           {...attributes}>
         {items.map((item, index) =>
@@ -106,6 +115,10 @@ export function LogoList({configuration}) {
       </ul>
     );
   }
+}
+
+function scaleProperty(name, value) {
+  return value && `var(--theme-logo-list-${name}-${value})`;
 }
 
 function Logo({image, alt, link, load, outlined, highlighted, selected, onClick, onLinkChange}) {

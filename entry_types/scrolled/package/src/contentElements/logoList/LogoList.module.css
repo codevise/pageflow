@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   gap: var(--theme-logo-list-row-gap, 2rem) var(--theme-logo-list-column-gap, 3rem);
-  min-height: var(--theme-logo-list-logo-height, 3rem);
+  min-height: var(--logo-height, var(--theme-logo-list-logo-height, 3rem));
   margin: 0;
   padding: 0;
   list-style: none;
@@ -39,7 +39,8 @@
   }
 
   .marquee:not(:focus-within) > .list {
-    animation: shift calc(var(--logo-count) * var(--theme-logo-list-marquee-duration-per-logo, 5s)) linear infinite;
+    animation: shift calc(var(--logo-count) * var(--theme-logo-list-marquee-duration-per-logo, 5s) /
+                          var(--marquee-speed, var(--theme-logo-list-marquee-speed, 1))) linear infinite;
   }
 
   .marquee:not(:focus-within) > [inert] {
@@ -69,7 +70,7 @@
   display: block;
   width: auto;
   max-width: 100%;
-  height: var(--theme-logo-list-logo-height, 3rem);
+  height: var(--logo-height, var(--theme-logo-list-logo-height, 3rem));
 }
 
 .outlined::before {

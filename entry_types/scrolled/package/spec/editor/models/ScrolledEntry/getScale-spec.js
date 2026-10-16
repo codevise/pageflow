@@ -53,6 +53,29 @@ describe('ScrolledEntry', () => {
       expect(scale.texts).toEqual(['Small', 'Medium', 'Large']);
     });
 
+    it('returns css values of scale steps', () => {
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementMargin-sm': '0.5rem',
+                  'contentElementMargin-md': '1rem'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const scale = entry.getScale('contentElementMargin');
+
+      expect(scale.cssValues).toEqual(['0.5rem', '1rem']);
+    });
+
     describe('defaultValue', () => {
       it('is undefined when no default is set', () => {
         const entry = factories.entry(
@@ -204,6 +227,32 @@ describe('ScrolledEntry', () => {
         const scale = entry.getScale('sectionPaddingTop');
 
         expect(scale.defaultValue).toBeUndefined();
+      });
+
+      it('supports passing default property name', () => {
+        const entry = factories.entry(
+          ScrolledEntry,
+          {},
+          {
+            entryTypeSeed: normalizeSeed({
+              themeOptions: {
+                properties: {
+                  root: {
+                    'someScale-sm': '2rem',
+                    'someScale-md': '3rem',
+                    'someScaleDefault': '3rem'
+                  }
+                }
+              }
+            })
+          }
+        );
+
+        const scale = entry.getScale('someScale', {
+          defaultValuePropertyName: 'someScaleDefault'
+        });
+
+        expect(scale.defaultValue).toEqual('md');
       });
     });
   });

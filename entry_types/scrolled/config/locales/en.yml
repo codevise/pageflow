@@ -766,6 +766,10 @@ en:
             general: Video
         logoList:
           attributes:
+            logoHeight:
+              label: Logo height
+            marqueeSpeed:
+              label: Speed
             marquee:
               label: Scroll continuously
               inline_help: |-
@@ -1547,6 +1551,12 @@ en:
           xl: XL
           xxl: XXL
         contentElementBoxShadow:
+          sm: S
+          md: M
+          lg: L
+          xl: XL
+        logoListLogoHeight:
+          xs: XS
           sm: S
           md: M
           lg: L

@@ -409,14 +409,17 @@ export const ScrolledEntry = Entry.extend({
     );
   },
 
-  getScale(scaleName, {scope} = {}) {
+  getScale(scaleName, {
+    scope,
+    defaultValuePropertyName = scaleDefaultPropertyNames[scaleName]
+  } = {}) {
     const theme = this.scrolledSeed.config.theme;
 
     return Scale({
       scaleName,
       themeProperties: theme.options.properties || {},
       scaleTranslations: theme.translations?.scales || {},
-      defaultValuePropertyName: scaleDefaultPropertyNames[scaleName],
+      defaultValuePropertyName,
       scope
     });
   },
