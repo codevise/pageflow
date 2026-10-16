@@ -10,7 +10,8 @@ describe('EntryOutlineView', () => {
   useFakeTranslations({
     'pageflow_scrolled.editor.storylines_tabs.main': 'Main',
     'pageflow_scrolled.editor.storylines_tabs.excursions': 'Excursions',
-    'pageflow_scrolled.editor.storyline_item.excursion_blank_slate': 'Excursions provide additional content outside the main path. Create your first excursion.'
+    'pageflow_scrolled.editor.storyline_item.excursion_blank_slate': 'Excursions provide additional content outside the main path. Create your first excursion.',
+    'pageflow_scrolled.editor.entry_outline.trash': 'Deleted content'
   });
 
   const {createEntry} = useEditorGlobals();
@@ -361,5 +362,31 @@ describe('EntryOutlineView', () => {
     render(new EntryOutlineView({entry}));
 
     expect(screen.queryByText(/Excursions provide additional content outside the main path/)).toBeNull();
+  });
+
+  it('renders trash button with tooltip', () => {
+    const entry = createEntry({});
+
+    render(new EntryOutlineView({entry}));
+
+    expect(screen.getByRole('button', {name: 'Deleted content'}))
+      .toHaveAttribute('title', 'Deleted content');
+  });
+
+  it('renders trash button for entries with excursions', () => {
+    const entry = createEntry({
+      storylines: [
+        {id: 10, permaId: 200, position: 0, role: 'main'},
+        {id: 11, permaId: 201, position: 1, configuration: {}}
+      ],
+      chapters: [
+        {id: 1, permaId: 100, position: 0, storylineId: 10},
+        {id: 2, permaId: 101, position: 0, storylineId: 11}
+      ]
+    });
+
+    render(new EntryOutlineView({entry}));
+
+    expect(screen.getByRole('button', {name: 'Deleted content'})).toBeInTheDocument();
   });
 });

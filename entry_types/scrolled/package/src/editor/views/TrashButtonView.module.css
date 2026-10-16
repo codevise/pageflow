@@ -1,0 +1,20 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: none;
+  border: 0;
+  padding: 0 space(2);
+  color: var(--ui-primary-color-light);
+  cursor: pointer;
+}
+
+.icon {
+  display: block;
+}
+
+.button:hover,
+.button:focus-visible {
+  color: var(--ui-primary-color);
+}

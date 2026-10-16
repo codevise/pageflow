@@ -1418,6 +1418,7 @@ en:
         header: Outline
         finish_reorder_chapters: Finish reordering
         reorder_chapters: "Reorder chapters..."
+        trash: Deleted content
       entry_select:
         no_matches: No matching stories
         not_published: Not published

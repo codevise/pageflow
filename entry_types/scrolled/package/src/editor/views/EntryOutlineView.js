@@ -6,6 +6,7 @@ import {DropDownButtonView} from 'pageflow/editor';
 
 import {StorylinesTabsView} from './StorylinesTabsView';
 import {StorylineItemView} from './StorylineItemView';
+import {TrashButtonView} from './TrashButtonView';
 
 import styles from './EntryOutlineView.module.css';
 
@@ -20,9 +21,11 @@ export const EntryOutlineView = Marionette.Layout.extend({
     </div>
   `,
 
-  ui: cssModulesUtils.ui(styles, 'tabs', 'dropDownButton'),
+  ui: cssModulesUtils.ui(styles, 'tabs', 'toolbar', 'dropDownButton'),
 
   onRender() {
+    this.ui.toolbar.prepend(this.subview(new TrashButtonView()).render().el);
+
     const viewModel = new Backbone.Model({collapsed: false});
     const dropDownMenuItems = new Backbone.Collection();
 
@@ -52,6 +55,8 @@ export const EntryOutlineView = Marionette.Layout.extend({
       }),
       {to: this.ui.tabs}
     );
+
+    this.ui.tabs.find('.tabs_view-scroller').first().append(this.ui.toolbar);
   }
 });
 
