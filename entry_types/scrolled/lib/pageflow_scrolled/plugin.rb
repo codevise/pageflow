@@ -72,6 +72,32 @@ module PageflowScrolled
           )
         )
 
+        c.themes.register_options_transform(
+          ThemeOptionsDefaultScale.new(
+            prefix: 'logo_list_logo_height',
+            values: {
+              'xs' => '2rem',
+              'sm' => '2.5rem',
+              'md' => '3rem',
+              'lg' => '4rem',
+              'xl' => '5rem'
+            }
+          )
+        )
+
+        c.themes.register_options_transform(
+          ThemeOptionsDefaultScale.new(
+            prefix: 'logo_list_marquee_speed',
+            values: {
+              'xs' => '0.5',
+              'sm' => '0.75',
+              'md' => '1',
+              'lg' => '1.5',
+              'xl' => '2'
+            }
+          )
+        )
+
         c.themes.register_default_options(
           properties: {
             root: {
@@ -81,6 +107,8 @@ module PageflowScrolled
               'content_element_box_shadow_style_default' =>
                 '0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.15)',
               'box_shadow_clip_margin_bottom' => '3rem',
+              'logo_list_logo_height' => '3rem',
+              'logo_list_marquee_speed' => '1',
               'outline_color' => '#a0a0a080'
             },
             cards_appearance_section: {

@@ -205,6 +205,32 @@ describe('ScrolledEntry', () => {
 
         expect(scale.defaultValue).toBeUndefined();
       });
+
+      it('supports passing default property name', () => {
+        const entry = factories.entry(
+          ScrolledEntry,
+          {},
+          {
+            entryTypeSeed: normalizeSeed({
+              themeOptions: {
+                properties: {
+                  root: {
+                    'someScale-sm': '2rem',
+                    'someScale-md': '3rem',
+                    'someScaleDefault': '3rem'
+                  }
+                }
+              }
+            })
+          }
+        );
+
+        const scale = entry.getScale('someScale', {
+          defaultValuePropertyName: 'someScaleDefault'
+        });
+
+        expect(scale.defaultValue).toEqual('md');
+      });
     });
   });
 });

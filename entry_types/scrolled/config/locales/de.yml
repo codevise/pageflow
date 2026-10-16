@@ -781,6 +781,10 @@ de:
             general: Video
         logoList:
           attributes:
+            logoHeight:
+              label: Logo-Höhe
+            marqueeSpeed:
+              label: Geschwindigkeit
             marquee:
               label: Endlos scrollen
               inline_help: |-
@@ -1569,6 +1573,18 @@ de:
           md: M
           lg: L
           xl: XL
+        logoListLogoHeight:
+          xs: XS
+          sm: S
+          md: M
+          lg: L
+          xl: XL
+        logoListMarqueeSpeed:
+          xs: Sehr langsam
+          sm: Langsam
+          md: Normal
+          lg: Schnell
+          xl: Sehr schnell
       content_element_text_inline_file_rights_attributes:
         showTextInlineFileRightsBackdrop:
           label: "Abblendung hinter Rechteangabe"

@@ -76,7 +76,8 @@ export function LogoList({configuration}) {
   function renderMarquee() {
     return (
       <div className={styles.marquee}
-           style={{'--logo-count': items.length}}
+           style={{'--logo-count': items.length,
+                   '--marquee-speed': scaleProperty('marquee-speed', configuration.marqueeSpeed)}}
            onFocus={handleMarqueeFocus}
            onBlur={handleMarqueeBlur}>
         {renderList()}
@@ -89,6 +90,7 @@ export function LogoList({configuration}) {
     return (
       <ul className={classNames(styles.list,
                                 {[styles.staggered]: configuration.staggered})}
+          style={{'--logo-height': scaleProperty('logo-height', configuration.logoHeight)}}
           onClick={handleListClick}
           {...attributes}>
         {items.map((item, index) =>
@@ -106,6 +108,10 @@ export function LogoList({configuration}) {
       </ul>
     );
   }
+}
+
+function scaleProperty(name, value) {
+  return value && `var(--theme-logo-list-${name}-${value})`;
 }
 
 function Logo({image, alt, link, load, outlined, highlighted, selected, onClick, onLinkChange}) {

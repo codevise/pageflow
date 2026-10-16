@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 
 import {editor} from 'pageflow-scrolled/editor';
-import {CheckBoxInputView} from 'pageflow/ui';
+import {CheckBoxInputView, SliderInputView, SeparatorView} from 'pageflow/ui';
 
 import {ItemsListView} from './ItemsListView';
 import {ItemsCollection} from './models/ItemsCollection';
@@ -54,13 +54,42 @@ editor.contentElementTypes.register('logoList', {
   },
 
   configurationEditor({entry, contentElement}) {
+    const logoHeightScale = entry.getScale('logoListLogoHeight', {
+      defaultValuePropertyName: 'logoListLogoHeight'
+    });
+    const marqueeSpeedScale = entry.getScale('logoListMarqueeSpeed', {
+      defaultValuePropertyName: 'logoListMarqueeSpeed'
+    });
+
     this.tab('general', function() {
       this.view(ItemsListView, {
         contentElement,
         collection: ItemsCollection.forContentElement(this.model.parent, entry)
       });
-      this.input('marquee', CheckBoxInputView);
+
       this.input('staggered', CheckBoxInputView);
+      this.input('marquee', CheckBoxInputView);
+
+      if (marqueeSpeedScale.values.length) {
+        this.input('marqueeSpeed', SliderInputView, {
+          values: marqueeSpeedScale.values,
+          texts: marqueeSpeedScale.texts,
+          defaultValue: marqueeSpeedScale.defaultValue,
+          saveOnSlide: true,
+          visibleBinding: 'marquee'
+        });
+      }
+
+      if (logoHeightScale.values.length) {
+        this.input('logoHeight', SliderInputView, {
+          values: logoHeightScale.values,
+          texts: logoHeightScale.texts,
+          defaultValue: logoHeightScale.defaultValue,
+          saveOnSlide: true
+        });
+      }
+
+      this.view(SeparatorView);
       this.group('ContentElementPosition', {entry});
     });
   }

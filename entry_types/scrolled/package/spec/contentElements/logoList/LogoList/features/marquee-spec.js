@@ -49,6 +49,20 @@ describe('LogoList marquee', () => {
       .toHaveStyle('--logo-count: 2');
   });
 
+  it('uses theme scale property for marquee speed', () => {
+    const {container} = renderLogoList({items, marquee: true, marqueeSpeed: 'xl'});
+
+    expect(container.querySelector(`.${styles.marquee}`))
+      .toHaveStyle('--marquee-speed: var(--theme-logo-list-marquee-speed-xl)');
+  });
+
+  it('does not set marquee speed by default', () => {
+    const {container} = renderLogoList({items, marquee: true});
+
+    expect(container.querySelector(`.${styles.marquee}`)
+                    .style.getPropertyValue('--marquee-speed')).toBe('');
+  });
+
   it('scrolls focused logo into view', () => {
     const {container} = renderLogoList({
       items,
