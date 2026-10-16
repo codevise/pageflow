@@ -15,7 +15,20 @@ module PageflowScrolled
       end
     end
 
+    def items
+      chapters.includes(sections: :content_elements).map do |chapter|
+        Item.new(chapter, @revision)
+      end
+    end
+
     private
+
+    def chapters
+      existing_storyline = Storyline.find_by(revision: @revision, role: 'trash')
+      return Chapter.none unless existing_storyline
+
+      existing_storyline.chapters.reorder(position: :desc)
+    end
 
     def create_container(kind:, origin_perma_id:, origin_position:)
       storyline.chapters.create!(

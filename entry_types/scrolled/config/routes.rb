@@ -2,6 +2,7 @@ PageflowScrolled::Engine.routes.draw do
   scope module: 'editor' do
     resources :fragment_libraries, only: [:index]
     resources :linkable_entries, only: [:index, :show]
+    resources :trash_items, only: [:index]
 
     shallow do
       # Legacy path to support editor sessions that span the deploy that

@@ -66,5 +66,31 @@ module PageflowScrolled
         }.not_to(change { [section.reload.perma_id, content_element.reload.perma_id] })
       end
     end
+
+    describe '#items' do
+      it 'returns items newest first' do
+        entry = create(:entry, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        first_section = create(:section, chapter:)
+        second_section = create(:section, chapter:)
+        trash = Trash.new(entry.draft)
+        trash.add_section(first_section)
+        trash.add_section(second_section)
+
+        result = Trash.new(entry.draft).items
+
+        expect(result.map(&:id))
+          .to eq([second_section.reload.chapter_id, first_section.reload.chapter_id])
+      end
+
+      it 'does not create trash storyline' do
+        entry = create(:entry, type_name: 'scrolled')
+
+        result = Trash.new(entry.draft).items
+
+        expect(result).to be_empty
+        expect(Storyline.where(revision: entry.draft, role: 'trash')).to be_empty
+      end
+    end
   end
 end
