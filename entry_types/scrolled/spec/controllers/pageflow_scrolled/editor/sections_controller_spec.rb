@@ -330,6 +330,22 @@ module PageflowScrolled
         expect(response.status).to eq(204)
       end
 
+      it 'moves the section to the trash' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        delete(:destroy,
+               params: {
+                 entry_type: 'scrolled',
+                 entry_id: entry,
+                 id: section
+               }, format: 'json')
+
+        expect(section.reload.chapter.storyline)
+          .to eq(Storyline.find_or_create_trash_for(entry.draft))
+      end
+
       it 'does not allow deleting a section from a different entry' do
         entry = create(:entry, type_name: 'scrolled')
         create(:section, revision: entry.draft)

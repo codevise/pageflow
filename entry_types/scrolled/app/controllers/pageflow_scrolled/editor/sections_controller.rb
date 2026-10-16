@@ -32,7 +32,7 @@ module PageflowScrolled
 
       def destroy
         section = Section.all_for_revision(@entry.draft).find(params[:id])
-        section.destroy
+        Trash.new(@entry.draft).add_section(section)
 
         head :no_content
       rescue ActiveRecord::RecordNotFound
