@@ -1,6 +1,8 @@
 module PageflowScrolled
   # @api private
   class Trash
+    class DestinationMissing < StandardError; end
+
     def initialize(revision)
       @revision = revision
     end
@@ -19,6 +21,10 @@ module PageflowScrolled
       chapters.includes(sections: :content_elements).map do |chapter|
         Item.new(chapter, @revision)
       end
+    end
+
+    def find_item(id)
+      Item.new(chapters.find(id), @revision)
     end
 
     private

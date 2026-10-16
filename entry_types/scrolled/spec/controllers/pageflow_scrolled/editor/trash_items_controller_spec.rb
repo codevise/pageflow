@@ -75,5 +75,69 @@ module PageflowScrolled
         expect(JSON.parse(response.body)).to eq([])
       end
     end
+
+    describe '#restore' do
+      it 'requires authentication' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        Trash.new(entry.draft).add_section(section)
+
+        post(:restore,
+             params: {entry_type: 'scrolled', entry_id: entry, id: section.reload.chapter_id},
+             format: 'json')
+
+        expect(response.status).to eq(401)
+      end
+
+      it 'restores section and renders it with content elements' do
+        entry = create(:entry, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        section = create(:section, chapter:)
+        content_element = create(:content_element, section:)
+        Trash.new(entry.draft).add_section(section)
+
+        authorize_for_editor_controller(entry)
+        post(:restore,
+             params: {entry_type: 'scrolled', entry_id: entry, id: section.reload.chapter_id},
+             format: 'json')
+
+        expect(response.status).to eq(200)
+        expect(response.body).to include_json(
+          id: section.id,
+          permaId: section.perma_id,
+          chapterId: chapter.id,
+          contentElements: [{id: content_element.id, permaId: content_element.perma_id}]
+        )
+      end
+
+      it 'responds with unprocessable entity if no chapter is left' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        origin_chapter = section.chapter
+        Trash.new(entry.draft).add_section(section)
+        origin_chapter.destroy
+
+        authorize_for_editor_controller(entry)
+        post(:restore,
+             params: {entry_type: 'scrolled', entry_id: entry, id: section.reload.chapter_id},
+             format: 'json')
+
+        expect(response.status).to eq(422)
+      end
+
+      it 'does not allow restoring trash items of other entries' do
+        entry = create(:entry, type_name: 'scrolled')
+        other_entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: other_entry.draft)
+        Trash.new(other_entry.draft).add_section(section)
+
+        authorize_for_editor_controller(entry)
+        post(:restore,
+             params: {entry_type: 'scrolled', entry_id: entry, id: section.reload.chapter_id},
+             format: 'json')
+
+        expect(response.status).to eq(404)
+      end
+    end
   end
 end

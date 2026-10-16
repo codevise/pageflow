@@ -41,6 +41,13 @@ module PageflowScrolled
       end
     end
 
+    def insert_section(section, position:)
+      transaction do
+        shift_section_positions(from: position)
+        section.update!(chapter: self, position:)
+      end
+    end
+
     def self.all_for_revision(revision)
       joins(storyline: :revision)
         .where(pageflow_scrolled_storylines: {revision_id: revision})
