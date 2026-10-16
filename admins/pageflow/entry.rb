@@ -147,14 +147,10 @@ module Pageflow
 
     action_item(:duplicate, only: :show, priority: 5) do
       if authorized?(:duplicate, entry)
-        button_to(I18n.t('pageflow.admin.entries.duplicate'),
-                  duplicate_admin_entry_path(entry),
-                  method: :post,
-                  form_class: 'action_item duplicate',
-                  data: {
-                    rel: 'duplicate',
-                    confirm: I18n.t('pageflow.admin.entries.confirm_duplicate')
-                  })
+        link_to(I18n.t('pageflow.admin.entries.duplicate'),
+                duplicate_admin_entry_path(entry),
+                class: 'duplicate',
+                data: {rel: 'duplicate'})
       end
     end
 
@@ -184,11 +180,23 @@ module Pageflow
       end
     end
 
-    member_action :duplicate, method: :post do
-      entry = Entry.find(params[:id])
-      authorize!(:duplicate, entry)
-      new_entry = entry.duplicate
-      redirect_to(edit_admin_entry_path(new_entry))
+    member_action :duplicate, method: [:get, :post] do
+      original_entry = Entry.find(params[:id])
+      authorize!(:duplicate, original_entry)
+
+      duplicate = EntryDuplicate.of(
+        original_entry,
+        attributes: permitted_duplicate_attributes(original_entry),
+        copy_memberships: params.dig(:duplicate, :copy_memberships) != '0'
+      )
+
+      if request.post? && duplicate.save
+        redirect_to(admin_entry_path(duplicate.new_entry))
+      else
+        @page_title = I18n.t('pageflow.admin.entries.duplicate_form.title',
+                             title: original_entry.title)
+        render(:duplicate, locals: {original_entry:, entry: duplicate.new_entry, duplicate:})
+      end
     end
 
     member_action :snapshot, method: :post do
@@ -363,6 +371,33 @@ module Pageflow
         result
       end
       # rubocop:enable Metrics/PerceivedComplexity
+
+      def permitted_duplicate_attributes(original_entry)
+        attributes = [:title, {permalink_attributes: [:slug, :directory_id]}]
+        attributes << :account_id if moving_duplicate_to_other_account_allowed?(original_entry)
+        attributes << :folder_id if authorized?(:configure_folder_for, original_entry)
+
+        if authorized?(:update_site_on, original_entry) && site_params_present? &&
+           site_in_allowed_sites_for?(duplicate_target_account(original_entry))
+          attributes << :site_id
+        end
+
+        params.fetch(:entry, {}).permit(attributes)
+      end
+
+      def moving_duplicate_to_other_account_allowed?(original_entry)
+        account_params_present? &&
+          authorized?(:update_account_on, original_entry) &&
+          account_policy_scope.entry_movable.include?(Account.find(params[:entry][:account_id]))
+      end
+
+      def duplicate_target_account(original_entry)
+        if moving_duplicate_to_other_account_allowed?(original_entry)
+          Account.find(params[:entry][:account_id])
+        else
+          original_entry.account
+        end
+      end
 
       def permit_feature_states(attributes)
         return unless params[:id] && authorized?(:update_feature_configuration_on, resource)

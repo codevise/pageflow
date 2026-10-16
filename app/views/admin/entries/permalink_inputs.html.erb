@@ -2,6 +2,7 @@
   <%= form.fields_for(:permalink, @entry.permalink || Pageflow::Permalink.new) do |permalink| %>
     <%= render('admin/entries/permalink_inputs',
                entry: @entry,
+               except_permalink_id: params[:permalink_id],
                form: permalink) %>
   <% end %>
 <% end %>

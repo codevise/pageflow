@@ -91,6 +91,7 @@ jQuery(function($) {
     var siteSelect = $('#entry_site_id', this);
     var titleInput = $('#entry_title', this);
     var permalinkDirectorySelect = $('#entry_permalink_attributes_directory_id', this);
+    var permalinkIdInput = $('#entry_permalink_attributes_id', this);
 
     var isRootPermalink = $(this).attr('data-root-permalink') === 'true';
 
@@ -115,16 +116,20 @@ jQuery(function($) {
     }
 
     function updatePermalinkInput() {
-      fetchPermalinkInput(function(response) {
+      fetchPermalinkInput('', function(response) {
         $('#entry_permalink_attributes_permalink_input').replaceWith(response);
 
         permalinkDirectorySelect = $('#entry_permalink_attributes_directory_id');
-        permalinkDirectorySelect.on('change', updateSlugPlaceholder);
+        permalinkDirectorySelect.on('change', updateSlugPlaceholderData);
       });
     }
 
     function updateSlugPlaceholderData() {
-      fetchPermalinkInput(function(response) {
+      var directoryParam = permalinkDirectorySelect.val() ?
+        '&entry[permalink_attributes][directory_id]=' + permalinkDirectorySelect.val() :
+        '';
+
+      fetchPermalinkInput(directoryParam, function(response) {
         $('#entry_permalink_attributes_slug')
           .attr('data-placeholder',
                 $(response).find('input[data-placeholder]').attr('data-placeholder'));
@@ -147,10 +152,12 @@ jQuery(function($) {
       );
     }
 
-    function fetchPermalinkInput(callback) {
+    function fetchPermalinkInput(extraParams, callback) {
       $.get('/admin/entries/permalink_inputs' +
             '?entry[account_id]=' + accountSelect.val() +
                    (siteSelect.val() ? '&entry[site_id]=' + siteSelect.val() : '') +
+                   extraParams +
+                   (permalinkIdInput.val() ? '&permalink_id=' + permalinkIdInput.val() : '') +
             '&entry[title]=' + encodeURIComponent(titleInput.val()))
        .done(callback);
     }
@@ -161,7 +168,7 @@ jQuery(function($) {
     siteSelect.on('change', updatePermalinkInput);
 
     titleInput.on('change keyup', debounce(updateSlugPlaceholderData, 300));
-    permalinkDirectorySelect.on('change', updateSlugPlaceholder);
+    permalinkDirectorySelect.on('change', updateSlugPlaceholderData);
 
     updateSlugPlaceholder();
   });

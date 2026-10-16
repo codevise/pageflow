@@ -9,6 +9,10 @@ module Pageflow
       def admin_form_for(resource, options = {}, &)
         semantic_form_for(resource, options.merge(builder: ActiveAdmin::FormBuilder), &)
       end
+
+      def choice_label_with_description(title, description)
+        safe_join([content_tag(:span, title, class: 'choice_title'), ' ', description])
+      end
     end
   end
 end

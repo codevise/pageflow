@@ -1718,7 +1718,74 @@ describe Admin::EntriesController do
     end
   end
 
-  describe '#duplicate' do
+  describe 'get #duplicate' do
+    it 'renders form with default title and does not create entry' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry, account:, title: 'Some Title')
+
+      sign_in(user, scope: :user)
+
+      expect {
+        get(:duplicate, params: {id: entry.id})
+      }.not_to(change { Pageflow::Entry.count })
+      expect(response.body).to have_field('entry_title', with: 'Copy of Some Title')
+    end
+
+    it 'does not allow entry publisher to see form' do
+      user = create(:user)
+      entry = create(:entry, with_publisher: user)
+
+      sign_in(user, scope: :user)
+      get(:duplicate, params: {id: entry.id})
+
+      expect(response).to redirect_to(admin_root_path)
+    end
+
+    it 'offers choice whether to copy memberships' do
+      entry = create(:entry, with_editor: create(:user))
+
+      sign_in(create(:user, :admin), scope: :user)
+      get(:duplicate, params: {id: entry.id})
+
+      expect(response.body).to have_field('duplicate_copy_memberships_0')
+    end
+
+    it 'hints that members are only copied to accounts they belong to if account can change' do
+      create(:account)
+      entry = create(:entry, with_editor: create(:user))
+
+      sign_in(create(:user, :admin), scope: :user)
+      get(:duplicate, params: {id: entry.id})
+
+      expect(response.body).to have_text(
+        I18n.t('pageflow.admin.entries.duplicate_form.memberships_hint')
+      )
+    end
+
+    it 'does not show memberships hint if account cannot change' do
+      account = create(:account)
+      entry = create(:entry, account:, with_editor: create(:user))
+
+      sign_in(create(:user, :publisher, on: account), scope: :user)
+      get(:duplicate, params: {id: entry.id})
+
+      expect(response.body).not_to have_text(
+        I18n.t('pageflow.admin.entries.duplicate_form.memberships_hint')
+      )
+    end
+
+    it 'does not offer choice whether to copy memberships if entry has no members' do
+      entry = create(:entry)
+
+      sign_in(create(:user, :admin), scope: :user)
+      get(:duplicate, params: {id: entry.id})
+
+      expect(response.body).not_to have_field('duplicate_copy_memberships_0')
+    end
+  end
+
+  describe 'post #duplicate' do
     it 'does not allow account editor to duplicate own entries of own account' do
       user = create(:user)
       account = create(:account, with_editor: user)
@@ -1731,9 +1798,21 @@ describe Admin::EntriesController do
       }.not_to(change { Pageflow::Entry.count })
     end
 
-    it 'allows entry publisher to duplicate entry' do
+    it 'does not allow entry publisher to duplicate entry' do
       user = create(:user)
       entry = create(:entry, with_publisher: user)
+
+      sign_in(user, scope: :user)
+
+      expect {
+        post(:duplicate, params: {id: entry.id})
+      }.not_to(change { Pageflow::Entry.count })
+    end
+
+    it 'allows account publisher to duplicate entry' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry, account:)
 
       sign_in(user, scope: :user)
 
@@ -1751,6 +1830,147 @@ describe Admin::EntriesController do
       expect {
         post(:duplicate, params: {id: entry.id})
       }.to(change { Pageflow::Entry.count })
+    end
+
+    it 'redirects to admin page of new entry' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry, account:)
+
+      sign_in(user, scope: :user)
+      post(:duplicate, params: {id: entry.id})
+
+      expect(response).to redirect_to(admin_entry_path(Pageflow::Entry.last))
+    end
+
+    it 'uses passed title and permalink slug' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry,
+                     account:,
+                     permalink_attributes: {slug: 'some-slug', directory_path: 'en/'})
+
+      sign_in(user, scope: :user)
+      post(:duplicate,
+           params: {
+             id: entry.id,
+             entry: {
+               title: 'Custom Title',
+               permalink_attributes: {
+                 slug: 'custom-slug',
+                 directory_id: entry.permalink.directory_id
+               }
+             }
+           })
+
+      expect(Pageflow::Entry.last).to have_attributes(title: 'Custom Title')
+      expect(Pageflow::Entry.last.permalink).to have_attributes(slug: 'custom-slug')
+    end
+
+    it 'copies memberships by default' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      member = create(:user)
+      entry = create(:entry, account:, with_editor: member)
+
+      sign_in(user, scope: :user)
+      post(:duplicate, params: {id: entry.id})
+
+      expect(Pageflow::Entry.last.users).to include(member)
+    end
+
+    it 'supports skipping memberships' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry, account:, with_editor: create(:user))
+
+      sign_in(user, scope: :user)
+      post(:duplicate, params: {id: entry.id, duplicate: {copy_memberships: '0'}})
+
+      expect(Pageflow::Entry.last.users).to be_empty
+    end
+
+    it 'allows account publisher to place duplicate in other account with publisher role' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      other_account = create(:account, with_publisher: user)
+      entry = create(:entry, account:)
+
+      sign_in(user, scope: :user)
+      post(:duplicate, params: {id: entry.id, entry: {account_id: other_account.id}})
+
+      expect(Pageflow::Entry.last.account).to eq(other_account)
+    end
+
+    it 'does not allow placing duplicate in account without publisher role' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      other_account = create(:account, with_editor: user)
+      entry = create(:entry, account:)
+
+      sign_in(user, scope: :user)
+      post(:duplicate, params: {id: entry.id, entry: {account_id: other_account.id}})
+
+      expect(Pageflow::Entry.last.account).to eq(account)
+    end
+
+    it 'allows account publisher to place duplicate in other site of account' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      other_site = create(:site, account:)
+      entry = create(:entry, account:)
+
+      sign_in(user, scope: :user)
+      post(:duplicate, params: {id: entry.id, entry: {site_id: other_site.id}})
+
+      expect(Pageflow::Entry.last.site).to eq(other_site)
+    end
+
+    it 'does not allow placing duplicate in site of other account' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      other_site = create(:site)
+      entry = create(:entry, account:)
+
+      sign_in(user, scope: :user)
+      post(:duplicate, params: {id: entry.id, entry: {site_id: other_site.id}})
+
+      expect(Pageflow::Entry.last.site).to eq(account.default_site)
+    end
+
+    it 'displays error if entry type is not available in selected account' do
+      pageflow_configure do |config|
+        config.features.register('test_entry_type') do |feature_config|
+          Pageflow::TestEntryType.register(feature_config, name: 'test')
+        end
+        config.features.enable_by_default('test_entry_type')
+      end
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      other_account = create(:account,
+                             with_publisher: user,
+                             features_configuration: {'test_entry_type' => false})
+      entry = create(:entry, account:, type_name: 'test')
+
+      sign_in(user, scope: :user)
+
+      expect {
+        post(:duplicate, params: {id: entry.id, entry: {account_id: other_account.id}})
+      }.not_to(change { Pageflow::Entry.count })
+      expect(response.body).to have_selector('.errors')
+    end
+
+    it 're-renders form and does not create entry if title is blank' do
+      user = create(:user)
+      account = create(:account, with_publisher: user)
+      entry = create(:entry, account:)
+
+      sign_in(user, scope: :user)
+
+      expect {
+        post(:duplicate, params: {id: entry.id, entry: {title: ''}})
+      }.not_to(change { Pageflow::Entry.count })
+      expect(response).to have_http_status(:ok)
     end
   end
 
@@ -1942,6 +2162,94 @@ describe Admin::EntriesController do
             entry: {
               account_id: account,
               title: 'Some Title'
+            }
+          })
+
+      expect(response.body)
+        .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
+                          '[data-placeholder="some-title"]')
+    end
+
+    it 'appends suffix to placeholder if default slug is taken in passed directory' do
+      account = create(:account)
+      create(:permalink_directory, site: account.default_site, path: 'en/')
+      directory = create(:permalink_directory, site: account.default_site, path: 'de/')
+      create(:entry, account:, permalink_attributes: {slug: 'some-title', directory:})
+
+      sign_in(create(:user, :publisher, on: account))
+      get(:permalink_inputs,
+          params: {
+            entry: {
+              account_id: account,
+              title: 'Some Title',
+              permalink_attributes: {directory_id: directory.id}
+            }
+          })
+
+      expect(response.body)
+        .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
+                          '[data-placeholder="some-title-2"]')
+    end
+
+    it 'checks placeholder against first directory of site if none is passed' do
+      account = create(:account)
+      create(:permalink_directory, site: account.default_site, path: 'en/')
+      directory = create(:permalink_directory, site: account.default_site, path: 'de/')
+      create(:entry, account:, permalink_attributes: {slug: 'some-title', directory:})
+
+      sign_in(create(:user, :publisher, on: account))
+      get(:permalink_inputs,
+          params: {
+            entry: {
+              account_id: account,
+              title: 'Some Title'
+            }
+          })
+
+      expect(response.body)
+        .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
+                          '[data-placeholder="some-title-2"]')
+    end
+
+    it 'ignores passed directory of other site for placeholder' do
+      account = create(:account)
+      create(:permalink_directory, site: account.default_site, path: 'en/')
+      directory_of_other_site = create(:permalink_directory)
+      create(:entry,
+             site: directory_of_other_site.site,
+             account: directory_of_other_site.site.account,
+             permalink_attributes: {slug: 'some-title', directory: directory_of_other_site})
+
+      sign_in(create(:user, :publisher, on: account))
+      get(:permalink_inputs,
+          params: {
+            entry: {
+              account_id: account,
+              title: 'Some Title',
+              permalink_attributes: {directory_id: directory_of_other_site.id}
+            }
+          })
+
+      expect(response.body)
+        .to have_selector('input[name="entry[permalink_attributes][slug]"]' \
+                          '[data-placeholder="some-title"]')
+    end
+
+    it 'does not treat slug of passed permalink as taken for placeholder' do
+      account = create(:account)
+      directory = create(:permalink_directory, site: account.default_site, path: 'en/')
+      entry = create(:entry,
+                     account:,
+                     permalink_attributes: {slug: 'some-title', directory:})
+
+      sign_in(create(:user, :publisher, on: account))
+      get(:permalink_inputs,
+          params: {
+            permalink_id: entry.permalink.id,
+            entry: {
+              account_id: account,
+              title: 'Some Title',
+              permalink_attributes: {directory_id: directory.id}
             }
           })
 

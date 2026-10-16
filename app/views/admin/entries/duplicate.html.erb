@@ -1,0 +1,46 @@
+<%= admin_form_for(entry,
+                   as: :entry,
+                   url: duplicate_admin_entry_path(original_entry),
+                   method: :post,
+                   html: {class: 'pageflow_entry'}) do |f| %>
+  <%= f.semantic_errors(:type_name) %>
+
+  <%= f.inputs do %>
+    <%= render('admin/entries/base_inputs',
+               entry:,
+               permalink: entry.permalink || Pageflow::Permalink.new,
+               form: f) %>
+
+    <%= render('admin/entries/folder_input',
+               entry:,
+               form: f) %>
+
+    <% if original_entry.memberships.any? %>
+      <%= semantic_fields_for(:duplicate,
+                              OpenStruct.new(copy_memberships: duplicate.copy_memberships? ? '1' : '0'),
+                              builder: ActiveAdmin::FormBuilder) do |duplicate_form| %>
+        <%= duplicate_form.input(:copy_memberships,
+                                 as: :radio,
+                                 required: false,
+                                 label: t('pageflow.admin.entries.duplicate_form.memberships'),
+                                 hint: account_input_shown_for?(entry) &&
+                                       t('pageflow.admin.entries.duplicate_form.memberships_hint'),
+                                 collection: [
+                                   [choice_label_with_description(
+                                     t('pageflow.admin.entries.duplicate_form.copy_memberships'),
+                                     t('pageflow.admin.entries.duplicate_form.copy_memberships_description')
+                                   ), '1'],
+                                   [choice_label_with_description(
+                                     t('pageflow.admin.entries.duplicate_form.skip_memberships'),
+                                     t('pageflow.admin.entries.duplicate_form.skip_memberships_description')
+                                   ), '0']
+                                 ]) %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= f.actions do %>
+    <%= f.action(:submit, label: t('pageflow.admin.entries.duplicate_form.submit')) %>
+    <%= f.action(:cancel, as: :link, url: admin_entry_path(original_entry)) %>
+  <% end %>
+<% end %>

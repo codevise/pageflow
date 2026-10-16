@@ -67,4 +67,21 @@ feature 'as account publisher, adding an entry' do
     expect(Dom::Admin::EntryForm.first
              .has_entry_type_option?(nyan_entry_type_name)).to eq(false)
   end
+
+  scenario 'slug placeholder takes taken slugs of selected directory into account', js: true do
+    account = create(:account)
+    create(:permalink_directory, site: account.default_site, path: 'de/')
+    en_directory = create(:permalink_directory, site: account.default_site, path: 'en/')
+    create(:entry, account:, permalink_attributes: {slug: 'some-title', directory: en_directory})
+    Dom::Admin::Page.sign_in_as(:publisher, on: account)
+
+    visit(new_admin_entry_path)
+    fill_in('entry_title', with: 'Some Title')
+
+    expect(page).to have_selector('#entry_permalink_attributes_slug[placeholder="some-title"]')
+
+    select('en/', from: 'entry_permalink_attributes_directory_id')
+
+    expect(page).to have_selector('#entry_permalink_attributes_slug[placeholder="some-title-2"]')
+  end
 end

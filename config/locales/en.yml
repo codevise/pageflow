@@ -897,10 +897,18 @@ en:
             one: 1 unread topic
             other: "%{count} unread topics"
         confirm_depublish: Depublish this story?
-        confirm_duplicate: Duplicate this story?
         confirm_restore: Restore story to the selected version? A snapshot will be created, so that you can roll back later.
         depublish: Depublish story
         duplicate: Copy Story
+        duplicate_form:
+          copy_memberships: Copy members
+          copy_memberships_description: Everyone with access to the original story also gets access to the copy, with the same role.
+          memberships: Members
+          memberships_hint: Members without a membership in the selected account are not copied.
+          skip_memberships: Start without members
+          skip_memberships_description: Only users with a role on the account can access the copy.
+          submit: Copy Story
+          title: Copy "%{title}"
         edit: Edit
         edit_config: Edit configuration
         edit_revision: Edit
