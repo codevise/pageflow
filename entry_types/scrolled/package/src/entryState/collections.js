@@ -75,7 +75,8 @@ function collectionSpecs(entry) {
     {
       collection: linkedEntries,
       name: 'linkedEntries',
-      attributes: ['id', {permaId: 'id'}, 'title', 'url', 'previewUrl', 'publicationState'],
+      attributes: ['id', {permaId: 'id'}, 'title', 'url', 'previewUrl', 'publicationState',
+                   'chapters'],
       keyAttribute: 'permaId'
     },
     {

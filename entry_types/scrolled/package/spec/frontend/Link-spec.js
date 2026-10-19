@@ -248,6 +248,36 @@ describe('Link', () => {
       expect(getByRole('link')).not.toHaveAttribute('target');
     });
 
+    it('renders link to chapter of linked entry', () => {
+      const {getByRole} = renderInEntry(
+        <Link href={{entry: 5, chapter: 20}}>Click</Link>,
+        {
+          seed: {
+            linkedEntries: [{
+              id: 5,
+              url: 'http://example.com/other',
+              chapters: [{permaId: 20, slug: 'the-intro'}]
+            }]
+          }
+        }
+      );
+
+      expect(getByRole('link')).toHaveAttribute('href', 'http://example.com/other#the-intro');
+    });
+
+    it('renders link to section of linked entry', () => {
+      const {getByRole} = renderInEntry(
+        <Link href={{entry: 5, section: 10}}>Click</Link>,
+        {
+          seed: {
+            linkedEntries: [{id: 5, url: 'http://example.com/other'}]
+          }
+        }
+      );
+
+      expect(getByRole('link')).toHaveAttribute('href', 'http://example.com/other#section-10');
+    });
+
     it('renders link without href for unknown entry', () => {
       const {getByText} = renderInEntry(
         <Link href={{entry: 5}}>Click</Link>

@@ -380,6 +380,30 @@ describe('Chapter', () => {
       expect(entry.linkedEntries.pluck('id')).toEqual([5, 9]);
     });
 
+    it('merges chapters of entries linked from fragment', () => {
+      const {entry, server} = testContext;
+      const chapter = entry.chapters.first();
+      entry.linkedEntries.add({id: 9, chapters: [{permaId: 20, slug: 'intro'}]});
+      const fragmentWithLinks = new Backbone.Model({
+        libraryId: 3,
+        chapterPermaId: 700,
+        collections: {
+          linkedEntries: [{id: 9, chapters: [{permaId: 30, slug: 'outro'}]}]
+        }
+      });
+
+      chapter.insertFragment(fragmentWithLinks);
+      respond(server, [
+        {id: 101, permaId: 501, chapterId: 10, position: 1, configuration: {},
+         contentElements: []}
+      ]);
+
+      expect(entry.linkedEntries.get(9).get('chapters')).toEqual([
+        {permaId: 20, slug: 'intro'},
+        {permaId: 30, slug: 'outro'}
+      ]);
+    });
+
     it('refreshes files before adding sections', () => {
       const {entry, server} = testContext;
       const chapter = entry.chapters.first();

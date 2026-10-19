@@ -31,4 +31,42 @@ describe('LinkedEntriesCollection', () => {
       });
     });
   });
+
+  describe('#mergeLinkedEntries', () => {
+    it('adds new linked entries', () => {
+      const linkedEntries = new LinkedEntriesCollection([{id: 5}]);
+
+      linkedEntries.mergeLinkedEntries([{id: 9, title: 'Other'}]);
+
+      expect(linkedEntries.pluck('id')).toEqual([5, 9]);
+    });
+
+    it('adds chapters to existing linked entries', () => {
+      const linkedEntries = new LinkedEntriesCollection([
+        {id: 5, chapters: [{permaId: 20, slug: 'intro'}]}
+      ]);
+
+      linkedEntries.mergeLinkedEntries([{
+        id: 5,
+        chapters: [{permaId: 20, slug: 'other'}, {permaId: 30, slug: 'outro'}]
+      }]);
+
+      expect(linkedEntries.get(5).get('chapters')).toEqual([
+        {permaId: 20, slug: 'intro'},
+        {permaId: 30, slug: 'outro'}
+      ]);
+    });
+
+    it('updates attributes of existing linked entries', () => {
+      const linkedEntries = new LinkedEntriesCollection([
+        {id: 5, title: 'Old', chapters: [{permaId: 20, slug: 'intro'}]}
+      ]);
+
+      linkedEntries.mergeLinkedEntries([{id: 5, title: 'New'}]);
+
+      expect(linkedEntries.get(5).attributes).toEqual({
+        id: 5, title: 'New', chapters: [{permaId: 20, slug: 'intro'}]
+      });
+    });
+  });
 });
