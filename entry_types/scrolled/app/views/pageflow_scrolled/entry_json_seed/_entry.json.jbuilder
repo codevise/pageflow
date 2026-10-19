@@ -92,9 +92,7 @@ unless options[:skip_collections]
 
     json.partial!('pageflow_scrolled/entry_json_seed/content_collections', content:)
 
-    json.linked_entries(linked_entries) do |linked_entry|
-      json.partial!('pageflow_scrolled/entry_json_seed/linked_entry', **linked_entry)
-    end
+    scrolled_linked_entries_json_seed(json, entry, content.content_elements + widgets)
 
     json.widgets do
       json.array!(widgets) do |widget|

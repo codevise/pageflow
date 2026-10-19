@@ -41,8 +41,6 @@ module PageflowScrolled
                       content.content_elements,
                       include_unused: options[:include_unused_file_reference_locations]
                     ),
-                    linked_entries: scrolled_linked_entries(scrolled_entry,
-                                                            content.content_elements + widgets),
                     widgets:,
                     options:)
     end

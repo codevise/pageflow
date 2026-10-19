@@ -8,28 +8,15 @@ module PageflowScrolled
       @configurations = configurations
     end
 
-    def entry_ids
-      valid_links.map(&:entry_id).uniq
-    end
-
-    def chapter_perma_ids(entry_id)
-      perma_ids(entry_id, :chapter)
-    end
-
-    def section_perma_ids(entry_id)
-      perma_ids(entry_id, :section)
+    def chapter_perma_ids_by_entry_id
+      valid_links
+        .group_by(&:entry_id)
+        .transform_values { |links| links.filter_map(&:chapter).uniq }
     end
 
     private
 
     Link = Struct.new(:entry_id, :chapter, :section, :signature)
-
-    def perma_ids(entry_id, attribute)
-      valid_links
-        .select { |link| link.entry_id == entry_id }
-        .filter_map(&attribute)
-        .uniq
-    end
 
     def valid_links
       @valid_links ||= links.uniq.select do |link|
