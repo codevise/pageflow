@@ -13,6 +13,10 @@ module PageflowScrolled
       @storylines ||= Storyline.all_for_revision(@revision).to_a
     end
 
+    def main_storyline
+      storylines.detect { |storyline| storyline.configuration['main'] }
+    end
+
     def chapters
       @chapters ||= all_chapters.reject do |chapter|
         !@include_hidden && only_hidden_sections?(chapter)

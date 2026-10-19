@@ -2,6 +2,26 @@ require 'spec_helper'
 
 module PageflowScrolled
   RSpec.describe RevisionContent do
+    describe '#main_storyline' do
+      it 'returns storyline marked as main' do
+        revision = create(:revision)
+        create(:scrolled_storyline, revision:, position: 0, configuration: {})
+        main_storyline = create(:scrolled_storyline,
+                                revision:,
+                                position: 1,
+                                configuration: {main: true})
+
+        expect(RevisionContent.new(revision).main_storyline).to eq(main_storyline)
+      end
+
+      it 'returns nil if no storyline is marked as main' do
+        revision = create(:revision)
+        create(:scrolled_storyline, revision:, configuration: {})
+
+        expect(RevisionContent.new(revision).main_storyline).to be_nil
+      end
+    end
+
     describe '#chapters' do
       it 'skips chapters that only contain hidden sections' do
         revision = create(:revision)

@@ -77,7 +77,7 @@ module PageflowScrolled
     end
 
     def create_fragment_chapter(chapter, title)
-      storyline = content.storylines.detect { |candidate| candidate.configuration['main'] }
+      storyline = content.main_storyline
 
       storyline.chapters.create!(position: (storyline.chapters.maximum(:position) || -1) + 1,
                                  configuration: fragment_configuration(chapter, title))
