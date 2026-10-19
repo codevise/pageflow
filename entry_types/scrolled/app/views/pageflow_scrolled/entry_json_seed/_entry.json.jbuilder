@@ -101,6 +101,6 @@ unless options[:skip_collections]
       end
     end
 
-    files_json_seed(json, entry) unless options[:skip_files]
+    files_json_seed(json, entry, referenced_files:) unless options[:skip_files]
   end
 end

@@ -664,6 +664,65 @@ module PageflowScrolled
         end
       end
 
+      context 'referenced files' do
+        it 'marks files referenced by content elements' do
+          entry = create(:published_entry,
+                         type_name: 'scrolled',
+                         with_feature: 'file_rights_from_references')
+          image_file = create_used_file(:image_file, entry:)
+          other_image_file = create_used_file(:image_file, entry:)
+          chapter = create(:scrolled_chapter, revision: entry.revision)
+          section = create(:section, chapter:)
+          create(:content_element,
+                 section:,
+                 type_name: 'inlineImage',
+                 configuration: {'id' => image_file.perma_id})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(
+            collections: {
+              imageFiles: [
+                {permaId: image_file.perma_id, isReferenced: true},
+                {permaId: other_image_file.perma_id, isReferenced: false}
+              ]
+            }
+          )
+        end
+
+        it 'does not mark files only referenced by hidden sections' do
+          entry = create(:published_entry,
+                         type_name: 'scrolled',
+                         with_feature: 'file_rights_from_references')
+          image_file = create_used_file(:image_file, entry:)
+          chapter = create(:scrolled_chapter, revision: entry.revision)
+          section = create(:section, chapter:, configuration: {'hidden' => true})
+          create(:content_element,
+                 section:,
+                 type_name: 'inlineImage',
+                 configuration: {'id' => image_file.perma_id})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(
+            collections: {
+              imageFiles: [{permaId: image_file.perma_id, isReferenced: false}]
+            }
+          )
+        end
+
+        it 'does not mark files when feature is disabled' do
+          entry = create(:published_entry,
+                         type_name: 'scrolled',
+                         without_feature: 'file_rights_from_references')
+          create_used_file(:image_file, entry:)
+
+          result = JSON.parse(render(helper, entry))
+
+          expect(result['collections']['imageFiles'].first).not_to have_key('isReferenced')
+        end
+      end
+
       context 'entry metadata' do
         it 'renders share image id' do
           image_file = create_used_file(:image_file)
