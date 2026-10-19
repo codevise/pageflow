@@ -2,7 +2,7 @@ import React from 'react';
 import {FloatingArrow} from '@floating-ui/react';
 
 import {useI18n} from '../i18n';
-import {useLinkedEntry} from 'pageflow-scrolled/entryState';
+import {useLinkedEntryDestination} from 'pageflow-scrolled/entryState';
 import {
   LinkTooltipProvider as SharedLinkTooltipProvider,
   useLinkTooltip
@@ -20,21 +20,24 @@ export function LinkTooltipProvider({children}) {
   );
 }
 
-export function usePreviewableLinkedEntry(href) {
-  const linkedEntry = useLinkedEntry(href?.entry);
+export function usePreviewableLinkDestination(href) {
+  const destination = useLinkedEntryDestination(href?.entry ? href : {});
 
-  return linkedEntry && previewLabels[linkedEntry.publicationState] ? linkedEntry : null;
+  return destination && previewLabels[destination.linkedEntry.publicationState] ?
+         destination :
+         null;
 }
 
 function LinkTooltip({setFloating, floatingStyles, floatingContext, arrowRef, state}) {
   const {keep, deactivate} = useLinkTooltip();
-  const linkedEntry = usePreviewableLinkedEntry(state?.href);
+  const destination = usePreviewableLinkDestination(state?.href);
   const {t} = useI18n({locale: 'ui'});
 
-  if (!linkedEntry) {
+  if (!destination) {
     return null;
   }
 
+  const {linkedEntry} = destination;
   const labels = previewLabels[linkedEntry.publicationState];
 
   return (
@@ -47,13 +50,17 @@ function LinkTooltip({setFloating, floatingStyles, floatingContext, arrowRef, st
       <FloatingArrow ref={arrowRef}
                      context={floatingContext} />
       <div className={styles.entry}>
-        <span>{linkedEntry.title}</span>
+        <span>
+          {destination.section ?
+           `${t('pageflow_scrolled.review.link_tooltip.section_in')} ${linkedEntry.title}` :
+           [linkedEntry.title, destination.chapter?.title].filter(Boolean).join(' › ')}
+        </span>
         <span className={styles.pill}>
           {t(`pageflow_scrolled.review.link_tooltip.${labels.state}`)}
         </span>
       </div>
       <div className={styles.previewLink}>
-        <a href={linkedEntry.previewUrl}
+        <a href={destination.previewUrl}
            target="_blank"
            rel="noopener noreferrer">
           {t(`pageflow_scrolled.review.link_tooltip.${labels.link}`)}

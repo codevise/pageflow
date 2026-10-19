@@ -2,13 +2,13 @@ import React from 'react';
 
 import {PlainLink} from '../Link';
 import {useLinkTooltip} from '../../shared/linkTooltip';
-import {usePreviewableLinkedEntry} from './LinkTooltip';
+import {usePreviewableLinkDestination} from './LinkTooltip';
 
 export function Link(props) {
   const linkTooltip = useLinkTooltip();
-  const linkedEntry = usePreviewableLinkedEntry(props.href);
+  const destination = usePreviewableLinkDestination(props.href);
 
-  if (!linkedEntry || !linkTooltip) {
+  if (!destination || !linkTooltip) {
     return <PlainLink {...props} />;
   }
 
