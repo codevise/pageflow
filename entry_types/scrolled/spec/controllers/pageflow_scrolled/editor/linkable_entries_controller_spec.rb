@@ -36,22 +36,22 @@ module PageflowScrolled
                                               }])
       end
 
-      it 'uses title of published revision like seed' do
+      it 'uses title of entry instead of revision' do
         user = create(:user)
         account = create(:account, with_previewer: user)
         entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
         other_entry = create(:published_entry,
                              type_name: 'scrolled',
                              account:,
+                             title: 'entry-title',
                              revision_attributes: {title: 'Revision title'})
-        other_entry.entry.update!(title: 'entry-title')
 
         sign_in_and_lock(entry, user)
         get(:index, params: {entry_type: 'scrolled', entry_id: entry}, format: 'json')
 
         expect(response.body).to include_json([{
                                                 id: other_entry.id,
-                                                title: 'Revision title'
+                                                title: 'entry-title'
                                               }])
       end
 

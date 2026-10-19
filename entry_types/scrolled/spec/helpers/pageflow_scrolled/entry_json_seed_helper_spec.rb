@@ -1757,7 +1757,7 @@ module PageflowScrolled
           expect(result).to include_json(collections: {linkedEntries: []})
         end
 
-        it 'renders ids, titles and urls of published linked entries' do
+        it 'renders ids and urls of published linked entries' do
           account = create(:account)
           linked_entry = create(:published_entry,
                                 type_name: 'scrolled',
@@ -1775,14 +1775,13 @@ module PageflowScrolled
                                              {
                                                id: linked_entry.id,
                                                permaId: linked_entry.id,
-                                               title: 'linked-entry',
                                                url: 'http://test.host/linked-entry'
                                              }
                                            ]
                                          })
         end
 
-        it 'does not render preview urls in published entry' do
+        it 'does not render titles and preview urls in published entry' do
           account = create(:account)
           linked_entry = create(:published_entry, type_name: 'scrolled', account:)
           entry = create(:published_entry, type_name: 'scrolled', account:)
@@ -1793,7 +1792,7 @@ module PageflowScrolled
           result = render(helper, entry)
 
           expect(JSON.parse(result)['collections']['linkedEntries'][0].keys)
-            .to contain_exactly('id', 'permaId', 'title', 'url')
+            .to contain_exactly('id', 'permaId', 'url')
         end
 
         it 'renders future url of unpublished linked entry of published entry' do
@@ -1941,6 +1940,25 @@ module PageflowScrolled
               ]
             }
           )
+        end
+
+        it 'renders entry titles instead of revision titles for draft entry' do
+          account = create(:account)
+          linked_entry = create(:published_entry,
+                                type_name: 'scrolled',
+                                account:,
+                                title: 'entry-title',
+                                revision_attributes: {title: 'Revision title'})
+          entry = create(:draft_entry, type_name: 'scrolled', account:)
+          create(:content_element,
+                 revision: entry.revision,
+                 configuration: {value: [link_node(entry_id: linked_entry.id)]})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(collections: {
+                                           linkedEntries: [{title: 'entry-title'}]
+                                         })
         end
 
         it 'renders signatures for draft entry to let editors link entries again' do
