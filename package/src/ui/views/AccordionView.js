@@ -85,6 +85,23 @@ export const AccordionView = Marionette.View.extend({
     }, options || {})));
   },
 
+  /**
+   * Toggle whether the section fills the remaining height while
+   * expanded.
+   *
+   * @param {string} key - Value or name of the section.
+   * @param {boolean} fill
+   */
+  setSectionFill: function(key, fill) {
+    const section = this.sections.find(section => section.key === key);
+
+    section.fill = fill;
+
+    if (section.element) {
+      section.element.classList.toggle('accordion_view-section-fill', fill);
+    }
+  },
+
   render: function() {
     const groupName = `accordion-${this.cid}`;
 

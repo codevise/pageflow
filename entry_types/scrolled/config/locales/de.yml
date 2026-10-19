@@ -1502,8 +1502,11 @@ de:
           url:
             description: Verlinke eine beliebige Seite im Internet
             title: Andere Website
+        link_to_beginning_of_entry: Stattdessen mit Beginn des Beitrags verlinken
+        link_to_chapter_or_section: Mit Kapitel oder Abschnitt des Beitrags verlinken
         no_file_selected: Keine Datei ausgewählt
         open_in_new_tab: In neuem Tab öffnen
+        outline_failed: Die Gliederung des Beitrags konnte nicht geladen werden.
         remove: Link entfernen
         save: Speichern
         select_in_sidebar: Datei auswählen

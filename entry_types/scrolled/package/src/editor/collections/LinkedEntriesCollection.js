@@ -1,10 +1,13 @@
 import Backbone from 'backbone';
 
 export const LinkedEntriesCollection = Backbone.Collection.extend({
-  addLinkableEntry(linkableEntry) {
-    this.mergeLinkedEntries([
-      linkableEntry.pick('id', 'title', 'url', 'previewUrl', 'publicationState')
-    ]);
+  addLinkableEntry(linkableEntry, {chapter} = {}) {
+    const linkedChapter = findLinkedChapter(linkableEntry, chapter);
+
+    this.mergeLinkedEntries([{
+      ...linkableEntry.pick('id', 'title', 'url', 'previewUrl', 'publicationState'),
+      ...(linkedChapter && {chapters: [linkedChapter]})
+    }]);
   },
 
   mergeLinkedEntries(linkedEntries) {
@@ -31,4 +34,16 @@ function mergeChapters(chapters = [], newChapters = []) {
       !chapters.some(existingChapter => existingChapter.permaId === chapter.permaId)
     )
   ];
+}
+
+function findLinkedChapter(linkableEntry, permaId) {
+  const chapter = permaId &&
+                  (linkableEntry.get('chapters') || []).find(item => item.permaId === permaId);
+
+  return chapter && {
+    permaId,
+    title: chapter.title,
+    slug: chapter.slug,
+    previewSlug: chapter.slug
+  };
 }

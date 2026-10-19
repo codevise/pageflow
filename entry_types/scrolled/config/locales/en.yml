@@ -1484,8 +1484,11 @@ en:
           url:
             description: Link to any page on the internet
             title: Other website
+        link_to_beginning_of_entry: Link to beginning of story instead
+        link_to_chapter_or_section: Link to chapter or section of story
         no_file_selected: No file selected
         open_in_new_tab: Open in new tab
+        outline_failed: The outline of the story could not be loaded.
         remove: Remove link
         save: Save
         select_in_sidebar: Select file

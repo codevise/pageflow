@@ -17,6 +17,19 @@ describe('LinkedEntriesCollection', () => {
       });
     });
 
+    it('adds chapter of linkable entry', () => {
+      const linkedEntries = new LinkedEntriesCollection([{id: 5, chapters: []}]);
+
+      linkedEntries.addLinkableEntry(new Backbone.Model({
+        id: 5,
+        chapters: [{permaId: 20, title: 'Intro', slug: 'intro', signature: 'signed'}]
+      }), {chapter: 20});
+
+      expect(linkedEntries.get(5).get('chapters')).toEqual([
+        {permaId: 20, title: 'Intro', slug: 'intro', previewSlug: 'intro'}
+      ]);
+    });
+
     it('updates existing linked entry', () => {
       const linkedEntries = new LinkedEntriesCollection([
         {id: 5, title: 'Seed', publicationState: 'not_published'}
