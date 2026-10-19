@@ -8,6 +8,7 @@
   min-height: 0;
   flex: 1;
   overflow: auto;
+  scroll-padding-block: space(4);
   scrollbar-gutter: stable;
   padding-right: space(2);
   border-bottom: solid 1px var(--ui-on-surface-color-lightest);

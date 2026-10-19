@@ -476,6 +476,7 @@ describe('SelectLinkDestinationDialogView', () => {
     });
 
     it('preselects chapter of this entry', async () => {
+      Element.prototype.scrollIntoView = jest.fn();
       const onSelect = jest.fn();
       const user = userEvent.setup();
       const result = renderDialog({href: {chapter: 10}}, {
@@ -484,10 +485,12 @@ describe('SelectLinkDestinationDialogView', () => {
       });
 
       expect(result.getByRole('radio', {name: /Chapter or section of this story/})).toBeChecked();
+      expect(result.getByText('Intro').closest('li')).toHaveAttribute('aria-current', 'true');
 
       await user.click(result.getByRole('button', {name: 'Save'}));
 
       expect(onSelect).toHaveBeenCalledWith({href: {chapter: 10}});
+      delete Element.prototype.scrollIntoView;
     });
 
     it('preselects file', async () => {

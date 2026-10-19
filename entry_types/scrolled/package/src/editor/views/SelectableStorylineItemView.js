@@ -38,6 +38,7 @@ export const SelectableStorylineItemView = Marionette.ItemView.extend({
       itemViewOptions: {
         entry: this.options.entry,
         mode: this.options.mode,
+        selection: this.options.selection,
         onSelectChapter: this.options.onSelectChapter,
         onSelectSection: this.options.onSelectSection,
         onSelectInsertPosition: this.options.onSelectInsertPosition,

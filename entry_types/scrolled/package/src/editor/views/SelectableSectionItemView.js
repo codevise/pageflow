@@ -96,11 +96,31 @@ export const SelectableSectionItemView = Marionette.ItemView.extend({
     }
   }),
 
+  initialize() {
+    if (this.options.selection) {
+      this.listenTo(this.options.selection, 'change', this.updateSelected);
+    }
+  },
+
   onRender() {
     this.subview(new SectionThumbnailView({
       el: this.ui.thumbnail,
       model: this.model,
       entry: this.options.entry
     }));
+
+    if (this.updateSelected()) {
+      setTimeout(() => this.el.scrollIntoView({block: 'center'}), 10);
+    }
+  },
+
+  updateSelected() {
+    const selected = !!this.options.selection &&
+                     this.options.selection.get('section') === this.model.get('permaId');
+
+    this.$el.toggleClass(baseStyles.active, selected);
+    this.$el.attr('aria-current', selected ? 'true' : null);
+
+    return selected;
   }
 });

@@ -84,6 +84,12 @@ export const SelectableChapterItemView = Marionette.ItemView.extend({
     change: 'update'
   },
 
+  initialize() {
+    if (this.options.selection) {
+      this.listenTo(this.options.selection, 'change', this.updateSelected);
+    }
+  },
+
   onRender() {
     this.subview(new CollectionView({
       el: this.ui.sections,
@@ -92,6 +98,7 @@ export const SelectableChapterItemView = Marionette.ItemView.extend({
       itemViewOptions: {
         entry: this.options.entry,
         mode: this.options.mode,
+        selection: this.options.selection,
         onSelect: this.options.onSelectSection,
         onSelectInsertPosition: this.options.onSelectInsertPosition,
         onSelectSectionPart: this.options.onSelectSectionPart
@@ -99,6 +106,20 @@ export const SelectableChapterItemView = Marionette.ItemView.extend({
     }));
 
     this.update();
+
+    if (this.updateSelected()) {
+      setTimeout(() => this.el.scrollIntoView({block: 'start'}), 10);
+    }
+  },
+
+  updateSelected() {
+    const selected = !!this.options.selection &&
+                     this.options.selection.get('chapter') === this.model.get('permaId');
+
+    this.$el.toggleClass(styles.selected, selected);
+    this.$el.attr('aria-current', selected ? 'true' : null);
+
+    return selected;
   },
 
   update() {

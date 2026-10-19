@@ -116,6 +116,7 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
       this.view(OutlineContainerView, {
         outlineView: new SelectableEntryOutlineView({
           entry: dialog.options.entry,
+          selection: dialog.outlineSelection,
 
           onSelectChapter: chapter => {
             dialog.outlineSelection.clear({silent: true});
