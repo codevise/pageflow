@@ -30,7 +30,7 @@ import {updateContentElement} from './updateContentElement';
 
 import {sortColors} from './sortColors';
 import {Scale} from '../../../shared/Scale';
-import {getChapterSlugs} from '../../../shared/chapterSlug';
+import {getChapterSlugs} from '../../utils/chapterSlug';
 
 const typographySizeSuffixes = ['xxxl', 'xxl', 'xl', 'lg', 'md', 'sm', 'xs', 'xxs', 'xxxs'];
 
@@ -74,6 +74,12 @@ export const ScrolledEntry = Entry.extend({
     this.storylines = new StorylinesCollection(seed.collections.storylines,
                                                {chapters: this.chapters,
                                                 entry: this});
+    this.chapters.sort();
+
+    this.listenTo(this.chapters,
+                  'add remove sort change:permaId change:configuration:title',
+                  this.updateChapterSlugs);
+    this.updateChapterSlugs();
 
     this.sections.sort();
 
@@ -335,13 +341,18 @@ export const ScrolledEntry = Entry.extend({
   },
 
   getChapterPermalink(chapter) {
-    const allChapters = this.chapters.map(c => ({
-      permaId: c.get('permaId'),
-      configuration: c.configuration.attributes
-    }));
-    const chapterSlugs = getChapterSlugs(allChapters);
+    return `${this.get('pretty_url')}#${chapter.get('chapterSlug')}`;
+  },
 
-    return `${this.get('pretty_url')}#${chapterSlugs[chapter.get('permaId')]}`;
+  updateChapterSlugs() {
+    const chapterSlugs = getChapterSlugs(this.chapters.map(chapter => ({
+      permaId: chapter.get('permaId'),
+      configuration: chapter.configuration.attributes
+    })));
+
+    this.chapters.each(chapter =>
+      chapter.set('chapterSlug', chapterSlugs[chapter.get('permaId')])
+    );
   },
 
   getPaletteColors({name} = {}) {

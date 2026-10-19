@@ -54,7 +54,7 @@ function collectionSpecs(entry) {
     {
       collection: chapters,
       name: 'chapters',
-      attributes: ['id', 'permaId', 'storylineId'],
+      attributes: ['id', 'permaId', 'storylineId', 'chapterSlug'],
       keyAttribute: 'permaId',
       includeConfiguration: true
     },

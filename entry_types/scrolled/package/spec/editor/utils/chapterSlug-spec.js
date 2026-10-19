@@ -1,4 +1,4 @@
-import {getChapterSlugs} from 'shared/chapterSlug';
+import {getChapterSlugs} from 'editor/utils/chapterSlug';
 
 describe('getChapterSlugs', () => {
   it('returns slugified title', () => {

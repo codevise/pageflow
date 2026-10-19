@@ -14,9 +14,13 @@ module PageflowScrolled
     end
 
     def chapters
-      @chapters ||= Chapter.all_for_revision(@revision).reject do |chapter|
+      @chapters ||= all_chapters.reject do |chapter|
         !@include_hidden && only_hidden_sections?(chapter)
       end
+    end
+
+    def chapter_slug_for(chapter)
+      chapter_slugs[chapter.perma_id]
     end
 
     def sections
@@ -48,6 +52,14 @@ module PageflowScrolled
 
     def all_sections
       @all_sections ||= Section.all_for_revision(@revision).to_a
+    end
+
+    def all_chapters
+      @all_chapters ||= Chapter.all_for_revision(@revision).to_a
+    end
+
+    def chapter_slugs
+      @chapter_slugs ||= ChapterSlugs.new(all_chapters).to_h
     end
   end
 end

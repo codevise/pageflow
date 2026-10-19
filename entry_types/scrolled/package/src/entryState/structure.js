@@ -1,6 +1,5 @@
 import {useMemo, useCallback} from 'react';
 import {useEntryStateCollectionItems, useEntryStateCollectionItem} from './EntryStateProvider';
-import {getChapterSlugs} from '../shared/chapterSlug';
 
 /**
  * Returns a nested data structure representing the chapters and sections
@@ -349,13 +348,11 @@ export function useChapters() {
   const chapters = useEntryStateCollectionItems('chapters');
 
   return useMemo(() => {
-    const chapterSlugs = getChapterSlugs(chapters);
-
     return chapters.map((chapter, index) => ({
       id: chapter.id,
       permaId: chapter.permaId,
       storylineId: chapter.storylineId,
-      chapterSlug: chapterSlugs[chapter.permaId],
+      chapterSlug: chapter.chapterSlug,
       index,
       ...chapter.configuration
     }));

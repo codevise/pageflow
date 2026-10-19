@@ -28,6 +28,34 @@ module PageflowScrolled
       end
     end
 
+    describe '#chapter_slug_for' do
+      it 'computes slugs of chapters' do
+        revision = create(:revision)
+        chapters = [
+          create(:scrolled_chapter, revision:, position: 1, configuration: {title: 'Intro'}),
+          create(:scrolled_chapter, revision:, position: 2, configuration: {title: 'Intro'})
+        ]
+
+        content = RevisionContent.new(revision)
+
+        expect(content.chapter_slug_for(chapters[0])).to eq('intro')
+        expect(content.chapter_slug_for(chapters[1])).to eq("intro-#{chapters[1].perma_id}")
+      end
+
+      it 'takes chapters with only hidden sections into account' do
+        revision = create(:revision)
+        hidden_chapter = create(:scrolled_chapter,
+                                revision:, position: 1, configuration: {title: 'Intro'})
+        create(:section, chapter: hidden_chapter, configuration: {hidden: true})
+        chapter = create(:scrolled_chapter,
+                         revision:, position: 2, configuration: {title: 'Intro'})
+
+        content = RevisionContent.new(revision)
+
+        expect(content.chapter_slug_for(chapter)).to eq("intro-#{chapter.perma_id}")
+      end
+    end
+
     describe '#sections' do
       it 'skips hidden sections' do
         revision = create(:revision)

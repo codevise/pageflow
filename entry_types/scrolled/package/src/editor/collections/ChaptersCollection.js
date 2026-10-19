@@ -10,7 +10,12 @@ export const ChaptersCollection = Backbone.Collection.extend({
     entryTypeEditorControllerUrls.forCollection({resources: 'chapters'})
   ],
 
-  comparator: function(chapter) {
-    return chapter.get('position');
+  comparator: function(chapterA, chapterB) {
+    return storylinePosition(chapterA) - storylinePosition(chapterB) ||
+           chapterA.get('position') - chapterB.get('position');
   }
 });
+
+function storylinePosition(chapter) {
+  return chapter.storyline?.get('position') || 0;
+}

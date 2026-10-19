@@ -111,6 +111,30 @@ module PageflowScrolled
                              })
         end
 
+        it 'renders chapter slugs' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          chapters = [
+            create(:scrolled_chapter,
+                   revision: entry.revision,
+                   position: 1,
+                   configuration: {title: 'Intro'}),
+            create(:scrolled_chapter,
+                   revision: entry.revision,
+                   position: 2,
+                   configuration: {title: 'Intro'})
+          ]
+
+          result = render(helper, entry)
+
+          expect(result)
+            .to include_json(collections: {
+                               chapters: [
+                                 {chapterSlug: 'intro'},
+                                 {chapterSlug: "intro-#{chapters[1].perma_id}"}
+                               ]
+                             })
+        end
+
         it 'orders chapters according to position attribute' do
           entry = create(:published_entry, type_name: 'scrolled')
           chapter1 = create(:scrolled_chapter, revision: entry.revision, position: 4)

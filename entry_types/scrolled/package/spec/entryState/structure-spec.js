@@ -16,6 +16,7 @@ import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 
 import {factories} from 'pageflow/testHelpers';
 import {renderHookInEntry, normalizeSeed} from 'support';
+import {act} from '@testing-library/react';
 
 
 const storylinesSeed = [
@@ -585,54 +586,34 @@ describe('useChapters', () => {
     ]);
   });
 
-  it('sanitizes chapter titles', () => {
+  it('reads chapter slugs from seed', () => {
     const {result} = renderHookInEntry(
       () => useChapters(),
       {
         seed: {
           chapters: [
-            {
-              configuration: {
-                title: 'SmallCase',
-              }
-            },
-            {
-              configuration: {
-                title: 'RemöveUmläütß',
-              }
-            },
-            {
-              configuration: {
-                title: 'remove space',
-              }
-            },
-            {
-              configuration: {
-                title: 'remove#special$character',
-              }
-            },
-
+            {permaId: 10, chapterSlug: 'computed-on-server', configuration: {title: 'Intro'}}
           ]
         }
       }
     );
 
-    const chapters = result.current;
+    expect(result.current).toMatchObject([{chapterSlug: 'computed-on-server'}]);
+  });
 
-    expect(chapters).toMatchObject([
-      {
-        chapterSlug: "smallcase",
-      },
-      {
-        chapterSlug: 'remoeveumlaeuetss',
-      },
-      {
-        chapterSlug: 'remove-space',
-      },
-      {
-        chapterSlug: 'removespecialdollarcharacter',
-      }
-    ]);
+  it('updates chapter slugs when titles change in editor', () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        chapters: [{id: 1, permaId: 10, configuration: {title: 'Intro'}}]
+      })
+    });
+    const {result} = renderHookInEntry(() => useChapters(), {
+      setup: dispatch => watchCollections(entry, {dispatch})
+    });
+
+    act(() => entry.chapters.get(1).configuration.set('title', 'Outro', {autoSave: false}));
+
+    expect(result.current).toMatchObject([{chapterSlug: 'outro'}]);
   });
 });
 

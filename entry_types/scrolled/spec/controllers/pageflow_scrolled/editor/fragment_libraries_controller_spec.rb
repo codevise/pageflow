@@ -102,6 +102,7 @@ module PageflowScrolled
         expect(response.body).to include_json([{
                                                 collections: {
                                                   chapters: [{permaId: chapter.perma_id,
+                                                              chapterSlug: 'intro',
                                                               configuration: {title: 'Intro',
                                                                               kind: 'intro'}}],
                                                   sections: [{permaId: section.perma_id}],

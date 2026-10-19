@@ -7,6 +7,7 @@ end
 json.chapters do
   json.array!(content.chapters) do |chapter|
     json.partial!('pageflow_scrolled/chapters/chapter', chapter:)
+    json.chapter_slug content.chapter_slug_for(chapter)
   end
 end
 
