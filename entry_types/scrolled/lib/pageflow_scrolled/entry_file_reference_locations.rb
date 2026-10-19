@@ -11,23 +11,24 @@ module PageflowScrolled
     end
 
     def content_element_locations
-      content_element_type_names.each_with_object({}) do |type_name, result|
-        schema = schemas.find(model: 'contentElement', type_name:)
+      @content_element_locations ||=
+        content_element_type_names.each_with_object({}) do |type_name, result|
+          schema = schemas.find(model: 'contentElement', type_name:)
 
-        if schema
-          result[type_name] = locations.for(schema)
-        else
-          log_missing_schema(type_name)
+          if schema
+            result[type_name] = locations.for(schema)
+          else
+            log_missing_schema(type_name)
+          end
         end
-      end
     end
 
     def section_locations
-      locations_for(model: 'section')
+      @section_locations ||= locations_for(model: 'section')
     end
 
     def entry_locations
-      locations_for(model: 'entry')
+      @entry_locations ||= locations_for(model: 'entry')
     end
 
     private
