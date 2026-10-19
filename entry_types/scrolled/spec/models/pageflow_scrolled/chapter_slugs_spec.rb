@@ -20,6 +20,12 @@ module PageflowScrolled
       expect(ChapterSlugs.new(chapters).to_h[100]).to eq('chapter-100')
     end
 
+    it 'returns chapter-permaId for title without characters allowed in slugs' do
+      chapters = [build(:scrolled_chapter, perma_id: 100, configuration: {title: '中文标题'})]
+
+      expect(ChapterSlugs.new(chapters).to_h[100]).to eq('chapter-100')
+    end
+
     it 'appends permaId if slug would not be unique' do
       chapters = [
         build(:scrolled_chapter, perma_id: 100, configuration: {title: 'Same Title'}),

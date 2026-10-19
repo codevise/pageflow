@@ -5,11 +5,9 @@ export function getChapterSlugs(chapters) {
   const usedSlugs = {};
 
   chapters.forEach(chapter => {
-    let chapterSlug = chapter.configuration.title;
+    let chapterSlug = chapter.configuration.title && slugify(chapter.configuration.title);
 
     if (chapterSlug) {
-      chapterSlug = slugify(chapterSlug);
-
       if (usedSlugs[chapterSlug]) {
         chapterSlug = chapterSlug + '-' + chapter.permaId;
       }

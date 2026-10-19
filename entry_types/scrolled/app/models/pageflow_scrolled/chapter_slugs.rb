@@ -18,10 +18,9 @@ module PageflowScrolled
     private
 
     def slug(chapter, used_slugs)
-      title = chapter.configuration['title']
-      return "chapter-#{chapter.perma_id}" if title.blank?
+      slug = Slugify.call(chapter.configuration['title'] || '')
+      return "chapter-#{chapter.perma_id}" if slug.empty?
 
-      slug = Slugify.call(title)
       slug = "#{slug}-#{chapter.perma_id}" if used_slugs.include?(slug)
       used_slugs << slug
 
