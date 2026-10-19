@@ -87,20 +87,14 @@ describe('useFileRights', () => {
   describe('with file_rights_from_references feature', () => {
     useFakeFeatures('frontend', ['file_rights_from_references']);
 
-    it('only includes referenced files', () => {
+    it('only includes files flagged as referenced', () => {
       const {result} = renderHookInEntry(
         () => useFileRights(), {
           seed: {
             imageFiles: [
-              {permaId: 5, rights: 'referenced'},
-              {permaId: 6, rights: 'unreferenced'}
-            ],
-            contentElements: [{typeName: 'someType', configuration: {image: 5}}],
-            fileReferenceLocations: {
-              contentElements: {
-                someType: [{path: ['image'], collection: 'imageFiles'}]
-              }
-            }
+              {permaId: 5, rights: 'referenced', isReferenced: true},
+              {permaId: 6, rights: 'unreferenced', isReferenced: false}
+            ]
           }
         }
       );
@@ -108,72 +102,34 @@ describe('useFileRights', () => {
       expect(result.current).toMatchObject([{text: 'referenced'}]);
     });
 
-    it('includes files nested in a referenced file', () => {
+    it('only includes files referenced in watched collections', () => {
       const {result} = renderHookInEntry(
         () => useFileRights(), {
-          seed: {
-            videoFiles: [{id: 100, permaId: 5, rights: 'referenced'}],
-            textTrackFiles: [
-              {id: 200, permaId: 6, parentFileId: 100,
-               parentFileModelType: 'Pageflow::VideoFile', rights: 'nested'}
-            ],
-            contentElements: [{typeName: 'someType', configuration: {video: 5}}],
-            fileReferenceLocations: {
-              contentElements: {
-                someType: [{path: ['video'], collection: 'videoFiles'}]
-              }
-            }
-          }
+          setup: dispatch =>
+            watchCollections(
+              factories.entry(ScrolledEntry, {}, {
+                entryTypeSeed: normalizeSeed({
+                  contentElements: [{typeName: 'someType', configuration: {image: 5}}],
+                  fileReferenceLocations: {
+                    contentElements: {
+                      someType: [{path: ['image'], collection: 'imageFiles'}]
+                    }
+                  }
+                }),
+                fileTypes: factories.fileTypesWithImageFileType(),
+                filesAttributes: {
+                  image_files: [
+                    {id: 1, perma_id: 5, rights: 'referenced'},
+                    {id: 2, perma_id: 6, rights: 'unreferenced'}
+                  ]
+                }
+              }),
+              {dispatch}
+            )
         }
       );
 
-      expect(result.current).toMatchObject([{text: 'nested'}, {text: 'referenced'}]);
-    });
-
-    it('skips files nested in an unreferenced file', () => {
-      const {result} = renderHookInEntry(
-        () => useFileRights(), {
-          seed: {
-            videoFiles: [{id: 100, permaId: 5, rights: 'unreferenced'}],
-            textTrackFiles: [
-              {id: 200, permaId: 6, parentFileId: 100,
-               parentFileModelType: 'Pageflow::VideoFile', rights: 'nested'}
-            ],
-            contentElements: [{typeName: 'someType', configuration: {}}],
-            fileReferenceLocations: {
-              contentElements: {
-                someType: [{path: ['video'], collection: 'videoFiles'}]
-              }
-            }
-          }
-        }
-      );
-
-      expect(result.current).toEqual([]);
-    });
-
-    it('skips inactive references', () => {
-      const {result} = renderHookInEntry(
-        () => useFileRights(), {
-          seed: {
-            imageFiles: [{permaId: 5, rights: 'author'}],
-            contentElements: [
-              {typeName: 'someType', configuration: {image: 5, backgroundType: 'color'}}
-            ],
-            fileReferenceLocations: {
-              contentElements: {
-                someType: [{
-                  path: ['image'],
-                  collection: 'imageFiles',
-                  activeIf: {path: ['backgroundType'], not: 'color'}
-                }]
-              }
-            }
-          }
-        }
-      );
-
-      expect(result.current).toEqual([]);
+      expect(result.current).toMatchObject([{text: 'referenced'}]);
     });
   });
 
@@ -182,15 +138,9 @@ describe('useFileRights', () => {
       () => useFileRights(), {
         seed: {
           imageFiles: [
-            {permaId: 5, rights: 'referenced'},
-            {permaId: 6, rights: 'unreferenced'}
-          ],
-          contentElements: [{typeName: 'someType', configuration: {image: 5}}],
-          fileReferenceLocations: {
-            contentElements: {
-              someType: [{path: ['image'], collection: 'imageFiles'}]
-            }
-          }
+            {permaId: 5, rights: 'referenced', isReferenced: true},
+            {permaId: 6, rights: 'unreferenced', isReferenced: false}
+          ]
         }
       }
     );

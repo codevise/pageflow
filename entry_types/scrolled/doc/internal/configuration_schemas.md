@@ -18,16 +18,18 @@ schema file and follow the terms below through both languages.
   `{model: 'section'}` and `{model: 'entry'}`. Declared as `x-subject`.
 - **File reference location** — a place in a configuration where a file
   *can* be referenced. Declared by `x-fileCollection`, flattened by
-  `FileReferenceLocations` and shipped in the entry seed as
+  `FileReferenceLocations` and shipped in the editor's entry seed as
   `fileReferenceLocations`.
 - **File reference** — a location resolved against actual configuration
   data, as `{subject, path, active}`. Produced by
-  `collectFileReferences`, indexed by file by
-  `collectEntryFileReferences`. Links to files (`href: {file: {permaId,
+  `collectFileReferences` and `FileReferences`, indexed by file by
+  `watchFileReferences` in the editor and by `ReferencedFiles` on the
+  server. Links to files (`href: {file: {permaId,
   collectionName}}`) are found anywhere in a configuration, in rich
   text and link properties alike, and need no location.
-- **Referenced file** — a file some configuration points at. Not the
-  same as a *used* file, see below.
+- **Referenced file** — a file some active reference points at. Not the
+  same as a *used* file, see below. Flagged as `isReferenced` in entry
+  state.
 - **Configuration place** — the editor's presentation of a reference,
   as `{label, detail, pictogram, select}`. Built by
   `getConfigurationPlace(path)` on the referencing model.
@@ -76,21 +78,21 @@ open, yet credits must list those files whether or not a visitor opened
 them. Render time collection under-reports exactly the files that are
 easiest to forget.
 
-### Computing the answer on the server
+### Computing the editor's answer on the server
 
 A server computed list of referenced files is a cache whose
 invalidation trigger is "any configuration change" - and the editor is
-where configuration changes. So the seed carries locations and the
-algorithm ships in the bundle. Server side rendering is unaffected,
-since the same JavaScript runs in Node with the seed in hand.
+where configuration changes. So the editor seed carries locations and
+the editor computes references itself, rescanning only the subject
+whose configuration changed, and passes `is_referenced` to the preview
+with the other file attributes. Published revisions never change, so
+their seed carries `isReferenced` flags computed by `ReferencedFiles`
+instead of locations. Both sides walk configurations with the same
+algorithm, kept aligned by `spec/fixtures/file_references.json`.
 
-Bundling the schemas into the JavaScript packages instead would undo
-the seed's pruning: the seed already carries only the content element
-types an entry uses, so an entry using five of thirty types pays for
-five, while a bundle import pays for all of them in every entry and
-grows with every plugin pack. The editor is the exception and receives
-all types, since content elements can be added there without reloading
-the seed.
+Bundling the schemas into the JavaScript packages instead would make
+every published entry pay for them, although only the editor reads
+them, and would grow with every plugin pack.
 
 ### Structured references in the data
 
@@ -128,9 +130,3 @@ which requires the schema.
   another file (text tracks belonging to their parent video) and file
   configurations (video poster images). Each produces a false
   "unreferenced" verdict on its own.
-
-* **The attribute mapping wants to exist twice.**
-  `collectEntryFileReferences` takes entry state collections rather
-  than Backbone models so that the snake cased to camel cased mapping
-  is shared with the preview. When it existed twice it drifted - the
-  share image reached the published entry before it reached the editor.

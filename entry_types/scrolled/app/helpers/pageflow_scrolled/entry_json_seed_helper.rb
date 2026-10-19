@@ -31,11 +31,7 @@ module PageflowScrolled
                                     cutoff: scrolled_entry.cutoff_mode_enabled_for?(request))
       widgets = scrolled_entry.resolve_widgets(insert_point: :react)
       entry_config = Pageflow.config_for(scrolled_entry)
-      file_reference_locations = EntryFileReferenceLocations.new(
-        entry_config,
-        content.content_elements,
-        include_unused: options[:include_unused_file_reference_locations]
-      )
+      file_reference_locations = EntryFileReferenceLocations.new(entry_config)
 
       json.partial!('pageflow_scrolled/entry_json_seed/entry',
                     entry: scrolled_entry,

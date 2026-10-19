@@ -32,7 +32,7 @@ module PageflowScrolled
 
       copy.content_elements.each do |content_element|
         rewrite_file_references(content_element,
-                                content_element_locations[content_element.type_name])
+                                locations.content_element_locations_for(content_element.type_name))
       end
 
       copy
@@ -107,14 +107,8 @@ module PageflowScrolled
       @file_types ||= Pageflow.config_for(@source_entry).file_types
     end
 
-    def content_element_locations
-      @content_element_locations ||= locations.content_element_locations
-    end
-
     def locations
-      @locations ||= EntryFileReferenceLocations.new(
-        Pageflow.config_for(@source_entry), [], include_unused: true
-      )
+      @locations ||= EntryFileReferenceLocations.new(Pageflow.config_for(@source_entry))
     end
 
     def next_position(chapter)

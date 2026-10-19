@@ -528,7 +528,7 @@ module PageflowScrolled
           section = create(:section, chapter:)
           create(:content_element, section:, type_name: 'someType')
 
-          result = render(helper, entry)
+          result = render(helper, entry, include_file_reference_locations: true)
 
           expect(result).to include_json(
             config: {
@@ -541,20 +541,12 @@ module PageflowScrolled
           )
         end
 
-        it 'omits content element types not used in entry' do
-          register_schema(
-            'x-subject' => {'model' => 'contentElement', 'typeName' => 'someType'},
-            'properties' => {'image' => {'x-fileCollection' => 'image_files'}}
-          )
-
+        it 'does not render file reference locations by default' do
           entry = create(:published_entry, type_name: 'scrolled')
-          chapter = create(:scrolled_chapter, revision: entry.revision)
-          section = create(:section, chapter:)
-          create(:content_element, section:, type_name: 'otherType')
 
           result = render(helper, entry)
 
-          expect(json_config(result)['fileReferenceLocations']['contentElements']).to eq({})
+          expect(json_config(result)).not_to have_key('fileReferenceLocations')
         end
 
         it 'renders empty list for content element types without file references' do
@@ -568,10 +560,10 @@ module PageflowScrolled
           section = create(:section, chapter:)
           create(:content_element, section:, type_name: 'someType')
 
-          result = render(helper, entry)
+          result = render(helper, entry, include_file_reference_locations: true)
 
           expect(json_config(result)['fileReferenceLocations']['contentElements'])
-            .to eq('someType' => [])
+            .to include('someType' => [])
         end
 
         it 'renders references of sections' do
@@ -582,7 +574,7 @@ module PageflowScrolled
 
           entry = create(:published_entry, type_name: 'scrolled')
 
-          result = render(helper, entry)
+          result = render(helper, entry, include_file_reference_locations: true)
 
           expect(json_config(result)['fileReferenceLocations']['sections'])
             .to include('path' => ['someFile'], 'collection' => 'imageFiles')
@@ -596,7 +588,7 @@ module PageflowScrolled
 
           entry = create(:published_entry, type_name: 'scrolled')
 
-          result = render(helper, entry)
+          result = render(helper, entry, include_file_reference_locations: true)
 
           expect(json_config(result)['fileReferenceLocations']['entry'])
             .to include('path' => ['someFile'], 'collection' => 'imageFiles')
@@ -611,7 +603,8 @@ module PageflowScrolled
 
           entry = create(:published_entry, type_name: 'scrolled')
 
-          expect { render(helper, entry) }.to raise_error(/schema for section/)
+          expect { render(helper, entry, include_file_reference_locations: true) }
+            .to raise_error(/schema for section/)
         end
 
         it 'logs content element types without schema' do
@@ -620,7 +613,10 @@ module PageflowScrolled
             'properties' => {}
           )
 
-          entry = create(:published_entry, type_name: 'scrolled')
+          entry = create(:published_entry,
+                         type_name: 'scrolled',
+                         with_feature: 'file_rights_from_references')
+          create_used_file(:image_file, entry:)
           chapter = create(:scrolled_chapter, revision: entry.revision)
           section = create(:section, chapter:)
           create(:content_element, section:, type_name: 'otherType')

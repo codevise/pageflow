@@ -148,7 +148,7 @@ module PageflowScrolled
         entry,
         sections:,
         content_elements:,
-        locations: EntryFileReferenceLocations.new(Pageflow.config_for(entry), content_elements)
+        locations: EntryFileReferenceLocations.new(Pageflow.config_for(entry))
       )
     end
 
