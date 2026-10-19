@@ -36,7 +36,7 @@ export {useWidget, useActiveWidgets} from './widgets';
 
 export {EntryStateProvider, useEntryStateDispatch} from './EntryStateProvider';
 
-export {collectionsSnapshot, watchCollections} from './collections';
+export {watchCollections} from './collections';
 
 export {updateContentElementConfiguration} from './updateContentElementConfiguration';
 export {updateWidgetConfiguration} from './updateWidgetConfiguration';

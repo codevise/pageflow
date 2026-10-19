@@ -1,38 +1,18 @@
-import {collectionsSnapshot, watchCollections} from 'entryState';
+import {watchCollections} from 'entryState';
 
 import {useEditorGlobals} from 'support';
 
-describe('collectionsSnapshot', () => {
+describe('watchCollections', () => {
   const {createEntry} = useEditorGlobals();
 
-  function entryWithFiles() {
-    return createEntry({
-      videoFiles: [{id: 100, perma_id: 5}],
-      textTrackFiles: [{id: 200, perma_id: 6,
-                        parent_file_id: 100,
-                        parent_file_model_type: 'Pageflow::VideoFile'}],
-      sections: [{id: 1, permaId: 10, configuration: {backdrop: {image: 5}}}]
+  it('includes referenced flags of files', () => {
+    const entry = createEntry({
+      imageFiles: [{id: 100, perma_id: 5}, {id: 101, perma_id: 6}],
+      sections: [{id: 1, permaId: 10, configuration: {backdrop: {image: 5}}}],
+      fileReferenceLocations: {
+        sections: [{path: ['backdrop', 'image'], collection: 'imageFiles'}]
+      }
     });
-  }
-
-  it('maps file attributes to entry state items', () => {
-    const collections = collectionsSnapshot(entryWithFiles());
-
-    expect(collections.textTrackFiles).toMatchObject([
-      {id: 200, permaId: 6, parentFileId: 100, parentFileModelType: 'Pageflow::VideoFile'}
-    ]);
-  });
-
-  it('includes configurations of sections', () => {
-    const collections = collectionsSnapshot(entryWithFiles());
-
-    expect(collections.sections).toMatchObject([
-      {id: 1, permaId: 10, configuration: {backdrop: {image: 5}}}
-    ]);
-  });
-
-  it('matches the items watchCollections dispatches', () => {
-    const entry = entryWithFiles();
     const items = {};
 
     const teardown = watchCollections(entry, {
@@ -43,7 +23,33 @@ describe('collectionsSnapshot', () => {
       }
     });
 
-    expect(collectionsSnapshot(entry)).toEqual(items);
+    expect(items.imageFiles).toMatchObject([
+      {permaId: 5, isReferenced: true},
+      {permaId: 6, isReferenced: false}
+    ]);
+
+    teardown();
+  });
+
+  it('dispatches change when referenced flag of file changes', () => {
+    const entry = createEntry({
+      imageFiles: [{id: 100, perma_id: 5}],
+      sections: [{id: 1, permaId: 10}],
+      fileReferenceLocations: {
+        sections: [{path: ['backdrop', 'image'], collection: 'imageFiles'}]
+      }
+    });
+    const actions = [];
+
+    const teardown = watchCollections(entry, {dispatch: action => actions.push(action)});
+    entry.sections.first().configuration.set('backdrop', {image: 5});
+
+    expect(actions).toContainEqual(expect.objectContaining({
+      payload: expect.objectContaining({
+        collectionName: 'imageFiles',
+        attributes: expect.objectContaining({permaId: 5, isReferenced: true})
+      })
+    }));
 
     teardown();
   });
