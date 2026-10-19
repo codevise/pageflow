@@ -1,4 +1,4 @@
-import slugify from 'slugify';
+import {slugify} from './slugify';
 
 export function getChapterSlugs(chapters) {
   const result = {};
@@ -8,11 +8,7 @@ export function getChapterSlugs(chapters) {
     let chapterSlug = chapter.configuration.title;
 
     if (chapterSlug) {
-      chapterSlug = slugify(chapterSlug, {
-        lower: true,
-        locale: 'de',
-        strict: true
-      });
+      chapterSlug = slugify(chapterSlug);
 
       if (usedSlugs[chapterSlug]) {
         chapterSlug = chapterSlug + '-' + chapter.permaId;

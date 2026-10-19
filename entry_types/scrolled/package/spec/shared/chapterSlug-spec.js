@@ -42,6 +42,6 @@ describe('getChapterSlugs', () => {
       {configuration: {title: 'Über uns & mehr!'}, permaId: 100}
     ];
 
-    expect(getChapterSlugs(chapters)[100]).toBe('ueber-uns-and-mehr');
+    expect(getChapterSlugs(chapters)[100]).toBe('ueber-uns-und-mehr');
   });
 });
