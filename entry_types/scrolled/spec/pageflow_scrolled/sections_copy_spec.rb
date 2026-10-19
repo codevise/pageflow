@@ -125,6 +125,34 @@ module PageflowScrolled
           .to eq(destination_entry.draft.find_file(Pageflow::ImageFile, image_file.id).perma_id)
       end
 
+      it 'rewrites perma id of file linked from content element' do
+        source_entry = create(:draft_entry, type_name: 'scrolled')
+        destination_entry = create(:draft_entry, type_name: 'scrolled')
+        create_list(:image_file, 2, used_in: destination_entry.draft)
+        image_file = create_used_file(:image_file, entry: source_entry)
+        source_section = create(:section, revision: source_entry.draft, configuration: {})
+        create(:content_element,
+               section: source_section,
+               type_name: 'textBlock',
+               configuration: {
+                 'value' => [{'type' => 'paragraph', 'children' => [
+                   {'type' => 'link',
+                    'href' => {'file' => {'permaId' => image_file.perma_id,
+                                          'collectionName' => 'imageFiles'}},
+                    'children' => [{'text' => 'Download'}]}
+                 ]}]
+               })
+        destination_chapter = create(:scrolled_chapter, revision: destination_entry.draft)
+
+        sections = SectionsCopy
+                   .new(source_entry:, destination_entry:)
+                   .perform([source_section], chapter: destination_chapter)
+
+        expect(sections.first.content_elements.first.configuration
+                 .dig('value', 0, 'children', 0, 'href', 'file', 'permaId'))
+          .to eq(destination_entry.draft.find_file(Pageflow::ImageFile, image_file.id).perma_id)
+      end
+
       it 'reuses file usage the destination entry already has' do
         source_entry = create(:draft_entry, type_name: 'scrolled')
         destination_entry = create(:draft_entry, type_name: 'scrolled')

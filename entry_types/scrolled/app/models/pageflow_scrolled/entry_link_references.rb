@@ -29,7 +29,7 @@ module PageflowScrolled
 
     def links
       @configurations.each_with_object([]) do |configuration, result|
-        each_href(configuration) do |href|
+        ConfigurationHrefs.each(configuration) do |href|
           entry_id = to_id(href['entry'])
           next unless entry_id
 
@@ -38,16 +38,6 @@ module PageflowScrolled
                              to_id(href['section']),
                              href['signature'])
         end
-      end
-    end
-
-    def each_href(value, &block)
-      case value
-      when Hash
-        yield value['href'] if value['href'].is_a?(Hash)
-        value.each_value { |item| each_href(item, &block) }
-      when Array
-        value.each { |item| each_href(item, &block) }
       end
     end
 

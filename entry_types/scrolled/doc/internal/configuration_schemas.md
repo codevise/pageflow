@@ -23,7 +23,9 @@ schema file and follow the terms below through both languages.
 - **File reference** — a location resolved against actual configuration
   data, as `{subject, path, active}`. Produced by
   `collectFileReferences`, indexed by file by
-  `collectEntryFileReferences`.
+  `collectEntryFileReferences`. Links to files (`href: {file: {permaId,
+  collectionName}}`) are found anywhere in a configuration, in rich
+  text and link properties alike, and need no location.
 - **Referenced file** — a file some configuration points at. Not the
   same as a *used* file, see below.
 - **Configuration place** — the editor's presentation of a reference,

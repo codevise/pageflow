@@ -8,6 +8,82 @@
   ],
   "cases": [
     {
+      "name": "finds download links in nested rich text and preserves their collections",
+      "locations": [],
+      "configuration": {
+        "value": [{"type": "bulleted-list", "children": [
+          {"type": "list-item", "children": [
+            {"text": "Download "},
+            {"type": "link", "href": {"file": {"permaId": 5, "collectionName": "imageFiles"}}, "children": [{"text": "image"}]},
+            {"text": " or "},
+            {"type": "link", "href": {"file": {"permaId": 5, "collectionName": "videoFiles"}}, "children": [{"text": "video"}]},
+            {"type": "link", "href": "https://example.com", "children": [{"text": "website"}]},
+            {"type": "link", "href": {"chapter": 5}, "children": [{"text": "chapter"}]}
+          ]}
+        ]}]
+      },
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["value", "0", "children", "0", "children", "1", "href", "file", "permaId"], "active": true},
+        {"collectionName": "videoFiles", "permaId": 5, "path": ["value", "0", "children", "0", "children", "3", "href", "file", "permaId"], "active": true}
+      ]
+    },
+    {
+      "name": "finds download links outside rich text",
+      "locations": [],
+      "configuration": {
+        "tooltipLinks": {
+          "area1": {"href": {"file": {"permaId": 6, "collectionName": "otherFiles"}}, "linkText": "PDF"}
+        }
+      },
+      "references": [
+        {"collectionName": "otherFiles", "permaId": 6, "path": ["tooltipLinks", "area1", "href", "file", "permaId"], "active": true}
+      ]
+    },
+    {
+      "name": "finds download links next to location references",
+      "locations": [{"path": ["image"], "collection": "imageFiles"}],
+      "configuration": {
+        "image": 5,
+        "caption": [{"type": "paragraph", "children": [
+          {"type": "link", "href": {"file": {"permaId": 6, "collectionName": "otherFiles"}}, "children": [{"text": "PDF"}]}
+        ]}]
+      },
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["image"], "active": true},
+        {"collectionName": "otherFiles", "permaId": 6, "path": ["caption", "0", "children", "0", "href", "file", "permaId"], "active": true}
+      ]
+    },
+    {
+      "name": "finds download links nested in objects that link to files themselves",
+      "locations": [],
+      "configuration": {
+        "href": {"file": {"permaId": 5, "collectionName": "imageFiles"}},
+        "items": [{"href": {"file": {"permaId": 6, "collectionName": "otherFiles"}}}]
+      },
+      "references": [
+        {"collectionName": "imageFiles", "permaId": 5, "path": ["href", "file", "permaId"], "active": true},
+        {"collectionName": "otherFiles", "permaId": 6, "path": ["items", "0", "href", "file", "permaId"], "active": true}
+      ]
+    },
+    {
+      "name": "ignores incomplete and malformed download targets",
+      "locations": [],
+      "configuration": {
+        "value": [null, {"type": "paragraph", "children": [
+          null,
+          {"type": "link", "href": {"file": {"collectionName": "imageFiles"}}, "children": [{"text": "missing id"}]},
+          {"type": "link", "href": {"file": {"permaId": 0, "collectionName": "imageFiles"}}, "children": [{"text": "invalid id"}]},
+          {"type": "link", "href": {"file": {"permaId": 5}}, "children": [{"text": "missing collection"}]},
+          {"type": "link", "href": {"file": {"permaId": 5, "collectionName": ""}}, "children": [{"text": "blank collection"}]},
+          {"type": "link", "href": {"file": {"permaId": 5, "collectionName": 5}}, "children": [{"text": "collection not a string"}]},
+          {"type": "link", "href": [{"file": {"permaId": 5, "collectionName": "imageFiles"}}], "children": [{"text": "href not an object"}]},
+          {"type": "link", "href": {"file": 5}, "children": [{"text": "file not an object"}]},
+          {"type": "link", "href": null, "children": [{"text": "no href"}]}
+        ]}]
+      },
+      "references": []
+    },
+    {
       "name": "finds reference in top level property",
       "locations": [{"path": ["image"], "collection": "imageFiles"}],
       "configuration": {"image": 5},

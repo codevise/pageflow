@@ -1,6 +1,7 @@
 import {editor} from 'pageflow-scrolled/editor';
 
-import {useFakeTranslations} from 'pageflow/testHelpers';
+import {FilteredFilesView} from 'pageflow/editor';
+import {renderBackboneView, useFakeTranslations} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
 
 describe('ScrolledEntry', () => {
@@ -12,9 +13,14 @@ describe('ScrolledEntry', () => {
       'pageflow_scrolled.editor.edit_section.attributes.backdropImage.label': 'Background image',
       'pageflow_scrolled.editor.edit_section.attributes.atmoAudioFileId.label': 'Atmo audio',
       'pageflow_scrolled.editor.content_elements.inlineImage.name': 'Image',
+      'pageflow_scrolled.editor.content_elements.textBlock.name': 'Text',
       'pageflow_scrolled.editor.content_elements.inlineImage.attributes.id.label': 'Image file',
       'pageflow_scrolled.editor.content_elements.customElement.name': 'Custom element',
       'pageflow_scrolled.editor.configuration_places.entry': 'Settings',
+      'pageflow.editor.templates.file_item.reference_count': {
+        one: '1 usage',
+        other: '%{count} usages'
+      },
       'activerecord.attributes.pageflow/entry.share_image_id': 'Social Sharing Image'
     });
 
@@ -106,6 +112,42 @@ describe('ScrolledEntry', () => {
 
       expect(entry.fileReferences().placesFor(imageFile(entry, 5)).map(({label}) => label))
         .toEqual(['Intro - Image']);
+    });
+
+    it('counts download links as usages in multi-select without confusing file collections', () => {
+      const entry = create({
+        imageFiles: [{id: 1, perma_id: 5, display_name: 'linked.png'},
+                     {id: 2, perma_id: 6, display_name: 'unused.png'}],
+        videoFiles: [{perma_id: 5}],
+        sections: [{id: 1, permaId: 10, chapterId: 1}],
+        contentElements: [{
+          id: 2, permaId: 20, sectionId: 1, typeName: 'textBlock',
+          configuration: {value: [{type: 'paragraph', children: [
+            {text: 'Download '},
+            {type: 'link', href: {file: {permaId: 5, collectionName: 'imageFiles'}},
+             children: [{text: 'image'}]}
+          ]}]}
+        }]
+      });
+      const references = entry.fileReferences();
+      const videoFile = entry.getFileCollection('video_files').findWhere({perma_id: 5});
+
+      expect(references.placesFor(imageFile(entry, 5)).map(({label}) => label))
+        .toEqual(['Intro - Text']);
+      expect(references.placesFor(imageFile(entry, 6))).toEqual([]);
+      expect(references.placesFor(videoFile)).toEqual([]);
+
+      const view = new FilteredFilesView({
+        entry,
+        fileTypes: [imageFile(entry, 5).fileType()]
+      });
+      renderBackboneView(view);
+      view.startSelecting();
+
+      const badges = Array.from(view.el.querySelectorAll('.file_item-reference_count'));
+      expect(badges.map(badge => badge.textContent)).toEqual(['1 usage', '0 usages']);
+      expect(badges.map(badge => badge.classList.contains('is_unreferenced')))
+        .toEqual([false, true]);
     });
 
     it('uses pictogram of content element type', () => {
