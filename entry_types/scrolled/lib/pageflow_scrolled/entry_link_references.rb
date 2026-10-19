@@ -1,5 +1,6 @@
 module PageflowScrolled
-  # Find signed links to other entries in configurations.
+  # Find signed links to other entries and their chapters and
+  # sections in configurations.
   #
   # @api private
   class EntryLinkReferences
@@ -8,20 +9,47 @@ module PageflowScrolled
     end
 
     def entry_ids
-      signed_entry_ids
-        .uniq
-        .select { |entry_id, signature| EntryLinkSignature.valid?(entry_id, signature) }
-        .map(&:first)
-        .uniq
+      valid_links.map(&:entry_id).uniq
+    end
+
+    def chapter_perma_ids(entry_id)
+      perma_ids(entry_id, :chapter)
+    end
+
+    def section_perma_ids(entry_id)
+      perma_ids(entry_id, :section)
     end
 
     private
 
-    def signed_entry_ids
+    Link = Struct.new(:entry_id, :chapter, :section, :signature)
+
+    def perma_ids(entry_id, attribute)
+      valid_links
+        .select { |link| link.entry_id == entry_id }
+        .filter_map(&attribute)
+        .uniq
+    end
+
+    def valid_links
+      @valid_links ||= links.uniq.select do |link|
+        EntryLinkSignature.valid?(link.entry_id,
+                                  link.signature,
+                                  chapter: link.chapter,
+                                  section: link.section)
+      end
+    end
+
+    def links
       @configurations.each_with_object([]) do |configuration, result|
         each_href(configuration) do |href|
           entry_id = to_id(href['entry'])
-          result << [entry_id, href['signature']] if entry_id
+          next unless entry_id
+
+          result << Link.new(entry_id,
+                             to_id(href['chapter']),
+                             to_id(href['section']),
+                             href['signature'])
         end
       end
     end

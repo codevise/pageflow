@@ -113,5 +113,69 @@ module PageflowScrolled
 
       expect(references.entry_ids).to eq([])
     end
+
+    describe '#chapter_perma_ids' do
+      it 'collects perma ids of signed chapter links per entry' do
+        configurations = [
+          {'href' => chapter_href(7, 10)},
+          {'href' => chapter_href(7, 11)},
+          {'href' => chapter_href(7, 10)},
+          {'href' => chapter_href(8, 12)}
+        ]
+
+        references = EntryLinkReferences.new(configurations)
+
+        expect(references.chapter_perma_ids(7)).to eq([10, 11])
+        expect(references.entry_ids).to eq([7, 8])
+      end
+
+      it 'ignores chapter links signed for entry only' do
+        configurations = [
+          {'href' => {'entry' => 7, 'chapter' => 10,
+                      'signature' => EntryLinkSignature.generate(7)}}
+        ]
+
+        references = EntryLinkReferences.new(configurations)
+
+        expect(references.chapter_perma_ids(7)).to eq([])
+        expect(references.entry_ids).to eq([])
+      end
+
+      it 'returns empty array for entry without chapter links' do
+        references = EntryLinkReferences.new([])
+
+        expect(references.chapter_perma_ids(7)).to eq([])
+      end
+    end
+
+    describe '#section_perma_ids' do
+      it 'collects perma ids of signed section links per entry' do
+        configurations = [
+          {'href' => {'entry' => 7, 'section' => 20,
+                      'signature' => EntryLinkSignature.generate(7, section: 20)}}
+        ]
+
+        references = EntryLinkReferences.new(configurations)
+
+        expect(references.section_perma_ids(7)).to eq([20])
+      end
+
+      it 'ignores section links with signature of chapter' do
+        configurations = [
+          {'href' => {'entry' => 7, 'section' => 20,
+                      'signature' => EntryLinkSignature.generate(7, chapter: 20)}}
+        ]
+
+        references = EntryLinkReferences.new(configurations)
+
+        expect(references.section_perma_ids(7)).to eq([])
+      end
+    end
+
+    def chapter_href(entry_id, chapter_perma_id)
+      {'entry' => entry_id,
+       'chapter' => chapter_perma_id,
+       'signature' => EntryLinkSignature.generate(entry_id, chapter: chapter_perma_id)}
+    end
   end
 end
