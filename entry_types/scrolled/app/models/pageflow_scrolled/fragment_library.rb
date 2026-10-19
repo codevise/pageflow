@@ -35,26 +35,14 @@ module PageflowScrolled
       entry.entry_title
     end
 
-    def storylines
-      Storyline.all_for_revision(entry.draft)
-    end
-
-    def chapters
-      Chapter.all_for_revision(entry.draft)
-    end
-
-    def sections
-      Section.all_for_revision(entry.draft)
-    end
-
-    def content_elements
-      ContentElement.all_for_revision(entry.draft)
+    def content
+      @content ||= RevisionContent.new(entry.draft, include_hidden: true)
     end
 
     def copy_fragment_to(fragment_perma_id:, entry:, chapter:)
       SectionsCopy
         .new(source_entry: self.entry, destination_entry: entry)
-        .perform(chapters.find_by!(perma_id: fragment_perma_id).sections, chapter:)
+        .perform(fragment_chapter(fragment_perma_id).sections, chapter:)
     end
 
     def extract_fragment_from(entry:, chapter:, title: nil)
@@ -68,6 +56,11 @@ module PageflowScrolled
     end
 
     private
+
+    def fragment_chapter(perma_id)
+      content.chapters.find { |chapter| chapter.perma_id == perma_id.to_i } ||
+        raise(ActiveRecord::RecordNotFound)
+    end
 
     def create_entry(locale:)
       Pageflow::DraftEntry.new(
@@ -84,7 +77,7 @@ module PageflowScrolled
     end
 
     def create_fragment_chapter(chapter, title)
-      storyline = storylines.detect { |candidate| candidate.configuration['main'] }
+      storyline = content.storylines.detect { |candidate| candidate.configuration['main'] }
 
       storyline.chapters.create!(position: (storyline.chapters.maximum(:position) || -1) + 1,
                                  configuration: fragment_configuration(chapter, title))

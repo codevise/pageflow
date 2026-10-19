@@ -75,7 +75,7 @@ module PageflowScrolled
         chapter = create(:scrolled_chapter, revision: entry.draft)
         library = FragmentLibrary.new(Pageflow::DraftEntry.new(entry))
 
-        expect(library.chapters).to eq([chapter])
+        expect(library.content.chapters).to eq([chapter])
       end
     end
 
@@ -160,8 +160,9 @@ module PageflowScrolled
 
         library.extract_fragment_from(entry: Pageflow::DraftEntry.new(entry), chapter:)
 
-        expect(library.chapters.map(&:configuration)).to match([include('title' => 'Intro')])
-        expect(library.sections.count).to eq(1)
+        expect(library.content.chapters.map(&:configuration))
+          .to match([include('title' => 'Intro')])
+        expect(library.content.sections.size).to eq(1)
       end
     end
   end

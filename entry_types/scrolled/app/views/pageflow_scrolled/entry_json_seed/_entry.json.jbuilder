@@ -90,30 +90,7 @@ unless options[:skip_collections]
       end
     end
 
-    json.storylines do
-      json.array!(storylines) do |storyline|
-        json.partial! 'pageflow_scrolled/storylines/storyline', storyline:
-      end
-    end
-
-    json.chapters do
-      json.array!(chapters) do |chapter|
-        json.partial! 'pageflow_scrolled/chapters/chapter', chapter:
-      end
-    end
-
-    json.sections do
-      json.array!(sections) do |section|
-        json.partial! 'pageflow_scrolled/sections/section', section:
-      end
-    end
-
-    json.content_elements do
-      json.array!(content_elements) do |content_element|
-        json.partial! 'pageflow_scrolled/content_elements/content_element',
-                      content_element:
-      end
-    end
+    json.partial!('pageflow_scrolled/entry_json_seed/content_collections', content:)
 
     json.linked_entries(linked_entries) do |linked_entry|
       json.partial!('pageflow_scrolled/entry_json_seed/linked_entry', **linked_entry)

@@ -1,0 +1,84 @@
+require 'spec_helper'
+
+module PageflowScrolled
+  RSpec.describe RevisionContent do
+    describe '#chapters' do
+      it 'skips chapters that only contain hidden sections' do
+        revision = create(:revision)
+        chapter1 = create(:scrolled_chapter, revision:, position: 1)
+        create(:section, chapter: chapter1, configuration: {hidden: true})
+        chapter2 = create(:scrolled_chapter, revision:, position: 2)
+        create(:section, chapter: chapter2, configuration: {hidden: true})
+        create(:section, chapter: chapter2)
+        chapter3 = create(:scrolled_chapter, revision:, position: 3)
+
+        result = RevisionContent.new(revision).chapters
+
+        expect(result).to eq([chapter2, chapter3])
+      end
+
+      it 'includes chapters that only contain hidden sections if requested' do
+        revision = create(:revision)
+        chapter = create(:scrolled_chapter, revision:)
+        create(:section, chapter:, configuration: {hidden: true})
+
+        result = RevisionContent.new(revision, include_hidden: true).chapters
+
+        expect(result).to eq([chapter])
+      end
+    end
+
+    describe '#sections' do
+      it 'skips hidden sections' do
+        revision = create(:revision)
+        chapter = create(:scrolled_chapter, revision:)
+        section = create(:section, chapter:, position: 1)
+        create(:section, chapter:, position: 2, configuration: {hidden: true})
+
+        expect(RevisionContent.new(revision).sections).to eq([section])
+      end
+
+      it 'includes hidden sections if requested' do
+        revision = create(:revision)
+        chapter = create(:scrolled_chapter, revision:)
+        sections = [
+          create(:section, chapter:, position: 1),
+          create(:section, chapter:, position: 2, configuration: {hidden: true})
+        ]
+
+        expect(RevisionContent.new(revision, include_hidden: true).sections).to eq(sections)
+      end
+
+      it 'only includes sections before cutoff section if requested' do
+        revision = create(:revision)
+        chapter = create(:scrolled_chapter, revision:)
+        section = create(:section, chapter:, position: 1)
+        cutoff_section = create(:section, chapter:, position: 2)
+        revision.update!(configuration: {'cutoff_section_perma_id' => cutoff_section.perma_id})
+
+        expect(RevisionContent.new(revision, cutoff: true).sections).to eq([section])
+      end
+    end
+
+    describe '#content_elements' do
+      it 'returns content elements of sections' do
+        revision = create(:revision)
+        chapter = create(:scrolled_chapter, revision:)
+        content_element = create(:content_element, section: create(:section, chapter:))
+        create(:content_element,
+               section: create(:section, chapter:, configuration: {hidden: true}))
+
+        expect(RevisionContent.new(revision).content_elements).to eq([content_element])
+      end
+    end
+
+    describe '#storylines' do
+      it 'returns storylines of revision' do
+        revision = create(:revision)
+        storyline = create(:scrolled_storyline, revision:)
+
+        expect(RevisionContent.new(revision).storylines).to include(storyline)
+      end
+    end
+  end
+end
