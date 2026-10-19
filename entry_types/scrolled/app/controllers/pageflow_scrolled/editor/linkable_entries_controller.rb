@@ -4,6 +4,7 @@ module PageflowScrolled
     class LinkableEntriesController < ActionController::Base
       include Pageflow::EditorController
 
+      helper Pageflow::FilesHelper
       helper Pageflow::SocialShareHelper
 
       def index
@@ -13,6 +14,11 @@ module PageflowScrolled
             .order(:title),
           except: @entry
         )
+      end
+
+      def show
+        @linkable_entry = LinkableEntry.find(entries, params[:id], except: @entry)
+        head :not_found unless @linkable_entry
       end
 
       private

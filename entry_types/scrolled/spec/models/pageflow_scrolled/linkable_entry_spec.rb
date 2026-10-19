@@ -21,6 +21,47 @@ module PageflowScrolled
       end
     end
 
+    describe '.find' do
+      it 'returns linkable scrolled entry' do
+        entry = create(:entry)
+        other_entry = create(:entry, type_name: 'scrolled')
+
+        result = LinkableEntry.find(Pageflow::Entry.all, other_entry.id, except: entry)
+
+        expect(result.entry).to eq(other_entry)
+      end
+
+      it 'returns nil for entries of other types' do
+        entry = create(:entry)
+        other_entry = create(:entry, type_name: 'paged')
+
+        expect(LinkableEntry.find(Pageflow::Entry.all, other_entry.id, except: entry)).to be_nil
+      end
+
+      it 'returns nil for given entry' do
+        entry = create(:entry, type_name: 'scrolled')
+
+        expect(LinkableEntry.find(Pageflow::Entry.all, entry.id, except: entry)).to be_nil
+      end
+
+      it 'returns nil for fragment libraries' do
+        entry = create(:entry)
+        library = create(:entry, type_name: 'scrolled', fragment_library: 'shared')
+
+        expect(LinkableEntry.find(Pageflow::Entry.all, library.id, except: entry)).to be_nil
+      end
+    end
+
+    describe '#content' do
+      it 'includes hidden sections of draft' do
+        entry = create(:entry, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        section = create(:section, chapter:, configuration: {hidden: true})
+
+        expect(LinkableEntry.new(entry).content.sections).to eq([section])
+      end
+    end
+
     describe '#published_entry' do
       it 'uses published revision' do
         entry = create(:published_entry, revision_attributes: {title: 'Published'})
