@@ -1909,6 +1909,7 @@ en:
         publication_states:
           not_published: Not published yet
           published_with_password_protection: Password protected
+        section_in: Section in
         unavailable_entry: Unavailable story
         untitled_excursion: Untitled excursion
         visit_chapter: Go to chapter

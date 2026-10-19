@@ -21,7 +21,8 @@ describe('LinkTooltip', () => {
     'pageflow_scrolled.inline_editing.link_tooltip.publication_states.published_with_password_protection':
       'Password protected',
     'pageflow_scrolled.inline_editing.link_tooltip.open_preview': 'Open preview',
-    'pageflow_scrolled.inline_editing.link_tooltip.open_draft_preview': 'Open draft preview'
+    'pageflow_scrolled.inline_editing.link_tooltip.open_draft_preview': 'Open draft preview',
+    'pageflow_scrolled.inline_editing.link_tooltip.section_in': 'Section in'
   });
 
   beforeEach(() => {
@@ -323,6 +324,46 @@ describe('LinkTooltip', () => {
       await user.hover(getByText('A link'));
 
       expect(getByText('Unavailable story')).toBeInTheDocument();
+    });
+    describe('with chapter or section', () => {
+      const linkedEntry = {
+        title: 'Other story',
+        url: 'https://example.com/other',
+        previewUrl: '/admin/entries/other/preview',
+        publicationState: 'published_without_password_protection'
+      };
+
+      it('displays chapter title linking to chapter', async () => {
+        const {getByText, getByRole} = renderLinkPreview({entry: 7, chapter: 20}, {
+          linkedEntry: {
+            ...linkedEntry,
+            chapters: [{permaId: 20, title: 'Intro', slug: 'intro', previewSlug: 'new-intro'}]
+          }
+        });
+
+        const user = userEvent.setup();
+        await user.hover(getByText('A link'));
+
+        expect(getByRole('link', {name: 'Other story › Intro'}))
+          .toHaveAttribute('href', 'https://example.com/other#intro');
+        expect(getByRole('link', {name: 'Open draft preview'}))
+          .toHaveAttribute('href', '/admin/entries/other/preview#new-intro');
+      });
+
+      it('displays section hint', async () => {
+        const {getByText, getByRole} = renderLinkPreview({entry: 7, section: 30}, {
+          linkedEntry
+        });
+
+        const user = userEvent.setup();
+        await user.hover(getByText('A link'));
+
+        expect(getByText('Section in', {exact: false})).toBeInTheDocument();
+        expect(getByRole('link', {name: 'Other story'}))
+          .toHaveAttribute('href', 'https://example.com/other#section-30');
+        expect(getByRole('link', {name: 'Open draft preview'}))
+          .toHaveAttribute('href', '/admin/entries/other/preview#section-30');
+      });
     });
   });
 

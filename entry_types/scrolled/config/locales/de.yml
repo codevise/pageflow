@@ -2083,6 +2083,7 @@ de:
         publication_states:
           not_published: Noch nicht veröffentlicht
           published_with_password_protection: Passwortgeschützt
+        section_in: Abschnitt in
         unavailable_entry: Nicht verfügbarer Beitrag
         untitled_excursion: Unbenannter Exkurs
         visit_chapter: Gehe zu Kapitel

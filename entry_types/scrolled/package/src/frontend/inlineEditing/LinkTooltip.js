@@ -6,7 +6,7 @@ import {useI18n} from '../i18n';
 import {
   useChapter,
   useDownloadableFile,
-  useLinkedEntry,
+  useLinkedEntryDestination,
   useMainStoryline
 } from 'pageflow-scrolled/entryState';
 import {SectionThumbnail} from '../SectionThumbnail';
@@ -59,7 +59,7 @@ export function LinkTooltip({disabled, setFloating, floatingStyles, floatingCont
 function LinkDestination({href, openInNewTab}) {
   if (href?.entry) {
     return (
-      <LinkedEntryLinkDestination entryId={href.entry} openInNewTab={openInNewTab} />
+      <LinkedEntryLinkDestination href={href} openInNewTab={openInNewTab} />
     );
   }
   else if (href?.chapter) {
@@ -133,31 +133,44 @@ function SectionLinkDestination({permaId}) {
   );
 }
 
-function LinkedEntryLinkDestination({entryId, openInNewTab}) {
-  const linkedEntry = useLinkedEntry(entryId);
+function LinkedEntryLinkDestination({href, openInNewTab}) {
+  const destination = useLinkedEntryDestination(href);
   const {t} = useI18n({locale: 'ui'});
 
-  if (!linkedEntry) {
+  if (!destination) {
     return (
       <span>{t('pageflow_scrolled.inline_editing.link_tooltip.unavailable_entry')}</span>
     );
   }
 
+  const {linkedEntry} = destination;
+
   return (
     <>
       <div className={styles.entry}>
+        {destination.section &&
+         <span>{t('pageflow_scrolled.inline_editing.link_tooltip.section_in')}</span>}
         {linkedEntry.publicationState === 'not_published' ?
-         <span>{linkedEntry.title}</span> :
-         <a href={linkedEntry.url}
+         <span><LinkedEntryDestinationTitle destination={destination} /></span> :
+         <a href={destination.url}
             target="_blank"
             rel="noopener noreferrer">
-           {linkedEntry.title}
+           <LinkedEntryDestinationTitle destination={destination} />
            <ExternalLinkIcon width={10} height={10} />
          </a>}
         {linkedEntry.previewUrl && <PublicationStatePill linkedEntry={linkedEntry} />}
       </div>
-      {linkedEntry.previewUrl && <PreviewLink linkedEntry={linkedEntry} />}
+      {linkedEntry.previewUrl && <PreviewLink destination={destination} />}
       <NewTabHint openInNewTab={openInNewTab} />
+    </>
+  );
+}
+
+function LinkedEntryDestinationTitle({destination}) {
+  return (
+    <>
+      {destination.linkedEntry.title}
+      {destination.chapter?.title && <> › {destination.chapter.title}</>}
     </>
   );
 }
@@ -178,15 +191,15 @@ function PublicationStatePill({linkedEntry}) {
 
 const pillPublicationStates = ['not_published', 'published_with_password_protection'];
 
-function PreviewLink({linkedEntry}) {
+function PreviewLink({destination}) {
   const {t} = useI18n({locale: 'ui'});
 
   return (
     <div className={styles.previewLink}>
-      <a href={linkedEntry.previewUrl}
+      <a href={destination.previewUrl}
          target="_blank"
          rel="noopener noreferrer">
-        {linkedEntry.publicationState === 'not_published' ?
+        {destination.linkedEntry.publicationState === 'not_published' ?
          t('pageflow_scrolled.inline_editing.link_tooltip.open_preview') :
          t('pageflow_scrolled.inline_editing.link_tooltip.open_draft_preview')}
         <ExternalLinkIcon width={10} height={10} />

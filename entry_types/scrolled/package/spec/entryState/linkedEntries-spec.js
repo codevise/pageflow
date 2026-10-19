@@ -1,4 +1,9 @@
-import {useLinkedEntry, useLinkedEntryUrl, watchCollections} from 'entryState';
+import {
+  useLinkedEntry,
+  useLinkedEntryDestination,
+  useLinkedEntryUrl,
+  watchCollections
+} from 'entryState';
 
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 
@@ -16,6 +21,66 @@ describe('useLinkedEntry', () => {
     );
 
     expect(result.current).toMatchObject({title: 'Other'});
+  });
+});
+
+describe('useLinkedEntryDestination', () => {
+  function renderDestination(href, linkedEntry) {
+    return renderHookInEntry(
+      () => useLinkedEntryDestination(href), {
+        seed: {
+          linkedEntries: [{
+            id: 5,
+            url: 'https://example.com/other',
+            previewUrl: '/admin/entries/other/preview',
+            ...linkedEntry
+          }]
+        }
+      }
+    ).result.current;
+  }
+
+  it('returns undefined for unknown entry', () => {
+    expect(renderDestination({entry: 6})).toBeUndefined();
+  });
+
+  it('returns urls of entry', () => {
+    expect(renderDestination({entry: 5})).toMatchObject({
+      url: 'https://example.com/other',
+      previewUrl: '/admin/entries/other/preview'
+    });
+  });
+
+  it('returns chapter with published and preview anchors', () => {
+    const destination = renderDestination({entry: 5, chapter: 20}, {
+      chapters: [{permaId: 20, title: 'Intro', slug: 'old', previewSlug: 'new'}]
+    });
+
+    expect(destination).toMatchObject({
+      url: 'https://example.com/other#old',
+      previewUrl: '/admin/entries/other/preview#new',
+      chapter: {title: 'Intro'}
+    });
+  });
+
+  it('returns urls without anchor for unknown chapters', () => {
+    const destination = renderDestination({entry: 5, chapter: 20});
+
+    expect(destination).toMatchObject({
+      url: 'https://example.com/other',
+      previewUrl: '/admin/entries/other/preview',
+      chapter: undefined
+    });
+  });
+
+  it('returns section anchors', () => {
+    const destination = renderDestination({entry: 5, section: 30});
+
+    expect(destination).toMatchObject({
+      url: 'https://example.com/other#section-30',
+      previewUrl: '/admin/entries/other/preview#section-30',
+      section: true
+    });
   });
 });
 
