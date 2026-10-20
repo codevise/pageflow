@@ -5,6 +5,8 @@ import {cssModulesUtils} from 'pageflow/ui';
 
 import {SectionThumbnailView} from './SectionThumbnailView';
 
+import hiddenIcon from './images/hidden.svg';
+
 import baseStyles from './SectionItemView.module.css';
 import styles from './SelectableSectionItemView.module.css';
 
@@ -13,7 +15,8 @@ export const SelectableSectionItemView = Marionette.ItemView.extend({
 
   className() {
     return classNames(baseStyles.root, {
-      [styles.selectable]: !this.options.mode
+      [styles.selectable]: !this.options.mode,
+      [baseStyles.hidden]: this.model.configuration.get('hidden')
     });
   },
 
@@ -21,6 +24,13 @@ export const SelectableSectionItemView = Marionette.ItemView.extend({
     <div class="${styles.outline} ${baseStyles.outline}">
       <div class="${baseStyles.thumbnailContainer}">
         <div class="${baseStyles.thumbnail}"></div>
+        ${data.hidden ? `
+          <img class="${baseStyles.hiddenIndicator}"
+               title="${I18n.t('pageflow_scrolled.editor.section_item.hidden')}"
+               src="${hiddenIcon}"
+               width="30"
+               height="30">
+        ` : ''}
         ${data.mode === 'insertPosition' ? `
           <a class="${styles.insertBeforeMask}" href="">
             <span class="${styles.indicatorTooltipTop}">
@@ -57,7 +67,8 @@ export const SelectableSectionItemView = Marionette.ItemView.extend({
 
   serializeData() {
     return {
-      mode: this.options.mode
+      mode: this.options.mode,
+      hidden: this.model.configuration.get('hidden')
     };
   },
 

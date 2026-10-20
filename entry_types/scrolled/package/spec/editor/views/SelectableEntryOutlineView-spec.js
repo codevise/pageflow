@@ -20,7 +20,8 @@ describe('SelectableEntryOutlineView', () => {
     'pageflow_scrolled.editor.selectable_section_item.insert_at_beginning': 'Move to beginning',
     'pageflow_scrolled.editor.selectable_section_item.insert_at_end': 'Move to end',
     'pageflow_scrolled.editor.storylines_tabs.main': 'Outline',
-    'pageflow_scrolled.editor.storylines_tabs.excursions': 'Excursions'
+    'pageflow_scrolled.editor.storylines_tabs.excursions': 'Excursions',
+    'pageflow_scrolled.editor.section_item.hidden': 'Hidden section'
   });
 
   describe('in default mode', () => {
@@ -43,6 +44,27 @@ describe('SelectableEntryOutlineView', () => {
       await user.click(getByTitle('Select chapter'));
 
       expect(listener).toHaveBeenCalledWith(entry.chapters.get(1));
+    });
+
+    it('marks hidden sections', () => {
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          chapters: [{id: 1, permaId: 10}],
+          sections: [
+            {id: 1, permaId: 100, chapterId: 1, position: 0, configuration: {hidden: true}},
+            {id: 2, permaId: 101, chapterId: 1, position: 1}
+          ]
+        })
+      });
+      const view = new SelectableEntryOutlineView({
+        entry,
+        onSelectChapter: jest.fn(),
+        onSelectSection: jest.fn()
+      });
+
+      const {getAllByTitle} = render(view);
+
+      expect(getAllByTitle('Hidden section')).toHaveLength(1);
     });
 
     it('allows selecting section', async () => {
