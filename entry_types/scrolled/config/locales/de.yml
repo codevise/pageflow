@@ -1488,6 +1488,7 @@ de:
         edit_header: Link bearbeiten
         file: Datei
         header: Link erstellen
+        inaccessible_entry: Dieser Link verweist auf den Beitrag „%{title}“, auf den du keinen Zugriff hast. Wähle einen anderen Beitrag aus, um den Link zu ändern.
         kinds:
           file:
             description: Lasse Leser eine Datei herunterladen
@@ -1501,8 +1502,11 @@ de:
           url:
             description: Verlinke eine beliebige Seite im Internet
             title: Andere Website
+        link_to_beginning_of_entry: Stattdessen mit Beginn des Beitrags verlinken
+        link_to_chapter_or_section: Mit Kapitel oder Abschnitt des Beitrags verlinken
         no_file_selected: Keine Datei ausgewählt
         open_in_new_tab: In neuem Tab öffnen
+        outline_failed: Die Gliederung des Beitrags konnte nicht geladen werden.
         remove: Link entfernen
         save: Speichern
         select_in_sidebar: Datei auswählen
@@ -2079,6 +2083,7 @@ de:
         publication_states:
           not_published: Noch nicht veröffentlicht
           published_with_password_protection: Passwortgeschützt
+        section_in: Abschnitt in
         unavailable_entry: Nicht verfügbarer Beitrag
         untitled_excursion: Unbenannter Exkurs
         visit_chapter: Gehe zu Kapitel
@@ -2185,3 +2190,4 @@ de:
         open_draft_preview: Vorschau des Entwurfs öffnen
         open_preview: Vorschau öffnen
         password_protected: Passwortgeschützt
+        section_in: Abschnitt in

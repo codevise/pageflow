@@ -1,9 +1,15 @@
+@value selectionColor from './colors.module.css';
 @value insertLineWidth, insertLineColor from './insertIndicator.module.css';
 
 .root {
   max-width: 300px;
   margin-inline: auto;
   position: relative;
+}
+
+.selected {
+  box-shadow: 0 0 0 2px selectionColor;
+  background-color: var(--ui-selection-color-lighter);
 }
 
 .empty {

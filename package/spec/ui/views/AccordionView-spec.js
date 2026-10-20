@@ -153,4 +153,23 @@ describe('AccordionView', () => {
     expect(getByText('First content').closest('.accordion_view-section'))
       .toHaveClass('accordion_view-section-fill');
   });
+
+  describe('#setSectionFill', () => {
+    it('lets section fill remaining height', () => {
+      const view = new AccordionView({
+        selectionModel: new Backbone.Model({kind: 'url'}),
+        selectionPropertyName: 'kind'
+      });
+
+      view.section('Website', {value: 'url'}, function() {
+        this.view(TextView, {text: 'Website content'});
+      });
+
+      const {getByText} = renderBackboneView(view);
+      view.setSectionFill('url', true);
+
+      expect(getByText('Website content').closest('.accordion_view-section'))
+        .toHaveClass('accordion_view-section-fill');
+    });
+  });
 });

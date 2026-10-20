@@ -1470,6 +1470,7 @@ en:
         edit_header: Edit link
         file: File
         header: Create link
+        inaccessible_entry: This link points to the story "%{title}" which you cannot access. Select another story to change the link.
         kinds:
           file:
             description: Let readers download a file
@@ -1483,8 +1484,11 @@ en:
           url:
             description: Link to any page on the internet
             title: Other website
+        link_to_beginning_of_entry: Link to beginning of story instead
+        link_to_chapter_or_section: Link to chapter or section of story
         no_file_selected: No file selected
         open_in_new_tab: Open in new tab
+        outline_failed: The outline of the story could not be loaded.
         remove: Remove link
         save: Save
         select_in_sidebar: Select file
@@ -1905,6 +1909,7 @@ en:
         publication_states:
           not_published: Not published yet
           published_with_password_protection: Password protected
+        section_in: Section in
         unavailable_entry: Unavailable story
         untitled_excursion: Untitled excursion
         visit_chapter: Go to chapter
@@ -2011,3 +2016,4 @@ en:
         open_draft_preview: Open draft preview
         open_preview: Open preview
         password_protected: Password protected
+        section_in: Section in

@@ -2,8 +2,54 @@
   display: flex;
   flex-direction: column;
   gap: space(3);
+  flex: 1;
+  min-height: 0;
+}
+
+.inaccessibleEntryNotice {
+  margin: 0;
 }
 
 .entrySelectContainer {}
 
 .openInNewTabContainer {}
+
+.textButton {
+  composes: unstyledButton from './buttons.module.css';
+  align-self: flex-start;
+  padding: 0;
+  background: transparent;
+  color: var(--ui-primary-color);
+  cursor: pointer;
+}
+
+.textButton::before {
+  margin-right: space(2);
+}
+
+.textButton[hidden] {
+  display: none;
+}
+
+.expandButton {
+  composes: textButton;
+  composes: rightOpen icon from './icons.module.css';
+}
+
+.collapseButton {
+  composes: textButton;
+  composes: cancel icon from './icons.module.css';
+}
+
+.outlineContainer {
+  flex: 1;
+  container-type: size;
+}
+
+.outlineContainer[hidden] {
+  display: none;
+}
+
+.outlineError {
+  color: var(--ui-error-color);
+}

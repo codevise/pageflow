@@ -1,19 +1,13 @@
-import slugify from 'slugify';
+import {slugify} from './slugify';
 
 export function getChapterSlugs(chapters) {
   const result = {};
   const usedSlugs = {};
 
   chapters.forEach(chapter => {
-    let chapterSlug = chapter.configuration.title;
+    let chapterSlug = chapter.configuration.title && slugify(chapter.configuration.title);
 
     if (chapterSlug) {
-      chapterSlug = slugify(chapterSlug, {
-        lower: true,
-        locale: 'de',
-        strict: true
-      });
-
       if (usedSlugs[chapterSlug]) {
         chapterSlug = chapterSlug + '-' + chapter.permaId;
       }

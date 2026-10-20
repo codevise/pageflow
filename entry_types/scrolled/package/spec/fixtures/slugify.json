@@ -1,0 +1,126 @@
+[
+  {
+    "title": "My Chapter",
+    "slug": "my-chapter"
+  },
+  {
+    "title": "Über uns & mehr!",
+    "slug": "ueber-uns-und-mehr"
+  },
+  {
+    "title": "Straße & Co.",
+    "slug": "strasse-und-co"
+  },
+  {
+    "title": "Ölförderung",
+    "slug": "oelfoerderung"
+  },
+  {
+    "title": "Привет мир",
+    "slug": "privet-mir"
+  },
+  {
+    "title": "Ελληνικά",
+    "slug": "ellhnika"
+  },
+  {
+    "title": "中文标题",
+    "slug": ""
+  },
+  {
+    "title": "😀 Emoji",
+    "slug": "emoji"
+  },
+  {
+    "title": "  Leading  and   trailing  ",
+    "slug": "leading-and-trailing"
+  },
+  {
+    "title": "Non breaking space",
+    "slug": "non-breaking-space"
+  },
+  {
+    "title": "Mixed—dash – and - hyphen",
+    "slug": "mixeddash-and-hyphen"
+  },
+  {
+    "title": "It's \"quoted\"",
+    "slug": "its-quoted"
+  },
+  {
+    "title": "$100 % off",
+    "slug": "dollar100-prozent-off"
+  },
+  {
+    "title": "Ь",
+    "slug": ""
+  },
+  {
+    "title": "À la carte",
+    "slug": "a-la-carte"
+  },
+  {
+    "title": "Đà Nẵng",
+    "slug": "dja-nang"
+  },
+  {
+    "title": "Ünïcödé",
+    "slug": "uenicoede"
+  },
+  {
+    "title": "tab\tseparated",
+    "slug": "tab-separated"
+  },
+  {
+    "title": "a.b,c;d",
+    "slug": "abcd"
+  },
+  {
+    "title": "___",
+    "slug": ""
+  },
+  {
+    "title": "Kapitel 1: Einleitung",
+    "slug": "kapitel-1-einleitung"
+  },
+  {
+    "title": "100€ für 5£",
+    "slug": "100euro-fuer-5pound"
+  },
+  {
+    "title": "♥ love ♥",
+    "slug": "liebe-love-liebe"
+  },
+  {
+    "title": "Ǉubljana",
+    "slug": "ubljana"
+  },
+  {
+    "title": "ﷺ test",
+    "slug": "test"
+  },
+  {
+    "title": "Fragen & Antworten",
+    "slug": "fragen-und-antworten"
+  },
+  {
+    "title": "50 % Rabatt",
+    "slug": "50-prozent-rabatt"
+  },
+  {
+    "title": "Ja | Nein",
+    "slug": "ja-oder-nein"
+  },
+  {
+    "title": "Müller",
+    "slug": "mueller"
+  },
+  {
+    "title": "Vorher – nachher",
+    "slug": "vorher-nachher"
+  },
+  {
+    "title": "Zitat „Hallo“",
+    "slug": "zitat-hallo"
+  }
+]

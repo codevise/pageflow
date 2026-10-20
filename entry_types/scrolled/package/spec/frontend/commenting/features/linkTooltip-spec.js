@@ -14,10 +14,11 @@ describe('link tooltip in commenting mode', () => {
     'pageflow_scrolled.review.link_tooltip.password_protected': 'Password protected',
     'pageflow_scrolled.review.link_tooltip.open_preview': 'Open preview',
     'pageflow_scrolled.review.link_tooltip.open_draft_preview': 'Open draft preview',
+    'pageflow_scrolled.review.link_tooltip.section_in': 'Section in',
     'pageflow_scrolled.inline_editing.link_tooltip.opens_in_same_tab': 'Opens in same tab'
   });
 
-  function renderLink(href, {publicationState = 'not_published'} = {}) {
+  function renderLink(href, {publicationState = 'not_published', chapters} = {}) {
     return renderEntry({
       seed: {
         linkedEntries: [{
@@ -25,7 +26,8 @@ describe('link tooltip in commenting mode', () => {
           title: 'Other story',
           url: 'https://example.com/other',
           previewUrl: '/admin/entries/other/preview',
-          publicationState
+          publicationState,
+          chapters
         }]
       },
       contentElement: {ui: <Link href={href}>A link</Link>}
@@ -91,5 +93,44 @@ describe('link tooltip in commenting mode', () => {
     await user.hover(entry.getByText('A link'));
 
     expect(entry.getAllByRole('link')).toHaveLength(1);
+  });
+
+  describe('with chapter or section', () => {
+    it('offers preview of chapter', async () => {
+      const user = userEvent.setup();
+      const entry = renderLink({entry: 7, chapter: 20, signature: 's'}, {
+        chapters: [{permaId: 20, title: 'New chapter', slug: 'new-chapter',
+                    previewSlug: 'new-chapter'}]
+      });
+
+      await user.hover(entry.getByText('A link'));
+
+      expect(entry.getByText('Other story › New chapter')).toBeInTheDocument();
+      expect(entry.getByRole('link', {name: 'Open preview'}))
+        .toHaveAttribute('href', '/admin/entries/other/preview#new-chapter');
+    });
+
+    it('offers preview of section', async () => {
+      const user = userEvent.setup();
+      const entry = renderLink({entry: 7, section: 30, signature: 's'});
+
+      await user.hover(entry.getByText('A link'));
+
+      expect(entry.getByText('Section in Other story')).toBeInTheDocument();
+      expect(entry.getByRole('link', {name: 'Open preview'}))
+        .toHaveAttribute('href', '/admin/entries/other/preview#section-30');
+    });
+
+    it('does not display tooltip for chapters of published entries', async () => {
+      const user = userEvent.setup();
+      const entry = renderLink({entry: 7, chapter: 20, signature: 's'}, {
+        publicationState: 'published_without_password_protection',
+        chapters: [{permaId: 20, title: 'Intro', slug: 'intro', previewSlug: 'intro'}]
+      });
+
+      await user.hover(entry.getByText('A link'));
+
+      expect(entry.getAllByRole('link')).toHaveLength(1);
+    });
   });
 });

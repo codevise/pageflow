@@ -111,6 +111,30 @@ module PageflowScrolled
                              })
         end
 
+        it 'renders chapter slugs' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          chapters = [
+            create(:scrolled_chapter,
+                   revision: entry.revision,
+                   position: 1,
+                   configuration: {title: 'Intro'}),
+            create(:scrolled_chapter,
+                   revision: entry.revision,
+                   position: 2,
+                   configuration: {title: 'Intro'})
+          ]
+
+          result = render(helper, entry)
+
+          expect(result)
+            .to include_json(collections: {
+                               chapters: [
+                                 {chapterSlug: 'intro'},
+                                 {chapterSlug: "intro-#{chapters[1].perma_id}"}
+                               ]
+                             })
+        end
+
         it 'orders chapters according to position attribute' do
           entry = create(:published_entry, type_name: 'scrolled')
           chapter1 = create(:scrolled_chapter, revision: entry.revision, position: 4)
@@ -1757,7 +1781,7 @@ module PageflowScrolled
           expect(result).to include_json(collections: {linkedEntries: []})
         end
 
-        it 'renders ids, titles and urls of published linked entries' do
+        it 'renders ids and urls of published linked entries' do
           account = create(:account)
           linked_entry = create(:published_entry,
                                 type_name: 'scrolled',
@@ -1775,14 +1799,13 @@ module PageflowScrolled
                                              {
                                                id: linked_entry.id,
                                                permaId: linked_entry.id,
-                                               title: 'linked-entry',
                                                url: 'http://test.host/linked-entry'
                                              }
                                            ]
                                          })
         end
 
-        it 'does not render preview urls in published entry' do
+        it 'does not render titles and preview urls in published entry' do
           account = create(:account)
           linked_entry = create(:published_entry, type_name: 'scrolled', account:)
           entry = create(:published_entry, type_name: 'scrolled', account:)
@@ -1793,7 +1816,7 @@ module PageflowScrolled
           result = render(helper, entry)
 
           expect(JSON.parse(result)['collections']['linkedEntries'][0].keys)
-            .to contain_exactly('id', 'permaId', 'title', 'url')
+            .to contain_exactly('id', 'permaId', 'url')
         end
 
         it 'renders future url of unpublished linked entry of published entry' do
@@ -1943,18 +1966,195 @@ module PageflowScrolled
           )
         end
 
-        it 'renders signatures for draft entry to let editors link entries again' do
+        it 'renders entry titles instead of revision titles for draft entry' do
           account = create(:account)
-          linked_entry = create(:published_entry, type_name: 'scrolled', account:)
+          linked_entry = create(:published_entry,
+                                type_name: 'scrolled',
+                                account:,
+                                title: 'entry-title',
+                                revision_attributes: {title: 'Revision title'})
           entry = create(:draft_entry, type_name: 'scrolled', account:)
           create(:content_element,
                  revision: entry.revision,
                  configuration: {value: [link_node(entry_id: linked_entry.id)]})
 
           result = render(helper, entry)
-          signature = JSON.parse(result)['collections']['linkedEntries'][0]['signature']
 
-          expect(EntryLinkSignature.valid?(linked_entry.id, signature)).to eq(true)
+          expect(result).to include_json(collections: {
+                                           linkedEntries: [{title: 'entry-title'}]
+                                         })
+        end
+
+        context 'with links to chapters and sections' do
+          it 'renders only slug of linked chapter in published entry' do
+            account = create(:account)
+            linked_entry = create(:published_entry, type_name: 'scrolled', account:)
+            create(:scrolled_chapter,
+                   revision: linked_entry.revision,
+                   position: 1,
+                   configuration: {title: 'Intro'})
+            chapter = create(:scrolled_chapter,
+                             revision: linked_entry.revision,
+                             position: 2,
+                             configuration: {title: 'Intro'})
+            entry = create(:published_entry, type_name: 'scrolled', account:)
+            create(:content_element,
+                   revision: entry.revision,
+                   configuration: {value: [chapter_link_node(linked_entry, chapter)]})
+
+            result = render(helper, entry)
+
+            expect(JSON.parse(result)['collections']['linkedEntries'][0]['chapters'])
+              .to eq([{'permaId' => chapter.perma_id, 'slug' => "intro-#{chapter.perma_id}"}])
+          end
+
+          it 'renders slug of draft for chapters not published yet' do
+            account = create(:account)
+            linked_entry = create(:published_entry, type_name: 'scrolled', account:)
+            chapter = create(:scrolled_chapter,
+                             revision: linked_entry.entry.draft,
+                             configuration: {title: 'New chapter'})
+            entry = create(:published_entry, type_name: 'scrolled', account:)
+            create(:content_element,
+                   revision: entry.revision,
+                   configuration: {value: [chapter_link_node(linked_entry, chapter)]})
+
+            result = render(helper, entry)
+
+            expect(JSON.parse(result)['collections']['linkedEntries'][0]['chapters'])
+              .to eq([{'permaId' => chapter.perma_id, 'slug' => 'new-chapter'}])
+          end
+
+          it 'skips chapters that do not exist anymore' do
+            account = create(:account)
+            linked_entry = create(:published_entry, type_name: 'scrolled', account:)
+            entry = create(:published_entry, type_name: 'scrolled', account:)
+            create(:content_element,
+                   revision: entry.revision,
+                   configuration: {
+                     value: [chapter_link_node(linked_entry, double(perma_id: 1234))]
+                   })
+
+            result = render(helper, entry)
+
+            expect(JSON.parse(result)['collections']['linkedEntries'][0])
+              .not_to have_key('chapters')
+          end
+
+          it 'skips chapters with invalid signature' do
+            account = create(:account)
+            linked_entry = create(:published_entry, type_name: 'scrolled', account:)
+            chapter = create(:scrolled_chapter, revision: linked_entry.revision)
+            entry = create(:published_entry, type_name: 'scrolled', account:)
+            create(:content_element,
+                   revision: entry.revision,
+                   configuration: {
+                     value: [{
+                       type: 'link',
+                       href: {entry: linked_entry.id,
+                              chapter: chapter.perma_id,
+                              signature: EntryLinkSignature.generate(linked_entry.id)},
+                       children: [{text: 'Link'}]
+                     }]
+                   })
+
+            result = render(helper, entry)
+
+            expect(JSON.parse(result)['collections']['linkedEntries']).to eq([])
+          end
+
+          it 'renders titles and preview slugs of chapters for draft entry' do
+            account = create(:account)
+            linked_entry = create(:published_entry, type_name: 'scrolled', account:)
+            published_chapter = create(:scrolled_chapter,
+                                       revision: linked_entry.revision,
+                                       configuration: {title: 'Old title'})
+            create(:scrolled_chapter,
+                   revision: linked_entry.entry.draft,
+                   perma_id: published_chapter.perma_id,
+                   configuration: {title: 'New title'})
+            entry = create(:draft_entry, type_name: 'scrolled', account:)
+            create(:content_element,
+                   revision: entry.revision,
+                   configuration: {value: [chapter_link_node(linked_entry, published_chapter)]})
+
+            result = render(helper, entry)
+
+            expect(JSON.parse(result)['collections']['linkedEntries'][0]['chapters'])
+              .to eq([{
+                       'permaId' => published_chapter.perma_id,
+                       'slug' => 'old-title',
+                       'previewSlug' => 'new-title',
+                       'title' => 'New title'
+                     }])
+          end
+
+          it 'renders preview data for published entry with custom revision' do
+            account = create(:account)
+            linked_entry = create(:published_entry,
+                                  type_name: 'scrolled',
+                                  account:,
+                                  title: 'linked-entry')
+            chapter = create(:scrolled_chapter,
+                             revision: linked_entry.entry.draft,
+                             configuration: {title: 'New chapter'})
+            entry = create(:entry, type_name: 'scrolled', account:)
+            create(:content_element,
+                   revision: entry.draft,
+                   configuration: {value: [chapter_link_node(linked_entry, chapter)]})
+
+            result = render(helper, Pageflow::PublishedEntry.new(entry, entry.draft))
+
+            expect(result).to include_json(
+              collections: {
+                linkedEntries: [{
+                  previewUrl: '/admin/entries/linked-entry/preview',
+                  publicationState: 'published_without_password_protection',
+                  chapters: [{
+                    permaId: chapter.perma_id,
+                    title: 'New chapter',
+                    previewSlug: 'new-chapter'
+                  }]
+                }]
+              }
+            )
+          end
+
+          it 'renders entries of section links without sections' do
+            account = create(:account)
+            linked_entry = create(:published_entry, type_name: 'scrolled', account:)
+            section = create(:section,
+                             chapter: create(:scrolled_chapter, revision: linked_entry.revision))
+            entry = create(:draft_entry, type_name: 'scrolled', account:)
+            create(:content_element,
+                   revision: entry.revision,
+                   configuration: {value: [section_link_node(linked_entry, section)]})
+
+            result = render(helper, entry)
+
+            expect(JSON.parse(result)['collections']['linkedEntries'])
+              .to match([include('id' => linked_entry.id)])
+            expect(JSON.parse(result)['collections']['linkedEntries'][0])
+              .not_to have_key('sections')
+          end
+
+          def chapter_link_node(linked_entry, chapter)
+            {type: 'link',
+             href: {entry: linked_entry.id,
+                    chapter: chapter.perma_id,
+                    signature: EntryLinkSignature.generate(linked_entry.id,
+                                                           chapter: chapter.perma_id)},
+             children: [{text: 'Link'}]}
+          end
+
+          def section_link_node(linked_entry, section)
+            {type: 'link',
+             href: {entry: linked_entry.id,
+                    section: section.perma_id,
+                    signature: EntryLinkSignature.generate(linked_entry.id,
+                                                           section: section.perma_id)},
+             children: [{text: 'Link'}]}
+          end
         end
 
         def link_node(entry_id:, signature: PageflowScrolled::EntryLinkSignature.generate(entry_id))

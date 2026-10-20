@@ -17,7 +17,7 @@ module PageflowScrolled
         expect(response.status).to eq(401)
       end
 
-      it 'lists ids, titles and urls of other entries of account' do
+      it 'lists ids, titles, urls and publication states of other entries of site' do
         user = create(:user)
         account = create(:account, with_previewer: user)
         entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
@@ -28,7 +28,6 @@ module PageflowScrolled
 
         expect(response.body).to include_json([{
                                                 id: other_entry.id,
-                                                permaId: other_entry.id,
                                                 title: 'Other story',
                                                 url: 'http://test.host/other-story',
                                                 previewUrl: '/admin/entries/other-story/preview',
@@ -36,22 +35,35 @@ module PageflowScrolled
                                               }])
       end
 
-      it 'uses title of published revision like seed' do
+      it 'renders type names of entries' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
+        create(:entry, type_name: 'paged', account:)
+
+        sign_in_and_lock(entry, user)
+        get(:index, params: {entry_type: 'scrolled', entry_id: entry}, format: 'json')
+
+        expect(response.body).to include_json([{typeName: 'paged'}])
+      end
+
+      it 'uses title of entry instead of revision' do
         user = create(:user)
         account = create(:account, with_previewer: user)
         entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
         other_entry = create(:published_entry,
                              type_name: 'scrolled',
                              account:,
+                             site: entry.site,
+                             title: 'entry-title',
                              revision_attributes: {title: 'Revision title'})
-        other_entry.entry.update!(title: 'entry-title')
 
         sign_in_and_lock(entry, user)
         get(:index, params: {entry_type: 'scrolled', entry_id: entry}, format: 'json')
 
         expect(response.body).to include_json([{
                                                 id: other_entry.id,
-                                                title: 'Revision title'
+                                                title: 'entry-title'
                                               }])
       end
 
@@ -79,11 +91,11 @@ module PageflowScrolled
         expect(JSON.parse(response.body)).to be_empty
       end
 
-      it 'skips entries of other accounts' do
+      it 'skips entries of other sites' do
         user = create(:user)
         account = create(:account, with_previewer: user)
         entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
-        create(:entry, type_name: 'scrolled', account: create(:account, with_previewer: user))
+        create(:entry, type_name: 'scrolled', account:, site: create(:site, account:))
 
         sign_in_and_lock(entry, user)
         get(:index, params: {entry_type: 'scrolled', entry_id: entry}, format: 'json')
@@ -125,12 +137,11 @@ module PageflowScrolled
         get(:index, params: {entry_type: 'scrolled', entry_id: entry}, format: 'json')
 
         expect(response.body).to include_json([{
-                                                title: 'Paged story',
-                                                url: 'http://test.host/paged-story'
+                                                title: 'Paged story'
                                               }])
       end
 
-      it 'lists entries of account for admins' do
+      it 'lists entries of site for admins' do
         user = create(:user, :admin)
         account = create(:account)
         entry = create(:entry, type_name: 'scrolled', account:)
@@ -154,6 +165,171 @@ module PageflowScrolled
         get(:index, params: {entry_type: 'scrolled', entry_id: entry}, format: 'json')
 
         expect(response.body).to include_json([{title: 'Aardvark'}, {title: 'Zebra'}])
+      end
+    end
+
+    describe '#show' do
+      it 'renders draft structure of linked entry' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
+        linked_entry = create(:entry, type_name: 'scrolled', account:)
+        chapter = create(:scrolled_chapter,
+                         revision: linked_entry.draft,
+                         configuration: {title: 'Intro'})
+        section = create(:section, chapter:)
+        create(:content_element, :heading, section:)
+
+        sign_in_and_lock(entry, user)
+        get(:show,
+            params: {entry_type: 'scrolled', entry_id: entry, id: linked_entry.id},
+            format: 'json')
+
+        expect(response.body).to include_json(
+          collections: {
+            chapters: [{permaId: chapter.perma_id, chapterSlug: 'intro'}],
+            sections: [{permaId: section.perma_id}],
+            contentElements: [{typeName: 'heading'}]
+          }
+        )
+      end
+
+      it 'renders chapters and sections of linked entry' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
+        linked_entry = create(:entry, type_name: 'scrolled', account:)
+        chapter = create(:scrolled_chapter,
+                         revision: linked_entry.draft,
+                         configuration: {title: 'Intro'})
+        section = create(:section, chapter:)
+
+        sign_in_and_lock(entry, user)
+        get(:show,
+            params: {entry_type: 'scrolled', entry_id: entry, id: linked_entry.id},
+            format: 'json')
+
+        expect(response.body).to include_json(
+          id: linked_entry.id,
+          typeName: 'scrolled',
+          chapters: [{permaId: chapter.perma_id, title: 'Intro', slug: 'intro'}],
+          sections: [{permaId: section.perma_id}]
+        )
+      end
+
+      it 'renders signatures for chapters and sections' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
+        linked_entry = create(:entry, type_name: 'scrolled', account:)
+        chapter = create(:scrolled_chapter, revision: linked_entry.draft)
+        section = create(:section, chapter:)
+
+        sign_in_and_lock(entry, user)
+        get(:show,
+            params: {entry_type: 'scrolled', entry_id: entry, id: linked_entry.id},
+            format: 'json')
+        result = JSON.parse(response.body)
+
+        expect(EntryLinkSignature.valid?(linked_entry.id,
+                                         result['chapters'][0]['signature'],
+                                         chapter: chapter.perma_id)).to eq(true)
+        expect(EntryLinkSignature.valid?(linked_entry.id,
+                                         result['sections'][0]['signature'],
+                                         section: section.perma_id)).to eq(true)
+      end
+
+      it 'renders hidden chapters and sections' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
+        linked_entry = create(:entry, type_name: 'scrolled', account:)
+        chapter = create(:scrolled_chapter, revision: linked_entry.draft)
+        section = create(:section, chapter:, configuration: {hidden: true})
+
+        sign_in_and_lock(entry, user)
+        get(:show,
+            params: {entry_type: 'scrolled', entry_id: entry, id: linked_entry.id},
+            format: 'json')
+
+        expect(response.body).to include_json(
+          chapters: [{permaId: chapter.perma_id}],
+          sections: [{permaId: section.perma_id}],
+          collections: {
+            chapters: [{permaId: chapter.perma_id}],
+            sections: [{permaId: section.perma_id}]
+          }
+        )
+      end
+
+      it 'does not render entries linked from linked entry' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
+        linked_entry = create(:entry, type_name: 'scrolled', account:)
+        other_entry = create(:entry, type_name: 'scrolled', account:)
+        create(:content_element,
+               revision: linked_entry.draft,
+               configuration: {
+                 value: [{
+                   type: 'link',
+                   href: {entry: other_entry.id,
+                          signature: EntryLinkSignature.generate(other_entry.id)},
+                   children: [{text: 'Link'}]
+                 }]
+               })
+
+        sign_in_and_lock(entry, user)
+        get(:show,
+            params: {entry_type: 'scrolled', entry_id: entry, id: linked_entry.id},
+            format: 'json')
+
+        expect(JSON.parse(response.body)['collections']).not_to have_key('linkedEntries')
+      end
+
+      it 'responds with not found for entries the user may not preview' do
+        user = create(:user)
+        account = create(:account)
+        entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
+        linked_entry = create(:entry, type_name: 'scrolled', account:)
+
+        sign_in_and_lock(entry, user)
+        get(:show,
+            params: {entry_type: 'scrolled', entry_id: entry, id: linked_entry.id},
+            format: 'json')
+
+        expect(response.status).to eq(404)
+      end
+
+      it 'responds with not found for entries of other sites' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
+        linked_entry = create(:entry,
+                              type_name: 'scrolled',
+                              account:,
+                              site: create(:site, account:))
+
+        sign_in_and_lock(entry, user)
+        get(:show,
+            params: {entry_type: 'scrolled', entry_id: entry, id: linked_entry.id},
+            format: 'json')
+
+        expect(response.status).to eq(404)
+      end
+
+      it 'responds with not found for entries of other entry types' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
+        linked_entry = create(:entry, type_name: 'paged', account:)
+
+        sign_in_and_lock(entry, user)
+        get(:show,
+            params: {entry_type: 'scrolled', entry_id: entry, id: linked_entry.id},
+            format: 'json')
+
+        expect(response.status).to eq(404)
       end
     end
 

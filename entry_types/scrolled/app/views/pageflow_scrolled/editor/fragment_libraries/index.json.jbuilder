@@ -5,35 +5,10 @@ json.array!(@libraries) do |library|
   json.title library.title
 
   json.collections do
-    json.storylines do
-      json.array!(library.storylines) do |storyline|
-        json.partial! 'pageflow_scrolled/storylines/storyline', storyline:
-      end
-    end
+    json.partial!('pageflow_scrolled/entry_json_seed/content_collections',
+                  content: library.content)
 
-    json.chapters do
-      json.array!(library.chapters) do |chapter|
-        json.partial! 'pageflow_scrolled/chapters/chapter', chapter:
-      end
-    end
-
-    json.sections do
-      json.array!(library.sections) do |section|
-        json.partial! 'pageflow_scrolled/sections/section', section:
-      end
-    end
-
-    json.content_elements do
-      json.array!(library.content_elements) do |content_element|
-        json.partial! 'pageflow_scrolled/content_elements/content_element',
-                      content_element:
-      end
-    end
-
-    json.linked_entries(scrolled_linked_entries(library.entry,
-                                                library.content_elements)) do |linked_entry|
-      json.partial!('pageflow_scrolled/entry_json_seed/linked_entry', **linked_entry)
-    end
+    scrolled_linked_entries_json_seed(json, library.entry, library.content.content_elements)
 
     files_json_seed(json, library.entry)
   end

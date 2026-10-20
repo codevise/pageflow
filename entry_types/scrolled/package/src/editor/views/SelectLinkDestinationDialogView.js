@@ -87,9 +87,7 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
       href && kindOf(href) === 'thisEntry' ? _.pick(href, 'chapter', 'section') : {}
     );
     this.otherEntryLink = new Backbone.Model(
-      href && href.entry ?
-      {entryId: href.entry, signature: href.signature, openInNewTab} :
-      {}
+      href && href.entry ? otherEntryLinkAttributes(href, {openInNewTab}) : {}
     );
     this.otherEntryLink.modelName = 'otherEntryLink';
     this.externalLink = new Backbone.Model(
@@ -116,6 +114,7 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
       this.view(OutlineContainerView, {
         outlineView: new SelectableEntryOutlineView({
           entry: dialog.options.entry,
+          selection: dialog.outlineSelection,
 
           onSelectChapter: chapter => {
             dialog.outlineSelection.clear({silent: true});
@@ -132,7 +131,8 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
     accordion.section(sectionTitle('other_entry'), sectionOptions('otherEntry'), function() {
       this.view(LinkToOtherEntryView, {
         entry: dialog.options.entry,
-        model: dialog.otherEntryLink
+        model: dialog.otherEntryLink,
+        onToggleOutline: expanded => accordion.setSectionFill('otherEntry', expanded)
       });
     });
 
@@ -178,7 +178,7 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
   fetchLinkableEntries() {
     if (this.selection.get('kind') === 'otherEntry' && !this.linkableEntriesFetched) {
       this.linkableEntriesFetched = true;
-      this.options.entry.linkableEntries.fetch({remove: false});
+      this.options.entry.linkableEntries.fetch();
     }
   },
 
@@ -213,6 +213,12 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
   },
 
   apply(link) {
+    const linkableEntry = link.href.entry && this.options.entry.linkableEntries.get(link.href.entry);
+
+    if (linkableEntry) {
+      this.options.entry.linkedEntries.addLinkableEntry(linkableEntry, {chapter: link.href.chapter});
+    }
+
     this.options.onSelect(link);
     this.close();
   },
@@ -264,8 +270,36 @@ function kindOf(href) {
   return 'thisEntry';
 }
 
-function otherEntryLink({entryId, signature, openInNewTab}) {
-  if (!entryId || !signature) {
+function otherEntryLinkAttributes(href, {openInNewTab}) {
+  if (href.chapter || href.section) {
+    return {
+      entryId: href.entry,
+      ..._.pick(href, 'chapter', 'section'),
+      targetSignature: href.signature,
+      expanded: true,
+      openInNewTab
+    };
+  }
+
+  return {entryId: href.entry, signature: href.signature, openInNewTab};
+}
+
+function otherEntryLink({
+  entryId, signature, chapter, section, targetSignature, expanded, openInNewTab
+}) {
+  if (!entryId) {
+    return null;
+  }
+  else if (expanded) {
+    if (!targetSignature || !(chapter || section)) {
+      return null;
+    }
+
+    return withTarget({
+      href: {entry: entryId, ...(chapter ? {chapter} : {section}), signature: targetSignature}
+    }, openInNewTab);
+  }
+  else if (!signature) {
     return null;
   }
 

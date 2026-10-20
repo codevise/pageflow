@@ -1,4 +1,4 @@
-import {getChapterSlugs} from 'shared/chapterSlug';
+import {getChapterSlugs} from 'editor/utils/chapterSlug';
 
 describe('getChapterSlugs', () => {
   it('returns slugified title', () => {
@@ -25,6 +25,14 @@ describe('getChapterSlugs', () => {
     expect(getChapterSlugs(chapters)[100]).toBe('chapter-100');
   });
 
+  it('returns chapter-permaId for title without characters allowed in slugs', () => {
+    const chapters = [
+      {configuration: {title: '中文标题'}, permaId: 100}
+    ];
+
+    expect(getChapterSlugs(chapters)[100]).toBe('chapter-100');
+  });
+
   it('appends permaId if slug would not be unique', () => {
     const chapters = [
       {configuration: {title: 'Same Title'}, permaId: 100},
@@ -42,6 +50,6 @@ describe('getChapterSlugs', () => {
       {configuration: {title: 'Über uns & mehr!'}, permaId: 100}
     ];
 
-    expect(getChapterSlugs(chapters)[100]).toBe('ueber-uns-and-mehr');
+    expect(getChapterSlugs(chapters)[100]).toBe('ueber-uns-und-mehr');
   });
 });

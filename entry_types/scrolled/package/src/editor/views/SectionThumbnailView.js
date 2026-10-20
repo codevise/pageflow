@@ -32,12 +32,16 @@ export const SectionThumbnailView = Marionette.ItemView.extend({
 
   renderThumbnail() {
     if (!this.model.isNew()) {
+      const entry = this.options.entry;
+
       ReactDOM.render(React.createElement(StandaloneSectionThumbnail,
                                           {
                                             sectionPermaId: this.model.get('permaId'),
-                                            seed: this.options.entry.scrolledSeed,
-                                            subscribe: dispatch =>
-                                              watchCollections(this.options.entry, {dispatch})
+                                            seed: entry.scrolledSeed,
+                                            subscribe: entry.readOnly ?
+                                                       undefined :
+                                                       dispatch =>
+                                                         watchCollections(entry, {dispatch})
                                           }),
                       this.ui.thumbnail[0]);
     }
