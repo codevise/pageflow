@@ -1470,6 +1470,7 @@ en:
         edit_header: Edit link
         file: File
         header: Create link
+        inaccessible_entry: This link points to the story "%{title}" which you cannot access. Select another story to change the link.
         kinds:
           file:
             description: Let readers download a file

@@ -131,8 +131,8 @@ export const Chapter = Backbone.Model.extend({
         }
       }
     }).then(sections => {
-      this.entry.linkableEntries.set(fragment.get('collections')?.linkedEntries || [],
-                                     {remove: false});
+      this.entry.linkedEntries.set(fragment.get('collections')?.linkedEntries || [],
+                                  {remove: false});
 
       return this.entry.refreshFiles().then(() => this.addFragmentSections(sections));
     });

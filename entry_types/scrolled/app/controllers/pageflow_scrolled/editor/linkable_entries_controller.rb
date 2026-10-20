@@ -4,15 +4,21 @@ module PageflowScrolled
     class LinkableEntriesController < ActionController::Base
       include Pageflow::EditorController
 
-      helper PageflowScrolled::LinkedEntriesHelper
+      helper Pageflow::SocialShareHelper
 
       def index
-        @entries = Pageflow::Entry
-                   .accessible_by(current_ability, :read)
-                   .where(account: @entry.account, fragment_library: nil)
-                   .where.not(id: @entry.id)
-                   .preload(:site, :account, :published_revision, :draft, permalink: :directory)
-                   .order(:title)
+        @linkable_entries = LinkableEntry.all(
+          entries
+            .preload(:site, :account, :published_revision, :draft, permalink: :directory)
+            .order(:title),
+          except: @entry
+        )
+      end
+
+      private
+
+      def entries
+        @entry.site.entries.accessible_by(current_ability, :read)
       end
     end
   end

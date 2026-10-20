@@ -25,7 +25,7 @@ export function watchCollections(entry, {dispatch}) {
 
 function collectionSpecs(entry) {
   const {
-    storylines, chapters, sections, contentElements, widgets, files, linkableEntries
+    storylines, chapters, sections, contentElements, widgets, files, linkedEntries
   } = entry;
 
   return [
@@ -73,7 +73,7 @@ function collectionSpecs(entry) {
       includeConfiguration: true
     },
     {
-      collection: linkableEntries,
+      collection: linkedEntries,
       name: 'linkedEntries',
       attributes: ['id', {permaId: 'id'}, 'title', 'url', 'previewUrl', 'publicationState'],
       keyAttribute: 'permaId'

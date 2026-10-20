@@ -4,6 +4,10 @@
   gap: space(3);
 }
 
+.inaccessibleEntryNotice {
+  margin: 0;
+}
+
 .entrySelectContainer {}
 
 .openInNewTabContainer {}

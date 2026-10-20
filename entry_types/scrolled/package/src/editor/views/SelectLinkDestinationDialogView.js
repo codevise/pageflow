@@ -178,7 +178,7 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
   fetchLinkableEntries() {
     if (this.selection.get('kind') === 'otherEntry' && !this.linkableEntriesFetched) {
       this.linkableEntriesFetched = true;
-      this.options.entry.linkableEntries.fetch({remove: false});
+      this.options.entry.linkableEntries.fetch();
     }
   },
 
@@ -213,6 +213,12 @@ export const SelectLinkDestinationDialogView = Marionette.ItemView.extend({
   },
 
   apply(link) {
+    const linkableEntry = link.href.entry && this.options.entry.linkableEntries.get(link.href.entry);
+
+    if (linkableEntry) {
+      this.options.entry.linkedEntries.addLinkableEntry(linkableEntry);
+    }
+
     this.options.onSelect(link);
     this.close();
   },

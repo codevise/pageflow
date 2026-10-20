@@ -17,7 +17,7 @@ module PageflowScrolled
         expect(response.status).to eq(401)
       end
 
-      it 'lists ids, titles and urls of other entries of account' do
+      it 'lists ids, titles, urls and publication states of other entries of site' do
         user = create(:user)
         account = create(:account, with_previewer: user)
         entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
@@ -28,7 +28,6 @@ module PageflowScrolled
 
         expect(response.body).to include_json([{
                                                 id: other_entry.id,
-                                                permaId: other_entry.id,
                                                 title: 'Other story',
                                                 url: 'http://test.host/other-story',
                                                 previewUrl: '/admin/entries/other-story/preview',
@@ -43,6 +42,7 @@ module PageflowScrolled
         other_entry = create(:published_entry,
                              type_name: 'scrolled',
                              account:,
+                             site: entry.site,
                              title: 'entry-title',
                              revision_attributes: {title: 'Revision title'})
 
@@ -79,11 +79,11 @@ module PageflowScrolled
         expect(JSON.parse(response.body)).to be_empty
       end
 
-      it 'skips entries of other accounts' do
+      it 'skips entries of other sites' do
         user = create(:user)
         account = create(:account, with_previewer: user)
         entry = create(:entry, type_name: 'scrolled', account:, with_editor: user)
-        create(:entry, type_name: 'scrolled', account: create(:account, with_previewer: user))
+        create(:entry, type_name: 'scrolled', account:, site: create(:site, account:))
 
         sign_in_and_lock(entry, user)
         get(:index, params: {entry_type: 'scrolled', entry_id: entry}, format: 'json')
@@ -125,12 +125,11 @@ module PageflowScrolled
         get(:index, params: {entry_type: 'scrolled', entry_id: entry}, format: 'json')
 
         expect(response.body).to include_json([{
-                                                title: 'Paged story',
-                                                url: 'http://test.host/paged-story'
+                                                title: 'Paged story'
                                               }])
       end
 
-      it 'lists entries of account for admins' do
+      it 'lists entries of site for admins' do
         user = create(:user, :admin)
         account = create(:account)
         entry = create(:entry, type_name: 'scrolled', account:)

@@ -27,6 +27,14 @@ describe('SelectLinkDestinationDialogView', () => {
 
   useFakeXhr(() => testContext);
 
+  function respondWithLinkableEntries(linkableEntries) {
+    testContext.server.respondWith(
+      'GET', /linkable_entries$/, [200, {'Content-Type': 'application/json'},
+                                    JSON.stringify(linkableEntries)]
+    );
+    testContext.server.respond();
+  }
+
   setupGlobals({
     entry: () => factories.entry(ScrolledEntry, {id: 1})
   });
@@ -36,6 +44,7 @@ describe('SelectLinkDestinationDialogView', () => {
     'pageflow_scrolled.editor.selectable_section_item.title': 'Select section',
     'pageflow_scrolled.editor.select_link_destination.url': 'URL',
     'pageflow_scrolled.editor.select_link_destination.story': 'Story',
+    'pageflow_scrolled.editor.select_link_destination.inaccessible_entry': 'No access to %{title}',
     'pageflow_scrolled.editor.select_link_destination.kinds.this_entry.title': 'Chapter or section of this story',
     'pageflow_scrolled.editor.select_link_destination.kinds.other_entry.title': 'Another story',
     'pageflow_scrolled.editor.select_link_destination.kinds.file.title': 'File download',
@@ -154,14 +163,6 @@ describe('SelectLinkDestinationDialogView', () => {
   });
 
   describe('with other entry selected', () => {
-    function respondWithLinkableEntries(linkableEntries) {
-      testContext.server.respondWith(
-        'GET', /linkable_entries$/, [200, {'Content-Type': 'application/json'},
-                                      JSON.stringify(linkableEntries)]
-      );
-      testContext.server.respond();
-    }
-
     function renderDialog({seed, onSelect = jest.fn()} = {}) {
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed(seed)
@@ -194,15 +195,17 @@ describe('SelectLinkDestinationDialogView', () => {
       expect(testContext.requests).toHaveLength(1);
     });
 
-    it('keeps linked entries from seed when fetching entries', async () => {
+    it('only offers entries returned by server', async () => {
       const user = userEvent.setup();
       const result = renderDialog({
         seed: {linkedEntries: [{id: 9, title: 'Linked story', url: '/linked'}]}
       });
       await user.click(result.getByRole('radio', {name: /Another story/}));
       respondWithLinkableEntries([{id: 5, title: 'Other story'}]);
+      await user.click(result.getByRole('button', {name: /Show stories/}));
 
-      expect(result.entry.linkableEntries.pluck('id')).toEqual([9, 5]);
+      expect(result.getAllByRole('option').map(option => option.textContent))
+        .toEqual(['Other story']);
     });
 
     it('disables create button until story is selected', async () => {
@@ -223,19 +226,22 @@ describe('SelectLinkDestinationDialogView', () => {
       expect(listener).toHaveBeenCalledWith({href: {entry: 5, signature: 'signed-5'}});
     });
 
-    it('links to entry from seed with signature', async () => {
-      const listener = jest.fn();
+    it('makes linked entry available to render created link', async () => {
       const user = userEvent.setup();
-      const result = renderDialog({
-        seed: {linkedEntries: [{id: 9, title: 'Linked story', signature: 'signed-9'}]},
-        onSelect: listener
-      });
+      const result = renderDialog();
       await user.click(result.getByRole('radio', {name: /Another story/}));
+      respondWithLinkableEntries([{
+        id: 5, title: 'Other story', url: '/other-story', previewUrl: '/admin/other-story',
+        publicationState: 'not_published', signature: 'signed-5'
+      }]);
       await user.click(result.getByRole('button', {name: /Show stories/}));
-      await user.click(result.getByRole('option', {name: 'Linked story'}));
+      await user.click(result.getByRole('option', {name: /Other story/}));
       await user.click(result.getByRole('button', {name: 'Create link'}));
 
-      expect(listener).toHaveBeenCalledWith({href: {entry: 9, signature: 'signed-9'}});
+      expect(result.entry.linkedEntries.get(5).attributes).toEqual({
+        id: 5, title: 'Other story', url: '/other-story', previewUrl: '/admin/other-story',
+        publicationState: 'not_published'
+      });
     });
 
     it('allows opening other entry in new tab', async () => {
@@ -513,6 +519,8 @@ describe('SelectLinkDestinationDialogView', () => {
         onSelect
       });
 
+      respondWithLinkableEntries([{id: 9, title: 'Linked story', signature: 'other'}]);
+
       expect(result.getByRole('radio', {name: /Another story/})).toBeChecked();
       expect(result.getByRole('combobox', {name: 'Story'})).toHaveValue('Linked story');
 
@@ -522,6 +530,39 @@ describe('SelectLinkDestinationDialogView', () => {
         href: {entry: 9, signature: 'signed-9'},
         openInNewTab: true
       });
+    });
+
+    it('explains that link to entry that cannot be linked to cannot be changed', async () => {
+      const onSelect = jest.fn();
+      const user = userEvent.setup();
+      const result = renderDialog({href: {entry: 9, signature: 'signed-9'}}, {
+        seed: {linkedEntries: [{id: 9, title: 'Linked story', url: '/linked'}]},
+        onSelect
+      });
+      respondWithLinkableEntries([{id: 5, title: 'Other story', signature: 'signed-5'}]);
+
+      expect(result.getByText('No access to Linked story')).toBeInTheDocument();
+      expect(result.getByRole('combobox', {name: 'Story'})).toHaveValue('');
+
+      await user.click(result.getByRole('button', {name: 'Save'}));
+
+      expect(onSelect).toHaveBeenCalledWith({href: {entry: 9, signature: 'signed-9'}});
+    });
+
+    it('allows replacing link to entry that cannot be linked to', async () => {
+      const onSelect = jest.fn();
+      const user = userEvent.setup();
+      const result = renderDialog({href: {entry: 9, signature: 'signed-9'}}, {
+        seed: {linkedEntries: [{id: 9, title: 'Linked story', url: '/linked'}]},
+        onSelect
+      });
+      respondWithLinkableEntries([{id: 5, title: 'Other story', signature: 'signed-5'}]);
+      await user.click(result.getByRole('button', {name: /Show stories/}));
+      await user.click(result.getByRole('option', {name: 'Other story'}));
+      await user.click(result.getByRole('button', {name: 'Save'}));
+
+      expect(result.queryByText('No access to Linked story')).not.toBeInTheDocument();
+      expect(onSelect).toHaveBeenCalledWith({href: {entry: 5, signature: 'signed-5'}});
     });
 
     it('fetches entries when other entry is preselected', () => {

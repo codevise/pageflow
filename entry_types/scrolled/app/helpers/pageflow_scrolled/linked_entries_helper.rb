@@ -18,15 +18,14 @@ module PageflowScrolled
         end
     end
 
-    def scrolled_linked_entry(entry, include_preview: true)
+    def scrolled_linked_entry(entry, include_preview:)
       linked_entry = Pageflow::PublishedEntry.new(entry, entry.published_revision || entry.draft)
       result = {entry: linked_entry, url: social_share_entry_url(linked_entry)}
 
       return result unless include_preview
 
       result.merge(preview_url: main_app.preview_admin_entry_path(entry),
-                   publication_state: entry.publication_state,
-                   signature: EntryLinkSignature.generate(entry.id))
+                   publication_state: entry.publication_state)
     end
   end
 end

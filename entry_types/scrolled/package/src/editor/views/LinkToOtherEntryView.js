@@ -10,11 +10,19 @@ export const LinkToOtherEntryView = Marionette.ItemView.extend({
   className: styles.view,
 
   template: () => `
+    <p class="${styles.inaccessibleEntryNotice}" hidden></p>
     <div class="${styles.entrySelectContainer}"></div>
     <div class="${styles.openInNewTabContainer}"></div>
   `,
 
-  ui: cssModulesUtils.ui(styles, 'entrySelectContainer', 'openInNewTabContainer'),
+  ui: cssModulesUtils.ui(styles,
+                         'inaccessibleEntryNotice',
+                         'entrySelectContainer',
+                         'openInNewTabContainer'),
+
+  initialize() {
+    this.listenTo(this.options.entry.linkableEntries, 'sync', this.updateInaccessibleEntryNotice);
+  },
 
   onRender() {
     this.appendSubview(new EntrySelectView({
@@ -36,5 +44,19 @@ export const LinkToOtherEntryView = Marionette.ItemView.extend({
       entryId: linkableEntry?.id,
       signature: linkableEntry?.get('signature')
     });
+
+    this.updateInaccessibleEntryNotice();
+  },
+
+  updateInaccessibleEntryNotice() {
+    const entryId = this.model.get('entryId');
+    const linkedEntry = this.options.entry.linkedEntries.get(entryId);
+    const inaccessible = !!linkedEntry && !this.options.entry.linkableEntries.get(entryId);
+
+    this.ui.inaccessibleEntryNotice.prop('hidden', !inaccessible);
+    this.ui.inaccessibleEntryNotice.text(inaccessible ?
+      I18n.t('pageflow_scrolled.editor.select_link_destination.inaccessible_entry',
+             {title: linkedEntry.get('title')}) :
+      '');
   }
 });

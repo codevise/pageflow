@@ -6,5 +6,4 @@ if local_assigns.key?(:preview_url)
   json.title entry.entry.title
   json.preview_url preview_url
   json.publication_state publication_state
-  json.signature signature
 end

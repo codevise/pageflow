@@ -1961,20 +1961,6 @@ module PageflowScrolled
                                          })
         end
 
-        it 'renders signatures for draft entry to let editors link entries again' do
-          account = create(:account)
-          linked_entry = create(:published_entry, type_name: 'scrolled', account:)
-          entry = create(:draft_entry, type_name: 'scrolled', account:)
-          create(:content_element,
-                 revision: entry.revision,
-                 configuration: {value: [link_node(entry_id: linked_entry.id)]})
-
-          result = render(helper, entry)
-          signature = JSON.parse(result)['collections']['linkedEntries'][0]['signature']
-
-          expect(EntryLinkSignature.valid?(linked_entry.id, signature)).to eq(true)
-        end
-
         def link_node(entry_id:, signature: PageflowScrolled::EntryLinkSignature.generate(entry_id))
           {type: 'link', href: {entry: entry_id, signature:}, children: [{text: 'Link'}]}
         end

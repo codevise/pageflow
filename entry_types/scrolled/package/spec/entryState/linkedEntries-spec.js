@@ -44,10 +44,10 @@ describe('useLinkedEntryUrl', () => {
     expect(result.current).toBeUndefined();
   });
 
-  describe('with watched linkable entries', () => {
+  describe('with watched linked entries', () => {
     it('returns url of added entry', () => {
       const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
-      entry.linkableEntries.add({id: 5, title: 'Other', url: 'http://example.com/other'});
+      entry.linkedEntries.add({id: 5, title: 'Other', url: 'http://example.com/other'});
 
       const {result} = renderHookInEntry(
         () => useLinkedEntryUrl({entry: 5}), {
@@ -76,7 +76,7 @@ describe('useLinkedEntryUrl', () => {
 
     it('syncs preview url and publication state', () => {
       const entry = factories.entry(ScrolledEntry, {}, {entryTypeSeed: normalizeSeed()});
-      entry.linkableEntries.add({
+      entry.linkedEntries.add({
         id: 5,
         title: 'Other',
         url: 'http://example.com/other',

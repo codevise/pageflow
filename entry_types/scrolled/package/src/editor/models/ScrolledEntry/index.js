@@ -13,6 +13,7 @@ import {
   ContentElementsCollection
 } from '../../collections';
 import {LinkableEntriesCollection} from '../../collections/LinkableEntriesCollection';
+import {LinkedEntriesCollection} from '../../collections/LinkedEntriesCollection';
 
 import {CommentDisplayFilter} from '../CommentDisplayFilter';
 import {ContentElement} from '../ContentElement';
@@ -76,7 +77,8 @@ export const ScrolledEntry = Entry.extend({
 
     this.sections.sort();
 
-    this.linkableEntries = new LinkableEntriesCollection(seed.collections.linkedEntries);
+    this.linkedEntries = new LinkedEntriesCollection(seed.collections.linkedEntries);
+    this.linkableEntries = new LinkableEntriesCollection();
 
     this.cutoff = new Cutoff({entry: this});
 

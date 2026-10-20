@@ -341,7 +341,7 @@ describe('Chapter', () => {
       expect(chapter.sections.get(101).contentElements.pluck('id')).toEqual([1000]);
     });
 
-    it('makes entries linked from fragment available as linkable entries', () => {
+    it('adds entries linked from fragment to linked entries', () => {
       const {entry, server} = testContext;
       const chapter = entry.chapters.first();
       const fragmentWithLinks = new Backbone.Model({
@@ -358,13 +358,13 @@ describe('Chapter', () => {
          contentElements: []}
       ]);
 
-      expect(entry.linkableEntries.get(9).get('title')).toEqual('Linked story');
+      expect(entry.linkedEntries.get(9).get('title')).toEqual('Linked story');
     });
 
-    it('keeps existing linkable entries when adding entries linked from fragment', () => {
+    it('keeps existing linked entries when adding entries linked from fragment', () => {
       const {entry, server} = testContext;
       const chapter = entry.chapters.first();
-      entry.linkableEntries.add({id: 5, title: 'Other story'});
+      entry.linkedEntries.add({id: 5, title: 'Other story'});
       const fragmentWithLinks = new Backbone.Model({
         libraryId: 3,
         chapterPermaId: 700,
@@ -377,7 +377,7 @@ describe('Chapter', () => {
          contentElements: []}
       ]);
 
-      expect(entry.linkableEntries.pluck('id')).toEqual([5, 9]);
+      expect(entry.linkedEntries.pluck('id')).toEqual([5, 9]);
     });
 
     it('refreshes files before adding sections', () => {
