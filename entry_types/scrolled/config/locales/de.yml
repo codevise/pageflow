@@ -1488,7 +1488,7 @@ de:
         edit_header: Link bearbeiten
         file: Datei
         header: Link erstellen
-        inaccessible_entry: Dieser Link verweist auf den Beitrag „%{title}“, auf den du keinen Zugriff hast. Wähle einen anderen Beitrag aus, um den Link zu ändern.
+        inaccessible_entry: Dir fehlen die Berechtigungen für den Beitrag „%{title}“, auf den dieser Link verweist. Wähle einen anderen Beitrag aus, um den Link zu ändern.
         kinds:
           file:
             description: Lasse Leser eine Datei herunterladen

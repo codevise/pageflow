@@ -6,8 +6,21 @@
   min-height: 0;
 }
 
-.inaccessibleEntryNotice {
+.errorBox {
   margin: 0;
+  border-radius: rounded();
+  padding: space(3);
+  line-height: 1.4;
+  color: var(--ui-on-error-surface-color);
+  background-color: var(--ui-error-surface-color);
+}
+
+.inaccessibleEntryNotice {
+  composes: errorBox;
+}
+
+.inaccessibleEntryNotice[hidden] {
+  display: none;
 }
 
 .entrySelectContainer {}
@@ -51,5 +64,5 @@
 }
 
 .outlineError {
-  color: var(--ui-error-color);
+  composes: errorBox;
 }
