@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import classNames from 'classnames';
-import {createEditor, Transforms, Node, Text as SlateText, Range} from 'slate';
+import {createEditor, Transforms, Node, Text as SlateText} from 'slate';
 import {Slate, Editable, withReact, ReactEditor} from 'slate-react';
 import {withHistory} from 'slate-history';
 
@@ -24,6 +24,7 @@ import {HoveringToolbar} from './HoveringToolbar';
 import {Selection} from './Selection';
 import {DropTargets} from './DropTargets';
 import {LinkTooltipProvider} from '../LinkTooltip';
+import {SelectionAwareLinkTooltipProvider} from './SelectionAwareLinkTooltipProvider';
 import {
   applyTextAlign,
   applyTypographyVariant,
@@ -188,8 +189,7 @@ export const EditableText = React.memo(function EditableText({
       <div className={classNames(styles.container, {[styles.selected]: isSelected})}
            ref={el => { dropTargetsRef(el); anchors.containerRef.current = el; }}>
         <Slate editor={editor} value={cachedValue} onChange={setCachedValue}>
-          <LinkTooltipProvider disabled={editor.selection && !Range.isCollapsed(editor.selection)}
-                               position={floatingControlsPosition}>
+          <SelectionAwareLinkTooltipProvider position={floatingControlsPosition}>
             {selectionRect && <Selection contentElementId={contentElementId}
                                          highlights={highlights} />}
             {dropTargetsActive && <DropTargets contentElementId={contentElementId} />}
@@ -201,7 +201,7 @@ export const EditableText = React.memo(function EditableText({
                 renderElement={renderElementWithLinkPreview}
                 renderLeaf={renderLeaf} />
             </HoveringToolbar>
-          </LinkTooltipProvider>
+          </SelectionAwareLinkTooltipProvider>
           {commentingEnabled &&
             <>
               <BadgeColumn highlights={visibleHighlights}
