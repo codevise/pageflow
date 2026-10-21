@@ -47,7 +47,7 @@
     display: flex;
   }
 
-  .marquee:hover > .list {
+  .marquee:has(a[href]):hover > .list {
     animation-play-state: paused;
   }
 }
