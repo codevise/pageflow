@@ -892,6 +892,8 @@ de:
             unmutedText:
               label: "'Ton aktiviert' Text"
         textBlock:
+          configuration_places:
+            link: 'Link „%{text}“'
           attributes:
             color:
               label: Farbe

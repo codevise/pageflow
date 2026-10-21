@@ -876,6 +876,8 @@ en:
             unmutedText:
               label: "Unmuted Text"
         textBlock:
+          configuration_places:
+            link: 'Link "%{text}"'
           attributes:
             color:
               label: Color
