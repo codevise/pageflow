@@ -8,10 +8,12 @@ json.config do
     config_file_model_types_seed(json, entry_config)
   end
 
-  json.file_reference_locations do
-    json.content_elements file_reference_locations.content_element_locations
-    json.sections file_reference_locations.section_locations
-    json.entry file_reference_locations.entry_locations
+  if options[:include_file_reference_locations]
+    json.file_reference_locations do
+      json.content_elements file_reference_locations.content_element_locations
+      json.sections file_reference_locations.section_locations
+      json.entry file_reference_locations.entry_locations
+    end
   end
 
   json.pretty_url pretty_entry_url(entry)
@@ -101,6 +103,6 @@ unless options[:skip_collections]
       end
     end
 
-    files_json_seed(json, entry) unless options[:skip_files]
+    files_json_seed(json, entry, referenced_files:) unless options[:skip_files]
   end
 end

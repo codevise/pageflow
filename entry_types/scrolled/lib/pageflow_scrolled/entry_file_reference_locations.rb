@@ -4,30 +4,32 @@ module PageflowScrolled
   #
   # @api private
   class EntryFileReferenceLocations
-    def initialize(entry_config, content_elements, include_unused: false)
+    def initialize(entry_config)
       @entry_config = entry_config
-      @content_elements = content_elements
-      @include_unused = include_unused
+      @content_element_locations = {}
     end
 
     def content_element_locations
-      content_element_type_names.each_with_object({}) do |type_name, result|
-        schema = schemas.find(model: 'contentElement', type_name:)
-
-        if schema
-          result[type_name] = locations.for(schema)
-        else
-          log_missing_schema(type_name)
-        end
+      schemas.type_names(model: 'contentElement').index_with do |type_name|
+        content_element_locations_for(type_name)
       end
     end
 
+    def content_element_locations_for(type_name)
+      return @content_element_locations[type_name] if @content_element_locations.key?(type_name)
+
+      schema = schemas.find(model: 'contentElement', type_name:)
+      log_missing_schema(type_name) unless schema
+
+      @content_element_locations[type_name] = schema ? locations.for(schema) : []
+    end
+
     def section_locations
-      locations_for(model: 'section')
+      @section_locations ||= locations_for(model: 'section')
     end
 
     def entry_locations
-      locations_for(model: 'entry')
+      @entry_locations ||= locations_for(model: 'entry')
     end
 
     private
@@ -42,16 +44,6 @@ module PageflowScrolled
       end
 
       locations.for(schema)
-    end
-
-    # Content elements of any type can be added in the editor without
-    # reloading the seed.
-    def content_element_type_names
-      if @include_unused
-        schemas.type_names(model: 'contentElement')
-      else
-        @content_elements.map(&:type_name).uniq
-      end
     end
 
     def log_missing_schema(type_name)

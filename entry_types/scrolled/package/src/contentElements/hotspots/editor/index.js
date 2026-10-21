@@ -36,11 +36,15 @@ editor.contentElementTypes.register('hotspots', {
   configurationPlace(contentElement, path) {
     const [propertyName] = path;
 
-    if (propertyName !== 'areas') {
-      return elementConfigurationPlace(contentElement);
+    if (propertyName === 'areas') {
+      return areaConfigurationPlace(contentElement, path);
     }
 
-    return areaConfigurationPlace(contentElement, path);
+    if (propertyName === 'tooltipTexts' || propertyName === 'tooltipLinks') {
+      return tooltipConfigurationPlace(contentElement, path);
+    }
+
+    return elementConfigurationPlace(contentElement);
   },
 
   configurationEditor({entry, contentElement}) {
@@ -119,6 +123,30 @@ function areaConfigurationPlace(contentElement, [, index, propertyName]) {
       contentElement.select({navigate: false});
 
       editor.navigate(`/scrolled/hotspots/${contentElement.id}/${area.id}/${tab}`,
+                      {trigger: true});
+    }
+  };
+}
+
+function tooltipConfigurationPlace(contentElement, [propertyName, areaId]) {
+  const areas = contentElement.configuration.get('areas') || [];
+  const index = areas.findIndex(area => String(area.id) === String(areaId));
+  const label = I18n.t(
+    `pageflow_scrolled.editor.content_elements.hotspots.configuration_places.${propertyName}`
+  );
+
+  if (index < 0) {
+    return {...elementConfigurationPlace(contentElement), label};
+  }
+
+  return {
+    label,
+
+    select() {
+      contentElement.postCommand({type: 'SET_ACTIVE_AREA', index});
+      contentElement.select({navigate: false});
+
+      editor.navigate(`/scrolled/hotspots/${contentElement.id}/${areas[index].id}/area`,
                       {trigger: true});
     }
   };

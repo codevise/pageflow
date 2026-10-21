@@ -26,25 +26,22 @@ editor.contentElementTypes.register('imageGallery', {
   supportedStyles: ['boxShadow', 'outline'],
 
   configurationPlace(contentElement, path) {
-    const [propertyName, index, itemProperty] = path;
+    const [propertyName, indexOrId, itemProperty] = path;
 
-    if (propertyName !== 'items') {
-      return;
+    if (propertyName === 'items') {
+      return itemConfigurationPlace(contentElement, Number(indexOrId),
+                                    attributeLabel(itemProperty));
     }
 
-    const item = contentElement.configuration.get('items')[index];
+    if (propertyName === 'captions') {
+      const items = contentElement.configuration.get('items') || [];
+      const index = items.findIndex(item => String(item.id) === String(indexOrId));
+      const label = I18n.t(
+        'pageflow_scrolled.editor.content_elements.imageGallery.configuration_places.captions'
+      );
 
-    return {
-      label: attributeLabel(itemProperty),
-
-      select() {
-        contentElement.postCommand({type: 'SET_CURRENT_ITEM', index: Number(index)});
-        contentElement.select({navigate: false});
-
-        editor.navigate(`/scrolled/imageGalleries/${contentElement.id}/${item.id}`,
-                        {trigger: true});
-      }
-    };
+      return index < 0 ? {label} : itemConfigurationPlace(contentElement, index, label);
+    }
   },
 
   configurationEditor({entry, contentElement}) {
@@ -84,6 +81,22 @@ editor.registerFileSelectionHandler('imageGalleryItem', function (options) {
     return '/scrolled/imageGalleries/' + contentElement.id + '/' + options.id;
   };
 });
+
+function itemConfigurationPlace(contentElement, index, label) {
+  const item = contentElement.configuration.get('items')[index];
+
+  return {
+    label,
+
+    select() {
+      contentElement.postCommand({type: 'SET_CURRENT_ITEM', index});
+      contentElement.select({navigate: false});
+
+      editor.navigate(`/scrolled/imageGalleries/${contentElement.id}/${item.id}`,
+                      {trigger: true});
+    }
+  };
+}
 
 function attributeLabel(propertyName) {
   return I18n.t(`${propertyName}.label`, {

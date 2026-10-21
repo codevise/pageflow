@@ -375,6 +375,9 @@ en:
             general: Chart
         externalLinkList:
           add: Add
+          configuration_places:
+            itemLinks: Item link
+            itemTexts: Link in item text
           attributes:
             thumbnail:
               inline_help: Link thumbnail image for display in entry.
@@ -606,6 +609,8 @@ en:
                 Displays the current image position and the total
                 number of images to make navigating the gallery
                 easier.
+          configuration_places:
+            captions: Link in caption
           description: A series of images to flip through
           items:
             add: Add
@@ -871,6 +876,8 @@ en:
             unmutedText:
               label: "Unmuted Text"
         textBlock:
+          configuration_places:
+            link: 'Link "%{text}"'
           attributes:
             color:
               label: Color
@@ -1000,6 +1007,9 @@ en:
           description: Interactive panorama using an image with rectangular projection
           name: 360° Image
         hotspots:
+          configuration_places:
+            tooltipLinks: Tooltip link
+            tooltipTexts: Link in tooltip text
           edit_area:
             back: Back
             confirm_destroy: Are you sure you want to delete this area?

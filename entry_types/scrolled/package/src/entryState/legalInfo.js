@@ -3,7 +3,7 @@ import {
   useEntryStateConfig,
   useMultipleEntryStateCollectionItems
 } from "./EntryStateProvider";
-import {useIsFileReferenced} from './useFileReferences';
+import {features} from 'pageflow/frontend';
 
 /**
  * Returns a collection of rights and source urls of the files
@@ -24,7 +24,7 @@ export function useFileRights() {
   const config = useEntryStateConfig();
   const fileCollectionNames = Object.keys(config.fileModelTypes);
   const files = useMultipleEntryStateCollectionItems(fileCollectionNames);
-  const isFileReferenced = useIsFileReferenced();
+  const onlyReferenced = features.isEnabled('file_rights_from_references');
 
   const defaultFileRights = config.defaultFileRights?.trim();
 
@@ -33,7 +33,7 @@ export function useFileRights() {
   Object.keys(files).forEach(collectionName =>
     files[collectionName]
       .filter(file => file.configuration.rights_display !== 'inline')
-      .filter(file => isFileReferenced(collectionName, file.permaId))
+      .filter(file => !onlyReferenced || file.isReferenced)
       .forEach(file => {
         const text = file.rights?.trim() || defaultFileRights;
 

@@ -1,17 +1,4 @@
-import {collectionSnapshot, watchCollection} from '../collections';
-
-/**
- * Entry state collections of an entry, taken from its Backbone models
- * once. Use `watchCollections` instead to keep collections in sync.
- *
- * @private
- */
-export function collectionsSnapshot(entry) {
-  return collectionSpecs(entry).reduce((result, {collection, name, ...spec}) => {
-    result[name] = collectionSnapshot(collection, spec);
-    return result;
-  }, {});
-}
+import {watchCollection} from '../collections';
 
 export function watchCollections(entry, {dispatch}) {
   const teardownFns = collectionSpecs(entry).map(
@@ -103,7 +90,8 @@ function collectionSpecs(entry) {
                    {variants: variants => variants && variants.map(variant => camelize(variant))},
                    {durationInMs: 'duration_in_ms'},
                    {parentFileId: 'parent_file_id'},
-                   {parentFileModelType: 'parent_file_model_type'}],
+                   {parentFileModelType: 'parent_file_model_type'},
+                   {isReferenced: 'is_referenced'}],
       keyAttribute: 'permaId',
       includeConfiguration: true
     }))

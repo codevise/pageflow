@@ -8,17 +8,64 @@
  * @private
  */
 export function collectFileReferences({locations, configuration}) {
+  return [
+    ...locationReferences(locations, configuration),
+    ...linkReferences(configuration)
+  ];
+}
+
+function locationReferences(locations, configuration) {
   return locations.flatMap(location =>
     valuesAt(configuration, location.path)
-      .map(({path, value}) => ({path, permaId: toPermaId(value)}))
-      .filter(({permaId}) => permaId)
-      .map(({path, permaId}) => ({
+      .map(({path, value}) => reference({
         collectionName: location.collection,
-        permaId,
+        value,
         path,
         active: isActive(location.activeIf, configuration)
       }))
+      .filter(Boolean)
   );
+}
+
+function linkReferences(configuration) {
+  return fileLinks(configuration)
+    .map(({path, file}) => isCollectionName(file.collectionName) && reference({
+      collectionName: file.collectionName,
+      value: file.permaId,
+      path,
+      active: true
+    }))
+    .filter(Boolean);
+}
+
+function reference({collectionName, value, path, active}) {
+  const permaId = toPermaId(value);
+
+  return permaId && {collectionName, permaId, path, active};
+}
+
+function fileLinks(value, path = []) {
+  if (!value || typeof value !== 'object') {
+    return [];
+  }
+
+  const file = isObject(value.href) ? value.href.file : null;
+  const links = isObject(file) ?
+    [{path: [...path, 'href', 'file', 'permaId'], file}] :
+    [];
+
+  return [
+    ...links,
+    ...Object.entries(value).flatMap(([key, item]) => fileLinks(item, [...path, key]))
+  ];
+}
+
+function isObject(value) {
+  return !!value && typeof value === 'object' && !Array.isArray(value);
+}
+
+function isCollectionName(value) {
+  return typeof value === 'string' && value.length > 0;
 }
 
 // Backdrops of legacy sections store a color in the property that

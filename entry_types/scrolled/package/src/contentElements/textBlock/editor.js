@@ -12,6 +12,24 @@ editor.contentElementTypes.register('textBlock', {
   pictogram,
   supportedPositions: ['inline'],
 
+  configurationPlace(contentElement, path) {
+    const [propertyName, blockIndex] = path;
+
+    if (propertyName !== 'value') {
+      return;
+    }
+
+    const index = Number(blockIndex);
+
+    return {
+      label: linkLabel(contentElement.configuration.get('value'), path),
+
+      select() {
+        contentElement.select({range: [index, index + 1]});
+      }
+    };
+  },
+
   configurationEditor({entry, contentElement}) {
     let lastExampleNodeType = contentElement.transientState.get('exampleNode')?.type;
 
@@ -178,6 +196,20 @@ editor.contentElementTypes.register('textBlock', {
     });
   }
 });
+
+function linkLabel(value, path) {
+  const nodePath = path.slice(1, path.indexOf('href'))
+                      .filter(segment => segment !== 'children')
+                      .map(Number);
+  const root = {children: value || []};
+
+  if (!Node.has(root, nodePath)) {
+    return;
+  }
+
+  return I18n.t('pageflow_scrolled.editor.content_elements.textBlock.configuration_places.link',
+                {text: Node.string(Node.get(root, nodePath))});
+}
 
 function getValue(configuration) {
   // Value might still be empty if text block has not been edited

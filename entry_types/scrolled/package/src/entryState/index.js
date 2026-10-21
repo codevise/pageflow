@@ -29,14 +29,13 @@ export {useDownloadableFile} from './useDownloadableFile';
 export {useNestedFiles} from './useNestedFiles';
 export {getFileUrlTemplateHost} from './getFileUrlTemplateHost';
 export {useFileRights, useLegalInfo, useCredits} from './legalInfo';
-export {useFileReferences, useIsFileReferenced} from './useFileReferences';
 export {useAvailableQualities} from './useAvailableQualities';
 export {useTheme} from './theme';
 export {useWidget, useActiveWidgets} from './widgets';
 
 export {EntryStateProvider, useEntryStateDispatch} from './EntryStateProvider';
 
-export {collectionsSnapshot, watchCollections} from './collections';
+export {watchCollections} from './collections';
 
 export {updateContentElementConfiguration} from './updateContentElementConfiguration';
 export {updateWidgetConfiguration} from './updateWidgetConfiguration';

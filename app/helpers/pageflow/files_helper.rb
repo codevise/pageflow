@@ -33,12 +33,20 @@ module Pageflow
     #
     # @param [JBuilder] json
     # @param [PublishedEntry] entry
+    # @param [#include?] referenced_files
+    #   Render `is_referenced` flags for files by calling
+    #   `include?(collection_name, perma_id)`.
     # @since 15.1
-    def files_json_seed(json, entry)
+    def files_json_seed(json, entry, referenced_files: nil)
       Pageflow.config.file_types.each do |file_type|
         json.set!(file_type.collection_name) do
           json.array!(entry.find_files(file_type.model)) do |file|
             json.partial!('pageflow/files/file', file:, file_type:)
+
+            if referenced_files
+              json.is_referenced(referenced_files.include?(file_type.collection_name,
+                                                           file.perma_id))
+            end
           end
         end
       end

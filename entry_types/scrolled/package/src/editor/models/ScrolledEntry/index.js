@@ -25,7 +25,7 @@ import {insertContentElement} from './insertContentElement';
 import {moveContentElement} from './moveContentElement';
 import {deleteContentElement} from './deleteContentElement';
 import {duplicateContentElement} from './duplicateContentElement';
-import {fileReferences} from './fileReferences';
+import {watchFileReferences} from './fileReferences';
 import {updateContentElement} from './updateContentElement';
 
 import {sortColors} from './sortColors';
@@ -97,6 +97,7 @@ export const ScrolledEntry = Entry.extend({
     editor.savingRecords.watch(this.chapters);
 
     this.scrolledSeed = seed;
+    this.fileReferencesIndex = watchFileReferences(this);
 
     this.commentDisplayFilter = new CommentDisplayFilter();
 
@@ -179,7 +180,7 @@ export const ScrolledEntry = Entry.extend({
   },
 
   fileReferences() {
-    return fileReferences(this);
+    return this.fileReferencesIndex;
   },
 
   getConfigurationPlace() {

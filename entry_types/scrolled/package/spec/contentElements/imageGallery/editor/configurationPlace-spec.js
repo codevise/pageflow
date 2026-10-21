@@ -12,7 +12,9 @@ describe('imageGallery configuration place', () => {
     'pageflow_scrolled.editor.content_elements.imageGallery.edit_item.attributes.image.label':
       'Image',
     'pageflow_scrolled.editor.content_elements.imageGallery.edit_item.attributes.portraitImage.label':
-      'Image (Portrait)'
+      'Image (Portrait)',
+    'pageflow_scrolled.editor.content_elements.imageGallery.configuration_places.captions':
+      'Link in caption'
   });
 
   const {createEntry} = useEditorGlobals();
@@ -84,4 +86,46 @@ describe('imageGallery configuration place', () => {
 
     expect(listener).toHaveBeenCalledWith(entry.contentElements.get(2), {navigate: false});
   });
+
+  it('names links in captions of items', () => {
+    const entry = create({items: [{id: 7}], captions: {7: [linkNode()]}});
+
+    expect(places(entry).map(({label, detail}) => [label, detail]))
+      .toEqual([['Intro - Gallery', 'Link in caption']]);
+  });
+
+  it('switches the gallery to the item of a caption on select', () => {
+    const entry = create({items: [{id: 7}, {id: 8}], captions: {8: [linkNode()]}});
+    const commandListener = jest.fn();
+    const selectListener = jest.fn();
+    entry.contentElements.get(2).on('postCommand', commandListener);
+    entry.on('selectContentElement', selectListener);
+
+    places(entry)[0].select();
+
+    expect(commandListener).toHaveBeenCalledWith(2, {type: 'SET_CURRENT_ITEM', index: 1});
+    expect(selectListener).toHaveBeenCalledWith(entry.contentElements.get(2),
+                                                {navigate: false});
+    expect(editor.router.navigate)
+      .toHaveBeenCalledWith('/scrolled/imageGalleries/2/8', {trigger: true});
+  });
+
+  it('selects the content element for captions of removed items', () => {
+    const entry = create({items: [{id: 7}], captions: {8: [linkNode()]}});
+    const selectListener = jest.fn();
+    entry.on('selectContentElement', selectListener);
+
+    places(entry)[0].select();
+
+    expect(selectListener).toHaveBeenCalledWith(entry.contentElements.get(2),
+                                                {navigate: true});
+    expect(editor.router.navigate).not.toHaveBeenCalled();
+  });
+
+  function linkNode() {
+    return {type: 'paragraph', children: [
+      {type: 'link', href: {file: {permaId: 5, collectionName: 'imageFiles'}},
+       children: [{text: 'Download'}]}
+    ]};
+  }
 });

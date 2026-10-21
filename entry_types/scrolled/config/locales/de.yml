@@ -382,6 +382,9 @@ de:
             general: Diagramm
         externalLinkList:
           add: Hinzufügen
+          configuration_places:
+            itemLinks: Link des Eintrags
+            itemTexts: Link im Text des Eintrags
           attributes:
             thumbnail:
               inline_help: Dem Link zugeordnertes Bild für die Darstellung im Beitrag.
@@ -620,6 +623,8 @@ de:
                 Zeigt die aktuelle Bildposition und die Gesamtzahl der
                 Bilder an, um die Navigation durch die Galerie zu
                 erleichtern.
+          configuration_places:
+            captions: Link in Bildunterschrift
           description: Eine Serie von Bildern zum Durchblättern
           items:
             add: Hinzufügen
@@ -887,6 +892,8 @@ de:
             unmutedText:
               label: "'Ton aktiviert' Text"
         textBlock:
+          configuration_places:
+            link: 'Link „%{text}“'
           attributes:
             color:
               label: Farbe
@@ -1016,6 +1023,9 @@ de:
           description: Interaktives Panorama aus Bild mit rektangularer Projektion
           name: 360°-Bild
         hotspots:
+          configuration_places:
+            tooltipLinks: Tooltip-Link
+            tooltipTexts: Link im Tooltip-Text
           edit_area:
             back: Zurück
             confirm_destroy: Soll der Hotspot-Bereich wirklich gelöscht werden?

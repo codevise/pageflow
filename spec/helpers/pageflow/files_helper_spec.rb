@@ -45,10 +45,10 @@ module Pageflow
     end
 
     describe '#files_json_seed' do
-      def render(helper, entry)
+      def render(helper, entry, **options)
         helper.render_json do |json|
           yield json if block_given?
-          helper.files_json_seed(json, entry)
+          helper.files_json_seed(json, entry, **options)
         end
       end
 
@@ -96,6 +96,33 @@ module Pageflow
             }
           ]
         )
+      end
+
+      it 'renders whether files are referenced if referenced files are passed' do
+        entry = create(:published_entry)
+        video_file = create(:video_file, used_in: entry.revision)
+        other_video_file = create(:video_file, used_in: entry.revision)
+        perma_id = entry.revision.find_file(Pageflow::VideoFile, video_file.id).perma_id
+        referenced_files = double(include?: false)
+        allow(referenced_files).to receive(:include?).with('video_files', perma_id).and_return(true)
+
+        result = render(helper, entry, referenced_files:)
+
+        expect(result).to include_json(
+          video_files: [
+            {id: video_file.id, is_referenced: true},
+            {id: other_video_file.id, is_referenced: false}
+          ]
+        )
+      end
+
+      it 'does not render whether files are referenced by default' do
+        entry = create(:published_entry)
+        create(:video_file, used_in: entry.revision)
+
+        result = JSON.parse(render(helper, entry))
+
+        expect(result['video_files'].first).not_to have_key('is_referenced')
       end
 
       it 'renders basenames of files' do

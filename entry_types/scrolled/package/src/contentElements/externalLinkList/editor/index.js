@@ -40,25 +40,22 @@ editor.contentElementTypes.register('externalLinkList', {
   },
 
   configurationPlace(contentElement, path) {
-    const [propertyName, index, linkProperty] = path;
+    const [propertyName, indexOrId, linkProperty] = path;
 
-    if (propertyName !== 'links') {
-      return;
+    if (propertyName === 'links') {
+      return linkConfigurationPlace(contentElement, Number(indexOrId),
+                                    attributeLabel(linkProperty));
     }
 
-    const link = contentElement.configuration.get('links')[index];
+    if (propertyName === 'itemTexts' || propertyName === 'itemLinks') {
+      const links = contentElement.configuration.get('links') || [];
+      const index = links.findIndex(link => String(link.id) === String(indexOrId));
+      const label = I18n.t(
+        `pageflow_scrolled.editor.content_elements.externalLinkList.configuration_places.${propertyName}`
+      );
 
-    return {
-      label: attributeLabel(linkProperty),
-
-      select() {
-        contentElement.postCommand({type: 'SET_SELECTED_ITEM', index: Number(index)});
-        contentElement.select({navigate: false});
-
-        editor.navigate(`/scrolled/external_links/${contentElement.id}/${link.id}`,
-                        {trigger: true});
-      }
-    };
+      return index < 0 ? {label} : linkConfigurationPlace(contentElement, index, label);
+    }
   },
 
   configurationEditor({entry, contentElement}) {
@@ -163,6 +160,22 @@ editor.registerFileSelectionHandler('contentElement.externalLinks.link', functio
     return '/scrolled/external_links/' + contentElement.id + '/' + options.id;
   };
 });
+
+function linkConfigurationPlace(contentElement, index, label) {
+  const link = contentElement.configuration.get('links')[index];
+
+  return {
+    label,
+
+    select() {
+      contentElement.postCommand({type: 'SET_SELECTED_ITEM', index});
+      contentElement.select({navigate: false});
+
+      editor.navigate(`/scrolled/external_links/${contentElement.id}/${link.id}`,
+                      {trigger: true});
+    }
+  };
+}
 
 function attributeLabel(propertyName) {
   return I18n.t(`${propertyName}.label`, {
