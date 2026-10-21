@@ -42,6 +42,16 @@ describe('LogoList marquee', () => {
     expect(lists[1]).toHaveAttribute('inert');
   });
 
+  it('renders a single unanimated list in static preview', () => {
+    const {container} = renderLogoList({items, marquee: true}, {
+      isStaticPreview: true
+    });
+
+    expect(container.querySelectorAll('ul')).toHaveLength(1);
+    expect(container.querySelectorAll('img')).toHaveLength(2);
+    expect(container.querySelector(`.${styles.marquee}`)).toBeNull();
+  });
+
   it('passes logo count to animation duration', () => {
     const {container} = renderLogoList({items, marquee: true});
 

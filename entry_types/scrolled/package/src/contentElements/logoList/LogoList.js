@@ -9,13 +9,15 @@ import {
   useContentElementEditorCommandSubscription,
   useContentElementEditorState,
   useContentElementLifecycle,
-  useFile
+  useFile,
+  useIsStaticPreview
 } from 'pageflow-scrolled/frontend';
 
 import styles from './LogoList.module.css';
 
 export function LogoList({configuration}) {
   const {shouldLoad} = useContentElementLifecycle();
+  const isStaticPreview = useIsStaticPreview();
   const {isSelected, setTransientState} = useContentElementEditorState();
   const updateConfiguration = useContentElementConfigurationUpdate();
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -72,7 +74,7 @@ export function LogoList({configuration}) {
     }
   }
 
-  const marquee = configuration.marquee && (!isSelected || marqueePreview);
+  const marquee = !isStaticPreview && configuration.marquee && (!isSelected || marqueePreview);
 
   return (
     <LinkTooltipProvider position="above" align="center" gap={5}>

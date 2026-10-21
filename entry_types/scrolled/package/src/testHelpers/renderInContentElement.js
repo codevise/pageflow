@@ -16,6 +16,7 @@ import {
 import {Consent} from 'pageflow/frontend';
 
 import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycle';
+import {StaticPreview} from '../frontend/useScrollPositionLifecycle';
 
 /**
  * Provide context as if component was rendered inside of a content element.
@@ -43,6 +44,7 @@ import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycl
  *   false, setTransientState: noop`) without wrapping any
  *   inline-editing-only providers (DndProvider, editor command
  *   emitter).
+ * @param {boolean} [options.isStaticPreview=false] - Render in static preview context, like editor thumbnails.
  * @param {Object} [options.phonePlatform] - Fake result of `usePhonePlatform`.
  * @param {Object} [options.consentState] - Pass 'undecided' to render third party consent opt in.
  *
@@ -60,6 +62,7 @@ import {renderInEntryWithScrollPositionLifecycle} from './scrollPositionLifecycl
  * simulateStorylineMode('background');
  */
 export function renderInContentElement(ui, {inlineEditing,
+                                            isStaticPreview = false,
                                             phonePlatform = false,
                                             wrapper: OriginalWrapper,
                                             consentState = 'accepted',
@@ -93,6 +96,10 @@ export function renderInContentElement(ui, {inlineEditing,
     }, []);
 
     let tree = OriginalWrapper ? <OriginalWrapper children={children} /> : children;
+
+    if (isStaticPreview) {
+      tree = <StaticPreview>{tree}</StaticPreview>;
+    }
 
     if (inlineEditingConfig) {
       tree = (
