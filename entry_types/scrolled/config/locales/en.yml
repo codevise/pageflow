@@ -606,6 +606,8 @@ en:
                 Displays the current image position and the total
                 number of images to make navigating the gallery
                 easier.
+          configuration_places:
+            captions: Link in caption
           description: A series of images to flip through
           items:
             add: Add

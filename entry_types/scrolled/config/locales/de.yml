@@ -620,6 +620,8 @@ de:
                 Zeigt die aktuelle Bildposition und die Gesamtzahl der
                 Bilder an, um die Navigation durch die Galerie zu
                 erleichtern.
+          configuration_places:
+            captions: Link in Bildunterschrift
           description: Eine Serie von Bildern zum Durchblättern
           items:
             add: Hinzufügen
