@@ -251,7 +251,7 @@ describe('ScrolledEntry', () => {
         metadata: {share_image_id: 5},
         imageFiles: [{perma_id: 5}],
         fileReferenceLocations: {
-          entry: [{path: ['shareImageId'], collection: 'imageFiles'}]
+          entry: [{path: ['share_image_id'], collection: 'imageFiles'}]
         }
       });
 

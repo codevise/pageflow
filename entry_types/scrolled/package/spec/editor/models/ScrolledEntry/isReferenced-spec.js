@@ -182,7 +182,7 @@ describe('ScrolledEntry', () => {
         imageFiles: [{id: 1, perma_id: 5}],
         contentElements: [],
         fileReferenceLocations: {
-          entry: [{path: ['shareImageId'], collection: 'imageFiles'}]
+          entry: [{path: ['share_image_id'], collection: 'imageFiles'}]
         }
       });
 

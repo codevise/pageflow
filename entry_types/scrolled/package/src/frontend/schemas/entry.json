@@ -3,7 +3,7 @@
   "x-subject": {"model": "entry"},
   "type": "object",
   "properties": {
-    "shareImageId": {
+    "share_image_id": {
       "type": "integer",
       "x-fileCollection": "image_files"
     }

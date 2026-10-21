@@ -34,7 +34,7 @@ module PageflowScrolled
     end
 
     def subjects
-      [[{'shareImageId' => @entry.share_image_id}, @locations.entry_locations]] +
+      [[{'share_image_id' => @entry.share_image_id}, @locations.entry_locations]] +
         @sections.map { |section| [section.configuration, @locations.section_locations] } +
         @content_elements.map do |content_element|
           [content_element.configuration,

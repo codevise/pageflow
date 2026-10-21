@@ -126,7 +126,7 @@ function subjectSources(entry, locations) {
       models: () => [entry.metadata],
       changeEvents: 'change:share_image_id',
       locations: () => locations.entry || [],
-      configuration: metadata => ({shareImageId: metadata.get('share_image_id')}),
+      configuration: metadata => ({share_image_id: metadata.get('share_image_id')}),
       placeModel: () => entry
     },
     {
