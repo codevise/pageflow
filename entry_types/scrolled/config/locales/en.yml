@@ -375,6 +375,9 @@ en:
             general: Chart
         externalLinkList:
           add: Add
+          configuration_places:
+            itemLinks: Item link
+            itemTexts: Link in item text
           attributes:
             thumbnail:
               inline_help: Link thumbnail image for display in entry.

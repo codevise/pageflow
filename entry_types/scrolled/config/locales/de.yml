@@ -382,6 +382,9 @@ de:
             general: Diagramm
         externalLinkList:
           add: Hinzufügen
+          configuration_places:
+            itemLinks: Link des Eintrags
+            itemTexts: Link im Text des Eintrags
           attributes:
             thumbnail:
               inline_help: Dem Link zugeordnertes Bild für die Darstellung im Beitrag.
