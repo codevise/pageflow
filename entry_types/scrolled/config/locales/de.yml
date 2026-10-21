@@ -1016,6 +1016,9 @@ de:
           description: Interaktives Panorama aus Bild mit rektangularer Projektion
           name: 360°-Bild
         hotspots:
+          configuration_places:
+            tooltipLinks: Tooltip-Link
+            tooltipTexts: Link im Tooltip-Text
           edit_area:
             back: Zurück
             confirm_destroy: Soll der Hotspot-Bereich wirklich gelöscht werden?

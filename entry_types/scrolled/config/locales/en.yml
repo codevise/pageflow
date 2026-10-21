@@ -1000,6 +1000,9 @@ en:
           description: Interactive panorama using an image with rectangular projection
           name: 360° Image
         hotspots:
+          configuration_places:
+            tooltipLinks: Tooltip link
+            tooltipTexts: Link in tooltip text
           edit_area:
             back: Back
             confirm_destroy: Are you sure you want to delete this area?
