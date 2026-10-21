@@ -30,13 +30,6 @@ module Pageflow
             "ON activity.id = #{quoted_table_name}.id")
     }
 
-    def self.group_by_entry_id(threads)
-      entry_id_by_revision_id =
-        Revision.editable.where(id: threads.map(&:revision_id).uniq).pluck(:id, :entry_id).to_h
-
-      threads.group_by { |thread| entry_id_by_revision_id[thread.revision_id] }.except(nil)
-    end
-
     def resolved?
       resolved_at.present?
     end
@@ -49,43 +42,53 @@ module Pageflow
       update!(resolved_at: nil, resolver: nil)
     end
 
-    def self.migrate_to_subject(revision:, subject_type:, subject_id:, thread_ids:)
-      return if thread_ids.blank?
+    class << self
+      def group_by_entry_id(threads)
+        entry_id_by_revision_id =
+          Revision.editable.where(id: threads.map(&:revision_id).uniq).pluck(:id, :entry_id).to_h
 
-      where(revision_id: revision.id,
-            subject_type:,
-            id: thread_ids).update_all(subject_id:, updated_at: Time.current)
-    end
-
-    def self.update_subject_ranges_for(revision:, subject_type:, subject_id:, ranges:)
-      return if ranges.blank?
-
-      where(revision_id: revision.id,
-            subject_type:, subject_id:,
-            id: ranges.keys).update_all(
-              sanitize_sql_array(
-                ["subject_range = #{subject_range_case_sql(ranges)}, updated_at = ?",
-                 Time.current]
-              )
-            )
-    end
-
-    def self.update_section_perma_id_for(revision:, subject_type:, subject_id:, section_perma_id:)
-      return if subject_id.blank?
-
-      where(revision_id: revision.id,
-            subject_type:,
-            subject_id:)
-        .where.not(section_perma_id:)
-        .update_all(section_perma_id:, updated_at: Time.current)
-    end
-
-    def self.subject_range_case_sql(ranges)
-      when_clauses = ranges.map do |id, range|
-        sanitize_sql_array(['WHEN ? THEN ?', id.to_i, range.to_json])
+        threads.group_by { |thread| entry_id_by_revision_id[thread.revision_id] }.except(nil)
       end
-      "CASE id #{when_clauses.join(' ')} END"
+
+      def migrate_to_subject(revision:, subject_type:, subject_id:, thread_ids:)
+        return if thread_ids.blank?
+
+        where(revision_id: revision.id,
+              subject_type:,
+              id: thread_ids).update_all(subject_id:, updated_at: Time.current)
+      end
+
+      def update_subject_ranges_for(revision:, subject_type:, subject_id:, ranges:)
+        return if ranges.blank?
+
+        where(revision_id: revision.id,
+              subject_type:, subject_id:,
+              id: ranges.keys).update_all(
+                sanitize_sql_array(
+                  ["subject_range = #{subject_range_case_sql(ranges)}, updated_at = ?",
+                   Time.current]
+                )
+              )
+      end
+
+      def update_section_perma_id_for(revision:, subject_type:, subject_id:, section_perma_id:)
+        return if subject_id.blank?
+
+        where(revision_id: revision.id,
+              subject_type:,
+              subject_id:)
+          .where.not(section_perma_id:)
+          .update_all(section_perma_id:, updated_at: Time.current)
+      end
+
+      private
+
+      def subject_range_case_sql(ranges)
+        when_clauses = ranges.map do |id, range|
+          sanitize_sql_array(['WHEN ? THEN ?', id.to_i, range.to_json])
+        end
+        "CASE id #{when_clauses.join(' ')} END"
+      end
     end
-    private_class_method :subject_range_case_sql
   end
 end

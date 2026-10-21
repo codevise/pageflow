@@ -7,19 +7,18 @@ module Pageflow
       class EditForm < Domino
         # Visit the edit page and find the form.
         def self.for(resource)
-          visit(url(resource))
+          visit(Rails.application.routes.url_helpers.instance_exec(resource, &@visit_path))
           find!
+        end
+
+        def self.visit_path(&block)
+          @visit_path = block
         end
 
         # Test whether a field for the given attribute is present.
         def has_input_for_attribute?(name)
           node.has_selector?("input[name='#{field_prefix}[#{name}]']")
         end
-
-        def self.url_helpers
-          Rails.application.routes.url_helpers
-        end
-        private_class_method :url_helpers
 
         private
 
@@ -34,10 +33,7 @@ module Pageflow
       class EntryEditForm < EditForm
         selector '.edit.admin_entries'
 
-        def self.url(entry)
-          url_helpers.edit_admin_entry_path(entry)
-        end
-        private_class_method :url
+        visit_path { |entry| edit_admin_entry_path(entry) }
 
         private
 
@@ -52,10 +48,7 @@ module Pageflow
       class AccountEditForm < EditForm
         selector '.edit.admin_accounts'
 
-        def self.url(account)
-          url_helpers.edit_admin_account_path(account)
-        end
-        private_class_method :url
+        visit_path { |account| edit_admin_account_path(account) }
 
         private
 
@@ -70,10 +63,7 @@ module Pageflow
       class SiteEditForm < EditForm
         selector '.edit.admin_sites'
 
-        def self.url(site)
-          url_helpers.edit_admin_account_site_path(site.account, site)
-        end
-        private_class_method :url
+        visit_path { |site| edit_admin_account_site_path(site.account, site) }
 
         private
 

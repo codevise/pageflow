@@ -1,3 +1,6 @@
+require:
+  - pageflow/support/rubocop
+
 AllCops:
   TargetRubyVersion: 3.2
   SuggestExtensions: false
@@ -181,3 +184,6 @@ Style/FormatStringToken:
 Lint/EmptyBlock:
   Exclude:
     - '**/spec/**/*'
+
+Pageflow/PrivateClassMethod:
+  Enabled: true

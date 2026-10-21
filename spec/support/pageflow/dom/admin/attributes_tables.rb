@@ -8,8 +8,12 @@ module Pageflow
         # Visit the admin page of the given resource and find the
         # attributes table.
         def self.for(resource)
-          visit(url(resource))
+          visit(Rails.application.routes.url_helpers.instance_exec(resource, &@visit_path))
           find!
+        end
+
+        def self.visit_path(&block)
+          @visit_path = block
         end
 
         # Find the Capybara node of the contents cell for the given
@@ -17,11 +21,6 @@ module Pageflow
         def contents_of_row(name)
           node.find(".row-#{name} td")
         end
-
-        def self.url_helpers
-          Rails.application.routes.url_helpers
-        end
-        private_class_method :url_helpers
       end
 
       # The attributes table on the account page.
@@ -30,10 +29,7 @@ module Pageflow
       class AccountAttributesTable < AttributesTable
         selector '.attributes_table.pageflow_account'
 
-        def self.url(account)
-          url_helpers.admin_account_path(account)
-        end
-        private_class_method :url
+        visit_path { |account| admin_account_path(account) }
       end
 
       # The attributes table on the entry page
@@ -42,10 +38,7 @@ module Pageflow
       class EntryAttributesTable < AttributesTable
         selector '.attributes_table.pageflow_entry'
 
-        def self.url(entry)
-          url_helpers.admin_entry_path(entry)
-        end
-        private_class_method :url
+        visit_path { |entry| admin_entry_path(entry) }
       end
 
       # The site attributes table on the account page
@@ -54,10 +47,7 @@ module Pageflow
       class SiteAttributesTable < AttributesTable
         selector '.attributes_table.pageflow_site'
 
-        def self.url(site)
-          url_helpers.admin_account_site_path(site.account, site)
-        end
-        private_class_method :url
+        visit_path { |site| admin_account_site_path(site.account, site) }
       end
     end
   end
