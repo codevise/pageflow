@@ -34,6 +34,13 @@ module PageflowScrolled
       super || (configuration['main'] ? 'main' : 'excursions')
     end
 
+    def insert_chapter(chapter, position:)
+      transaction do
+        chapters.where('position >= ?', position).update_all('position = position + 1')
+        chapter.update!(storyline: self, position:)
+      end
+    end
+
     def sections_before_cutoff_section
       sections_before(cutoff_section)
     end

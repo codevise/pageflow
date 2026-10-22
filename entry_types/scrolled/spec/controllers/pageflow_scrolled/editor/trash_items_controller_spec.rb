@@ -132,6 +132,32 @@ module PageflowScrolled
         )
       end
 
+      it 'restores chapter and renders it with sections and content elements' do
+        entry = create(:entry, type_name: 'scrolled')
+        storyline = Storyline.all_for_revision(entry.draft).first
+        chapter = create(:scrolled_chapter, storyline:, configuration: {'title' => 'Intro'})
+        section = create(:section, chapter:)
+        content_element = create(:content_element, section:)
+        Trash.new(entry.draft).add_chapter(chapter)
+
+        authorize_for_editor_controller(entry)
+        post(:restore,
+             params: {entry_type: 'scrolled', entry_id: entry, id: chapter.id},
+             format: 'json')
+
+        expect(response.status).to eq(200)
+        expect(response.body).to include_json(
+          id: chapter.id,
+          permaId: chapter.perma_id,
+          storylineId: storyline.id,
+          configuration: {title: 'Intro'},
+          sections: [
+            {id: section.id, contentElements: [{id: content_element.id}]}
+          ]
+        )
+        expect(JSON.parse(response.body)['configuration']).not_to have_key('trash')
+      end
+
       it 'responds with unprocessable entity if no chapter is left' do
         entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)

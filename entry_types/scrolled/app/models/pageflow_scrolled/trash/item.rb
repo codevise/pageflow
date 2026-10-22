@@ -31,7 +31,10 @@ module PageflowScrolled
 
       def restore
         Storyline.transaction do
-          restore_section
+          case kind
+          when 'chapter' then restore_chapter
+          else restore_section
+          end
         end
       end
 
@@ -39,6 +42,13 @@ module PageflowScrolled
 
       def metadata
         @chapter.configuration['trash']
+      end
+
+      def restore_chapter
+        origin_storyline.insert_chapter(@chapter, position: origin_position)
+        @chapter.update!(configuration: @chapter.configuration.except('trash'))
+
+        @chapter
       end
 
       def restore_section
@@ -59,6 +69,11 @@ module PageflowScrolled
           chapter = chapters.first || raise(DestinationMissing)
           chapter.insert_section(section, position: (chapter.sections.maximum(:position) || -1) + 1)
         end
+      end
+
+      def origin_storyline
+        Storyline.all_for_revision(@revision).find_by(perma_id: origin_perma_id) ||
+          raise(DestinationMissing)
       end
     end
   end

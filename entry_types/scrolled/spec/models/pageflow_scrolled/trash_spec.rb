@@ -136,7 +136,7 @@ module PageflowScrolled
       end
     end
 
-    describe '#restore' do
+    describe '#restore with trashed section' do
       it 'moves section back to origin chapter at origin position' do
         entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
@@ -229,6 +229,73 @@ module PageflowScrolled
         expect {
           trash.find_item(section.reload.chapter_id).restore
         }.to raise_error(Trash::DestinationMissing)
+      end
+    end
+
+    describe '#restore with trashed chapter' do
+      it 'moves chapter back to origin storyline at origin position' do
+        entry = create(:entry, type_name: 'scrolled')
+        storyline = Storyline.all_for_revision(entry.draft).first
+        first_chapter = create(:scrolled_chapter, storyline:, position: 0)
+        chapter = create(:scrolled_chapter, storyline:, position: 1)
+        last_chapter = create(:scrolled_chapter, storyline:, position: 2)
+        trash = Trash.new(entry.draft)
+        trash.add_chapter(chapter)
+
+        trash.find_item(chapter.id).restore
+
+        expect(storyline.reload.chapters).to eq([first_chapter, chapter, last_chapter])
+      end
+
+      it 'shifts positions of chapters at or after origin position' do
+        entry = create(:entry, type_name: 'scrolled')
+        storyline = Storyline.all_for_revision(entry.draft).first
+        chapter = create(:scrolled_chapter, storyline:, position: 0)
+        trash = Trash.new(entry.draft)
+        trash.add_chapter(chapter)
+        new_chapter = create(:scrolled_chapter, storyline:, position: 0)
+
+        trash.find_item(chapter.id).restore
+
+        expect(storyline.reload.chapters.map(&:position)).to eq([0, 1])
+        expect(storyline.chapters).to eq([chapter, new_chapter])
+      end
+
+      it 'restores excursion chapters to excursions storyline' do
+        entry = create(:entry, type_name: 'scrolled')
+        excursions = Storyline.all_for_revision(entry.draft).find_by(role: 'excursions')
+        chapter = create(:scrolled_chapter, storyline: excursions)
+        trash = Trash.new(entry.draft)
+        trash.add_chapter(chapter)
+
+        trash.find_item(chapter.id).restore
+
+        expect(chapter.reload.storyline).to eq(excursions)
+      end
+
+      it 'clears trash metadata and keeps chapter configuration' do
+        entry = create(:entry, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.draft,
+                                            configuration: {'title' => 'Intro'})
+        trash = Trash.new(entry.draft)
+        trash.add_chapter(chapter)
+
+        trash.find_item(chapter.id).restore
+
+        expect(chapter.reload.configuration).to eq('title' => 'Intro')
+      end
+
+      it 'keeps sections and returns restored chapter' do
+        entry = create(:entry, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        section = create(:section, chapter:)
+        trash = Trash.new(entry.draft)
+        trash.add_chapter(chapter)
+
+        result = trash.find_item(chapter.id).restore
+
+        expect(result).to eq(chapter)
+        expect(Section.all_for_revision(entry.draft)).to eq([section])
       end
     end
 
