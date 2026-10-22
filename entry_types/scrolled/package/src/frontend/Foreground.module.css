@@ -15,15 +15,16 @@
 }
 
 .fullFadeHeight {
-  min-height: 51vh;
+  min-height: calc(51 * var(--vh));
 }
 
 .fullHeight {
   /* First sections set --foreground-widget-padding-top to make room
-     for the widget, so the terms cancel out to 100vh. Other sections
-     leave it undefined, causing the fallback to --widget-margin-top-min
-     to reduce the height to fit below the navigation widget. */
-  min-height: calc(100vh +
+     for the widget, so the terms cancel out to the viewport height.
+     Other sections leave it undefined, causing the fallback to
+     --widget-margin-top-min to reduce the height to fit below the
+     navigation widget. */
+  min-height: calc(100 * var(--vh) +
                    var(--foreground-widget-padding-top, 0px) -
                    var(--foreground-widget-padding-top, var(--widget-margin-top-min, 0px)));
 }

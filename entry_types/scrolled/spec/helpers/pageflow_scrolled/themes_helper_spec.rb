@@ -71,6 +71,23 @@ module PageflowScrolled
     end
 
     describe '#scrolled_theme_properties_style_tag' do
+      it 'supports including section thumbnail rules' do
+        theme = Pageflow::Theme.new(:test,
+                                    properties: {
+                                      root: {
+                                        section_default_padding_top:
+                                          'max(10em, calc(20 * var(--svh, 1svh)))'
+                                      }
+                                    })
+
+        html = helper.scrolled_theme_properties_style_tag(theme,
+                                                          include_section_thumbnail_rules: true)
+
+        expect(html).to have_css('style',
+                                 text: '[data-section-thumbnail]',
+                                 visible: false)
+      end
+
       it 'renders style tag with custom color properties for theme' do
         theme = Pageflow::Theme.new(:test,
                                     colors: {
@@ -670,6 +687,52 @@ module PageflowScrolled
             --theme-widget-surface-color: #f00;
           }
         CSS
+      end
+
+      it 'declares viewport dependent root properties again for section thumbnails' do
+        theme = Pageflow::Theme.new(:test,
+                                    properties: {
+                                      root: {
+                                        widget_surface_color: '#fff',
+                                        section_default_padding_top:
+                                          'max(10em, calc(20 * var(--svh, 1svh)))'
+                                      }
+                                    })
+
+        css = helper.scrolled_theme_properties_rules(theme, include_section_thumbnail_rules: true)
+
+        expect(css).to include(<<~CSS)
+          [data-section-thumbnail] {
+            --theme-section-default-padding-top: max(10em, calc(20 * var(--svh, 1svh)));
+          }
+        CSS
+      end
+
+      it 'does not render section thumbnail rule without viewport dependent root properties' do
+        theme = Pageflow::Theme.new(:test,
+                                    properties: {
+                                      root: {
+                                        widget_surface_color: '#fff'
+                                      }
+                                    })
+
+        css = helper.scrolled_theme_properties_rules(theme, include_section_thumbnail_rules: true)
+
+        expect(css).not_to include('data-section-thumbnail')
+      end
+
+      it 'does not render section thumbnail rule unless requested' do
+        theme = Pageflow::Theme.new(:test,
+                                    properties: {
+                                      root: {
+                                        section_default_padding_top:
+                                          'max(10em, calc(20 * var(--svh, 1svh)))'
+                                      }
+                                    })
+
+        css = helper.scrolled_theme_properties_rules(theme)
+
+        expect(css).not_to include('data-section-thumbnail')
       end
 
       it 'supports media queries' do

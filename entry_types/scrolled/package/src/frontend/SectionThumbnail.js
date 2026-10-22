@@ -40,6 +40,7 @@ export function SectionThumbnail({sectionPermaId, subscribe, scale}) {
               <div ref={measureRef} className={styles.crop} inert="">
                 <div className={classNames({[styles.scale]: scale})}>
                   <div className={contentStyles.Content}
+                       data-section-thumbnail=""
                        style={viewportUnitCustomProperties(
                          clientDimensions(contentRect, scaleFactor)
                        )}>
@@ -77,9 +78,10 @@ function clientDimensions(contentRect, scaleFactor) {
             Math.ceil(contentRect.client.height * scaleFactor)
   }
 }
-function viewportUnitCustomProperties({width, height}) {
+export function viewportUnitCustomProperties({width, height}) {
   return {
     '--vw': width && `${width / 100}px`,
-    '--vh': height && `${height / 100}px`
+    '--vh': height && `${height / 100}px`,
+    '--svh': height && `${height / 100}px`
   }
 }

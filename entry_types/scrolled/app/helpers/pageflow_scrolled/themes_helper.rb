@@ -25,7 +25,7 @@ module PageflowScrolled
       end)
     end
 
-    def scrolled_theme_properties_style_tag(theme)
+    def scrolled_theme_properties_style_tag(theme, include_section_thumbnail_rules: false)
       declarations = [
         scrolled_theme_deep_declarations(theme.options.fetch(:font_family, {}), 'font_family'),
         scrolled_theme_deep_declarations(theme.options.fetch(:colors, {}), 'color')
@@ -38,7 +38,7 @@ module PageflowScrolled
         }
 
         #{scrolled_theme_typography_rules(theme)}
-        #{scrolled_theme_properties_rules(theme)}
+        #{scrolled_theme_properties_rules(theme, include_section_thumbnail_rules:)}
       CSS
     end
 
@@ -63,9 +63,27 @@ module PageflowScrolled
       RuleSet.new(prefix: 'typography').generate(theme.options.fetch(:typography, {}))
     end
 
-    def scrolled_theme_properties_rules(theme)
-      RuleSet.new(prefix: 'scope',
-                  custom_properties: true).generate(theme.options.fetch(:properties, {}))
+    def scrolled_theme_properties_rules(theme, include_section_thumbnail_rules: false)
+      properties = theme.options.fetch(:properties, {})
+      rules = RuleSet.new(prefix: 'scope', custom_properties: true).generate(properties)
+      return rules unless include_section_thumbnail_rules
+
+      # Section thumbnails set viewport unit custom properties on an
+      # element with this attribute. Root properties using them only
+      # resolve against the thumbnail size if declared there again.
+      viewport_dependent_root_properties = properties.fetch(:root, {}).select do |_, value|
+        value.is_a?(String) && value.match?(/var\(--s?vh\b/)
+      end
+
+      return rules if viewport_dependent_root_properties.empty?
+
+      [
+        rules,
+        RuleSet.new(prefix: 'scope',
+                    custom_properties: true,
+                    root_selector: '[data-section-thumbnail]')
+               .generate(root: viewport_dependent_root_properties)
+      ].join("\n")
     end
 
     private
@@ -232,9 +250,10 @@ module PageflowScrolled
 
     # @api private
     class RuleSet
-      def initialize(prefix:, custom_properties: false)
+      def initialize(prefix:, custom_properties: false, root_selector: ':root')
         @prefix = prefix
         @property_prefix = custom_properties ? '--theme-' : ''
+        @root_selector = root_selector
       end
 
       def generate(rules)
@@ -280,7 +299,7 @@ module PageflowScrolled
       end
 
       def selector(rule_name)
-        return ':root' if rule_name == :root
+        return @root_selector if rule_name == :root
 
         ".#{@prefix}-#{rule_name.to_s.camelize(:lower)}"
       end

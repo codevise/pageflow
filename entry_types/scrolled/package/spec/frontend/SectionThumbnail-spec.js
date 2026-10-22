@@ -1,7 +1,10 @@
 import React from 'react';
 
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
-import {StandaloneSectionThumbnail} from 'frontend/SectionThumbnail';
+import {
+  StandaloneSectionThumbnail,
+  viewportUnitCustomProperties
+} from 'frontend/SectionThumbnail';
 import {watchCollections} from 'entryState';
 import 'contentElements/heading/frontend';
 
@@ -101,5 +104,28 @@ describe('SectionThumbnail', () => {
     act(() => { entry.contentElements.sort() });
 
     expect(consoleError).not.toHaveBeenCalled();
+  });
+
+  it('marks element with viewport custom properties for theme root properties', () => {
+    const seed = normalizeSeed({
+      sections: [
+        {id: 3, permaId: 1},
+      ]
+    });
+    const {container} = render(
+      <StandaloneSectionThumbnail seed={seed} sectionPermaId={1} />
+    );
+
+    expect(container.querySelector('[data-section-thumbnail]')).not.toBeNull();
+  });
+
+  describe('viewportUnitCustomProperties', () => {
+    it('derives viewport units from thumbnail dimensions', () => {
+      expect(viewportUnitCustomProperties({width: 800, height: 400})).toEqual({
+        '--vw': '8px',
+        '--vh': '4px',
+        '--svh': '4px'
+      });
+    });
   });
 });
