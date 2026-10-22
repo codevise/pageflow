@@ -29,7 +29,12 @@ describe('TrashView', () => {
     'pageflow_scrolled.editor.trash_view.origin_missing': 'Section from deleted chapter',
     'pageflow_scrolled.editor.trash_view.restore': 'Restore',
     'pageflow_scrolled.editor.trash_view.restore_failed': 'Could not restore',
-    'pageflow_scrolled.editor.trash_view.trashed_at': 'Deleted %{time}'
+    'pageflow_scrolled.editor.trash_view.restore_chapter_failed': 'Could not restore chapter',
+    'pageflow_scrolled.editor.trash_view.trashed_at': 'Deleted %{time}',
+    'pageflow_scrolled.editor.trash_view.chapter.one': 'Chapter %{title} with 1 section',
+    'pageflow_scrolled.editor.trash_view.chapter.other':
+      'Chapter %{title} with %{count} sections',
+    'pageflow_scrolled.editor.chapter_item.unnamed': 'Untitled'
   });
 
   function trashItem({id, originPermaId, sectionId = id * 10}) {
@@ -139,6 +144,26 @@ describe('TrashView', () => {
     expect(view.el.querySelector('.loading')).toBeNull();
   });
 
+  it('labels trashed chapters with title and section count', () => {
+    const {getAllByRole} = render([
+      {
+        ...trashItem({id: 5}),
+        kind: 'chapter',
+        title: 'Outro',
+        sections: [
+          {id: 50, permaId: 50, chapterId: 5, configuration: {}, contentElements: []},
+          {id: 51, permaId: 51, chapterId: 5, configuration: {}, contentElements: []}
+        ]
+      },
+      {...trashItem({id: 6}), kind: 'chapter'}
+    ]);
+
+    const items = getAllByRole('listitem');
+
+    expect(items[0]).toHaveTextContent('Chapter Outro with 2 sections');
+    expect(items[1]).toHaveTextContent('Chapter Untitled with 1 section');
+  });
+
   it('renders blank slate when nothing has been deleted', () => {
     const {getByText} = render([]);
 
@@ -171,6 +196,19 @@ describe('TrashView', () => {
 
     await waitFor(() =>
       expect(within(getAllByRole('listitem')[0]).getByText('Could not restore'))
+        .toBeInTheDocument()
+    );
+  });
+
+  it('displays generic error when restoring chapter fails', async () => {
+    const {getByRole, getAllByRole} = render([
+      {...trashItem({id: 5}), kind: 'chapter', originPermaId: 999}
+    ]);
+
+    fireEvent.click(getByRole('button', {name: 'Restore'}));
+
+    await waitFor(() =>
+      expect(within(getAllByRole('listitem')[0]).getByText('Could not restore chapter'))
         .toBeInTheDocument()
     );
   });

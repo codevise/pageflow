@@ -97,7 +97,9 @@ const TrashItemView = Marionette.ItemView.extend({
 
       this.model.restore().catch(() => {
         this.ui.restore.prop('disabled', false);
-        this.ui.error.text(t('restore_failed'));
+        this.ui.error.text(t(this.model.get('kind') === 'chapter' ?
+                             'restore_chapter_failed' :
+                             'restore_failed'));
       });
     }
   }),
@@ -128,6 +130,14 @@ const TrashItemView = Marionette.ItemView.extend({
   },
 
   originLabel() {
+    if (this.model.get('kind') === 'chapter') {
+      return t('chapter', {
+        title: this.model.get('title') ||
+               I18n.t('pageflow_scrolled.editor.chapter_item.unnamed'),
+        count: this.model.get('sections').length
+      });
+    }
+
     const chapter = this.options.entry.chapters.findWhere({
       permaId: this.model.get('originPermaId')
     });

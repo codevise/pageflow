@@ -1765,11 +1765,15 @@ en:
       trash_view:
         back: Outline
         blank_slate: Nothing has been deleted from this story yet.
-        hint: Sections deleted from this story can be restored here.
+        chapter:
+          one: "Chapter “%{title}” with 1 section"
+          other: "Chapter “%{title}” with %{count} sections"
+        hint: Chapters and sections deleted from this story can be restored here.
         load_failed: Deleted content could not be loaded.
         origin: "Section from %{chapter}"
         origin_missing: Section from a deleted chapter
         restore: Restore
+        restore_chapter_failed: Could not restore the chapter.
         restore_failed: Could not restore the section.
         trashed_at: "Deleted %{time}"
       configuration_places:
