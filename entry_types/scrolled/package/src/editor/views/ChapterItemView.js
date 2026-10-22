@@ -62,6 +62,14 @@ export const ChapterItemView = Marionette.Layout.extend({
     change: 'update'
   },
 
+  initialize() {
+    this.listenTo(this.model.storyline.chapters, 'add remove sort', changed => {
+      if (changed !== this.model) {
+        this.update();
+      }
+    });
+  },
+
   onRender() {
     this.subview(new SortableCollectionView({
       el: this.ui.sections,

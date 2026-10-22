@@ -715,6 +715,20 @@ describe('Chapter', () => {
     it('returns excursion label for untitled excursion', () => {
       expect(createEntry().chapters.get(3).getDisplayName()).toEqual('Excursion');
     });
+
+    it('numbers chapters by their index ignoring gaps in positions', () => {
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          storylines: [{id: 100, configuration: {main: true}}],
+          chapters: [
+            {id: 1, storylineId: 100, position: 0},
+            {id: 2, storylineId: 100, position: 3}
+          ]
+        })
+      });
+
+      expect(entry.chapters.get(2).getDisplayName()).toEqual('Chapter 2');
+    });
   });
 
   describe('#isExcursion', () => {

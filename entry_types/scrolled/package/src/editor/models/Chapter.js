@@ -48,7 +48,8 @@ export const Chapter = Backbone.Model.extend({
 
   getDisplayNumber() {
     if (this.storyline.isMain()) {
-      return I18n.t('pageflow_scrolled.editor.chapter_item.chapter') + ' ' + (this.get('position') + 1);
+      return I18n.t('pageflow_scrolled.editor.chapter_item.chapter') + ' ' +
+             (this.storyline.chapters.indexOf(this) + 1);
     }
   },
 
