@@ -158,6 +158,27 @@ module PageflowScrolled
         expect(JSON.parse(response.body)['configuration']).not_to have_key('trash')
       end
 
+      it 'restores content elements and renders them' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        content_element = create(:content_element, section:)
+        Trash.new(entry.draft).add_content_elements([content_element],
+                                                    origin_section: section,
+                                                    origin_position: 0)
+
+        authorize_for_editor_controller(entry)
+        post(:restore,
+             params: {entry_type: 'scrolled', entry_id: entry,
+                      id: content_element.reload.section.chapter_id},
+             format: 'json')
+
+        expect(response.status).to eq(200)
+        expect(response.body).to include_json(
+          [{id: content_element.id, permaId: content_element.perma_id,
+            sectionId: section.id, position: 0}]
+        )
+      end
+
       it 'responds with unprocessable entity if no chapter is left' do
         entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)

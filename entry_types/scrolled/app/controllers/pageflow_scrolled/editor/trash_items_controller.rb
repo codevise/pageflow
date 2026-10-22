@@ -11,12 +11,16 @@ module PageflowScrolled
       def restore
         restored = Trash.new(@entry.draft).find_item(params[:id]).restore
 
-        if restored.is_a?(Chapter)
+        case restored
+        when Chapter
           render partial: 'pageflow_scrolled/editor/chapters/chapter_with_sections',
                  locals: {chapter: restored}
-        else
+        when Section
           render partial: 'pageflow_scrolled/editor/sections/section_with_content_elements',
                  locals: {section: restored}
+        else
+          render partial: 'pageflow_scrolled/editor/trash_items/content_elements',
+                 locals: {content_elements: restored}
         end
       rescue ActiveRecord::RecordNotFound
         head :not_found

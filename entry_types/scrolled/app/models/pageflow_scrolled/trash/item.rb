@@ -33,6 +33,7 @@ module PageflowScrolled
         Storyline.transaction do
           case kind
           when 'chapter' then restore_chapter
+          when 'contentElements' then restore_content_elements
           else restore_section
           end
         end
@@ -60,6 +61,15 @@ module PageflowScrolled
         section
       end
 
+      def restore_content_elements
+        content_elements = sections.first.content_elements.to_a
+
+        insert_into_origin_section(content_elements)
+        @chapter.reload.destroy
+
+        content_elements
+      end
+
       def insert_into_origin_chapter(section)
         chapters = Chapter.all_for_revision(@revision)
 
@@ -68,6 +78,20 @@ module PageflowScrolled
         else
           chapter = chapters.first || raise(DestinationMissing)
           chapter.insert_section(section, position: (chapter.sections.maximum(:position) || -1) + 1)
+        end
+      end
+
+      def insert_into_origin_section(content_elements)
+        sections = Section.all_for_revision(@revision)
+
+        if (section = sections.find_by(perma_id: origin_perma_id))
+          section.insert_content_elements(content_elements, position: origin_position)
+        else
+          section = sections.first || raise(DestinationMissing)
+          section.insert_content_elements(
+            content_elements,
+            position: (section.content_elements.maximum(:position) || -1) + 1
+          )
         end
       end
 

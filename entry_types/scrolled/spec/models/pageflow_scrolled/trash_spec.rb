@@ -365,6 +365,82 @@ module PageflowScrolled
       end
     end
 
+    describe '#restore with trashed content elements' do
+      it 'moves content elements back to origin section at origin position' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        first = create(:content_element, section:, position: 0)
+        trashed = create_list(:content_element, 2, section:)
+        trash = Trash.new(entry.draft)
+        trash.add_content_elements(trashed, origin_section: section, origin_position: 1)
+        last = create(:content_element, section:, position: 1)
+
+        trash.find_item(trashed.first.reload.section.chapter_id).restore
+
+        expect(section.reload.content_elements).to eq([first, *trashed, last])
+        expect(section.content_elements.map(&:position)).to eq([0, 1, 2, 3])
+      end
+
+      it 'destroys container chapter and section' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        content_element = create(:content_element, section:)
+        trash = Trash.new(entry.draft)
+        trash.add_content_elements([content_element], origin_section: section,
+                                                      origin_position: 0)
+        container_section = content_element.reload.section
+
+        trash.find_item(container_section.chapter_id).restore
+
+        expect(trash.items).to be_empty
+        expect(Section.exists?(container_section.id)).to eq(false)
+      end
+
+      it 'returns restored content elements keeping their perma_ids' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        content_element = create(:content_element, section:)
+        trash = Trash.new(entry.draft)
+        trash.add_content_elements([content_element], origin_section: section,
+                                                      origin_position: 0)
+
+        result = trash.find_item(content_element.reload.section.chapter_id).restore
+
+        expect(result).to eq([content_element])
+        expect(result.first.perma_id).to eq(content_element.perma_id)
+      end
+
+      it 'appends content elements to first section if origin section has been trashed' do
+        entry = create(:entry, type_name: 'scrolled')
+        first_section = create(:section, revision: entry.draft)
+        existing = create(:content_element, section: first_section, position: 0)
+        section = create(:section, chapter: first_section.chapter, position: 1)
+        content_element = create(:content_element, section:)
+        trash = Trash.new(entry.draft)
+        trash.add_content_elements([content_element], origin_section: section,
+                                                      origin_position: 0)
+        trash.add_section(section)
+
+        trash.find_item(content_element.reload.section.chapter_id).restore
+
+        expect(first_section.reload.content_elements).to eq([existing, content_element])
+      end
+
+      it 'raises if no section is left' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        content_element = create(:content_element, section:)
+        trash = Trash.new(entry.draft)
+        trash.add_content_elements([content_element], origin_section: section,
+                                                      origin_position: 0)
+        trash.add_section(section)
+
+        expect {
+          trash.find_item(content_element.reload.section.chapter_id).restore
+        }.to raise_error(Trash::DestinationMissing)
+      end
+    end
+
     describe '#items' do
       it 'returns items newest first' do
         entry = create(:entry, type_name: 'scrolled')
