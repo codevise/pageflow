@@ -19,22 +19,36 @@ export const TrashItem = Backbone.Model.extend({
   },
 
   restore() {
+    const restored = this.get('kind') === 'chapter' ?
+                     this.restoreIntoStoryline() :
+                     this.restoreIntoChapter();
+
+    if (!restored) {
+      return Promise.reject(new Error('Nothing to restore into.'));
+    }
+
+    return new Promise((resolve, reject) => {
+      restored.once('sync', () => {
+        this.collection.remove(this);
+        resolve(restored);
+      });
+      restored.once('error', reject);
+    });
+  },
+
+  restoreIntoStoryline() {
+    const storyline = this.collection.entry.storylines.findWhere({
+      permaId: this.get('originPermaId')
+    });
+
+    return storyline && storyline.restoreChapter(this);
+  },
+
+  restoreIntoChapter() {
     const {parent, position} = this.restoreTarget(this.collection.entry.chapters,
                                                   chapter => chapter.sections);
 
-    if (!parent) {
-      return Promise.reject(new Error('No chapter to restore into.'));
-    }
-
-    const section = parent.restoreSection(this, {position});
-
-    return new Promise((resolve, reject) => {
-      section.once('sync', () => {
-        this.collection.remove(this);
-        resolve(section);
-      });
-      section.once('error', reject);
-    });
+    return parent && parent.restoreSection(this, {position});
   },
 
   restoreTarget(parents, getChildren) {

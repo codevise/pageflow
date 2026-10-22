@@ -5,6 +5,8 @@ import {
   ForeignKeySubsetCollection
 } from 'pageflow/editor';
 
+import {Chapter} from './Chapter';
+
 export const Storyline = Backbone.Model.extend({
   mixins: [
     configurationContainer({
@@ -32,6 +34,46 @@ export const Storyline = Backbone.Model.extend({
       entry: this.entry,
       sections: this.entry.sections
     });
+  },
+
+  restoreChapter(trashItem) {
+    const position = trashItem.get('originPosition');
+
+    const chapter = this.chapters.create(
+      new Chapter({position, storylineId: this.id}, {
+        entry: this.entry,
+        sections: this.entry.sections
+      }),
+      {
+        url: `${trashItem.url()}/restore`,
+        wait: true,
+        success: () => {
+          this.chapters.each(sibling => {
+            if (sibling !== chapter && sibling.get('position') >= position) {
+              sibling.set('position', sibling.get('position') + 1);
+            }
+          });
+
+          this.chapters.sort();
+        }
+      }
+    );
+
+    chapter.once('sync', (model, response) => {
+      chapter.configuration.set(response.configuration, {autoSave: false});
+
+      response.sections.forEach(({contentElements, ...attributes}) => {
+        chapter.sections.add(attributes, {contentElements: this.entry.contentElements});
+        this.entry.contentElements.add(contentElements);
+      });
+
+      if (chapter.sections.length) {
+        this.entry.trigger('selectSection', chapter.sections.first());
+        this.entry.trigger('scrollToSection', chapter.sections.first());
+      }
+    });
+
+    return chapter;
   },
 
   appendChapter(chapter) {

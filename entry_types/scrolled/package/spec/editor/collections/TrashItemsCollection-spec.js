@@ -168,4 +168,127 @@ describe('TrashItemsCollection', () => {
       expect(entry.chapters.get(10).sections.pluck('position')).toEqual([0, 1]);
     });
   });
+
+  describe('#restore of chapter', () => {
+    beforeEach(() => {
+      testContext.entry = createEntry({
+        storylines: [
+          {id: 1, permaId: 10, role: 'main'},
+          {id: 2, permaId: 20, configuration: {}}
+        ],
+        chapters: [
+          {id: 10, storylineId: 1, position: 0},
+          {id: 12, storylineId: 1, position: 1}
+        ]
+      });
+      testContext.entry.trashItems.add({
+        id: 11, kind: 'chapter', originPermaId: 10, originPosition: 1, sections: []
+      });
+    });
+
+    function respondWithRestoredChapter(server) {
+      respondWithJson(server, 'POST', '/editor/entries/1/scrolled/trash_items/11/restore', 200, {
+        id: 11,
+        permaId: 110,
+        storylineId: 1,
+        position: 1,
+        configuration: {title: 'Intro'},
+        sections: [
+          {
+            id: 101,
+            permaId: 501,
+            chapterId: 11,
+            position: 0,
+            configuration: {},
+            contentElements: [{id: 1000, permaId: 601, sectionId: 101, typeName: 'heading'}]
+          }
+        ]
+      });
+    }
+
+    it('posts to restore endpoint of trash item', () => {
+      const {entry, requests} = testContext;
+
+      entry.trashItems.get(11).restore();
+
+      expect(requests[0].method).toBe('POST');
+      expect(requests[0].url).toBe('/editor/entries/1/scrolled/trash_items/11/restore');
+    });
+
+    it('inserts restored chapter into origin storyline', async () => {
+      const {entry, server} = testContext;
+      const storyline = entry.storylines.get(1);
+
+      const promise = entry.trashItems.get(11).restore();
+      respondWithRestoredChapter(server);
+      await promise;
+
+      expect(storyline.chapters.pluck('id')).toEqual([10, 11, 12]);
+      expect(storyline.chapters.pluck('position')).toEqual([0, 1, 2]);
+      expect(entry.chapters.get(11).configuration.get('title')).toEqual('Intro');
+    });
+
+    it('adds sections and content elements of restored chapter', async () => {
+      const {entry, server} = testContext;
+
+      const promise = entry.trashItems.get(11).restore();
+      respondWithRestoredChapter(server);
+      await promise;
+
+      expect(entry.chapters.get(11).sections.pluck('id')).toEqual([101]);
+      expect(entry.sections.get(101).contentElements.pluck('id')).toEqual([1000]);
+    });
+
+    it('selects and scrolls to first section of restored chapter', async () => {
+      const {entry, server} = testContext;
+      const events = [];
+      entry.on('selectSection scrollToSection', section => events.push(section.id));
+
+      const promise = entry.trashItems.get(11).restore();
+      respondWithRestoredChapter(server);
+      await promise;
+
+      expect(events).toEqual([101, 101]);
+    });
+
+    it('keeps resource url of restored chapter', async () => {
+      const {entry, server} = testContext;
+
+      const promise = entry.trashItems.get(11).restore();
+      respondWithRestoredChapter(server);
+      await promise;
+
+      expect(entry.chapters.get(11).url())
+        .toEqual('/editor/entries/1/scrolled/chapters/11');
+    });
+
+    it('rejects without request if origin storyline is missing', async () => {
+      const {entry, requests} = testContext;
+      entry.trashItems.add({id: 13, kind: 'chapter', originPermaId: 999, sections: []});
+
+      await expect(entry.trashItems.get(13).restore()).rejects.toThrow();
+
+      expect(requests).toHaveLength(0);
+    });
+
+    it('keeps positions of chapters if restore fails', async () => {
+      const {entry, server} = testContext;
+
+      const promise = entry.trashItems.get(11).restore();
+      respondWithJson(server, 'POST', '/editor/entries/1/scrolled/trash_items/11/restore', 422, {});
+      await promise.catch(() => {});
+
+      expect(entry.storylines.get(1).chapters.pluck('position')).toEqual([0, 1]);
+    });
+
+    it('removes trash item', async () => {
+      const {entry, server} = testContext;
+
+      const promise = entry.trashItems.get(11).restore();
+      respondWithRestoredChapter(server);
+      await promise;
+
+      expect(entry.trashItems.get(11)).toBeUndefined();
+    });
+  });
 });
