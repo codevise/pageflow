@@ -39,6 +39,10 @@ module PageflowScrolled
         end
       end
 
+      def destroy
+        @chapter.destroy
+      end
+
       private
 
       def metadata

@@ -208,5 +208,93 @@ module PageflowScrolled
         expect(response.status).to eq(404)
       end
     end
+
+    describe '#destroy' do
+      it 'requires authentication' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        Trash.new(entry.draft).add_section(section)
+
+        delete(:destroy,
+               params: {entry_type: 'scrolled', entry_id: entry, id: section.reload.chapter_id},
+               format: 'json')
+
+        expect(response.status).to eq(401)
+      end
+
+      it 'permanently deletes trash item with its content' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        content_element = create(:content_element, section:)
+        other_section = create(:section, revision: entry.draft)
+        trash = Trash.new(entry.draft)
+        trash.add_section(section)
+        trash.add_section(other_section)
+
+        authorize_for_editor_controller(entry)
+        delete(:destroy,
+               params: {entry_type: 'scrolled', entry_id: entry, id: section.reload.chapter_id},
+               format: 'json')
+
+        expect(response.status).to eq(204)
+        expect(trash.items.map(&:id)).to eq([other_section.reload.chapter_id])
+        expect(Section.exists?(section.id)).to eq(false)
+        expect(ContentElement.exists?(content_element.id)).to eq(false)
+      end
+
+      it 'does not allow deleting trash items of other entries' do
+        entry = create(:entry, type_name: 'scrolled')
+        other_entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: other_entry.draft)
+        Trash.new(other_entry.draft).add_section(section)
+
+        authorize_for_editor_controller(entry)
+        delete(:destroy,
+               params: {entry_type: 'scrolled', entry_id: entry, id: section.reload.chapter_id},
+               format: 'json')
+
+        expect(response.status).to eq(404)
+        expect(Section.exists?(section.id)).to eq(true)
+      end
+    end
+
+    describe '#empty' do
+      it 'requires authentication' do
+        entry = create(:entry, type_name: 'scrolled')
+
+        delete(:empty, params: {entry_type: 'scrolled', entry_id: entry}, format: 'json')
+
+        expect(response.status).to eq(401)
+      end
+
+      it 'permanently deletes all trash items' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        trash = Trash.new(entry.draft)
+        trash.add_section(section)
+        trash.add_chapter(chapter)
+
+        authorize_for_editor_controller(entry)
+        delete(:empty, params: {entry_type: 'scrolled', entry_id: entry}, format: 'json')
+
+        expect(response.status).to eq(204)
+        expect(trash.items).to be_empty
+        expect(Chapter.exists?(chapter.id)).to eq(false)
+        expect(Section.exists?(section.id)).to eq(false)
+      end
+
+      it 'keeps content of other entries' do
+        entry = create(:entry, type_name: 'scrolled')
+        other_entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: other_entry.draft)
+        Trash.new(other_entry.draft).add_section(section)
+
+        authorize_for_editor_controller(entry)
+        delete(:empty, params: {entry_type: 'scrolled', entry_id: entry}, format: 'json')
+
+        expect(Section.exists?(section.id)).to eq(true)
+      end
+    end
   end
 end

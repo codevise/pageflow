@@ -55,6 +55,10 @@ module PageflowScrolled
       Item.new(chapters.find(id), @revision)
     end
 
+    def empty
+      chapters.destroy_all
+    end
+
     private
 
     def chapters

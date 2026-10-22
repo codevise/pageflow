@@ -27,6 +27,20 @@ module PageflowScrolled
       rescue Trash::DestinationMissing
         head :unprocessable_entity
       end
+
+      def destroy
+        Trash.new(@entry.draft).find_item(params[:id]).destroy
+
+        head :no_content
+      rescue ActiveRecord::RecordNotFound
+        head :not_found
+      end
+
+      def empty
+        Trash.new(@entry.draft).empty
+
+        head :no_content
+      end
     end
   end
 end
