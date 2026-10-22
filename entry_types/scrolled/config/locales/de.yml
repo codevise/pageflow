@@ -1298,10 +1298,13 @@ de:
         confirm_destroy: |-
           Kapitel inklusive ALLER Abschnitte wirklich löschen?
 
-          Diese Aktion kann nicht rückgängig gemacht werden.
+          Es kann aus dem Papierkorb wiederhergestellt werden.
         destroy: Kapitel löschen
       destroy_content_element_menu_item:
-        confirm_destroy: Element wirklich löschen?
+        confirm_destroy: |-
+          Element wirklich löschen?
+
+          Es kann aus dem Papierkorb wiederhergestellt werden.
         destroy: Element löschen
         selection_label: Auswahl löschen
       duplicate_content_element_menu_item:
@@ -1311,7 +1314,10 @@ de:
         move: Element verschieben...
         move_selection: Auswahl verschieben...
       destroy_section_menu_item:
-        confirm_destroy: Abschnitt inklusive aller Elemente wirklich löschen?
+        confirm_destroy: |-
+          Abschnitt inklusive aller Elemente wirklich löschen?
+
+          Er kann aus dem Papierkorb wiederhergestellt werden.
         destroy: Abschnitt löschen
       edit_section:
         hidden_info: Dieser Abschnitt ist außerhalb des Editors ausgeblendet.

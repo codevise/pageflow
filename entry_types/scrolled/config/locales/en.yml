@@ -1280,10 +1280,13 @@ en:
         confirm_destroy: |-
           Really delete this chapter including ALL its sections?
 
-          This operation cannot be undone.
+          It can be restored from the trash.
         destroy: Delete chapter
       destroy_content_element_menu_item:
-        confirm_destroy: Really delete this element?
+        confirm_destroy: |-
+          Really delete this element?
+
+          It can be restored from the trash.
         destroy: Delete element
         selection_label: Delete selection
       duplicate_content_element_menu_item:
@@ -1293,7 +1296,10 @@ en:
         move: Move element...
         move_selection: Move selection...
       destroy_section_menu_item:
-        confirm_destroy: Really delete this section including all its elements?
+        confirm_destroy: |-
+          Really delete this section including all its elements?
+
+          It can be restored from the trash.
         destroy: Delete section
       edit_section:
         hidden_info: This section is hidden outside of the editor.
