@@ -17,6 +17,22 @@ module PageflowScrolled
       end
     end
 
+    def add_content_elements(content_elements, origin_section:, origin_position:)
+      Storyline.transaction do
+        container = create_container(kind: 'contentElements',
+                                     origin_perma_id: origin_section.perma_id,
+                                     origin_position:)
+        container_section = container.sections.create!(
+          position: 0,
+          configuration: origin_section.configuration.slice('invert', 'layout')
+        )
+
+        content_elements.each_with_index do |content_element, index|
+          content_element.update!(section: container_section, position: index)
+        end
+      end
+    end
+
     def add_chapter(chapter)
       chapter.update!(
         storyline:,

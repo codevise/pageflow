@@ -136,6 +136,72 @@ module PageflowScrolled
       end
     end
 
+    describe '#add_content_elements' do
+      it 'moves content elements into container section keeping their order' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        first = create(:content_element, section:, position: 0)
+        second = create(:content_element, section:, position: 1)
+
+        Trash.new(entry.draft).add_content_elements([first, second],
+                                                    origin_section: section,
+                                                    origin_position: 0)
+
+        container_section = first.reload.section
+        expect(container_section.chapter.storyline)
+          .to eq(Storyline.find_or_create_trash_for(entry.draft))
+        expect(container_section.content_elements).to eq([first, second.reload])
+        expect(section.reload.content_elements).to be_empty
+      end
+
+      it 'records kind, origin section and position in container chapter configuration' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        content_element = create(:content_element, section:)
+
+        travel_to(Time.utc(2026, 10, 1, 12)) do
+          Trash.new(entry.draft).add_content_elements([content_element],
+                                                      origin_section: section,
+                                                      origin_position: 2)
+        end
+
+        expect(content_element.reload.section.chapter.configuration['trash']).to eq(
+          'kind' => 'contentElements',
+          'originPermaId' => section.perma_id,
+          'originPosition' => 2,
+          'trashedAt' => '2026-10-01T12:00:00Z'
+        )
+      end
+
+      it 'copies invert and layout of origin section to container section' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft,
+                                   configuration: {'invert' => true,
+                                                   'layout' => 'right',
+                                                   'backdrop' => {'image' => 5}})
+        content_element = create(:content_element, section:)
+
+        Trash.new(entry.draft).add_content_elements([content_element],
+                                                    origin_section: section,
+                                                    origin_position: 0)
+
+        expect(content_element.reload.section.configuration)
+          .to eq('invert' => true, 'layout' => 'right')
+      end
+
+      it 'keeps perma_ids of content elements' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        content_element = create(:content_element, section:)
+
+        expect {
+          Trash.new(entry.draft).add_content_elements([content_element],
+                                                      origin_section: section,
+                                                      origin_position: 0)
+        }.not_to(change { content_element.reload.perma_id })
+      end
+    end
+
     describe '#restore with trashed section' do
       it 'moves section back to origin chapter at origin position' do
         entry = create(:entry, type_name: 'scrolled')
