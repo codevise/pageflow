@@ -13,7 +13,7 @@
 }
 
 .defaultBackground {
-  background-color: #333;
+  background: var(--backdrop-default-background, #333);
 }
 
 @media print {

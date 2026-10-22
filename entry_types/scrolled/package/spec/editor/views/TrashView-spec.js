@@ -283,6 +283,18 @@ describe('TrashView', () => {
     expect(items[1]).toHaveTextContent('Heading, Image from deleted section');
   });
 
+  it('marks content element items to render their preview out of context', () => {
+    const {getAllByRole} = renderWithSections([
+      contentElementsTrashItem({id: 5, originPermaId: 1100}),
+      {...trashItem({id: 6}), originPermaId: 100}
+    ]);
+
+    const items = trashItems(getAllByRole);
+
+    expect(items[0]).toHaveClass(styles.contentElementsItem);
+    expect(items[1]).not.toHaveClass(styles.contentElementsItem);
+  });
+
   it('displays content element specific error when restore fails', async () => {
     const {getByRole, getAllByRole} = renderWithSections([
       contentElementsTrashItem({id: 5, originPermaId: 1100})

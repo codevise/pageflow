@@ -53,6 +53,15 @@
   border: solid 1px var(--ui-on-surface-color-lighter);
 }
 
+.contentElementsItem .thumbnail {
+  --backdrop-default-background:
+    linear-gradient(45deg, #e5e5e5 25%, transparent 25%) 0 0 / 96px 96px,
+    linear-gradient(135deg, #e5e5e5 25%, transparent 25%) 48px 0 / 96px 96px,
+    linear-gradient(45deg, transparent 75%, #e5e5e5 75%) 48px -48px / 96px 96px,
+    linear-gradient(135deg, transparent 75%, #e5e5e5 75%) 0 48px / 96px 96px,
+    #fff;
+}
+
 .details {
   display: flex;
   flex-direction: column;

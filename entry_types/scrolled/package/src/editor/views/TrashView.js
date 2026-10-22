@@ -127,6 +127,9 @@ const TrashItemView = Marionette.ItemView.extend({
   }),
 
   onRender() {
+    this.$el.toggleClass(styles.contentElementsItem,
+                         this.model.get('kind') === 'contentElements');
+
     this.appendSubview(new DropDownButtonView({
       title: t('actions'),
       alignMenu: 'right',
