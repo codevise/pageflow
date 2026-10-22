@@ -37,6 +37,10 @@ export const TrashItem = Backbone.Model.extend({
     });
   },
 
+  permanentlyDelete() {
+    return Promise.resolve(this.destroy({wait: true}));
+  },
+
   restoreTarget(parents, getChildren) {
     const origin = parents.findWhere({permaId: this.get('originPermaId')});
 

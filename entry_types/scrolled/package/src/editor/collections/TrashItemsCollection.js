@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import Backbone from 'backbone';
 
 import {entryTypeEditorControllerUrls} from 'pageflow/editor';
@@ -11,5 +12,12 @@ export const TrashItemsCollection = Backbone.Collection.extend({
 
   initialize(models, {entry} = {}) {
     this.entry = entry;
+  },
+
+  empty() {
+    return Promise.resolve($.ajax({
+      url: `${this.url()}/empty`,
+      type: 'DELETE'
+    })).then(() => this.remove(this.models.slice()));
   }
 });

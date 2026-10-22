@@ -449,4 +449,58 @@ describe('TrashItemsCollection', () => {
       expect(entry.trashItems.pluck('id')).toEqual([20]);
     });
   });
+
+  describe('#permanentlyDelete', () => {
+    beforeEach(() => {
+      testContext.entry = createEntry({});
+      testContext.entry.trashItems.add([{id: 5, sections: []}, {id: 6, sections: []}]);
+    });
+
+    it('sends delete request for trash item', () => {
+      const {entry, requests} = testContext;
+
+      entry.trashItems.get(5).permanentlyDelete();
+
+      expect(requests[0].method).toBe('DELETE');
+      expect(requests[0].url).toBe('/editor/entries/1/scrolled/trash_items/5');
+    });
+
+    it('removes trash item once deleted', async () => {
+      const {entry, server} = testContext;
+
+      const promise = entry.trashItems.get(5).permanentlyDelete();
+      expect(entry.trashItems.pluck('id')).toEqual([5, 6]);
+      server.respond('DELETE', '/editor/entries/1/scrolled/trash_items/5', [204, {}, '']);
+      await promise;
+
+      expect(entry.trashItems.pluck('id')).toEqual([6]);
+    });
+  });
+
+  describe('#empty', () => {
+    beforeEach(() => {
+      testContext.entry = createEntry({});
+      testContext.entry.trashItems.add([{id: 5, sections: []}, {id: 6, sections: []}]);
+    });
+
+    it('sends delete request to empty endpoint', () => {
+      const {entry, requests} = testContext;
+
+      entry.trashItems.empty();
+
+      expect(requests[0].method).toBe('DELETE');
+      expect(requests[0].url).toBe('/editor/entries/1/scrolled/trash_items/empty');
+    });
+
+    it('removes all trash items once emptied', async () => {
+      const {entry, server} = testContext;
+
+      const promise = entry.trashItems.empty();
+      expect(entry.trashItems.length).toEqual(2);
+      server.respond('DELETE', '/editor/entries/1/scrolled/trash_items/empty', [204, {}, '']);
+      await promise;
+
+      expect(entry.trashItems.length).toEqual(0);
+    });
+  });
 });
