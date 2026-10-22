@@ -17,6 +17,18 @@ module PageflowScrolled
       end
     end
 
+    def add_chapter(chapter)
+      chapter.update!(
+        storyline:,
+        position: next_position,
+        configuration: chapter.configuration.merge(
+          'trash' => metadata(kind: 'chapter',
+                              origin_perma_id: chapter.storyline.perma_id,
+                              origin_position: chapter.position)
+        )
+      )
+    end
+
     def items
       chapters.includes(sections: :content_elements).map do |chapter|
         Item.new(chapter, @revision)
@@ -40,14 +52,18 @@ module PageflowScrolled
       storyline.chapters.create!(
         position: next_position,
         configuration: {
-          trash: {
-            kind:,
-            originPermaId: origin_perma_id,
-            originPosition: origin_position,
-            trashedAt: Time.current.utc.iso8601
-          }
+          trash: metadata(kind:, origin_perma_id:, origin_position:)
         }
       )
+    end
+
+    def metadata(kind:, origin_perma_id:, origin_position:)
+      {
+        'kind' => kind,
+        'originPermaId' => origin_perma_id,
+        'originPosition' => origin_position,
+        'trashedAt' => Time.current.utc.iso8601
+      }
     end
 
     def next_position

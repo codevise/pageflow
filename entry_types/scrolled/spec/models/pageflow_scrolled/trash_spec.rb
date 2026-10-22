@@ -67,6 +67,75 @@ module PageflowScrolled
       end
     end
 
+    describe '#add_chapter' do
+      it 'removes chapter and its sections from revision' do
+        entry = create(:entry, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        create(:section, chapter:)
+
+        Trash.new(entry.draft).add_chapter(chapter)
+
+        expect(Chapter.all_for_revision(entry.draft)).to be_empty
+        expect(Section.all_for_revision(entry.draft)).to be_empty
+      end
+
+      it 'moves chapter into trash storyline without container' do
+        entry = create(:entry, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        section = create(:section, chapter:)
+
+        Trash.new(entry.draft).add_chapter(chapter)
+
+        expect(chapter.reload.storyline)
+          .to eq(Storyline.find_or_create_trash_for(entry.draft))
+        expect(section.reload.chapter).to eq(chapter)
+      end
+
+      it 'records kind, origin and trash time next to chapter configuration' do
+        entry = create(:entry, type_name: 'scrolled')
+        storyline = Storyline.all_for_revision(entry.draft).first
+        create(:scrolled_chapter, storyline:, position: 0)
+        chapter = create(:scrolled_chapter, storyline:, position: 1,
+                                            configuration: {'title' => 'Intro'})
+
+        travel_to(Time.utc(2026, 10, 1, 12)) do
+          Trash.new(entry.draft).add_chapter(chapter)
+        end
+
+        expect(chapter.reload.configuration).to eq(
+          'title' => 'Intro',
+          'trash' => {
+            'kind' => 'chapter',
+            'originPermaId' => storyline.perma_id,
+            'originPosition' => 1,
+            'trashedAt' => '2026-10-01T12:00:00Z'
+          }
+        )
+      end
+
+      it 'appends chapter after existing items' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        trash = Trash.new(entry.draft)
+
+        trash.add_section(section)
+        trash.add_chapter(chapter)
+
+        expect(trash.items.map(&:id)).to eq([chapter.id, section.reload.chapter_id])
+      end
+
+      it 'keeps perma_ids of chapter and its sections' do
+        entry = create(:entry, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        section = create(:section, chapter:)
+
+        expect {
+          Trash.new(entry.draft).add_chapter(chapter)
+        }.not_to(change { [chapter.reload.perma_id, section.reload.perma_id] })
+      end
+    end
+
     describe '#restore' do
       it 'moves section back to origin chapter at origin position' do
         entry = create(:entry, type_name: 'scrolled')

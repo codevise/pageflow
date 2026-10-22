@@ -244,6 +244,22 @@ module PageflowScrolled
         expect(response.status).to eq(204)
       end
 
+      it 'moves the chapter to the trash' do
+        entry = create(:entry, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+
+        authorize_for_editor_controller(entry)
+        delete(:destroy,
+               params: {
+                 entry_type: 'scrolled',
+                 entry_id: entry,
+                 id: chapter
+               }, format: 'json')
+
+        expect(chapter.reload.storyline)
+          .to eq(Storyline.find_or_create_trash_for(entry.draft))
+      end
+
       it 'does not allow deleting a chapter from a different entry' do
         entry = create(:entry, type_name: 'scrolled')
         create(:scrolled_chapter, revision: entry.draft)

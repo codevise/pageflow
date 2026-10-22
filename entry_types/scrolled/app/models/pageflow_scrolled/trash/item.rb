@@ -25,6 +25,10 @@ module PageflowScrolled
         metadata['trashedAt']
       end
 
+      def title
+        @chapter.configuration['title']
+      end
+
       def restore
         Storyline.transaction do
           restore_section

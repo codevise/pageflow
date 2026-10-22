@@ -50,6 +50,28 @@ module PageflowScrolled
         )
       end
 
+      it 'lists trashed chapters with title' do
+        entry = create(:entry, type_name: 'scrolled')
+        chapter = create(:scrolled_chapter, revision: entry.draft,
+                                            configuration: {'title' => 'Intro'})
+        section = create(:section, chapter:)
+        Trash.new(entry.draft).add_chapter(chapter)
+
+        authorize_for_editor_controller(entry)
+        get(:index, params: {entry_type: 'scrolled', entry_id: entry}, format: 'json')
+
+        expect(response.body).to include_json(
+          [
+            {
+              id: chapter.id,
+              kind: 'chapter',
+              title: 'Intro',
+              sections: [{id: section.id}]
+            }
+          ]
+        )
+      end
+
       it 'lists newest items first' do
         entry = create(:entry, type_name: 'scrolled')
         chapter = create(:scrolled_chapter, revision: entry.draft)
