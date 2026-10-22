@@ -1,5 +1,7 @@
 import Backbone from 'backbone';
 
+import {Scale} from '../../shared/Scale';
+
 export const TrashItem = Backbone.Model.extend({
   firstSectionPermaId() {
     return this.get('sections')[0]?.permaId;
@@ -7,12 +9,15 @@ export const TrashItem = Backbone.Model.extend({
 
   seed(entrySeed) {
     const sections = this.get('sections');
+    const previewSection = this.get('kind') === 'contentElements' ?
+                           withContentElementsPreviewConfiguration(entrySeed) :
+                           section => section;
 
     return {
       ...entrySeed,
       collections: {
         ...entrySeed.collections,
-        sections: sections.map(({contentElements, ...section}) => section),
+        sections: sections.map(({contentElements, ...section}) => previewSection(section)),
         contentElements: sections.flatMap(section => section.contentElements)
       }
     };
@@ -74,4 +79,25 @@ function whenSynced(model) {
     model.once('sync', () => resolve(model));
     model.once('error', reject);
   });
+}
+
+function withContentElementsPreviewConfiguration(entrySeed) {
+  const themeProperties = entrySeed.config.theme?.options?.properties || {};
+  const scale = scaleName => Scale({scaleName, themeProperties, scaleTranslations: {}});
+
+  const previewConfiguration = {
+    fullHeight: true,
+    paddingTop: smallestNonZeroValue(scale('sectionPaddingTop')),
+    paddingBottom: smallestNonZeroValue(scale('sectionPaddingBottom'))
+  };
+
+  return section => ({
+    ...section,
+    configuration: {...section.configuration, ...previewConfiguration}
+  });
+}
+
+function smallestNonZeroValue({values, cssValues}) {
+  const index = cssValues.findIndex(cssValue => parseFloat(cssValue) !== 0);
+  return values[index >= 0 ? index : 0];
 }

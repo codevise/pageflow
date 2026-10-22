@@ -97,9 +97,7 @@ const TrashItemView = Marionette.ItemView.extend({
 
       this.model.restore().catch(() => {
         this.ui.restore.prop('disabled', false);
-        this.ui.error.text(t(this.model.get('kind') === 'chapter' ?
-                             'restore_chapter_failed' :
-                             'restore_failed'));
+        this.ui.error.text(t(restoreFailedKeys[this.model.get('kind')]));
       });
     }
   }),
@@ -130,6 +128,9 @@ const TrashItemView = Marionette.ItemView.extend({
   },
 
   originLabel() {
+    const {entry} = this.options;
+    const originPermaId = this.model.get('originPermaId');
+
     if (this.model.get('kind') === 'chapter') {
       return t('chapter', {
         title: this.model.get('title') ||
@@ -137,13 +138,44 @@ const TrashItemView = Marionette.ItemView.extend({
         count: this.model.get('sections').length
       });
     }
+    else if (this.model.get('kind') === 'contentElements') {
+      const types = contentElementTypeNames(this.model);
+      const section = entry.sections.findWhere({permaId: originPermaId});
 
-    const chapter = this.options.entry.chapters.findWhere({
-      permaId: this.model.get('originPermaId')
-    });
+      return section ?
+             t('content_elements', {types, section: sectionName(section)}) :
+             t('content_elements_origin_missing', {types});
+    }
+
+    const chapter = entry.chapters.findWhere({permaId: originPermaId});
 
     return chapter ?
            t('origin', {chapter: chapter.getDisplayName()}) :
            t('origin_missing');
   }
 });
+
+const restoreFailedKeys = {
+  chapter: 'restore_chapter_failed',
+  section: 'restore_failed',
+  contentElements: 'restore_content_elements_failed'
+};
+
+function contentElementTypeNames(trashItem) {
+  const typeNames = trashItem.get('sections').flatMap(section =>
+    section.contentElements.map(contentElement => contentElement.typeName)
+  );
+
+  return [...new Set(typeNames)]
+    .map(typeName => I18n.t(`pageflow_scrolled.editor.content_elements.${typeName}.name`))
+    .join(', ');
+}
+
+function sectionName(section) {
+  return I18n.t('pageflow_scrolled.editor.configuration_places.label', {
+    chapter: section.chapter.getDisplayName(),
+    subject: I18n.t('pageflow_scrolled.editor.configuration_places.section', {
+      number: section.chapter.sections.indexOf(section) + 1
+    })
+  });
+}

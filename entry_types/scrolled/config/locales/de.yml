@@ -1788,12 +1788,15 @@ de:
         chapter:
           one: "Kapitel „%{title}“ mit 1 Abschnitt"
           other: "Kapitel „%{title}“ mit %{count} Abschnitten"
-        hint: Aus diesem Beitrag gelöschte Kapitel und Abschnitte können hier wiederhergestellt werden.
+        content_elements: "%{types} aus %{section}"
+        content_elements_origin_missing: "%{types} aus einem gelöschten Abschnitt"
+        hint: Aus diesem Beitrag gelöschte Kapitel, Abschnitte und Inhaltselemente können hier wiederhergestellt werden.
         load_failed: Gelöschte Inhalte konnten nicht geladen werden.
         origin: "Abschnitt aus %{chapter}"
         origin_missing: Abschnitt aus einem gelöschten Kapitel
         restore: Wiederherstellen
         restore_chapter_failed: Das Kapitel konnte nicht wiederhergestellt werden.
+        restore_content_elements_failed: Die Inhaltselemente konnten nicht wiederhergestellt werden.
         restore_failed: Der Abschnitt konnte nicht wiederhergestellt werden.
         trashed_at: "Gelöscht %{time}"
       configuration_places:

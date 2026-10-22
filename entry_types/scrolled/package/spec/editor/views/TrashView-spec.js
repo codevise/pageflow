@@ -34,7 +34,16 @@ describe('TrashView', () => {
     'pageflow_scrolled.editor.trash_view.chapter.one': 'Chapter %{title} with 1 section',
     'pageflow_scrolled.editor.trash_view.chapter.other':
       'Chapter %{title} with %{count} sections',
-    'pageflow_scrolled.editor.chapter_item.unnamed': 'Untitled'
+    'pageflow_scrolled.editor.chapter_item.unnamed': 'Untitled',
+    'pageflow_scrolled.editor.trash_view.content_elements': '%{types} from %{section}',
+    'pageflow_scrolled.editor.trash_view.content_elements_origin_missing':
+      '%{types} from deleted section',
+    'pageflow_scrolled.editor.trash_view.restore_content_elements_failed':
+      'Could not restore elements',
+    'pageflow_scrolled.editor.configuration_places.label': '%{chapter} - %{subject}',
+    'pageflow_scrolled.editor.configuration_places.section': 'Section %{number}',
+    'pageflow_scrolled.editor.content_elements.heading.name': 'Heading',
+    'pageflow_scrolled.editor.content_elements.inlineImage.name': 'Image'
   });
 
   function trashItem({id, originPermaId, sectionId = id * 10}) {
@@ -209,6 +218,72 @@ describe('TrashView', () => {
 
     await waitFor(() =>
       expect(within(getAllByRole('listitem')[0]).getByText('Could not restore chapter'))
+        .toBeInTheDocument()
+    );
+  });
+
+  function contentElementsTrashItem({id, originPermaId}) {
+    return {
+      ...trashItem({id}),
+      kind: 'contentElements',
+      originPermaId,
+      sections: [
+        {
+          id: id * 10, permaId: id * 10, chapterId: id, configuration: {},
+          contentElements: [
+            {id: 1, permaId: 1, typeName: 'heading', configuration: {}},
+            {id: 2, permaId: 2, typeName: 'inlineImage', configuration: {}},
+            {id: 3, permaId: 3, typeName: 'heading', configuration: {}}
+          ]
+        }
+      ]
+    };
+  }
+
+  function renderWithSections(trashItems) {
+    const entry = createEntry({
+      chapters: [{id: 1, permaId: 100, position: 0, configuration: {title: 'Intro'}}],
+      sections: [
+        {id: 10, permaId: 1000, chapterId: 1, position: 0},
+        {id: 11, permaId: 1100, chapterId: 1, position: 1}
+      ]
+    });
+
+    const result = renderBackboneView(new TrashView({entry}));
+
+    testContext.server.respond(
+      'GET', '/editor/entries/1/scrolled/trash_items',
+      [200, {'Content-Type': 'application/json'}, JSON.stringify(trashItems)]
+    );
+
+    return result;
+  }
+
+  it('labels trashed content elements with type names and origin section', () => {
+    const {getAllByRole} = renderWithSections([
+      contentElementsTrashItem({id: 5, originPermaId: 1100}),
+      contentElementsTrashItem({id: 6, originPermaId: 999})
+    ]);
+
+    const items = getAllByRole('listitem');
+
+    expect(items[0]).toHaveTextContent('Heading, Image from Intro - Section 2');
+    expect(items[1]).toHaveTextContent('Heading, Image from deleted section');
+  });
+
+  it('displays content element specific error when restore fails', async () => {
+    const {getByRole, getAllByRole} = renderWithSections([
+      contentElementsTrashItem({id: 5, originPermaId: 1100})
+    ]);
+
+    fireEvent.click(getByRole('button', {name: 'Restore'}));
+    testContext.server.respond(
+      'POST', '/editor/entries/1/scrolled/trash_items/5/restore',
+      [422, {'Content-Type': 'application/json'}, '{}']
+    );
+
+    await waitFor(() =>
+      expect(within(getAllByRole('listitem')[0]).getByText('Could not restore elements'))
         .toBeInTheDocument()
     );
   });

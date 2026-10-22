@@ -47,6 +47,63 @@ describe('TrashItemsCollection', () => {
       .toEqual([{id: 60, permaId: 600, sectionId: 50}]);
   });
 
+  it('renders content elements in full height section with small paddings in preview seed', () => {
+    testContext.entry = createEntry({});
+    const {entry} = testContext;
+    entry.trashItems.add({
+      id: 5,
+      kind: 'contentElements',
+      sections: [
+        {id: 50, permaId: 500, configuration: {layout: 'right', invert: true},
+         contentElements: []}
+      ]
+    });
+    const entrySeed = {
+      config: {
+        theme: {
+          options: {
+            properties: {
+              root: {
+                'sectionPaddingTop-none': '0',
+                'sectionPaddingTop-sm': '1em',
+                'sectionPaddingTop-lg': '4em',
+                'sectionPaddingBottom-none': '0',
+                'sectionPaddingBottom-xs': '0.5em'
+              }
+            }
+          }
+        }
+      },
+      collections: {}
+    };
+
+    const seed = entry.trashItems.get(5).seed(entrySeed);
+
+    expect(seed.collections.sections[0].configuration).toEqual({
+      layout: 'right',
+      invert: true,
+      fullHeight: true,
+      paddingTop: 'sm',
+      paddingBottom: 'xs'
+    });
+  });
+
+  it('keeps section configuration of section items in preview seed', () => {
+    testContext.entry = createEntry({});
+    const {entry} = testContext;
+    entry.trashItems.add({
+      id: 5,
+      kind: 'section',
+      sections: [
+        {id: 50, permaId: 500, configuration: {layout: 'left'}, contentElements: []}
+      ]
+    });
+
+    const seed = entry.trashItems.get(5).seed({config: {}, collections: {}});
+
+    expect(seed.collections.sections[0].configuration).toEqual({layout: 'left'});
+  });
+
   describe('#restore', () => {
     beforeEach(() => {
       testContext.entry = createEntry({
