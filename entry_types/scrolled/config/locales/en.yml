@@ -1769,6 +1769,7 @@ en:
         tabs:
           newComment: New topic
       trash_view:
+        actions: Actions
         back: Outline
         blank_slate: Nothing has been deleted from this story yet.
         chapter:
@@ -1776,6 +1777,20 @@ en:
           other: "Chapter “%{title}” with %{count} sections"
         content_elements: "%{types} from %{section}"
         content_elements_origin_missing: "%{types} from a deleted section"
+        delete_item:
+          confirm_destroy: |-
+            Permanently delete this item?
+
+            This cannot be undone.
+          destroy: Delete permanently
+        delete_failed: Could not delete the item.
+        empty_failed: Could not empty the trash.
+        empty_trash:
+          confirm_destroy: |-
+            Permanently delete all items in the trash?
+
+            This cannot be undone.
+          destroy: Empty trash
         hint: Chapters, sections and content elements deleted from this story can be restored here.
         load_failed: Deleted content could not be loaded.
         origin: "Section from %{chapter}"

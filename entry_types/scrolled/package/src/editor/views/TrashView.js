@@ -1,9 +1,12 @@
 import I18n from 'i18n-js';
+import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {editor, CollectionView, LoadingView} from 'pageflow/editor';
+import {
+  editor, CollectionView, DestroyMenuItem, DropDownButtonView, LoadingView
+} from 'pageflow/editor';
 import {cssModulesUtils} from 'pageflow/ui';
 import {StandaloneSectionThumbnail} from 'pageflow-scrolled/frontend';
 import {watchFileCollections} from 'pageflow-scrolled/entryState';
@@ -14,12 +17,16 @@ const t = (key, options) => I18n.t(`pageflow_scrolled.editor.trash_view.${key}`,
 
 export const TrashView = Marionette.ItemView.extend({
   template: () => `
-    <a class="back" href="">${t('back')}</a>
+    <div class="${styles.header}">
+      <a class="back" href="">${t('back')}</a>
+      <div class="${styles.actions}"></div>
+    </div>
+    <p class="${styles.actionError}" role="alert"></p>
     <p class="${styles.hint}">${t('hint')}</p>
     <ul class="${styles.items}"></ul>
   `,
 
-  ui: cssModulesUtils.ui(styles, 'items'),
+  ui: cssModulesUtils.ui(styles, 'actions', 'actionError', 'items'),
 
   events: {
     'click a.back': function() {
@@ -31,6 +38,19 @@ export const TrashView = Marionette.ItemView.extend({
   onRender() {
     const {entry} = this.options;
     const loadingView = this.subview(new LoadingView());
+
+    this.appendSubview(new DropDownButtonView({
+      label: t('actions'),
+      alignMenu: 'right',
+      ellipsisIcon: true,
+      openOnClick: true,
+      items: new Backbone.Collection([
+        new EmptyTrashMenuItem({}, {
+          trashItems: entry.trashItems,
+          onFailure: () => this.ui.actionError.text(t('empty_failed'))
+        })
+      ])
+    }), {to: this.ui.actions});
 
     this.ui.items.append(loadingView.render().el);
 
@@ -76,19 +96,23 @@ const TrashItemView = Marionette.ItemView.extend({
       <time class="${styles.trashedAt}"></time>
       <span class="${styles.error}" role="alert"></span>
     </div>
-    <button class="${styles.restore}">
-      <svg class="${styles.restoreIcon}"
-           xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
-           fill="none" stroke="currentColor" stroke-width="2"
-           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M3 7v6h6" />
-        <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
-      </svg>
-      ${t('restore')}
-    </button>
+    <div class="${styles.footer}">
+      <button class="${styles.restore}">
+        <svg class="${styles.restoreIcon}"
+             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 7v6h6" />
+          <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+        </svg>
+        ${t('restore')}
+      </button>
+      <div class="${styles.itemMenu}"></div>
+    </div>
   `,
 
-  ui: cssModulesUtils.ui(styles, 'thumbnail', 'origin', 'trashedAt', 'error', 'restore'),
+  ui: cssModulesUtils.ui(styles,
+                         'thumbnail', 'origin', 'trashedAt', 'error', 'restore', 'itemMenu'),
 
   events: cssModulesUtils.events(styles, {
     'click restore': function() {
@@ -103,6 +127,20 @@ const TrashItemView = Marionette.ItemView.extend({
   }),
 
   onRender() {
+    this.appendSubview(new DropDownButtonView({
+      title: t('actions'),
+      alignMenu: 'right',
+      ellipsisIcon: true,
+      borderless: true,
+      openOnClick: true,
+      items: new Backbone.Collection([
+        new DeleteTrashItemMenuItem({}, {
+          trashItem: this.model,
+          onFailure: () => this.ui.error.text(t('delete_failed'))
+        })
+      ])
+    }), {to: this.ui.itemMenu});
+
     this.ui.origin.text(this.originLabel());
     this.ui.trashedAt
       .attr('datetime', this.model.get('trashedAt'))
@@ -152,6 +190,22 @@ const TrashItemView = Marionette.ItemView.extend({
     return chapter ?
            t('origin', {chapter: chapter.getDisplayName()}) :
            t('origin_missing');
+  }
+});
+
+const EmptyTrashMenuItem = DestroyMenuItem.extend({
+  translationKeyPrefix: 'pageflow_scrolled.editor.trash_view.empty_trash',
+
+  destroyModel() {
+    this.options.trashItems.empty().catch(this.options.onFailure);
+  }
+});
+
+const DeleteTrashItemMenuItem = DestroyMenuItem.extend({
+  translationKeyPrefix: 'pageflow_scrolled.editor.trash_view.delete_item',
+
+  destroyModel() {
+    this.options.trashItem.permanentlyDelete().catch(this.options.onFailure);
   }
 });
 

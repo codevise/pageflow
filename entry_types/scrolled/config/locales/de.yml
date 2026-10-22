@@ -1789,6 +1789,7 @@ de:
         tabs:
           newComment: Neues Thema
       trash_view:
+        actions: Aktionen
         back: Gliederung
         blank_slate: Aus diesem Beitrag wurde noch nichts gelöscht.
         chapter:
@@ -1796,6 +1797,20 @@ de:
           other: "Kapitel „%{title}“ mit %{count} Abschnitten"
         content_elements: "%{types} aus %{section}"
         content_elements_origin_missing: "%{types} aus einem gelöschten Abschnitt"
+        delete_item:
+          confirm_destroy: |-
+            Diesen Inhalt endgültig löschen?
+
+            Diese Aktion kann nicht rückgängig gemacht werden.
+          destroy: Endgültig löschen
+        delete_failed: Der Inhalt konnte nicht gelöscht werden.
+        empty_failed: Der Papierkorb konnte nicht geleert werden.
+        empty_trash:
+          confirm_destroy: |-
+            Alle Inhalte im Papierkorb endgültig löschen?
+
+            Diese Aktion kann nicht rückgängig gemacht werden.
+          destroy: Papierkorb leeren
         hint: Aus diesem Beitrag gelöschte Kapitel, Abschnitte und Inhaltselemente können hier wiederhergestellt werden.
         load_failed: Gelöschte Inhalte konnten nicht geladen werden.
         origin: "Abschnitt aus %{chapter}"
