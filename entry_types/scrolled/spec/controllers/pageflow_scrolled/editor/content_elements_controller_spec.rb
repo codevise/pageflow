@@ -634,6 +634,29 @@ module PageflowScrolled
         expect(response.status).to eq(204)
       end
 
+      it 'allows updating trashed content elements' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        content_element = create(:content_element, :text_block, section:)
+        Trash.new(entry.draft).add_content_elements([content_element],
+                                                    origin_section: section,
+                                                    origin_position: 0)
+
+        authorize_for_editor_controller(entry)
+        patch(:update,
+              params: {
+                entry_type: 'scrolled',
+                entry_id: entry,
+                id: content_element,
+                content_element: {
+                  configuration: {children: 'late edit'}
+                }
+              }, format: 'json')
+
+        expect(content_element.reload.configuration).to eq('children' => 'late edit')
+        expect(response.status).to eq(204)
+      end
+
       it 'does not allow updating a content element from a different entry' do
         entry = create(:entry, type_name: 'scrolled')
         other_entry = create(:entry, type_name: 'scrolled')

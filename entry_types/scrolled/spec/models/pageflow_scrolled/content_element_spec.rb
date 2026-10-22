@@ -28,5 +28,19 @@ module PageflowScrolled
         expect(result).to eq([content_element])
       end
     end
+
+    describe '.all_for_revision_including_trash' do
+      it 'includes content elements in trash storyline' do
+        revision = create(:revision)
+        content_element = create(:content_element, revision:)
+        trash_storyline = Storyline.find_or_create_trash_for(revision)
+        trash_chapter = create(:scrolled_chapter, storyline: trash_storyline)
+        trashed = create(:content_element, section: create(:section, chapter: trash_chapter))
+
+        result = ContentElement.all_for_revision_including_trash(revision)
+
+        expect(result).to eq([content_element, trashed])
+      end
+    end
   end
 end

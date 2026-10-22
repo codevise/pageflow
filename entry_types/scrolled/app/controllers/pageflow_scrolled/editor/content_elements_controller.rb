@@ -31,7 +31,8 @@ module PageflowScrolled
       end
 
       def update
-        content_element = ContentElement.all_for_revision(@entry.draft).find(params[:id])
+        content_element =
+          ContentElement.all_for_revision_including_trash(@entry.draft).find(params[:id])
 
         ContentElement.transaction do
           content_element.update(content_element_params)

@@ -19,9 +19,12 @@ module PageflowScrolled
     end
 
     def self.all_for_revision(revision)
+      all_for_revision_including_trash(revision).merge(Storyline.excluding_trash)
+    end
+
+    def self.all_for_revision_including_trash(revision)
       joins(section: {chapter: {storyline: :revision}})
         .where(pageflow_scrolled_storylines: {revision_id: revision})
-        .merge(Storyline.excluding_trash)
         .order(POSITION_ORDER)
     end
 
