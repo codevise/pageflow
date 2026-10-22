@@ -8,7 +8,7 @@ export function deleteContentElement(entry, contentElement) {
   const [before, after] = batch.getAdjacent(contentElement);
 
   batch.remove(contentElement);
-  batch.markForDeletion(contentElement);
+  batch.markForDeletion(contentElement, {trash: true});
   batch.maybeMerge(before, after);
 
   batch.save();

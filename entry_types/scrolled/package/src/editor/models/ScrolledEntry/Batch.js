@@ -16,6 +16,7 @@ export function Batch(entry, section, {reviewSession} = {}) {
   // Content elements that have been removed from contentElements
   // and shall be deleted on the server.
   const markedForDeletion = [];
+  const markedForTrash = new Set();
 
   // New ranges for comment threads, keyed by threadId. Includes the
   // post-shift range of threads being migrated.
@@ -201,9 +202,13 @@ export function Batch(entry, section, {reviewSession} = {}) {
     }
   }
 
-  function markForDeletion(contentElement) {
+  function markForDeletion(contentElement, {trash} = {}) {
     isDirty = true;
     markedForDeletion.push(contentElement);
+
+    if (trash) {
+      markedForTrash.add(contentElement);
+    }
   }
 
   function remove(contentElement) {
@@ -340,7 +345,8 @@ export function Batch(entry, section, {reviewSession} = {}) {
       }),
       ...markedForDeletion.map(contentElement => ({
         id: contentElement.id,
-        _delete: true
+        _delete: true,
+        ...(markedForTrash.has(contentElement) && {_trash: true})
       }))
     ];
   }
