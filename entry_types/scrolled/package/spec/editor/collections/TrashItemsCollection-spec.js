@@ -291,4 +291,105 @@ describe('TrashItemsCollection', () => {
       expect(entry.trashItems.get(11)).toBeUndefined();
     });
   });
+
+  describe('#restore of content elements', () => {
+    beforeEach(() => {
+      testContext.entry = createEntry({
+        sections: [{id: 10, permaId: 100}],
+        contentElements: [
+          {id: 1, sectionId: 10, position: 0},
+          {id: 3, sectionId: 10, position: 1}
+        ]
+      });
+      testContext.entry.trashItems.add({
+        id: 20, kind: 'contentElements', originPermaId: 100, originPosition: 1, sections: []
+      });
+    });
+
+    function respondWithRestoredContentElements(server) {
+      respondWithJson(server, 'POST', '/editor/entries/1/scrolled/trash_items/20/restore', 200, [
+        {id: 2, permaId: 22, sectionId: 10, position: 1, typeName: 'heading',
+         configuration: {}}
+      ]);
+    }
+
+    it('posts to restore endpoint of trash item', () => {
+      const {entry, requests} = testContext;
+
+      entry.trashItems.get(20).restore();
+
+      expect(requests[0].method).toBe('POST');
+      expect(requests[0].url).toBe('/editor/entries/1/scrolled/trash_items/20/restore');
+    });
+
+    it('inserts restored content elements into origin section', async () => {
+      const {entry, server} = testContext;
+      const section = entry.sections.get(10);
+
+      const promise = entry.trashItems.get(20).restore();
+      respondWithRestoredContentElements(server);
+      await promise;
+
+      expect(section.contentElements.pluck('id')).toEqual([1, 2, 3]);
+      expect(section.contentElements.pluck('position')).toEqual([0, 1, 2]);
+    });
+
+    it('removes trash item', async () => {
+      const {entry, server} = testContext;
+
+      const promise = entry.trashItems.get(20).restore();
+      respondWithRestoredContentElements(server);
+      await promise;
+
+      expect(entry.trashItems.get(20)).toBeUndefined();
+    });
+
+    it('selects and scrolls to first restored content element', async () => {
+      const {entry, server} = testContext;
+      const events = [];
+      entry.on('selectContentElement scrollToContentElement',
+               contentElement => events.push(contentElement.id));
+
+      const promise = entry.trashItems.get(20).restore();
+      respondWithRestoredContentElements(server);
+      await promise;
+
+      expect(events).toEqual([2, 2]);
+    });
+
+    it('appends content elements to first section if origin section is missing', async () => {
+      const {entry, server} = testContext;
+      entry.trashItems.add({id: 21, kind: 'contentElements', originPermaId: 999,
+                            originPosition: 0, sections: []});
+
+      const promise = entry.trashItems.get(21).restore();
+      respondWithJson(server, 'POST', '/editor/entries/1/scrolled/trash_items/21/restore', 200, [
+        {id: 4, permaId: 44, sectionId: 10, position: 2, typeName: 'heading', configuration: {}}
+      ]);
+      await promise;
+
+      expect(entry.sections.get(10).contentElements.pluck('id')).toEqual([1, 3, 4]);
+      expect(entry.sections.get(10).contentElements.pluck('position')).toEqual([0, 1, 2]);
+    });
+
+    it('rejects without request if no section exists', async () => {
+      const {requests} = testContext;
+      const entry = createEntry({});
+      entry.trashItems.add({id: 21, kind: 'contentElements', originPermaId: 999, sections: []});
+
+      await expect(entry.trashItems.get(21).restore()).rejects.toThrow();
+
+      expect(requests).toHaveLength(0);
+    });
+
+    it('keeps trash item if restore fails', async () => {
+      const {entry, server} = testContext;
+
+      const promise = entry.trashItems.get(20).restore();
+      respondWithJson(server, 'POST', '/editor/entries/1/scrolled/trash_items/20/restore', 422, {});
+      await promise.catch(() => {});
+
+      expect(entry.trashItems.pluck('id')).toEqual([20]);
+    });
+  });
 });

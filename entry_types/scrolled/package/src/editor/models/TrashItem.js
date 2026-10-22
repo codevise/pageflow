@@ -19,36 +19,17 @@ export const TrashItem = Backbone.Model.extend({
   },
 
   restore() {
-    const restored = this.get('kind') === 'chapter' ?
-                     this.restoreIntoStoryline() :
-                     this.restoreIntoChapter();
+    const {target, restoreInto} = kinds[this.get('kind')];
+    const {parent, position} = target(this.collection.entry, this);
 
-    if (!restored) {
+    if (!parent) {
       return Promise.reject(new Error('Nothing to restore into.'));
     }
 
-    return new Promise((resolve, reject) => {
-      restored.once('sync', () => {
-        this.collection.remove(this);
-        resolve(restored);
-      });
-      restored.once('error', reject);
+    return restoreInto(parent, this, position).then(restored => {
+      this.collection.remove(this);
+      return restored;
     });
-  },
-
-  restoreIntoStoryline() {
-    const storyline = this.collection.entry.storylines.findWhere({
-      permaId: this.get('originPermaId')
-    });
-
-    return storyline && storyline.restoreChapter(this);
-  },
-
-  restoreIntoChapter() {
-    const {parent, position} = this.restoreTarget(this.collection.entry.chapters,
-                                                  chapter => chapter.sections);
-
-    return parent && parent.restoreSection(this, {position});
   },
 
   restoreTarget(parents, getChildren) {
@@ -66,3 +47,31 @@ export const TrashItem = Backbone.Model.extend({
     };
   }
 });
+
+const kinds = {
+  chapter: {
+    target: (entry, trashItem) => ({
+      parent: entry.storylines.findWhere({permaId: trashItem.get('originPermaId')})
+    }),
+    restoreInto: (storyline, trashItem) => whenSynced(storyline.restoreChapter(trashItem))
+  },
+  section: {
+    target: (entry, trashItem) =>
+      trashItem.restoreTarget(entry.chapters, chapter => chapter.sections),
+    restoreInto: (chapter, trashItem, position) =>
+      whenSynced(chapter.restoreSection(trashItem, {position}))
+  },
+  contentElements: {
+    target: (entry, trashItem) =>
+      trashItem.restoreTarget(entry.sections, section => section.contentElements),
+    restoreInto: (section, trashItem, position) =>
+      section.restoreContentElements(trashItem, {position})
+  }
+};
+
+function whenSynced(model) {
+  return new Promise((resolve, reject) => {
+    model.once('sync', () => resolve(model));
+    model.once('error', reject);
+  });
+}

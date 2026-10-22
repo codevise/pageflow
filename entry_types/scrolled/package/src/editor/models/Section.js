@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import {getAvailableTransitionNames} from 'pageflow-scrolled/frontend';
@@ -33,6 +34,33 @@ export const Section = Backbone.Model.extend({
       foreignKeyAttribute: 'sectionId',
       parentReferenceAttribute: 'section',
       autoConsolidatePositions: false
+    });
+  },
+
+  restoreContentElements(trashItem, {position}) {
+    return Promise.resolve($.ajax({
+      url: `${trashItem.url()}/restore`,
+      type: 'POST',
+      dataType: 'json'
+    })).then(contentElements => {
+      this.contentElements.each(contentElement => {
+        if (contentElement.get('position') >= position) {
+          contentElement.set('position',
+                             contentElement.get('position') + contentElements.length,
+                             {autoSave: false});
+        }
+      });
+
+      const {entry} = this.chapter;
+      entry.contentElements.add(contentElements);
+      this.contentElements.sort();
+
+      const first = contentElements.length && entry.contentElements.get(contentElements[0].id);
+
+      if (first) {
+        entry.trigger('selectContentElement', first);
+        entry.trigger('scrollToContentElement', first);
+      }
     });
   },
 
