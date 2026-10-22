@@ -94,6 +94,9 @@ export const ScrolledEntry = Entry.extend({
     editor.failures.watch(this.sections);
     editor.failures.watch(this.chapters);
 
+    this.listenTo(this.chapters, 'destroy', this.markUnseenTrashItems);
+    this.listenTo(this.sections, 'destroy', this.markUnseenTrashItems);
+
     editor.savingRecords.watch(this.contentElements);
     editor.savingRecords.watch(this.sections);
     editor.savingRecords.watch(this.chapters);
@@ -171,6 +174,10 @@ export const ScrolledEntry = Entry.extend({
 
   updateContentElement(contentElement, configuration, options = {}) {
     updateContentElement(this, contentElement, configuration, options);
+  },
+
+  markUnseenTrashItems() {
+    this.set('hasUnseenTrashItems', true);
   },
 
   deleteContentElement(contentElement) {

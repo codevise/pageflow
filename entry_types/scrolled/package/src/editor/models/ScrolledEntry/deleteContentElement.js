@@ -11,5 +11,9 @@ export function deleteContentElement(entry, contentElement) {
   batch.markForDeletion(contentElement, {trash: true});
   batch.maybeMerge(before, after);
 
-  batch.save();
+  batch.save({
+    success() {
+      entry.markUnseenTrashItems();
+    }
+  });
 }

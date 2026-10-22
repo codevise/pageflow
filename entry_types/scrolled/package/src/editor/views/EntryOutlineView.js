@@ -24,7 +24,10 @@ export const EntryOutlineView = Marionette.Layout.extend({
   ui: cssModulesUtils.ui(styles, 'tabs', 'toolbar', 'dropDownButton'),
 
   onRender() {
-    this.ui.toolbar.prepend(this.subview(new TrashButtonView()).render().el);
+    this.ui.toolbar.prepend(this.subview(new TrashButtonView({
+      entry: this.options.entry,
+      nudgeContainer: this.el
+    })).render().el);
 
     const viewModel = new Backbone.Model({collapsed: false});
     const dropDownMenuItems = new Backbone.Collection();
