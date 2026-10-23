@@ -26,6 +26,12 @@
   padding: 0;
 }
 
+.loadFailed,
+.blankSlate {
+  text-align: center;
+  padding: space(8);
+}
+
 .loadFailed {
   color: var(--ui-error-color);
 }
