@@ -1,0 +1,105 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.actions {}
+
+.actionError {
+  margin: space(4) 0 0;
+  color: var(--ui-error-color);
+}
+
+.actionError:empty {
+  display: none;
+}
+
+.hint {
+  composes: info_box info from global;
+  margin: space(4) 0 0;
+}
+
+.items {
+  list-style: none;
+  margin: space(4) 0 0;
+  padding: 0;
+}
+
+.loadFailed {
+  color: var(--ui-error-color);
+}
+
+.blankSlate {
+  color: var(--ui-on-surface-color-light);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: space(2);
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: var(--ui-surface-color);
+  border: solid 1px var(--ui-on-surface-color-lighter);
+  border-radius: rounded(lg);
+}
+
+.thumbnail {
+  position: relative;
+  padding-top: 50%;
+  overflow: hidden;
+  border-radius: rounded(sm);
+  border: solid 1px var(--ui-on-surface-color-lighter);
+}
+
+.contentElementsItem .thumbnail {
+  --backdrop-default-background:
+    linear-gradient(45deg, #e5e5e5 25%, transparent 25%) 0 0 / 96px 96px,
+    linear-gradient(135deg, #e5e5e5 25%, transparent 25%) 48px 0 / 96px 96px,
+    linear-gradient(45deg, transparent 75%, #e5e5e5 75%) 48px -48px / 96px 96px,
+    linear-gradient(135deg, transparent 75%, #e5e5e5 75%) 0 48px / 96px 96px,
+    #fff;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: space(1);
+  min-width: 0;
+}
+
+.origin {
+  font-weight: 500;
+}
+
+.trashedAt {
+  color: var(--ui-on-surface-color-light);
+}
+
+.error {
+  color: var(--ui-error-color);
+}
+
+.error:empty {
+  display: none;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.restore {
+  composes: secondaryIconButton from './buttons.module.css';
+}
+
+.itemMenu {
+  --ui-on-button-color: var(--ui-primary-color-light);
+}
+
+.restoreIcon {
+  margin-right: 6px;
+  vertical-align: top;
+}

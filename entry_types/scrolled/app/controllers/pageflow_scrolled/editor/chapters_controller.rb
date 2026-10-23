@@ -25,7 +25,7 @@ module PageflowScrolled
 
       def destroy
         chapter = Chapter.all_for_revision(@entry.draft).find(params[:id])
-        chapter.destroy
+        Trash.new(@entry.draft).add_chapter(chapter)
 
         head :no_content
       rescue ActiveRecord::RecordNotFound

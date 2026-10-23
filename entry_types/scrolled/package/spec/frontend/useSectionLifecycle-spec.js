@@ -68,7 +68,7 @@ describe('useSectionLifecycle', () => {
       const {getByTestId} = renderInEntry(<Entry />, {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [

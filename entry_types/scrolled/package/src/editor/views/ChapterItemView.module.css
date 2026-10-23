@@ -69,12 +69,11 @@
 }
 
 .creating .creatingIndicator     { display: block; }
-.destroying .destroyingIndicator { display: block; }
 .failed .failedIndicator         { display: block; }
 
 
 .creatingIndicator   { composes: creatingIndicator from './outline.module.css'; }
-.destroyingIndicator { composes: destroyingIndicator from './outline.module.css';  }
+.destroying          { composes: destroying from './outline.module.css'; }
 .failedIndicator     { composes: failedIndicator from './outline.module.css'; }
 
 .addButtons {

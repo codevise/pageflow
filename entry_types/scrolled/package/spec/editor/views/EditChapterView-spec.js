@@ -14,7 +14,7 @@ describe('EditChapterView', () => {
 
   it('does not offer adding chapter to shared fragments without fragments feature', () => {
     const entry = createEntry({
-      storylines: [{id: 100, configuration: {main: true}}],
+      storylines: [{id: 100, role: 'main'}],
       chapters: [{id: 1, storylineId: 100}]
     });
 
@@ -32,7 +32,7 @@ describe('EditChapterView', () => {
 
     it('offers adding chapter to shared fragments', () => {
       const entry = createEntry({
-        storylines: [{id: 100, configuration: {main: true}}],
+        storylines: [{id: 100, role: 'main'}],
         chapters: [{id: 1, storylineId: 100}]
       });
 
@@ -49,7 +49,7 @@ describe('EditChapterView', () => {
   it('uses chapter tab for main storyline chapters', () => {
     const entry = createEntry({
       storylines: [
-        {id: 100, configuration: {main: true}}
+        {id: 100, role: 'main'}
       ],
       chapters: [
         {id: 1, storylineId: 100}
@@ -71,7 +71,7 @@ describe('EditChapterView', () => {
   it('uses excursion tab for excursion chapters', () => {
     const entry = createEntry({
       storylines: [
-        {id: 100, configuration: {main: true}},
+        {id: 100, role: 'main'},
         {id: 200}
       ],
       chapters: [

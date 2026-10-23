@@ -150,7 +150,7 @@ describe('EntryCommentsView', () => {
   it('groups excursion chapters below main chapters', () => {
     const entry = createEntry({
       storylines: [
-        {id: 1000, permaId: 100, position: 0, configuration: {main: true}},
+        {id: 1000, permaId: 100, position: 0, role: 'main'},
         {id: 2000, permaId: 200, position: 1, configuration: {}}
       ],
       chapters: [

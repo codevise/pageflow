@@ -79,6 +79,67 @@ module Pageflow
     end
 
     describe '#copy' do
+      it 'passes duplicate purpose to after copy hooks by default' do
+        revision_component = Class.new(TestRevisionComponent) do
+          def self.after_copy(revision, purpose:)
+            all_for_revision(revision).update_all(text: purpose.to_s)
+          end
+        end
+
+        pageflow_configure do |config|
+          config.revision_components.register(revision_component, after_copy: true)
+        end
+        revision = create(:revision)
+        TestRevisionComponent.create!(revision:, text: 'original')
+
+        copied_revision = revision.copy
+
+        expect(TestRevisionComponent.all_for_revision(copied_revision))
+          .to contain_exactly(have_attributes(text: 'duplicate'))
+      end
+
+      it 'does not call after copy hooks registered for other entry types' do
+        revision_component = Class.new(TestRevisionComponent) do
+          def self.after_copy(revision, purpose:)
+            all_for_revision(revision).update_all(text: purpose.to_s)
+          end
+        end
+
+        pageflow_configure do |config|
+          rainbow_entry_type = TestEntryType.register(config, name: 'rainbow')
+
+          config.for_entry_type(rainbow_entry_type) do |c|
+            c.revision_components.register(revision_component, after_copy: true)
+          end
+        end
+        revision = create(:entry).draft
+        TestRevisionComponent.create!(revision:, text: 'original')
+
+        copied_revision = revision.copy
+
+        expect(TestRevisionComponent.all_for_revision(copied_revision))
+          .to contain_exactly(have_attributes(text: 'original'))
+      end
+
+      it 'passes given purpose to after copy hooks' do
+        revision_component = Class.new(TestRevisionComponent) do
+          def self.after_copy(revision, purpose:)
+            all_for_revision(revision).update_all(text: purpose.to_s)
+          end
+        end
+
+        pageflow_configure do |config|
+          config.revision_components.register(revision_component, after_copy: true)
+        end
+        revision = create(:revision)
+        TestRevisionComponent.create!(revision:, text: 'original')
+
+        copied_revision = revision.copy(purpose: :snapshot)
+
+        expect(TestRevisionComponent.all_for_revision(copied_revision))
+          .to contain_exactly(have_attributes(text: 'snapshot'))
+      end
+
       it 'creates a new revision' do
         revision = create(:revision)
 

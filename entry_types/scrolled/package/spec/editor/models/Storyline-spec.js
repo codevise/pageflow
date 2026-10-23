@@ -14,7 +14,7 @@ describe('Storyline', () => {
     beforeEach(() => {
       testContext.entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
-          storylines: [{id: 10}],
+          storylines: [{id: 10, role: 'main'}],
           chapters: [{storylineId: 10, position: 5}]
         })
       });
@@ -41,7 +41,7 @@ describe('Storyline', () => {
     beforeEach(() => {
       testContext.entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
-          storylines: [{id: 10}, {id: 20}],
+          storylines: [{id: 10, role: 'main'}, {id: 20}],
           chapters: [
             {id: 1, storylineId: 10, position: 0},
             {id: 2, storylineId: 10, position: 1},
@@ -71,7 +71,7 @@ describe('Storyline', () => {
     it('sets position to 0 for empty storyline', () => {
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
-          storylines: [{id: 10}, {id: 20}],
+          storylines: [{id: 10, role: 'main'}, {id: 20}],
           chapters: [
             {id: 1, storylineId: 10, position: 0}
           ]

@@ -19,6 +19,10 @@ module PageflowScrolled
     end
 
     def self.all_for_revision(revision)
+      all_for_revision_including_trash(revision).merge(Storyline.excluding_trash)
+    end
+
+    def self.all_for_revision_including_trash(revision)
       joins(section: {chapter: {storyline: :revision}})
         .where(pageflow_scrolled_storylines: {revision_id: revision})
         .order(POSITION_ORDER)
@@ -42,9 +46,11 @@ module PageflowScrolled
 
       def save!
         ContentElement.transaction do
+          trash_content_elements
+
           result = @items.map.with_index { |item, index|
             if item[:_delete]
-              @section.content_elements.delete(item[:id])
+              @section.content_elements.delete(item[:id]) unless item[:_trash]
               nil
             else
               create_or_update(item, index)
@@ -58,6 +64,33 @@ module PageflowScrolled
       end
 
       private
+
+      def trash_content_elements
+        trashed_ids = item_ids { |item| item[:_trash] }
+        return if trashed_ids.empty?
+
+        content_elements = ContentElement.where(section: @section).order(:position).to_a
+        trashed = content_elements.select { |ce| trashed_ids.include?(ce.id) }
+        raise ActiveRecord::RecordNotFound if trashed.size < trashed_ids.size
+
+        Trash.new(@storyline.revision).add_content_elements(
+          trashed,
+          origin_section: @section,
+          origin_position: count_remaining_before(content_elements, trashed_ids)
+        )
+      end
+
+      def count_remaining_before(content_elements, trashed_ids)
+        deleted_ids = item_ids { |item| item[:_delete] }
+
+        content_elements
+          .take_while { |ce| trashed_ids.exclude?(ce.id) }
+          .count { |ce| deleted_ids.exclude?(ce.id) }
+      end
+
+      def item_ids(&)
+        @items.select(&).map { |item| item[:id].to_i }
+      end
 
       def create_or_update(item, index)
         attributes = {

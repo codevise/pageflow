@@ -1,0 +1,69 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: none;
+  border: 0;
+  padding: 0 space(2);
+  color: var(--ui-primary-color-light);
+  cursor: pointer;
+}
+
+.icon {
+  display: block;
+}
+
+.button:hover,
+.button:focus-visible {
+  color: var(--ui-primary-color);
+}
+
+.circle {
+  position: absolute;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  margin: -5px;
+  border-radius: 50%;
+  background-color: var(--ui-primary-color);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.circle.nudging {
+  animation: contract 0.35s ease-in 0.5s;
+}
+
+.nudging .icon {
+  animation: tint 0.5s ease-out 0.5s;
+}
+
+@keyframes contract {
+  from {
+    transform: scale(40);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.1;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes tint {
+  60%,
+  80% {
+    color: var(--ui-primary-color);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .circle.nudging {
+    animation: none;
+  }
+}

@@ -43,7 +43,7 @@ describe('LinkableEntry', () => {
       chapters: [],
       sections: [],
       collections: {
-        storylines: [{id: 1, permaId: 10, configuration: {main: true}}],
+        storylines: [{id: 1, permaId: 10, role: 'main'}],
         chapters: [],
         sections: [],
         contentElements: [],

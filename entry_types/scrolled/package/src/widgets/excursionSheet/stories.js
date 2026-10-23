@@ -23,7 +23,7 @@ function getSeed({
       {
         id: 1000,
         permaId: 100,
-        configuration: {main: true}
+        role: 'main'
       },
       {
         id: 2000,

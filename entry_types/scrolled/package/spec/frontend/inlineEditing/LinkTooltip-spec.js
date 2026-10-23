@@ -396,7 +396,7 @@ describe('LinkTooltip', () => {
   it('displays tooltip for excursion chapter link with title', async () => {
     const seed = {
       storylines: [
-        {id: 1, configuration: {main: true}},
+        {id: 1, role: 'main'},
         {id: 2}
       ],
       chapters: [
@@ -423,7 +423,7 @@ describe('LinkTooltip', () => {
   it('displays tooltip for excursion chapter link without title', async () => {
     const seed = {
       storylines: [
-        {id: 1, configuration: {main: true}},
+        {id: 1, role: 'main'},
         {id: 2}
       ],
       chapters: [

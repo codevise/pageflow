@@ -47,6 +47,38 @@ describe('ChapterItemView', () => {
     expect(screen.getByRole('link', {name: /Chapter 1 Some title/})).toBeInTheDocument();
   });
 
+  it('updates number when preceding chapter is removed', () => {
+    const entry = createEntry({
+      chapters: [
+        {id: 1, permaId: 100, position: 0, configuration: {title: 'First'}},
+        {id: 2, permaId: 101, position: 1, configuration: {title: 'Second'}}
+      ]
+    });
+    const view = new ChapterItemView({
+      entry,
+      model: entry.chapters.get(2)
+    });
+
+    render(view);
+    entry.chapters.remove(entry.chapters.get(1));
+
+    expect(screen.getByRole('link', {name: /Chapter 1 Second/})).toBeInTheDocument();
+  });
+
+  it('does not fail when own chapter is removed', () => {
+    const entry = createEntry({
+      chapters: [{id: 1, permaId: 100, position: 0}]
+    });
+    const view = new ChapterItemView({
+      entry,
+      model: entry.chapters.get(1)
+    });
+
+    render(view);
+
+    expect(() => entry.chapters.remove(entry.chapters.get(1))).not.toThrow();
+  });
+
   it('marks chapter as hidden in navigation', async () => {
     const entry = createEntry({
       chapters: [

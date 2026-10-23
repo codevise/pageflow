@@ -16,13 +16,24 @@ module PageflowScrolled
       end
 
       context 'storylines' do
-        it 'renders storylines with id, perma_id, position and configuration' do
+        it 'renders role of storylines' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          create(:scrolled_storyline, revision: entry.revision, role: nil,
+                                      configuration: {main: true})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(collections: {storylines: [{role: 'main'}]})
+        end
+
+        it 'renders storylines with id, perma_id, role, position and configuration' do
           entry = create(:published_entry, type_name: 'scrolled')
           main_storyline = create(
             :scrolled_storyline,
             revision: entry.revision,
+            role: 'main',
             position: 0,
-            configuration: {main: true}
+            configuration: {some: 'value'}
           )
           excursion_storyline = create(
             :scrolled_storyline,
@@ -38,9 +49,10 @@ module PageflowScrolled
                                  {
                                    id: main_storyline.id,
                                    permaId: main_storyline.perma_id,
+                                   role: 'main',
                                    position: 0,
                                    configuration: {
-                                     main: true
+                                     some: 'value'
                                    }
                                  },
                                  {
@@ -50,6 +62,43 @@ module PageflowScrolled
                                  }
                                ]
                              })
+        end
+      end
+
+      context 'trash' do
+        it 'omits trashed content from published entries' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          create(:content_element, revision: entry.revision)
+          trashed_content_element = create_trashed_content_element(entry.revision)
+
+          result = JSON.parse(render(helper, entry))
+
+          expect(result['collections']['storylines'].pluck('id'))
+            .not_to include(trashed_content_element.section.chapter.storyline_id)
+          expect(result['collections']['chapters'].pluck('id'))
+            .not_to include(trashed_content_element.section.chapter_id)
+          expect(result['collections']['sections'].pluck('id'))
+            .not_to include(trashed_content_element.section_id)
+          expect(result['collections']['contentElements'].pluck('id'))
+            .not_to include(trashed_content_element.id)
+        end
+
+        it 'omits trashed content from draft entries' do
+          entry = create(:draft_entry, type_name: 'scrolled')
+          trashed_content_element = create_trashed_content_element(entry.revision)
+
+          result = JSON.parse(render(helper, entry, include_hidden_sections: true))
+
+          expect(result['collections']['sections'].pluck('id'))
+            .not_to include(trashed_content_element.section_id)
+          expect(result['collections']['contentElements'].pluck('id'))
+            .not_to include(trashed_content_element.id)
+        end
+
+        def create_trashed_content_element(revision)
+          trash_storyline = Storyline.find_or_create_trash_for(revision)
+          chapter = create(:scrolled_chapter, storyline: trash_storyline)
+          create(:content_element, section: create(:section, chapter:))
         end
       end
 
@@ -157,7 +206,7 @@ module PageflowScrolled
             :scrolled_storyline,
             revision: entry.revision,
             position: 0,
-            configuration: {main: true}
+            role: 'main'
           )
           excursions_storyline = create(
             :scrolled_storyline,
@@ -313,7 +362,7 @@ module PageflowScrolled
             :scrolled_storyline,
             revision: entry.revision,
             position: 0,
-            configuration: {main: true}
+            role: 'main'
           )
           excursions_storyline = create(
             :scrolled_storyline,
@@ -806,7 +855,7 @@ module PageflowScrolled
             :scrolled_storyline,
             revision: entry.revision,
             position: 0,
-            configuration: {main: true}
+            role: 'main'
           )
           excursions_storyline = create(
             :scrolled_storyline,

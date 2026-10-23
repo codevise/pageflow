@@ -373,7 +373,7 @@ export function useMainStoryline() {
   const storylines = useEntryStateCollectionItems('storylines');
 
   return useMemo(
-    () => storylines.find(storyline => storyline.configuration.main),
+    () => storylines.find(storyline => storyline.role === 'main'),
     [storylines]
   );
 }

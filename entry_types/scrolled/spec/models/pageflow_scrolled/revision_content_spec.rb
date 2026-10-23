@@ -5,18 +5,15 @@ module PageflowScrolled
     describe '#main_storyline' do
       it 'returns storyline marked as main' do
         revision = create(:revision)
-        create(:scrolled_storyline, revision:, position: 0, configuration: {})
-        main_storyline = create(:scrolled_storyline,
-                                revision:,
-                                position: 1,
-                                configuration: {main: true})
+        create(:scrolled_storyline, revision:, position: 0, role: 'excursions')
+        main_storyline = create(:scrolled_storyline, revision:, position: 1, role: 'main')
 
         expect(RevisionContent.new(revision).main_storyline).to eq(main_storyline)
       end
 
       it 'returns nil if no storyline is marked as main' do
         revision = create(:revision)
-        create(:scrolled_storyline, revision:, configuration: {})
+        create(:scrolled_storyline, revision:, role: 'excursions')
 
         expect(RevisionContent.new(revision).main_storyline).to be_nil
       end

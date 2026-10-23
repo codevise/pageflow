@@ -18,6 +18,18 @@ module PageflowScrolled
 
     nested_revision_components :content_elements
 
+    def insert_content_elements(inserted, position:)
+      transaction do
+        content_elements
+          .where('position >= ?', position)
+          .update_all(['position = position + ?', inserted.size])
+
+        inserted.each_with_index do |content_element, index|
+          content_element.update!(section: self, position: position + index)
+        end
+      end
+    end
+
     def entry_for_auto_generated_perma_id
       chapter.storyline.revision.entry
     end
@@ -25,6 +37,7 @@ module PageflowScrolled
     def self.all_for_revision(revision)
       joins(chapter: {storyline: :revision})
         .where(pageflow_scrolled_storylines: {revision_id: revision})
+        .merge(Storyline.excluding_trash)
         .order(POSITION_ORDER)
     end
   end

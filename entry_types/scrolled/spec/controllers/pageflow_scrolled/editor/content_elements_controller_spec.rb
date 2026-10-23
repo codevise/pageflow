@@ -166,6 +166,77 @@ module PageflowScrolled
         expect(section.content_elements.map(&:id)).to eq([content_elements.last.id])
       end
 
+      it 'moves content elements marked by _trash flag to the trash' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        kept, trashed, merged = create_list(:content_element, 3, section:)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {id: kept.id},
+                 {id: trashed.id, _delete: true, _trash: true},
+                 {id: merged.id, _delete: true}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(section.reload.content_elements).to eq([kept])
+        expect(trashed.reload.section.chapter.configuration['trash'])
+          .to include('kind' => 'contentElements',
+                      'originPermaId' => section.perma_id,
+                      'originPosition' => 1)
+        expect(ContentElement.exists?(merged.id)).to eq(false)
+      end
+
+      it 'does not trash content elements of other sections' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        other_section = create(:section, revision: entry.draft)
+        content_element = create(:content_element, section: other_section)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {id: content_element.id, _delete: true, _trash: true}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(response.status).to eq(404)
+        expect(content_element.reload.section).to eq(other_section)
+      end
+
+      it 'records number of remaining preceding elements as origin position' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        merged = create(:content_element, section:, position: 0)
+        kept = create(:content_element, section:, position: 1)
+        trashed = create(:content_element, section:, position: 5)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry.id,
+               section_id: section.id,
+               content_elements: [
+                 {id: kept.id},
+                 {id: merged.id, _delete: true},
+                 {id: trashed.id, _delete: true, _trash: true}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(trashed.reload.section.chapter.configuration['trash'])
+          .to include('originPosition' => 1)
+      end
+
       it 'responds with array of objects containging content element ids and perma ids' do
         entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
@@ -390,6 +461,33 @@ module PageflowScrolled
         expect(thread.reload.section_perma_id).to eq(target_section.perma_id)
       end
 
+      it 'updates section_perma_id of threads on moved in elements when trashing in same batch' do
+        entry = create(:entry, type_name: 'scrolled')
+        source_section = create(:section, revision: entry.draft)
+        target_section = create(:section, revision: entry.draft)
+        trashed = create(:content_element, section: target_section)
+        element = create(:content_element, :text_block, section: source_section)
+        thread = create(:comment_thread,
+                        revision: entry.draft,
+                        subject_type: 'ContentElement',
+                        subject_id: element.perma_id,
+                        section_perma_id: source_section.perma_id)
+
+        authorize_for_editor_controller(entry)
+        post(:batch,
+             params: {
+               entry_type: 'scrolled',
+               entry_id: entry.id,
+               section_id: target_section.id,
+               content_elements: [
+                 {id: element.id},
+                 {id: trashed.id, _delete: true, _trash: true}
+               ]
+             }, format: 'json', as: :json)
+
+        expect(thread.reload.section_perma_id).to eq(target_section.perma_id)
+      end
+
       it 'leaves section_perma_id untouched for threads that stay in their section' do
         entry = create(:entry, type_name: 'scrolled')
         section = create(:section, revision: entry.draft)
@@ -533,6 +631,29 @@ module PageflowScrolled
               }, format: 'json')
 
         expect(content_element.reload.configuration).to eq('children' => 'some content')
+        expect(response.status).to eq(204)
+      end
+
+      it 'allows updating trashed content elements' do
+        entry = create(:entry, type_name: 'scrolled')
+        section = create(:section, revision: entry.draft)
+        content_element = create(:content_element, :text_block, section:)
+        Trash.new(entry.draft).add_content_elements([content_element],
+                                                    origin_section: section,
+                                                    origin_position: 0)
+
+        authorize_for_editor_controller(entry)
+        patch(:update,
+              params: {
+                entry_type: 'scrolled',
+                entry_id: entry,
+                id: content_element,
+                content_element: {
+                  configuration: {children: 'late edit'}
+                }
+              }, format: 'json')
+
+        expect(content_element.reload.configuration).to eq('children' => 'late edit')
         expect(response.status).to eq(204)
       end
 

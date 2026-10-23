@@ -29,6 +29,16 @@ module PageflowScrolled
         expect(linked_entry.chapters.map(&:perma_id)).to eq([chapter.perma_id])
       end
 
+      it 'skips chapters in trash storyline' do
+        entry = create(:entry, type_name: 'scrolled')
+        trash_storyline = Storyline.find_or_create_trash_for(entry.draft)
+        chapter = create(:scrolled_chapter, storyline: trash_storyline)
+
+        linked_entry = LinkedEntry.all(Pageflow::Entry.all, entry.id => [chapter.perma_id]).first
+
+        expect(linked_entry.chapters).to eq([])
+      end
+
       it 'skips chapters that can not be found' do
         entry = create(:published_entry, type_name: 'scrolled')
 

@@ -5,7 +5,7 @@ import {renderHookInEntry} from 'pageflow-scrolled/testHelpers';
 import {renderHookWithReviewState} from 'support/renderWithReviewState';
 
 const storylinesSeed = [
-  {id: 1, permaId: 10, position: 1, configuration: {main: true}},
+  {id: 1, permaId: 10, position: 1, role: 'main'},
   {id: 2, permaId: 11, position: 2, configuration: {}}
 ];
 const chaptersSeed = [

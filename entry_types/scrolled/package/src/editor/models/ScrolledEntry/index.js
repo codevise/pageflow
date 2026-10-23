@@ -14,6 +14,7 @@ import {
 } from '../../collections';
 import {LinkableEntriesCollection} from '../../collections/LinkableEntriesCollection';
 import {LinkedEntriesCollection} from '../../collections/LinkedEntriesCollection';
+import {TrashItemsCollection} from '../../collections/TrashItemsCollection';
 
 import {CommentDisplayFilter} from '../CommentDisplayFilter';
 import {ContentElement} from '../ContentElement';
@@ -85,12 +86,16 @@ export const ScrolledEntry = Entry.extend({
 
     this.linkedEntries = new LinkedEntriesCollection(seed.collections.linkedEntries);
     this.linkableEntries = new LinkableEntriesCollection();
+    this.trashItems = new TrashItemsCollection([], {entry: this});
 
     this.cutoff = new Cutoff({entry: this});
 
     editor.failures.watch(this.contentElements);
     editor.failures.watch(this.sections);
     editor.failures.watch(this.chapters);
+
+    this.listenTo(this.chapters, 'destroy', this.markUnseenTrashItems);
+    this.listenTo(this.sections, 'destroy', this.markUnseenTrashItems);
 
     editor.savingRecords.watch(this.contentElements);
     editor.savingRecords.watch(this.sections);
@@ -169,6 +174,10 @@ export const ScrolledEntry = Entry.extend({
 
   updateContentElement(contentElement, configuration, options = {}) {
     updateContentElement(this, contentElement, configuration, options);
+  },
+
+  markUnseenTrashItems() {
+    this.set('hasUnseenTrashItems', true);
   },
 
   deleteContentElement(contentElement) {

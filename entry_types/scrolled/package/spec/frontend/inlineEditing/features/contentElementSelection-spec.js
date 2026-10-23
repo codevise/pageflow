@@ -59,7 +59,7 @@ describe('inline editing content element selection', () => {
         storylines: [
           {
             id: 1,
-            configuration: {main: true}
+            role: 'main'
           },
           {
             id: 2

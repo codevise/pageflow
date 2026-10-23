@@ -37,7 +37,7 @@ describe('FragmentLibraryDialogView', () => {
   function library(attributes, chapters, sections) {
     return {
       collections: {
-        storylines: [{id: 1, permaId: 10, configuration: {main: true}}],
+        storylines: [{id: 1, permaId: 10, role: 'main'}],
         chapters,
         sections,
         contentElements: [],
@@ -182,7 +182,7 @@ describe('FragmentLibraryDialogView preview pane', () => {
       id: 3,
       title: 'Templates',
       collections: {
-        storylines: [{id: 1, permaId: 10, configuration: {main: true}}],
+        storylines: [{id: 1, permaId: 10, role: 'main'}],
         chapters: [{id: 1, permaId: 100, configuration: {title: 'Intro'}},
                    {id: 2, permaId: 200, configuration: {title: 'Outro'}}],
         sections: [{id: 10, permaId: 1000, chapterId: 1, configuration: {}},

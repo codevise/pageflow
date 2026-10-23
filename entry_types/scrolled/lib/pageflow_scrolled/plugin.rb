@@ -20,11 +20,11 @@ module PageflowScrolled
           'xxs' => '3em',
           'xs' => '4.375em',
           'sm' => '6em',
-          'md' => 'max(7em, 10svh)',
-          'lg' => 'max(8em, 10svh)',
-          'xl' => 'max(9em, 15svh)',
-          'xxl' => 'max(10em, 20svh)',
-          'xxxl' => 'max(11em, 30svh)'
+          'md' => 'max(7em, calc(10 * var(--svh, 1svh)))',
+          'lg' => 'max(8em, calc(10 * var(--svh, 1svh)))',
+          'xl' => 'max(9em, calc(15 * var(--svh, 1svh)))',
+          'xxl' => 'max(10em, calc(20 * var(--svh, 1svh)))',
+          'xxxl' => 'max(11em, calc(30 * var(--svh, 1svh)))'
         }
 
         margin_scale = {
@@ -101,8 +101,8 @@ module PageflowScrolled
         c.themes.register_default_options(
           properties: {
             root: {
-              'section_default_padding_top' => 'max(10em, 20svh)',
-              'section_default_padding_bottom' => 'max(10em, 20svh)',
+              'section_default_padding_top' => 'max(10em, calc(20 * var(--svh, 1svh)))',
+              'section_default_padding_bottom' => 'max(10em, calc(20 * var(--svh, 1svh)))',
               'content_element_margin_style_default' => '2em',
               'content_element_box_shadow_style_default' =>
                 '0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.15)',
@@ -112,8 +112,8 @@ module PageflowScrolled
               'outline_color' => '#a0a0a080'
             },
             cards_appearance_section: {
-              'section_default_padding_top' => 'max(10em, 20svh)',
-              'section_default_padding_bottom' => 'max(10em, 20svh)'
+              'section_default_padding_top' => 'max(10em, calc(20 * var(--svh, 1svh)))',
+              'section_default_padding_bottom' => 'max(10em, calc(20 * var(--svh, 1svh)))'
             }
           }
         )
@@ -194,7 +194,7 @@ module PageflowScrolled
         c.file_types.register(Pageflow::BuiltInFileType.audio)
         c.file_types.register(Pageflow::BuiltInFileType.other)
 
-        c.revision_components.register(Storyline, create_defaults: true)
+        c.revision_components.register(Storyline, create_defaults: true, after_copy: true)
 
         ['tikTokEmbed', 'twitterEmbed', 'hotspots', 'socialEmbed',
          'videoEmbed', 'inlineBeforeAfter'].each do |name|

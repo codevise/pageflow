@@ -173,7 +173,7 @@ describe('SectionItemView', () => {
     it('marks section as active when in excursion and section is current in that excursion', () => {
       const entry = createEntry({
         storylines: [
-          {id: 100, configuration: {main: true}},
+          {id: 100, role: 'main'},
           {id: 200}
         ],
         chapters: [
@@ -202,7 +202,7 @@ describe('SectionItemView', () => {
     it('does not mark section as active when in excursion but belongs to different chapter', () => {
       const entry = createEntry({
         storylines: [
-          {id: 100, configuration: {main: true}},
+          {id: 100, role: 'main'},
           {id: 200}
         ],
         chapters: [

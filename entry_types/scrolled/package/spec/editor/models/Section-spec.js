@@ -52,7 +52,7 @@ describe('Section', () => {
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
           storylines: [
-            {id: 100, configuration: {main: true}},
+            {id: 100, role: 'main'},
             {id: 200}
           ],
           chapters: [
@@ -92,7 +92,7 @@ describe('Section', () => {
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
           storylines: [
-            {id: 100, configuration: {main: true}},
+            {id: 100, role: 'main'},
             {id: 200}
           ],
           chapters: [
@@ -118,7 +118,7 @@ describe('Section', () => {
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
           storylines: [
-            {id: 100, configuration: {main: true}},
+            {id: 100, role: 'main'},
             {id: 200}
           ],
           chapters: [
@@ -144,7 +144,7 @@ describe('Section', () => {
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
           storylines: [
-            {id: 100, configuration: {main: true}},
+            {id: 100, role: 'main'},
             {id: 200}
           ],
           chapters: [

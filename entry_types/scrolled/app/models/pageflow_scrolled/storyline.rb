@@ -28,13 +28,45 @@ module PageflowScrolled
 
     nested_revision_components :chapters
 
+    scope :excluding_trash, -> { where.not(role: 'trash').or(where(role: nil)) }
+
+    def role
+      super || (configuration['main'] ? 'main' : 'excursions')
+    end
+
+    def insert_chapter(chapter, position:)
+      transaction do
+        chapters.where('position >= ?', position).update_all('position = position + 1')
+        chapter.update!(storyline: self, position:)
+      end
+    end
+
     def sections_before_cutoff_section
       sections_before(cutoff_section)
     end
 
     def self.create_defaults(draft)
-      create!(revision: draft, configuration: {main: true})
-      create!(revision: draft, position: 1)
+      create!(revision: draft, role: 'main')
+      create!(revision: draft, role: 'excursions', position: 1)
+    end
+
+    def self.all_for_revision(revision)
+      super.excluding_trash
+    end
+
+    def self.find_or_create_trash_for(revision)
+      revision.with_lock do
+        where(revision:, role: 'trash').first ||
+          create!(revision:,
+                  role: 'trash',
+                  position: where(revision:).maximum(:position).to_i + 1)
+      end
+    end
+
+    def self.after_copy(revision, purpose:)
+      return if %i[snapshot restore].include?(purpose)
+
+      where(revision:, role: 'trash').destroy_all
     end
 
     private

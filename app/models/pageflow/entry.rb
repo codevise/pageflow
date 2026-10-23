@@ -89,7 +89,7 @@ module Pageflow
         revisions.depublish_all
         association(:published_revision).reset
 
-        draft.copy do |revision|
+        draft.copy(purpose: :publish) do |revision|
           revision.creator = options[:creator]
           revision.frozen_at = Time.now
           revision.published_at = Time.now
@@ -102,7 +102,7 @@ module Pageflow
 
     def snapshot(options)
       transaction do
-        draft.copy do |revision|
+        draft.copy(purpose: :snapshot) do |revision|
           revision.creator = options[:creator]
           revision.frozen_at = Time.now
           revision.snapshot_type = options.fetch(:type, 'auto')
@@ -116,7 +116,7 @@ module Pageflow
         draft.update!(frozen_at: Time.now, creator: options[:creator],
                       snapshot_type: 'before_restore')
 
-        restored_revision.copy do |revision|
+        restored_revision.copy(purpose: :restore) do |revision|
           revision.restored_from = restored_revision
           revision.frozen_at = nil
           revision.snapshot_type = nil

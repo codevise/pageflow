@@ -69,7 +69,7 @@ describe('ChapterMenuItems', () => {
 
     it('has Move to main label when chapter is an excursion', () => {
       const entry = createEntry({
-        storylines: [{id: 1, configuration: {main: true}}, {id: 2}],
+        storylines: [{id: 1, role: 'main'}, {id: 2}],
         chapters: [{id: 1, storylineId: 2}]
       });
       const chapter = entry.chapters.get(1);

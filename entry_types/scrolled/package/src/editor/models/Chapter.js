@@ -48,7 +48,8 @@ export const Chapter = Backbone.Model.extend({
 
   getDisplayNumber() {
     if (this.storyline.isMain()) {
-      return I18n.t('pageflow_scrolled.editor.chapter_item.chapter') + ' ' + (this.get('position') + 1);
+      return I18n.t('pageflow_scrolled.editor.chapter_item.chapter') + ' ' +
+             (this.storyline.chapters.indexOf(this) + 1);
     }
   },
 
@@ -173,6 +174,25 @@ export const Chapter = Backbone.Model.extend({
     });
 
     return newSection;
+  },
+
+  restoreSection(trashItem, {position}) {
+    const section = this.addSection({position}, {
+      url: `${trashItem.url()}/restore`,
+      skipDefaults: true,
+      wait: true,
+      success: () => {
+        this.sections.each(sibling => {
+          if (sibling !== section && sibling.get('position') >= position) {
+            sibling.set('position', sibling.get('position') + 1);
+          }
+        });
+
+        this.sections.sort();
+      }
+    });
+
+    return section;
   },
 
   moveSection(section, {after, before} = {}) {

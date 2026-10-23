@@ -14,7 +14,7 @@ module PageflowScrolled
     end
 
     def main_storyline
-      storylines.detect { |storyline| storyline.configuration['main'] }
+      storylines.detect { |storyline| storyline.role == 'main' }
     end
 
     def chapters

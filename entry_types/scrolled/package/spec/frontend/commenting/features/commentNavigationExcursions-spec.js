@@ -19,7 +19,7 @@ describe('comment navigation across excursions', () => {
   const seed = {
     widgets: [{typeName: 'excursionOverlay', role: 'excursion'}],
     storylines: [
-      {id: 1, configuration: {main: true}},
+      {id: 1, role: 'main'},
       {id: 2}
     ],
     chapters: [

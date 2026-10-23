@@ -8,12 +8,14 @@
 
 .toolbar {
   position: absolute;
-  top: 3px;
-  right: -1px;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .dropDownButton {
-  --drop-down-button-width: 26px;
   --ui-on-button-color: var(--ui-primary-color-light);
 
   button.hover,

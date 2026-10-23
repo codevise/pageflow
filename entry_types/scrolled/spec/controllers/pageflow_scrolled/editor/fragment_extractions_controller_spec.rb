@@ -146,7 +146,7 @@ module PageflowScrolled
         post_extraction(entry:, chapter:)
 
         fragment = Chapter.all_for_revision(find_library(account).draft).first
-        expect(fragment.storyline.configuration).to include('main' => true)
+        expect(fragment.storyline.role).to eq('main')
       end
 
       it 'keeps sections of chapter in entry' do

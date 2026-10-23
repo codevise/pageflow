@@ -1298,10 +1298,13 @@ de:
         confirm_destroy: |-
           Kapitel inklusive ALLER Abschnitte wirklich löschen?
 
-          Diese Aktion kann nicht rückgängig gemacht werden.
+          Es kann aus dem Papierkorb wiederhergestellt werden.
         destroy: Kapitel löschen
       destroy_content_element_menu_item:
-        confirm_destroy: Element wirklich löschen?
+        confirm_destroy: |-
+          Element wirklich löschen?
+
+          Es kann aus dem Papierkorb wiederhergestellt werden.
         destroy: Element löschen
         selection_label: Auswahl löschen
       duplicate_content_element_menu_item:
@@ -1311,7 +1314,10 @@ de:
         move: Element verschieben...
         move_selection: Auswahl verschieben...
       destroy_section_menu_item:
-        confirm_destroy: Abschnitt inklusive aller Elemente wirklich löschen?
+        confirm_destroy: |-
+          Abschnitt inklusive aller Elemente wirklich löschen?
+
+          Er kann aus dem Papierkorb wiederhergestellt werden.
         destroy: Abschnitt löschen
       edit_section:
         hidden_info: Dieser Abschnitt ist außerhalb des Editors ausgeblendet.
@@ -1436,6 +1442,7 @@ de:
         header: Gliederung
         finish_reorder_chapters: Umsortieren beenden
         reorder_chapters: "Kapitel umsortieren..."
+        trash: Gelöschte Inhalte
       entry_select:
         no_matches: Keine passenden Beiträge
         not_published: Nicht veröffentlicht
@@ -1781,6 +1788,38 @@ de:
         back: Kommentare
         tabs:
           newComment: Neues Thema
+      trash_view:
+        actions: Aktionen
+        back: Gliederung
+        blank_slate: Aus diesem Beitrag wurde noch nichts gelöscht.
+        chapter:
+          one: "Kapitel „%{title}“ mit 1 Abschnitt"
+          other: "Kapitel „%{title}“ mit %{count} Abschnitten"
+        content_elements: "%{types} aus %{section}"
+        content_elements_origin_missing: "%{types} aus einem gelöschten Abschnitt"
+        delete_item:
+          confirm_destroy: |-
+            Diesen Inhalt endgültig löschen?
+
+            Diese Aktion kann nicht rückgängig gemacht werden.
+          destroy: Endgültig löschen
+        delete_failed: Der Inhalt konnte nicht gelöscht werden.
+        empty_failed: Der Papierkorb konnte nicht geleert werden.
+        empty_trash:
+          confirm_destroy: |-
+            Alle Inhalte im Papierkorb endgültig löschen?
+
+            Diese Aktion kann nicht rückgängig gemacht werden.
+          destroy: Papierkorb leeren
+        hint: Aus diesem Beitrag gelöschte Kapitel, Abschnitte und Inhaltselemente können hier wiederhergestellt werden.
+        load_failed: Gelöschte Inhalte konnten nicht geladen werden.
+        origin: "Abschnitt aus %{chapter}"
+        origin_missing: Abschnitt aus einem gelöschten Kapitel
+        restore: Wiederherstellen
+        restore_chapter_failed: Das Kapitel konnte nicht wiederhergestellt werden.
+        restore_content_elements_failed: Die Inhaltselemente konnten nicht wiederhergestellt werden.
+        restore_failed: Der Abschnitt konnte nicht wiederhergestellt werden.
+        trashed_at: "Gelöscht %{time}"
       configuration_places:
         entry: "Einstellungen"
         label: "%{chapter} - %{subject}"

@@ -37,7 +37,6 @@ export const SectionItemView = Marionette.ItemView.extend({
           </div>
         </div>
         <span class="${styles.creatingIndicator}" />
-        <span class="${styles.destroyingIndicator}" />
         <span class="${styles.failedIndicator}"
               title="${I18n.t('pageflow_scrolled.editor.section_item.save_error')}" />
         <img class="${styles.hiddenIndicator}"

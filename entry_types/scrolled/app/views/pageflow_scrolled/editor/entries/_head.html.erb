@@ -1,7 +1,7 @@
 <%= stylesheet_link_tag 'pageflow_paged/editor', media: 'all' %>
 <%= stylesheet_pack_tag 'pageflow-scrolled-frontend' %>
 
-<%= scrolled_theme_properties_style_tag(entry.theme) %>
+<%= scrolled_theme_properties_style_tag(entry.theme, include_section_thumbnail_rules: true) %>
 <%= scrolled_theme_stylesheet_pack_tags(entry.theme) %>
 
 <%= javascript_include_tag 'pageflow/vendor' %>

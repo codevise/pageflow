@@ -182,6 +182,27 @@ module Pageflow
     end
 
     describe '#publish' do
+      it 'passes publish purpose to after copy hooks of revision components' do
+        revision_component = Class.new(TestRevisionComponent) do
+          def self.after_copy(revision, purpose:)
+            all_for_revision(revision).update_all(text: purpose.to_s)
+          end
+        end
+
+        pageflow_configure do |config|
+          config.revision_components.register(revision_component, after_copy: true)
+        end
+        entry = create(:entry)
+        TestRevisionComponent.create!(revision: entry.draft, text: 'draft')
+
+        entry.publish(creator: create(:user))
+
+        expect(TestRevisionComponent.all_for_revision(entry.reload.published_revision))
+          .to contain_exactly(have_attributes(text: 'publish'))
+        expect(TestRevisionComponent.all_for_revision(entry.draft))
+          .to contain_exactly(have_attributes(text: 'draft'))
+      end
+
       it 'creates a revision' do
         creator = create(:user)
         entry = create(:entry)
@@ -415,6 +436,26 @@ module Pageflow
         expect(draft_before_restore.reload).to be_frozen
       end
 
+      it 'passes restore purpose to after copy hooks of revision components' do
+        revision_component = Class.new(TestRevisionComponent) do
+          def self.after_copy(revision, purpose:)
+            all_for_revision(revision).update_all(text: purpose.to_s)
+          end
+        end
+
+        pageflow_configure do |config|
+          config.revision_components.register(revision_component, after_copy: true)
+        end
+        entry = create(:entry)
+        earlier_revision = create(:revision, :published, entry:)
+        TestRevisionComponent.create!(revision: earlier_revision, text: 'earlier')
+
+        entry.restore(revision: earlier_revision, creator: create(:user))
+
+        expect(TestRevisionComponent.all_for_revision(entry.reload.draft))
+          .to contain_exactly(have_attributes(text: 'restore'))
+      end
+
       it 'turns previous draft into snapshot of type before_restore' do
         creator = create(:user)
         entry = create(:entry)
@@ -565,6 +606,46 @@ module Pageflow
       entry = create(:entry)
 
       expect { entry.duplicate }.to(change { Entry.count })
+    end
+
+    it 'passes duplicate purpose to after copy hooks of revision components' do
+      revision_component = Class.new(TestRevisionComponent) do
+        def self.after_copy(revision, purpose:)
+          all_for_revision(revision).update_all(text: purpose.to_s)
+        end
+      end
+
+      pageflow_configure do |config|
+        config.revision_components.register(revision_component, after_copy: true)
+      end
+      entry = create(:entry)
+      TestRevisionComponent.create!(revision: entry.draft, text: 'draft')
+
+      duplicate = entry.duplicate
+
+      expect(TestRevisionComponent.all_for_revision(duplicate.draft))
+        .to contain_exactly(have_attributes(text: 'duplicate'))
+    end
+  end
+
+  describe '#snapshot' do
+    it 'passes snapshot purpose to after copy hooks of revision components' do
+      revision_component = Class.new(TestRevisionComponent) do
+        def self.after_copy(revision, purpose:)
+          all_for_revision(revision).update_all(text: purpose.to_s)
+        end
+      end
+
+      pageflow_configure do |config|
+        config.revision_components.register(revision_component, after_copy: true)
+      end
+      entry = create(:entry)
+      TestRevisionComponent.create!(revision: entry.draft, text: 'draft')
+
+      revision = entry.snapshot(creator: create(:user))
+
+      expect(TestRevisionComponent.all_for_revision(revision))
+        .to contain_exactly(have_attributes(text: 'snapshot'))
     end
   end
 

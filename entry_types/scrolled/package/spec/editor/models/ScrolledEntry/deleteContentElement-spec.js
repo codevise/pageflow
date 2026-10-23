@@ -34,7 +34,7 @@ describe('ScrolledEntry', () => {
         entry: () => testContext.entry
       });
 
-      it('sends item with delete flag to batch endpoint', () => {
+      it('sends item with delete and trash flags to batch endpoint', () => {
         const {entry, requests} = testContext;
 
         entry.deleteContentElement(entry.contentElements.get(5));
@@ -43,7 +43,7 @@ describe('ScrolledEntry', () => {
         expect(JSON.parse(requests[0].requestBody)).toMatchObject({
           content_elements: [
             {id: 6},
-            {id: 5, _delete: true}
+            {id: 5, _delete: true, _trash: true}
           ]
         });
 
@@ -119,7 +119,7 @@ describe('ScrolledEntry', () => {
         expect(JSON.parse(requests[0].requestBody)).toEqual({
           content_elements: [
             {id: 4, configuration: {items: ['a', 'b', 'c']}},
-            {id: 5, _delete: true},
+            {id: 5, _delete: true, _trash: true},
             {id: 6, _delete: true}
           ]
         });
@@ -199,7 +199,7 @@ describe('ScrolledEntry', () => {
           content_elements: [
             {id: 4},
             {id: 6},
-            {id: 5, _delete: true}
+            {id: 5, _delete: true, _trash: true}
           ]
         });
       });
@@ -251,7 +251,7 @@ describe('ScrolledEntry', () => {
         expect(JSON.parse(requests[0].requestBody)).toEqual({
           content_elements: [
             {id: 4},
-            {id: 5, _delete: true}
+            {id: 5, _delete: true, _trash: true}
           ]
         });
       });

@@ -2,11 +2,7 @@ module PageflowScrolled
   FactoryBot.define do
     factory :scrolled_storyline, class: Storyline do
       revision
-      configuration do
-        {
-          main: true
-        }
-      end
+      role { 'main' }
     end
   end
 end

@@ -94,7 +94,7 @@ describe('useContentElementLifecycle', () => {
       const {getByTestId} = renderInEntry(<Entry />, {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -462,7 +462,7 @@ describe('useContentElementLifecycle', () => {
       const {getByTestId} = renderInEntry(<Entry />, {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -507,7 +507,7 @@ describe('useContentElementLifecycle', () => {
       renderInEntry(<Entry />, {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -551,7 +551,7 @@ describe('useContentElementLifecycle', () => {
       renderInEntry(<Entry />, {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -617,7 +617,7 @@ describe('useContentElementLifecycle', () => {
             role: 'excursion'
           }],
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -665,7 +665,7 @@ describe('useContentElementLifecycle', () => {
             role: 'excursion'
           }],
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -710,7 +710,7 @@ describe('useContentElementLifecycle', () => {
             role: 'excursion'
           }],
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -761,7 +761,7 @@ describe('useContentElementLifecycle', () => {
             role: 'excursion'
           }],
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -808,7 +808,7 @@ describe('useContentElementLifecycle', () => {
             role: 'excursion'
           }],
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [

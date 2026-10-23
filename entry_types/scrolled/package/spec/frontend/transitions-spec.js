@@ -255,7 +255,7 @@ describe('getTransitionStylesName', () => {
     const {result} = renderHookInEntry(() => useEntryStructure(), {
       seed: {
         storylines: [
-          {id: 1, configuration: {main: true}},
+          {id: 1, role: 'main'},
           {id: 2, configuration: {}}
         ],
         chapters: [
