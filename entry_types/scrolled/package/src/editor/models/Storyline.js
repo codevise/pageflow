@@ -46,6 +46,6 @@ export const Storyline = Backbone.Model.extend({
   },
 
   isMain() {
-    return !!this.configuration.get('main');
+    return this.get('role') === 'main';
   }
 });

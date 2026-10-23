@@ -299,7 +299,7 @@ describe('SelectableEntryOutlineView', () => {
       return factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [

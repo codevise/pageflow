@@ -16,10 +16,10 @@ export const StorylinesCollection = Backbone.Collection.extend({
   },
 
   main() {
-    return this.at(0);
+    return this.find(storyline => storyline.isMain());
   },
 
   excursions() {
-    return this.at(1);
+    return this.find(storyline => !storyline.isMain());
   }
 });

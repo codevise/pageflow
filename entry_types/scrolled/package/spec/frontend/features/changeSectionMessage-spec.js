@@ -45,7 +45,7 @@ describe('CHANGE_SECTION message', () => {
         storylines: [
           {
             id: 1,
-            configuration: {main: true}
+            role: 'main'
           },
           {
             id: 2
@@ -93,7 +93,7 @@ describe('CHANGE_SECTION message', () => {
         storylines: [
           {
             id: 1,
-            configuration: {main: true}
+            role: 'main'
           },
           {
             id: 2

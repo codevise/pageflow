@@ -692,7 +692,7 @@ describe('Chapter', () => {
       return factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
           storylines: [
-            {id: 100, configuration: {main: true}},
+            {id: 100, role: 'main'},
             {id: 200}
           ],
           chapters: [
@@ -719,7 +719,7 @@ describe('Chapter', () => {
     it('numbers chapters by their index ignoring gaps in positions', () => {
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
-          storylines: [{id: 100, configuration: {main: true}}],
+          storylines: [{id: 100, role: 'main'}],
           chapters: [
             {id: 1, storylineId: 100, position: 0},
             {id: 2, storylineId: 100, position: 3}
@@ -736,7 +736,7 @@ describe('Chapter', () => {
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
           storylines: [
-            {id: 100, configuration: {main: true}}
+            {id: 100, role: 'main'}
           ],
           chapters: [
             {id: 1, storylineId: 100}
@@ -753,7 +753,7 @@ describe('Chapter', () => {
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
           storylines: [
-            {id: 100, configuration: {main: true}},
+            {id: 100, role: 'main'},
             {id: 200}
           ],
           chapters: [
@@ -776,7 +776,7 @@ describe('Chapter', () => {
       testContext.entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({
           storylines: [
-            {id: 100, configuration: {main: true}},
+            {id: 100, role: 'main'},
             {id: 200}
           ],
           chapters: [

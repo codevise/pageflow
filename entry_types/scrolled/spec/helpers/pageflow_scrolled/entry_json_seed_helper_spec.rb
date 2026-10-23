@@ -16,13 +16,24 @@ module PageflowScrolled
       end
 
       context 'storylines' do
-        it 'renders storylines with id, perma_id, position and configuration' do
+        it 'renders role of storylines' do
+          entry = create(:published_entry, type_name: 'scrolled')
+          create(:scrolled_storyline, revision: entry.revision, role: nil,
+                                      configuration: {main: true})
+
+          result = render(helper, entry)
+
+          expect(result).to include_json(collections: {storylines: [{role: 'main'}]})
+        end
+
+        it 'renders storylines with id, perma_id, role, position and configuration' do
           entry = create(:published_entry, type_name: 'scrolled')
           main_storyline = create(
             :scrolled_storyline,
             revision: entry.revision,
+            role: 'main',
             position: 0,
-            configuration: {main: true}
+            configuration: {some: 'value'}
           )
           excursion_storyline = create(
             :scrolled_storyline,
@@ -38,9 +49,10 @@ module PageflowScrolled
                                  {
                                    id: main_storyline.id,
                                    permaId: main_storyline.perma_id,
+                                   role: 'main',
                                    position: 0,
                                    configuration: {
-                                     main: true
+                                     some: 'value'
                                    }
                                  },
                                  {
@@ -157,7 +169,7 @@ module PageflowScrolled
             :scrolled_storyline,
             revision: entry.revision,
             position: 0,
-            configuration: {main: true}
+            role: 'main'
           )
           excursions_storyline = create(
             :scrolled_storyline,
@@ -313,7 +325,7 @@ module PageflowScrolled
             :scrolled_storyline,
             revision: entry.revision,
             position: 0,
-            configuration: {main: true}
+            role: 'main'
           )
           excursions_storyline = create(
             :scrolled_storyline,
@@ -806,7 +818,7 @@ module PageflowScrolled
             :scrolled_storyline,
             revision: entry.revision,
             position: 0,
-            configuration: {main: true}
+            role: 'main'
           )
           excursions_storyline = create(
             :scrolled_storyline,

@@ -23,7 +23,7 @@ describe('ScrolledEntry', () => {
         {id: 1, permaId: 100, storylineId: 2, position: 0, configuration: {title: 'Intro'}},
         {id: 2, permaId: 200, storylineId: 1, position: 1, configuration: {title: 'Intro'}}
       ], [
-        {id: 1, position: 0, configuration: {main: true}},
+        {id: 1, position: 0, role: 'main'},
         {id: 2, position: 1, configuration: {}}
       ]);
 

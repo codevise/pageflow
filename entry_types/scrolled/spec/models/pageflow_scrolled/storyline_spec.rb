@@ -34,5 +34,25 @@ module PageflowScrolled
         expect(copied_storylines.first.configuration['some']).to eq('value')
       end
     end
+
+    describe '#role' do
+      it 'returns stored role' do
+        storyline = build(:scrolled_storyline, role: 'trash', configuration: {'main' => true})
+
+        expect(storyline.role).to eq('trash')
+      end
+
+      it 'falls back to main for storylines with main flag' do
+        storyline = build(:scrolled_storyline, role: nil, configuration: {'main' => true})
+
+        expect(storyline.role).to eq('main')
+      end
+
+      it 'falls back to excursions for other storylines' do
+        storyline = build(:scrolled_storyline, role: nil, configuration: {})
+
+        expect(storyline.role).to eq('excursions')
+      end
+    end
   end
 end

@@ -47,7 +47,7 @@ describe('section first class', () => {
           role: 'excursion'
         }],
         storylines: [
-          {id: 1, configuration: {main: true}},
+          {id: 1, role: 'main'},
           {id: 2}
         ],
         chapters: [

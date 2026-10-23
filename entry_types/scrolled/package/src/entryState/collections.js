@@ -34,7 +34,7 @@ function collectionSpecs(entry) {
     {
       collection: storylines,
       name: 'storylines',
-      attributes: ['id', 'permaId'],
+      attributes: ['id', 'permaId', 'role'],
       keyAttribute: 'permaId',
       includeConfiguration: true
     },

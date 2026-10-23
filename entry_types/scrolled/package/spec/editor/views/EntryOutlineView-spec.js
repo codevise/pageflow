@@ -73,7 +73,7 @@ describe('EntryOutlineView', () => {
           id: 10,
           permaId: 200,
           position: 0,
-          configuration: {main: true}
+          role: 'main'
         },
         {
           id: 11,
@@ -123,7 +123,7 @@ describe('EntryOutlineView', () => {
           id: 10,
           permaId: 200,
           position: 0,
-          configuration: {main: true}
+          role: 'main'
         },
         {
           id: 11,
@@ -170,7 +170,7 @@ describe('EntryOutlineView', () => {
           id: 10,
           permaId: 200,
           position: 0,
-          configuration: {main: true}
+          role: 'main'
         },
         {
           id: 11,
@@ -219,7 +219,7 @@ describe('EntryOutlineView', () => {
           id: 10,
           permaId: 200,
           position: 0,
-          configuration: {main: true}
+          role: 'main'
         },
         {
           id: 11,
@@ -268,7 +268,7 @@ describe('EntryOutlineView', () => {
           id: 10,
           permaId: 200,
           position: 0,
-          configuration: {main: true}
+          role: 'main'
         },
         {
           id: 11,
@@ -319,7 +319,7 @@ describe('EntryOutlineView', () => {
           id: 10,
           permaId: 200,
           position: 0,
-          configuration: {main: true}
+          role: 'main'
         },
         {
           id: 11,

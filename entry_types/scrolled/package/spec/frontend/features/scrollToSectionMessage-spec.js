@@ -273,7 +273,7 @@ describe('SCROLL_TO_SECTION message', () => {
         storylines: [
           {
             id: 1,
-            configuration: {main: true}
+            role: 'main'
           },
           {
             id: 2

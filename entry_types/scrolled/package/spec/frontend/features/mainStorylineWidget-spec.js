@@ -26,7 +26,7 @@ describe('main storyline widget', () => {
         storylines: [
           {
             id: 1,
-            configuration: {main: true}
+            role: 'main'
           }
         ],
         chapters: [
@@ -79,7 +79,7 @@ describe('main storyline widget', () => {
         storylines: [
           {
             id: 1,
-            configuration: {main: true}
+            role: 'main'
           }
         ],
         chapters: [
@@ -118,7 +118,7 @@ describe('main storyline widget', () => {
         storylines: [
           {
             id: 1,
-            configuration: {main: true}
+            role: 'main'
           }
         ],
         chapters: [
@@ -175,7 +175,7 @@ describe('main storyline widget', () => {
         storylines: [
           {
             id: 1,
-            configuration: {main: true}
+            role: 'main'
           },
           {
             id: 2

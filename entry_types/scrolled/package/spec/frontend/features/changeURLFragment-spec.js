@@ -115,7 +115,7 @@ describe('change url fragment on section update', () => {
         storylines: [
           {
             id: 1,
-            configuration: {main: true}
+            role: 'main'
           },
           {
             id: 2
@@ -164,7 +164,7 @@ describe('change url fragment on section update', () => {
         storylines: [
           {
             id: 1,
-            configuration: {main: true}
+            role: 'main'
           },
           {
             id: 2

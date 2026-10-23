@@ -253,9 +253,8 @@ function normalizeStorylines(storylines = [], chapters) {
       {
         id: 1000,
         permaId: 100,
-        configuration: {
-          main: true
-        }
+        role: 'main',
+        configuration: {}
       }
     ]
   }

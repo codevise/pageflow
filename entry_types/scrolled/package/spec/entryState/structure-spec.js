@@ -24,9 +24,7 @@ const storylinesSeed = [
     id: 1,
     permaId: 10,
     position: 1,
-    configuration: {
-      main: true
-    }
+    role: 'main'
   },
   {
     id: 2,

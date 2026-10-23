@@ -3,7 +3,7 @@ import {useLocatedCommentThreadsForSubject} from 'review/useLocatedCommentThread
 import {renderHookWithReviewState} from 'support/renderWithReviewState';
 
 const seed = {
-  storylines: [{id: 1, permaId: 10, position: 1, configuration: {main: true}}],
+  storylines: [{id: 1, permaId: 10, position: 1, role: 'main'}],
   chapters: [{id: 1, permaId: 100, storylineId: 1, position: 1}],
   sections: [{id: 1, permaId: 1000, chapterId: 1, position: 1}],
   contentElements: [{id: 1, permaId: 10001, sectionId: 1, typeName: 'textBlock'}]

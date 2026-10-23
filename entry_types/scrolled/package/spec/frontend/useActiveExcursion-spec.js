@@ -31,7 +31,7 @@ describe('ActiveExcursionProvider', () => {
     const {result} = renderHookInEntry(() => useActiveExcursion(), {
       seed: {
         storylines: [
-          {id: 1, configuration: {main: true}},
+          {id: 1, role: 'main'},
           {id: 2}
         ],
         chapters: [
@@ -53,7 +53,7 @@ describe('ActiveExcursionProvider', () => {
     const {result} = renderHookInEntry(() => useActiveExcursion(), {
       seed: {
         storylines: [
-          {id: 1, configuration: {main: true}},
+          {id: 1, role: 'main'},
           {id: 2}
         ],
         chapters: [
@@ -75,7 +75,7 @@ describe('ActiveExcursionProvider', () => {
     const {result} = renderHookInEntry(() => useActiveExcursion(), {
       seed: {
         storylines: [
-          {id: 1, configuration: {main: true}},
+          {id: 1, role: 'main'},
           {id: 2}
         ],
         chapters: [
@@ -102,7 +102,7 @@ describe('ActiveExcursionProvider', () => {
     const {result} = renderHookInEntry(() => useActiveExcursion(), {
       seed: {
         storylines: [
-          {id: 1, configuration: {main: true}},
+          {id: 1, role: 'main'},
           {id: 2}
         ],
         chapters: [
@@ -132,7 +132,7 @@ describe('ActiveExcursionProvider', () => {
     const {result} = renderHookInEntry(() => useActiveExcursion(), {
       seed: {
         storylines: [
-          {id: 1, configuration: {main: true}},
+          {id: 1, role: 'main'},
           {id: 2}
         ],
         chapters: [
@@ -167,7 +167,7 @@ describe('ActiveExcursionProvider', () => {
     const {result} = renderHookInEntry(() => useActiveExcursion(), {
       seed: {
         storylines: [
-          {id: 1, configuration: {main: true}},
+          {id: 1, role: 'main'},
           {id: 2}
         ],
         chapters: [
@@ -196,7 +196,7 @@ describe('ActiveExcursionProvider', () => {
     const {result} = renderHookInEntry(() => useActiveExcursion(), {
       seed: {
         storylines: [
-          {id: 1, configuration: {main: true}},
+          {id: 1, role: 'main'},
           {id: 2}
         ],
         chapters: [
@@ -222,7 +222,7 @@ describe('ActiveExcursionProvider', () => {
     const {result} = renderHookInEntry(() => useActiveExcursion(), {
       seed: {
         storylines: [
-          {id: 1, configuration: {main: true}},
+          {id: 1, role: 'main'},
           {id: 2}
         ],
         chapters: [
@@ -250,7 +250,7 @@ describe('ActiveExcursionProvider', () => {
     const {result} = renderHookInEntry(() => useActiveExcursion(), {
       seed: {
         storylines: [
-          {id: 1, configuration: {main: true}},
+          {id: 1, role: 'main'},
           {id: 2}
         ],
         chapters: [
@@ -270,7 +270,7 @@ describe('ActiveExcursionProvider', () => {
     const {result} = renderHookInEntry(() => useActiveExcursion(), {
       seed: {
         storylines: [
-          {id: 1, configuration: {main: true}},
+          {id: 1, role: 'main'},
           {id: 2}
         ],
         chapters: [
@@ -296,7 +296,7 @@ describe('ActiveExcursionProvider', () => {
       const {result} = renderHookInEntry(() => useActiveExcursion(), {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -325,7 +325,7 @@ describe('ActiveExcursionProvider', () => {
       const {result} = renderHookInEntry(() => useActiveExcursion(), {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -353,7 +353,7 @@ describe('ActiveExcursionProvider', () => {
       const {result} = renderHookInEntry(() => useActiveExcursion(), {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -382,7 +382,7 @@ describe('ActiveExcursionProvider', () => {
       renderHookInEntry(() => useActiveExcursion(), {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -420,7 +420,7 @@ describe('ActiveExcursionProvider', () => {
       const {result} = renderHookInEntry(() => useActiveExcursion(), {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -449,7 +449,7 @@ describe('ActiveExcursionProvider', () => {
       const {result} = renderHookInEntry(() => useActiveExcursion(), {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -476,7 +476,7 @@ describe('ActiveExcursionProvider', () => {
       const {result} = renderHookInEntry(() => useActiveExcursion(), {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -502,7 +502,7 @@ describe('ActiveExcursionProvider', () => {
       const {result} = renderHookInEntry(() => useActiveExcursion(), {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -540,7 +540,7 @@ describe('ActiveExcursionProvider', () => {
       const {result} = renderHookInEntry(() => useActiveExcursion(), {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [
@@ -566,7 +566,7 @@ describe('ActiveExcursionProvider', () => {
       const {result} = renderHookInEntry(() => useActiveExcursion(), {
         seed: {
           storylines: [
-            {id: 1, configuration: {main: true}},
+            {id: 1, role: 'main'},
             {id: 2}
           ],
           chapters: [

@@ -28,12 +28,16 @@ module PageflowScrolled
 
     nested_revision_components :chapters
 
+    def role
+      super || (configuration['main'] ? 'main' : 'excursions')
+    end
+
     def sections_before_cutoff_section
       sections_before(cutoff_section)
     end
 
     def self.create_defaults(draft)
-      create!(revision: draft, role: 'main', configuration: {main: true})
+      create!(revision: draft, role: 'main')
       create!(revision: draft, role: 'excursions', position: 1)
     end
 

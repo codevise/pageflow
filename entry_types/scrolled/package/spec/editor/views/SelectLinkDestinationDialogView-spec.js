@@ -182,7 +182,7 @@ describe('SelectLinkDestinationDialogView', () => {
           chapters: chapterDestinations || destinations(signatures.chapters),
           sections: destinations(signatures.sections),
           collections: {
-            storylines: [{id: 1, permaId: 1, configuration: {main: true}}],
+            storylines: [{id: 1, permaId: 1, role: 'main'}],
             chapters,
             sections,
             contentElements: []

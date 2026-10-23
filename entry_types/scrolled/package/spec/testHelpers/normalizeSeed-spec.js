@@ -251,9 +251,7 @@ describe('normalizeSeed', () => {
           {
             id: expect.any(Number),
             permaId: expect.any(Number),
-            configuration: {
-              main: true
-            }
+            role: 'main'
           }
         ]
       }
@@ -270,9 +268,7 @@ describe('normalizeSeed', () => {
           {
             id: expect.any(Number),
             permaId: expect.any(Number),
-            configuration: {
-              main: true
-            }
+            role: 'main'
           }
         ]
       }
