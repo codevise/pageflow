@@ -20,6 +20,7 @@ module PageflowScrolled
                               configuration: PageflowScrolled::Configuration,
                               editor_fragment_renderer:,
                               editor_app: PageflowScrolled::Engine,
+                              theme_asset_resolver: PageflowScrolled::ThemeAssetResolver.new,
                               web_app_manifest: PageflowScrolled::WebAppManifest,
                               theme_files: {
                                 logo_mobile: LOGO_OPTIONS,
