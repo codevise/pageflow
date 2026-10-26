@@ -12,12 +12,12 @@ import {
 } from './linkWidths';
 
 import {
-  editableTextValue,
   exampleHeading,
   filePermaId,
   normalizeAndMergeFixture,
   storiesOfContentElement
 } from 'pageflow-scrolled/spec/support/stories';
+import {editableTextValue} from 'pageflow-scrolled/spec/support/editableTextValues';
 import {storiesOf} from '@storybook/react';
 
 storiesOfContentElement(module, {
