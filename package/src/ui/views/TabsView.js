@@ -55,20 +55,23 @@ export const TabsView = Marionette.Layout.extend(/* @lends TabView.prototype */{
 
   initialize: function() {
     this.tabFactoryFns = {};
+    this.tabLabels = {};
     this.tabNames = [];
     this.currentTabName = null;
 
     this._refreshScrollerOnSideBarResize();
   },
 
-  tab: function(name, factoryFn) {
+  tab: function(name, factoryFn, {label} = {}) {
     this.tabFactoryFns[name] = factoryFn;
+    this.tabLabels[name] = label;
     this.tabNames.push(name);
   },
 
   onRender: function() {
     _.each(this.tabNames, function(name) {
-      var label = findTranslation(this._labelTranslationKeys(name));
+      var label = this.tabLabels[name] ||
+                  findTranslation(this._labelTranslationKeys(name));
       var tabId = this._tabId(name);
       var button = $('<button />')
         .attr('type', 'button')
