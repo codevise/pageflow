@@ -6,6 +6,7 @@ import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects/inli
 
 import {act, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import {editableTextValue} from 'support';
 
 describe('inline editing EditableText comment badges', () => {
   useInlineEditingPageObjects();
@@ -21,7 +22,7 @@ describe('inline editing EditableText comment badges', () => {
   });
 
   it('renders badge in dot mode by default', () => {
-    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+    const value = editableTextValue('Some text to comment on');
 
     const entry = renderEntry({
       contentElement: {
@@ -46,7 +47,7 @@ describe('inline editing EditableText comment badges', () => {
   });
 
   function renderEntryWithUnreadThread() {
-    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+    const value = editableTextValue('Some text to comment on');
 
     return renderEntry({
       contentElement: {
@@ -84,10 +85,10 @@ describe('inline editing EditableText comment badges', () => {
   });
 
   it('renders only the highlighted thread badge in active mode', () => {
-    const value = [
-      {type: 'paragraph', children: [{text: 'First paragraph thread here'}]},
-      {type: 'paragraph', children: [{text: 'Second paragraph thread here'}]}
-    ];
+    const value = editableTextValue([
+      'First paragraph thread here',
+      'Second paragraph thread here'
+    ]);
 
     const entry = renderEntry({
       contentElement: {
@@ -116,7 +117,7 @@ describe('inline editing EditableText comment badges', () => {
   });
 
   it('renders a revealed resolved thread badge in resolved style', async () => {
-    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+    const value = editableTextValue('Some text to comment on');
 
     const entry = renderEntry({
       contentElement: {
@@ -155,7 +156,7 @@ describe('inline editing EditableText comment badges', () => {
   });
 
   it('hides the badge of a thread while comments show only for the selection', async () => {
-    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+    const value = editableTextValue('Some text to comment on');
 
     const entry = renderEntry({
       contentElement: {
@@ -194,10 +195,10 @@ describe('inline editing EditableText comment badges', () => {
   it('shows the badge within the selection rect once the text is selected', async () => {
     const entry = renderEntry({
       contentElement: {
-        ui: <EditableText value={[
-          {type: 'paragraph', children: [{text: 'First paragraph'}]},
-          {type: 'paragraph', children: [{text: 'Second paragraph'}]}
-        ]} contentElementId={1} selectionRect={true} />,
+        ui: <EditableText value={editableTextValue([
+          'First paragraph',
+          'Second paragraph'
+        ])} contentElementId={1} selectionRect={true} />,
         typeOptions: {inlineComments: true, customSelectionRect: true}
       },
       commenting: {
@@ -244,7 +245,7 @@ describe('inline editing EditableText comment badges', () => {
   });
 
   it('renders the badge of a resolved thread while the editor shows all resolutions', async () => {
-    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+    const value = editableTextValue('Some text to comment on');
 
     const entry = renderEntry({
       contentElement: {
@@ -286,7 +287,7 @@ describe('inline editing EditableText comment badges', () => {
   });
 
   it('keeps the badge of an overlapped thread after a resolved thread is revealed', async () => {
-    const value = [{type: 'paragraph', children: [{text: 'Alpha beta gamma delta'}]}];
+    const value = editableTextValue('Alpha beta gamma delta');
 
     function range(start, end) {
       return {anchor: {path: [0, 0], offset: start}, focus: {path: [0, 0], offset: end}};
@@ -334,10 +335,10 @@ describe('inline editing EditableText comment badges', () => {
   });
 
   it('renders sibling badge in regular mode when in same block as highlighted thread', () => {
-    const value = [
-      {type: 'paragraph', children: [{text: 'First paragraph with two threads'}]},
-      {type: 'paragraph', children: [{text: 'Second paragraph thread'}]}
-    ];
+    const value = editableTextValue([
+      'First paragraph with two threads',
+      'Second paragraph thread'
+    ]);
 
     const entry = renderEntry({
       contentElement: {

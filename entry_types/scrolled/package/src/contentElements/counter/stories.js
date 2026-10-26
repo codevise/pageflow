@@ -1,6 +1,7 @@
 import '../frontend';
 import {storiesOfContentElement} from 'pageflow-scrolled/spec/support/stories';
 import {contentElementWidths} from 'pageflow-scrolled/frontend';
+import {editableTextValue} from 'pageflow-scrolled/spec/support/editableTextValues';
 
 storiesOfContentElement(module, {
   typeName: 'counter',
@@ -8,16 +9,7 @@ storiesOfContentElement(module, {
     targetValue: 75,
     startValue: 50,
     unit: '%',
-    description: [
-      {
-        type: 'paragraph',
-        children: [{text: 'more awesome'}]
-      },
-      {
-        type: 'paragraph',
-        children: [{text: 'than before'}]
-      }
-    ]
+    description: editableTextValue(['more awesome', 'than before'])
   },
   variants: [
     {

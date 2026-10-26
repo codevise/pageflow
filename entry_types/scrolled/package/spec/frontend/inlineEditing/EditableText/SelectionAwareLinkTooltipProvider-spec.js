@@ -8,6 +8,7 @@ import {LinkPreview} from 'frontend/inlineEditing/LinkTooltip';
 import {act, render} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import {editableTextValue} from 'support';
 
 describe('SelectionAwareLinkTooltipProvider', () => {
   beforeEach(() => {
@@ -20,9 +21,7 @@ describe('SelectionAwareLinkTooltipProvider', () => {
     const editor = withReact(createEditor());
 
     function TestEditor() {
-      const [value, setValue] = useState([
-        {type: 'paragraph', children: [{text: 'Some text'}]}
-      ]);
+      const [value, setValue] = useState(editableTextValue('Some text'));
 
       return (
         <Slate editor={editor} value={value} onChange={setValue}>

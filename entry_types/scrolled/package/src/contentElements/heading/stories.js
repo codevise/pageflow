@@ -1,6 +1,7 @@
 import '../frontend';
 import {storiesOfContentElement} from 'pageflow-scrolled/spec/support/stories';
 import {contentElementWidths} from 'pageflow-scrolled/frontend';
+import {editableTextValue} from 'pageflow-scrolled/spec/support/editableTextValues';
 
 storiesOfContentElement(module, {
   typeName: 'heading',
@@ -36,8 +37,8 @@ storiesOfContentElement(module, {
     {
       name: 'With subtitles - Large',
       configuration: {
-        tagline: [{type: 'heading', children: [{text: 'Some Tagline'}]}],
-        subtitle: [{type: 'heading', children: [{text: 'Some Subtitle'}]}],
+        tagline: editableTextValue('Some Tagline', {type: 'heading'}),
+        subtitle: editableTextValue('Some Subtitle', {type: 'heading'}),
         width: contentElementWidths.xl,
         textSize: 'large'
       }
@@ -45,8 +46,8 @@ storiesOfContentElement(module, {
     {
       name: 'With subtitles - Medium',
       configuration: {
-        tagline: [{type: 'heading', children: [{text: 'Some Tagline'}]}],
-        subtitle: [{type: 'heading', children: [{text: 'Some Subtitle'}]}],
+        tagline: editableTextValue('Some Tagline', {type: 'heading'}),
+        subtitle: editableTextValue('Some Subtitle', {type: 'heading'}),
         width: contentElementWidths.xl,
         textSize: 'medium'
       }
@@ -54,8 +55,8 @@ storiesOfContentElement(module, {
     {
       name: 'With subtitles - Small',
       configuration: {
-        tagline: [{type: 'heading', children: [{text: 'Some Tagline'}]}],
-        subtitle: [{type: 'heading', children: [{text: 'Some Subtitle'}]}],
+        tagline: editableTextValue('Some Tagline', {type: 'heading'}),
+        subtitle: editableTextValue('Some Subtitle', {type: 'heading'}),
         width: contentElementWidths.xl,
         textSize: 'small'
       }
@@ -66,8 +67,8 @@ storiesOfContentElement(module, {
         layout: 'center',
       },
       configuration: {
-        tagline: [{type: 'heading', children: [{text: 'Some Tagline'}]}],
-        subtitle: [{type: 'heading', children: [{text: 'Some Subtitle'}]}],
+        tagline: editableTextValue('Some Tagline', {type: 'heading'}),
+        subtitle: editableTextValue('Some Subtitle', {type: 'heading'}),
         width: contentElementWidths.xl
       }
     },
@@ -77,8 +78,8 @@ storiesOfContentElement(module, {
         layout: 'right',
       },
       configuration: {
-        tagline: [{type: 'heading', children: [{text: 'Some Tagline'}]}],
-        subtitle: [{type: 'heading', children: [{text: 'Some Subtitle'}]}],
+        tagline: editableTextValue('Some Tagline', {type: 'heading'}),
+        subtitle: editableTextValue('Some Subtitle', {type: 'heading'}),
         width: contentElementWidths.xl
       }
     },

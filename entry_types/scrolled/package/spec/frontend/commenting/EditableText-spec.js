@@ -9,6 +9,7 @@ import {renderEntry, useCommentingPageObjects} from 'support/pageObjects/comment
 
 import {commentHighlightStyles as highlightStyles} from 'pageflow-scrolled/review';
 import commentingStyles from 'frontend/commenting/EditableTextHighlight.module.css';
+import {editableTextValue} from 'support';
 
 jest.mock('frontend/commenting/slateSelection');
 
@@ -19,7 +20,7 @@ describe('commenting EditableText', () => {
     'pageflow_scrolled.review.select_text_to_comment': 'Select text to comment'
   });
 
-  const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+  const value = editableTextValue('Some text to comment on');
 
   it('renders plain text without commenting UI when inlineComments is not set', async () => {
     const user = userEvent.setup();
@@ -146,10 +147,7 @@ describe('commenting EditableText', () => {
 
   it('selects whole top level node when clicking without selection in add comment mode', async () => {
     const user = userEvent.setup();
-    const multiBlockValue = [
-      {type: 'paragraph', children: [{text: 'First paragraph'}]},
-      {type: 'paragraph', children: [{text: 'Second paragraph'}]}
-    ];
+    const multiBlockValue = editableTextValue(['First paragraph', 'Second paragraph']);
 
     const entry = renderEntry({
       contentElement: {

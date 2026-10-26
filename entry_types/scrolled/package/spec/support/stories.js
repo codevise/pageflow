@@ -12,6 +12,7 @@ import '../../src/widgets/iconInlineFileRights';
 import '../../src/widgets/textInlineFileRights';
 
 import {normalizeSeed} from '../../src/testHelpers/normalizeSeed';
+import {editableTextValue} from './editableTextValues';
 import {storiesOf} from '@storybook/react';
 
 import seedFixtureFromFile from '../../.storybook/seed.json'
@@ -492,14 +493,7 @@ export function exampleTextBlock({sectionId, text = lorem}) {
     sectionId,
     typeName: 'textBlock',
     configuration: {
-      value: [
-        {
-          type: 'paragraph',
-          children: [
-            {text}
-          ]
-        }
-      ]
+      value: editableTextValue(text)
     }
   };
 }

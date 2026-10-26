@@ -5,17 +5,13 @@ import {loadInlineEditingExtensions} from 'frontend/inlineEditing';
 
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
+import {editableTextValue} from 'support';
 
 describe('EditableInlineText', () => {
   beforeAll(loadInlineEditingExtensions);
 
   it('renders text from value', () => {
-    const value = [{
-      type: 'heading',
-      children: [
-        {text: 'Some text'}
-      ]
-    }];
+    const value = editableTextValue('Some text', {type: 'heading'});
 
     const {queryByText} = render(<EditableInlineText value={value} />);
 
@@ -29,12 +25,7 @@ describe('EditableInlineText', () => {
   });
 
   it('renders placeholder if value is empty', () => {
-    const value = [{
-      type: 'heading',
-      children: [
-        {text: ''}
-      ]
-    }];
+    const value = editableTextValue('', {type: 'heading'});
 
     const {queryByText} = render(<EditableInlineText value={value}
                                                      placeholder="Some placeholder" />);
@@ -43,12 +34,7 @@ describe('EditableInlineText', () => {
   });
 
   it('does not render placeholder if value is present', () => {
-    const value = [{
-      type: 'heading',
-      children: [
-        {text: 'Some text'}
-      ]
-    }];
+    const value = editableTextValue('Some text', {type: 'heading'});
 
     const {queryByText} = render(<EditableInlineText value={value}
                                                      placeholder="Some placeholder" />);
@@ -63,12 +49,7 @@ describe('EditableInlineText', () => {
   });
 
   it('prefers value over defaultValue', () => {
-    const value = [{
-      type: 'heading',
-      children: [
-        {text: 'Some text'}
-      ]
-    }];
+    const value = editableTextValue('Some text', {type: 'heading'});
 
     const {queryByText} = render(<EditableInlineText value={value} defaultValue="Some default" />);
 

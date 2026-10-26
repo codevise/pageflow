@@ -11,6 +11,7 @@ import '@testing-library/jest-dom/extend-expect'
 import {act, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import 'support/fakeResizeObserver';
+import {editableTextValue} from 'support';
 
 jest.mock('contentElements/hotspots/TooltipPortal');
 jest.mock('contentElements/hotspots/useTooltipTransitionStyles');
@@ -36,7 +37,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };
@@ -75,10 +76,10 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Area 1'}]}],
+          title: editableTextValue('Area 1', {type: 'heading'}),
         },
         2: {
-          title: [{type: 'heading', children: [{text: 'Area 2'}]}],
+          title: editableTextValue('Area 2', {type: 'heading'}),
         }
       }
     };
@@ -111,7 +112,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };
@@ -144,7 +145,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };
@@ -177,7 +178,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };
@@ -211,8 +212,8 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
-          link: [{type: 'heading', children: [{text: 'Some link'}]}]
+          title: editableTextValue('Some title', {type: 'heading'}),
+          link: editableTextValue('Some link', {type: 'heading'})
         }
       },
       tooltipLinks: {
@@ -248,7 +249,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };
@@ -285,7 +286,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };
@@ -323,7 +324,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };

@@ -5,6 +5,7 @@ import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects/inli
 
 import {waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import {editableTextValue} from 'support';
 
 describe('inline editing EditableText selection transient state', () => {
   useInlineEditingPageObjects();
@@ -19,10 +20,7 @@ describe('inline editing EditableText selection transient state', () => {
     delete Range.prototype.getClientRects;
   });
 
-  const value = [
-    {type: 'paragraph', children: [{text: 'First paragraph'}]},
-    {type: 'paragraph', children: [{text: 'Second paragraph'}]}
-  ];
+  const value = editableTextValue(['First paragraph', 'Second paragraph']);
 
   it('reports selection covering all blocks', async () => {
     const entry = renderEntry({

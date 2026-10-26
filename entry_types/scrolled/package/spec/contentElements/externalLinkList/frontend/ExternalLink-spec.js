@@ -3,7 +3,7 @@ import styles from 'contentElements/externalLinkList/frontend/ExternalLink.modul
 
 import React from 'react';
 
-import {renderInEntry} from 'support';
+import {renderInEntry, editableTextValue} from 'support';
 import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
 import {useFakeFeatures, useFakeTranslations} from 'pageflow/testHelpers';
 import {screen} from '@testing-library/react';
@@ -518,8 +518,5 @@ describe('ExternalLink', () => {
 });
 
 function value(text) {
-  return [{
-    type: 'paragraph',
-    children: [{text}],
-  }];
+  return editableTextValue(text);
 }

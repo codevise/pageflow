@@ -8,6 +8,7 @@ import {act, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import {commentHighlightStyles as highlightStyles} from 'pageflow-scrolled/review';
+import {editableTextValue} from 'support';
 
 describe('inline editing EditableText comment highlights', () => {
   useInlineEditingPageObjects();
@@ -22,7 +23,7 @@ describe('inline editing EditableText comment highlights', () => {
     features.isEnabled.mockRestore();
   });
 
-  const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+  const value = editableTextValue('Some text to comment on');
   const subjectRange = {anchor: {path: [0, 0], offset: 5}, focus: {path: [0, 0], offset: 9}};
 
   it('highlights thread ranges', () => {
@@ -240,10 +241,10 @@ describe('inline editing EditableText comment highlights', () => {
     function renderEntryWithThreadPerParagraph({commentThreads} = {}) {
       const entry = renderEntry({
         contentElement: {
-          ui: <EditableText value={[
-            {type: 'paragraph', children: [{text: 'First paragraph'}]},
-            {type: 'paragraph', children: [{text: 'Second paragraph'}]}
-          ]} contentElementId={1} selectionRect={true} />,
+          ui: <EditableText value={editableTextValue([
+            'First paragraph',
+            'Second paragraph'
+          ])} contentElementId={1} selectionRect={true} />,
           typeOptions: {inlineComments: true, customSelectionRect: true}
         },
         commenting: {
@@ -331,10 +332,7 @@ describe('inline editing EditableText comment highlights', () => {
   });
 
   it('keeps the resolved thread highlighted when a cursor sits in another block', () => {
-    const multiBlockValue = [
-      {type: 'paragraph', children: [{text: 'First paragraph'}]},
-      {type: 'paragraph', children: [{text: 'Second paragraph'}]}
-    ];
+    const multiBlockValue = editableTextValue(['First paragraph', 'Second paragraph']);
 
     const entry = renderEntry({
       contentElement: {

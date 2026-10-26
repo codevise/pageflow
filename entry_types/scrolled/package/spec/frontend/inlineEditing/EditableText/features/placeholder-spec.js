@@ -4,19 +4,14 @@ import {EditableText} from 'frontend';
 import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects/inlineEditing';
 
 import '@testing-library/jest-dom/extend-expect';
+import {editableTextValue} from 'support';
 
 describe('inline editing EditableText placeholder', () => {
   useInlineEditingPageObjects();
 
-  const headingValue = [{
-    type: 'heading',
-    children: [{text: 'Some text'}]
-  }];
+  const headingValue = editableTextValue('Some text', {type: 'heading'});
 
-  const emptyParagraphValue = [{
-    type: 'paragraph',
-    children: [{text: ''}]
-  }];
+  const emptyParagraphValue = editableTextValue('');
 
   it('renders placeholder if value is undefined', () => {
     const entry = renderEntry({

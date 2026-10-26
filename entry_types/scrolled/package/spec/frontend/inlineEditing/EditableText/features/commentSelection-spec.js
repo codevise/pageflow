@@ -7,6 +7,7 @@ import {renderEntry, useInlineEditingPageObjects} from 'support/pageObjects/inli
 
 import {act, fireEvent, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import {editableTextValue} from 'support';
 
 describe('inline editing EditableText comment selection messages', () => {
   useInlineEditingPageObjects();
@@ -23,9 +24,7 @@ describe('inline editing EditableText comment selection messages', () => {
 
   it('posts SELECTED contentElementComments with highlightedThreadId on badge click', () => {
 
-    const value = [
-      {type: 'paragraph', children: [{text: 'First paragraph'}]}
-    ];
+    const value = editableTextValue('First paragraph');
 
     const entry = renderEntry({
       contentElement: {
@@ -87,7 +86,7 @@ describe('inline editing EditableText comment selection messages', () => {
     Element.prototype.scrollIntoView = scrollIntoView;
 
     const subjectRange = {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}};
-    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+    const value = editableTextValue('Some text to comment on');
 
     renderEntry({
       contentElement: {
@@ -135,7 +134,7 @@ describe('inline editing EditableText comment selection messages', () => {
   });
 
   it('includes resolved thread ids at the selection in transient state', async () => {
-    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+    const value = editableTextValue('Some text to comment on');
 
     renderEntry({
       contentElement: {
@@ -184,7 +183,7 @@ describe('inline editing EditableText comment selection messages', () => {
     Element.prototype.scrollIntoView = scrollIntoView;
 
     const subjectRange = {anchor: {path: [0, 0], offset: 0}, focus: {path: [0, 0], offset: 5}};
-    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+    const value = editableTextValue('Some text to comment on');
 
     renderEntry({
       contentElement: {

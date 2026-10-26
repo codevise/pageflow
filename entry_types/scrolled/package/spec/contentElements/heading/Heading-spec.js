@@ -8,13 +8,14 @@ import {contentElementWidths} from 'pageflow-scrolled/frontend';
 import styles from 'contentElements/heading/Heading.module.css';
 
 import '@testing-library/jest-dom/extend-expect';
+import {editableTextValue} from 'support';
 
 describe('Heading', () => {
   function renderHeading({configuration, width, sectionProps, inlineEditing} = {}) {
     return renderInContentElement(
       <Heading
         configuration={{
-          value: [{type: 'heading', children: [{text: 'Test'}]}],
+          value: editableTextValue('Test', {type: 'heading'}),
           ...configuration
         }}
         contentElementId={5}
@@ -28,8 +29,8 @@ describe('Heading', () => {
   it('does not render blank tagline and subtitle', () => {
     const {queryAllByRole} = renderHeading({
       configuration: {
-        tagline: [{type: 'heading', children: [{text: ''}]}],
-        subtitle: [{type: 'heading', children: [{text: ''}]}]
+        tagline: editableTextValue('', {type: 'heading'}),
+        subtitle: editableTextValue('', {type: 'heading'})
       }
     });
 
@@ -39,8 +40,8 @@ describe('Heading', () => {
   it('renders blank tagline and subtitle when selected', () => {
     const {queryAllByRole} = renderHeading({
       configuration: {
-        tagline: [{type: 'heading', children: [{text: ''}]}],
-        subtitle: [{type: 'heading', children: [{text: ''}]}]
+        tagline: editableTextValue('', {type: 'heading'}),
+        subtitle: editableTextValue('', {type: 'heading'})
       },
       inlineEditing: {isSelected: true}
     });

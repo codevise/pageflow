@@ -8,6 +8,7 @@ import {within} from '@testing-library/react';
 import {screen} from 'support/screenWithCustomQueries';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect'
+import {editableTextValue} from 'support';
 
 describe('ExternalLinkList with backfaces', () => {
   useFakeTranslations({
@@ -120,8 +121,5 @@ describe('ExternalLinkList with backfaces', () => {
 });
 
 function value(text) {
-  return [{
-    type: 'paragraph',
-    children: [{text}],
-  }];
+  return editableTextValue(text);
 }
