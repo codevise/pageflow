@@ -35,6 +35,13 @@ export function renderEntry({
 }
 
 function mergeContentElement(seed, {ui, typeName, typeOptions = {}, permaId = 10, configuration = {}}) {
+  if (seed?.contentElements?.length) {
+    throw new Error(
+      'The contentElement option cannot be combined with seeded content elements. ' +
+      'Seed all content elements instead, using test types like withTestId.'
+    );
+  }
+
   let resolvedTypeName = typeName;
 
   if (ui) {
@@ -48,7 +55,6 @@ function mergeContentElement(seed, {ui, typeName, typeOptions = {}, permaId = 10
   return {
     ...seed,
     contentElements: [
-      ...(seed?.contentElements || []),
       {typeName: resolvedTypeName, permaId, configuration}
     ]
   };

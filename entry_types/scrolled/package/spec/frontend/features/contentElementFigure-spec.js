@@ -4,6 +4,7 @@ import React from 'react';
 
 import {renderEntry, usePageObjects} from 'support/pageObjects';
 import '@testing-library/jest-dom/extend-expect'
+import {editableTextValue} from 'support';
 
 describe('content element figure', () => {
   usePageObjects();
@@ -28,12 +29,7 @@ describe('content element figure', () => {
         contentElements: [{
           typeName: 'test',
           configuration: {
-            caption: [
-              {
-                type: 'paragraph',
-                children: [{text: 'A caption'}]
-              }
-            ]
+            caption: editableTextValue('A caption')
           }
         }]
       }
@@ -59,12 +55,7 @@ describe('content element figure', () => {
           typeName: 'test',
           configuration: {
             position: 'backdrop',
-            caption: [
-              {
-                type: 'paragraph',
-                children: [{text: 'A caption'}]
-              }
-            ]
+            caption: editableTextValue('A caption')
           }
         }]
       }

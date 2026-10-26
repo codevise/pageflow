@@ -1,13 +1,12 @@
 import {createEditor} from 'slate';
 
 import {decorateCommentHighlights} from 'pageflow-scrolled/review';
+import {editableTextValue} from 'support';
 
 describe('decorateCommentHighlights', () => {
   it('flags both ends of a highlight within a single text node', () => {
     const editor = createEditor();
-    editor.children = [
-      {type: 'paragraph', children: [{text: 'Some text to comment on'}]}
-    ];
+    editor.children = editableTextValue('Some text to comment on');
 
     const decorate = decorateCommentHighlights(editor, [{
       key: '1',
@@ -25,10 +24,7 @@ describe('decorateCommentHighlights', () => {
 
   it('flags first and last node separately for a multi node highlight', () => {
     const editor = createEditor();
-    editor.children = [
-      {type: 'paragraph', children: [{text: 'First paragraph'}]},
-      {type: 'paragraph', children: [{text: 'Second paragraph'}]}
-    ];
+    editor.children = editableTextValue(['First paragraph', 'Second paragraph']);
 
     const decorate = decorateCommentHighlights(editor, [{
       key: '1',

@@ -1,5 +1,6 @@
 import 'contentElements/textBlock/review';
 import {review} from 'review';
+import {editableTextValue} from 'support';
 
 describe('contentElements/textBlock/review', () => {
   const compareRanges = review.contentElementTypes.findCompareRanges('textBlock');
@@ -50,10 +51,7 @@ describe('contentElements/textBlock/review', () => {
   describe('extractQuote', () => {
     const extractQuote = review.contentElementTypes.findExtractQuote('textBlock');
 
-    const value = [
-      {type: 'paragraph', children: [{text: 'The quick brown fox'}]},
-      {type: 'paragraph', children: [{text: 'jumps over the lazy dog'}]}
-    ];
+    const value = editableTextValue(['The quick brown fox', 'jumps over the lazy dog']);
 
     it('returns the text covered by the range', () => {
       expect(extractQuote({value}, range([0, 0, 4], [0, 0, 15]))).toEqual('quick brown');

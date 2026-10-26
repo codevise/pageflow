@@ -11,7 +11,8 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import {
   factories,
-  normalizeSeed
+  normalizeSeed,
+  editableTextValue
 } from 'support';
 import {renderBackboneView as render} from 'pageflow/testHelpers';
 
@@ -115,10 +116,7 @@ describe('TypographyVariantSelectInputView', () => {
         return {
           ...configuration,
           variant,
-          value: [{
-            type: 'paragraph',
-            children: [{text: bindingModel.get('exampleNode')}]
-          }]
+          value: editableTextValue(bindingModel.get('exampleNode'))
         }
       }
     });

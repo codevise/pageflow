@@ -41,6 +41,7 @@ import {
 } from './lineBreaks';
 
 import {useShortcutHandler} from './shortcuts';
+import {useMultiSelectHandler} from './useMultiSelectHandler';
 import {duplicateNodes} from './duplicateNodes';
 import {computeBounds} from './computeBounds';
 import {postMoveContentElementMessage} from '../postMessage';
@@ -95,6 +96,8 @@ export const EditableText = React.memo(function EditableText({
     handleLineBreaks(event);
     handleShortcuts(event);
   }, [handleLineBreaks, handleShortcuts]);
+
+  const handleMultiSelect = useMultiSelectHandler();
 
   useEffect(() => {
     if (autoFocus) {
@@ -198,6 +201,7 @@ export const EditableText = React.memo(function EditableText({
                 className={className}
                 decorate={decorate}
                 onKeyDown={handleKeyDown}
+                onMouseDown={selectionRect ? handleMultiSelect : undefined}
                 renderElement={renderElementWithLinkPreview}
                 renderLeaf={renderLeaf} />
             </HoveringToolbar>

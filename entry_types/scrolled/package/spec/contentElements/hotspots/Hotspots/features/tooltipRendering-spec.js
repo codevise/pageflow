@@ -10,6 +10,7 @@ import {within} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 import userEvent from '@testing-library/user-event';
 import 'support/fakeResizeObserver';
+import {editableTextValue} from 'support';
 
 jest.mock('contentElements/hotspots/TooltipPortal');
 jest.mock('contentElements/hotspots/useTooltipTransitionStyles');
@@ -34,9 +35,9 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
-          description: [{type: 'paragraph', children: [{text: 'Some description'}]}],
-          link: [{type: 'paragraph', children: [{text: 'Some link'}]}]
+          title: editableTextValue('Some title', {type: 'heading'}),
+          description: editableTextValue('Some description'),
+          link: editableTextValue('Some link')
         }
       },
       tooltipLinks: {
@@ -77,9 +78,9 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
-          description: [{type: 'paragraph', children: [{text: 'Some description'}]}],
-          link: [{type: 'paragraph', children: [{text: ''}]}]
+          title: editableTextValue('Some title', {type: 'heading'}),
+          description: editableTextValue('Some description'),
+          link: editableTextValue('')
         }
       },
       tooltipLinks: {
@@ -112,9 +113,9 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
-          description: [{type: 'paragraph', children: [{text: 'Some description'}]}],
-          link: [{type: 'paragraph', children: [{text: ''}]}]
+          title: editableTextValue('Some title', {type: 'heading'}),
+          description: editableTextValue('Some description'),
+          link: editableTextValue('')
         }
       },
       tooltipLinks: {
@@ -147,9 +148,9 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
-          description: [{type: 'paragraph', children: [{text: 'Some description'}]}],
-          link: [{type: 'paragraph', children: [{text: 'Some link'}]}]
+          title: editableTextValue('Some title', {type: 'heading'}),
+          description: editableTextValue('Some description'),
+          link: editableTextValue('Some link')
         }
       },
       tooltipLinks: {
@@ -183,8 +184,8 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
-          description: [{type: 'paragraph', children: [{text: 'Some description'}]}]
+          title: editableTextValue('Some title', {type: 'heading'}),
+          description: editableTextValue('Some description')
         }
       }
     };
@@ -217,8 +218,8 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
-          description: [{type: 'paragraph', children: [{text: 'Some description'}]}]
+          title: editableTextValue('Some title', {type: 'heading'}),
+          description: editableTextValue('Some description')
         }
       }
     };
@@ -250,8 +251,8 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
-          description: [{type: 'paragraph', children: [{text: 'Some description'}]}]
+          title: editableTextValue('Some title', {type: 'heading'}),
+          description: editableTextValue('Some description')
         }
       }
     };

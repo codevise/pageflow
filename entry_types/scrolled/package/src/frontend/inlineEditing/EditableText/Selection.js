@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {Editor, Transforms, Node} from 'slate';
 import {useSlate, ReactEditor} from 'slate-react';
 import {useDrag} from 'react-dnd';
+import classNames from 'classnames';
 
 import styles from './index.module.css';
 
@@ -34,11 +35,13 @@ export function Selection(props) {
 
   const boundsRef = useRef();
   const lastRangeRef = useRef();
+  const wasMultiSelectedRef = useRef(false);
 
   const {
     setTransientState,
     select,
     isSelected: isContentElementSelected,
+    isMultiSelected,
     type,
     range
   } = useContentElementEditorState();
@@ -52,6 +55,31 @@ export function Selection(props) {
 
     if (!ref.current) {
       return
+    }
+
+    if (isMultiSelected) {
+      if (!wasMultiSelectedRef.current) {
+        wasMultiSelectedRef.current = true;
+        ReactEditor.blur(editor);
+      }
+      else if (focusedByPlainClick(editor)) {
+        select();
+        return;
+      }
+
+      boundsRef.current = showRectAroundAllBlocks(editor,
+                                                  outerRef.current,
+                                                  ref.current,
+                                                  innerRef.current);
+      return;
+    }
+
+    if (wasMultiSelectedRef.current) {
+      wasMultiSelectedRef.current = false;
+
+      if (isContentElementSelected) {
+        restoreFocus(editor);
+      }
     }
 
     if (type === 'contentElement' && range && lastRangeRef.current !== range) {
@@ -137,7 +165,7 @@ export function Selection(props) {
   });
 
   useEffect(() => {
-    if (!isContentElementSelected) return;
+    if (!isContentElementSelected && !isMultiSelected) return;
 
     function handleResize() {
       if (boundsRef.current) {
@@ -148,7 +176,7 @@ export function Selection(props) {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [isContentElementSelected, editor]);
+  }, [isContentElementSelected, isMultiSelected, editor]);
 
   const [, drag] = useDrag({
     item: {type: 'contentElement', id: props.contentElementId},
@@ -164,8 +192,11 @@ export function Selection(props) {
 
   return (
     <div ref={outerRef}>
-      <div ref={ref} className={styles.selection}>
+      <div ref={ref}
+           className={classNames(styles.selection,
+                                 {[styles.plainSelection]: isMultiSelected})}>
         <SelectionRect selected={true}
+                       plain={isMultiSelected}
                        drag={drag}
                        scrollPoint={isContentElementSelected}
                        insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
@@ -201,6 +232,30 @@ export function Selection(props) {
 
 function hideRect(el) {
   el.removeAttribute('style');
+}
+
+function focusedByPlainClick(editor) {
+  return ReactEditor.isFocused(editor);
+}
+
+function showRectAroundAllBlocks(editor, outer, el, inner) {
+  const bounds = {start: 0, end: editor.children.length - 1};
+
+  updateRect(editor, bounds.start, bounds.end, outer, el, inner);
+
+  return bounds;
+}
+
+function restoreFocus(editor) {
+  if (ReactEditor.isFocused(editor)) {
+    return;
+  }
+
+  if (!editor.selection) {
+    Transforms.select(editor, Editor.start(editor, []));
+  }
+
+  ReactEditor.focus(editor);
 }
 
 function updateRect(editor, startIndex, endIndex, outer, el, inner) {

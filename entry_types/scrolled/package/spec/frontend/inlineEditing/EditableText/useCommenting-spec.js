@@ -9,6 +9,7 @@ import {ContentElementAttributesProvider} from 'frontend/useContentElementAttrib
 import {EditorStateProvider} from 'frontend/inlineEditing/EditorState';
 
 import {useCommenting} from 'frontend/inlineEditing/EditableText/useCommenting';
+import {editableTextValue} from 'support';
 
 describe('useCommenting', () => {
   beforeEach(() => {
@@ -23,9 +24,7 @@ describe('useCommenting', () => {
 
   function setup({commentThreads}) {
     const editor = withReact(createEditor());
-    editor.children = [
-      {type: 'paragraph', children: [{text: 'Hello world'}]}
-    ];
+    editor.children = editableTextValue('Hello world');
 
     const wrapper = ({children}) => (
       <ReviewStateProvider initialState={{currentUser: null, commentThreads}}>

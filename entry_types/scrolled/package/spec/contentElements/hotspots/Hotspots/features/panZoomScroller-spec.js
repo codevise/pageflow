@@ -17,6 +17,7 @@ import {animateStub} from 'support/animateStub';
 import {scrollTimelineStub} from 'support/scrollTimelineStub';
 
 import {getInitialTransform, getPanZoomStepTransform} from 'contentElements/hotspots/panZoom';
+import {editableTextValue} from 'support';
 jest.mock('contentElements/hotspots/panZoom');
 
 jest.mock('contentElements/hotspots/TooltipPortal');
@@ -383,7 +384,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Area 1'}]}],
+          title: editableTextValue('Area 1', {type: 'heading'}),
         }
       }
     };
@@ -449,7 +450,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };
@@ -519,8 +520,8 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
-          link: [{type: 'heading', children: [{text: 'Some link'}]}]
+          title: editableTextValue('Some title', {type: 'heading'}),
+          link: editableTextValue('Some link', {type: 'heading'})
         }
       },
       tooltipLinks: {

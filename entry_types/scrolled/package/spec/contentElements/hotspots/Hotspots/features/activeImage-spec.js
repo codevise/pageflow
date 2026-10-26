@@ -15,6 +15,7 @@ import 'support/animateStub';
 import 'support/fakeResizeObserver';
 import {simulateIntersecting} from 'support/fakeIntersectionObserver';
 import 'support/scrollTimelineStub';
+import {editableTextValue} from 'support';
 
 describe('Hotspots', () => {
   useFakeTranslations({
@@ -40,7 +41,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };
@@ -70,7 +71,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };
@@ -101,7 +102,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };
@@ -133,7 +134,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };
@@ -164,7 +165,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };
@@ -197,7 +198,7 @@ describe('Hotspots', () => {
       ],
       tooltipTexts: {
         1: {
-          title: [{type: 'heading', children: [{text: 'Some title'}]}],
+          title: editableTextValue('Some title', {type: 'heading'}),
         }
       }
     };
@@ -270,7 +271,7 @@ describe('Hotspots', () => {
         ],
         tooltipTexts: {
           1: {
-            title: [{type: 'heading', children: [{text: 'Some title'}]}],
+            title: editableTextValue('Some title', {type: 'heading'}),
           }
         }
       };

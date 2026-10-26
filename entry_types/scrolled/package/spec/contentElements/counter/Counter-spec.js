@@ -10,6 +10,7 @@ import styles from 'contentElements/counter/Counter.module.css';
 import '@testing-library/jest-dom/extend-expect';
 import 'support/toHaveScaleCategory';
 import 'support/toHaveColor';
+import {editableTextValue} from 'support';
 
 describe('Counter', () => {
   function renderCounter(configuration = {}, options = {}) {
@@ -34,7 +35,7 @@ describe('Counter', () => {
 
   it('does not render a blank description', () => {
     const {container} = renderCounter({
-      description: [{type: 'paragraph', children: [{text: ''}]}]
+      description: editableTextValue('')
     });
 
     expect(container.querySelector(`.${styles.wrapper}`).children).toHaveLength(1);
@@ -42,7 +43,7 @@ describe('Counter', () => {
 
   it('renders a blank description when selected', () => {
     const {container} = renderCounter(
-      {description: [{type: 'paragraph', children: [{text: ''}]}]},
+      {description: editableTextValue('')},
       {inlineEditing: {isSelected: true}}
     );
 
@@ -93,7 +94,7 @@ describe('Counter', () => {
 
   it('defaults to md size for description', () => {
     const {getByText} = renderCounter({
-      description: [{type: 'paragraph', children: [{text: 'Some text'}]}]
+      description: editableTextValue('Some text')
     });
 
     expect(getByText('Some text')).toHaveScaleCategory('counterDescription', 'md');
@@ -125,7 +126,7 @@ describe('Counter', () => {
 
   it('renders description with counterDescription scale category', () => {
     const {getByText} = renderCounter({
-      description: [{type: 'paragraph', children: [{text: 'Some text'}]}]
+      description: editableTextValue('Some text')
     });
 
     expect(getByText('Some text')).toHaveScaleCategory('counterDescription');
@@ -157,7 +158,7 @@ describe('Counter', () => {
 
   it('applies description color', () => {
     const {getByText} = renderCounter({
-      description: [{type: 'paragraph', children: [{text: 'Some text'}]}],
+      description: editableTextValue('Some text'),
       descriptionColor: '#00f'
     });
 
@@ -166,7 +167,7 @@ describe('Counter', () => {
 
   it('renders description with counterDescription size typography class', () => {
     const {getByText} = renderCounter({
-      description: [{type: 'paragraph', children: [{text: 'Some text'}]}],
+      description: editableTextValue('Some text'),
       descriptionSize: 'lg'
     });
 
@@ -233,7 +234,7 @@ describe('Counter', () => {
 
     it('applies centerRagged alignment from sectionProps layout by default', () => {
       const {container} = renderCounterWithOptions(
-        {description: [{type: 'paragraph', children: [{text: 'Some text'}]}]},
+        {description: editableTextValue('Some text')},
         {sectionProps: {layout: 'centerRagged'}}
       );
       const wrapper = container.querySelector('[class*="wrapper"]');
@@ -277,7 +278,7 @@ describe('Counter', () => {
       const {container} = renderCounterWithOptions(
         {
           textAlign: 'centerRagged',
-          description: [{type: 'paragraph', children: [{text: 'Some text'}]}]
+          description: editableTextValue('Some text')
         },
         {width: contentElementWidths.md}
       );
@@ -331,7 +332,7 @@ describe('Counter', () => {
       const {container} = renderCounterWithOptions(
         {
           textAlign: 'right',
-          description: [{type: 'paragraph', children: [{text: 'Some text'}]}]
+          description: editableTextValue('Some text')
         },
         {width: contentElementWidths.md}
       );

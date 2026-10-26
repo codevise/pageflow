@@ -245,6 +245,11 @@ export const PreviewMessageController = Object.extend({
             this.editor.navigate(contentElement.getEditorPath(), {trigger: true})
           }
         }
+        else if (type === 'multiSelection') {
+          const {itemType, items} = message.data.payload;
+          const payload = encodeURIComponent(JSON.stringify({itemType, items}));
+          this.editor.navigate(`/scrolled/multi_selection?payload=${payload}`, {trigger: true})
+        }
         else if (type === 'sectionSettings') {
           this.editor.navigate(`/scrolled/sections/${id}`, {trigger: true})
         }

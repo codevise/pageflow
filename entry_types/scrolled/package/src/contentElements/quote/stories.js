@@ -1,25 +1,12 @@
 import '../frontend';
 import {storiesOfContentElement} from 'pageflow-scrolled/spec/support/stories';
+import {editableTextValue} from 'pageflow-scrolled/spec/support/editableTextValues';
 
 storiesOfContentElement(module, {
   typeName: 'quote',
   baseConfiguration: {
-    text: [
-      {
-        type: 'paragraph',
-        children: [{text: 'Be the change that you wish to see in the world.'}]
-      }
-    ],
-    attribution: [
-      {
-        type: 'paragraph',
-        children: [{text: 'Mahatma Gandhi'}]
-      },
-      {
-        type: 'paragraph',
-        children: [{text: '1869–1948'}]
-      }
-    ]
+    text: editableTextValue('Be the change that you wish to see in the world.'),
+    attribution: editableTextValue(['Mahatma Gandhi', '1869–1948'])
   },
   variants: [
     {
@@ -68,12 +55,7 @@ storiesOfContentElement(module, {
     {
       name: 'Hanging Centered Ragged',
       configuration: {
-        text: [
-          {
-            type: 'paragraph',
-            children: [{text: 'Be the change\n that you wish to see in the world'}]
-          }
-        ]
+        text: editableTextValue('Be the change\n that you wish to see in the world')
       },
       themeOptions: {
         quoteDesign: 'hanging'

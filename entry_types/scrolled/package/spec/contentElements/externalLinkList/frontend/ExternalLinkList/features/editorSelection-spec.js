@@ -8,6 +8,7 @@ import {renderInContentElement} from 'pageflow-scrolled/testHelpers';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect'
+import {editableTextValue} from 'support';
 
 describe('ExternalLinkList', () => {
   beforeAll(loadInlineEditingExtensions);
@@ -187,8 +188,5 @@ describe('ExternalLinkList', () => {
 });
 
 function value(text) {
-  return [{
-    type: 'heading',
-    children: [{text}],
-  }];
+  return editableTextValue(text, {type: 'heading'});
 }

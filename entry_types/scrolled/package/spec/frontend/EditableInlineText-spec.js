@@ -4,6 +4,7 @@ import {EditableInlineText} from 'frontend';
 
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
+import {editableTextValue} from 'support';
 
 describe('EditableInlineText', () => {
   it('renders empty string by default', () => {
@@ -13,12 +14,7 @@ describe('EditableInlineText', () => {
   });
 
   it('renders text from value', () => {
-    const value = [{
-      type: 'heading',
-      children: [
-        {text: 'Some text'}
-      ]
-    }];
+    const value = editableTextValue('Some text', {type: 'heading'});
 
     const {queryByText} = render(<EditableInlineText value={value} />);
 
@@ -32,12 +28,7 @@ describe('EditableInlineText', () => {
   });
 
   it('prefers value over defaultValue', () => {
-    const value = [{
-      type: 'heading',
-      children: [
-        {text: 'Some text'}
-      ]
-    }];
+    const value = editableTextValue('Some text', {type: 'heading'});
 
     const {queryByText} = render(<EditableInlineText value={value} defaultValue="Some default" />);
 

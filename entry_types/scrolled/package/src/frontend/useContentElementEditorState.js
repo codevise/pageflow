@@ -2,9 +2,11 @@ import {useContext, createContext} from 'react';
 
 export const ContentElementEditorStateContext = createContext({
   isSelected: false,
+  isMultiSelected: false,
   isEditable: false,
   setTransientState() {},
   select() {},
+  extendSelection() {},
   selectNewThread() {}
 });
 

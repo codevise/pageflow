@@ -3,13 +3,12 @@ import {createEditor, Transforms} from 'slate';
 import {withReact} from 'slate-react';
 
 import {useCommentRangeRefs} from 'frontend/inlineEditing/EditableText/useCommentRangeRefs';
+import {editableTextValue} from 'support';
 
 describe('useCommentRangeRefs', () => {
   function setup(threads) {
     const editor = withReact(createEditor());
-    editor.children = [
-      {type: 'paragraph', children: [{text: 'Hello world'}]}
-    ];
+    editor.children = editableTextValue('Hello world');
 
     const {result, rerender} = renderHook(
       ({threads}) => useCommentRangeRefs(editor, threads),
@@ -114,10 +113,7 @@ describe('useCommentRangeRefs', () => {
   describe('trackedThreads', () => {
     it('reflects upstream subjectRange after resetRangeRefs is called', () => {
       const editor = withReact(createEditor());
-      editor.children = [
-        {type: 'paragraph', children: [{text: 'first paragraph'}]},
-        {type: 'paragraph', children: [{text: 'second paragraph'}]}
-      ];
+      editor.children = editableTextValue(['first paragraph', 'second paragraph']);
 
       const initialThreads = [{
         id: 1,
@@ -137,9 +133,7 @@ describe('useCommentRangeRefs', () => {
       // `useCachedValue.onReset` would call when the new value
       // arrives.
       act(() => {
-        editor.children = [
-          {type: 'paragraph', children: [{text: 'second paragraph'}]}
-        ];
+        editor.children = editableTextValue('second paragraph');
         result.current.resetRangeRefs();
       });
 
@@ -159,9 +153,7 @@ describe('useCommentRangeRefs', () => {
 
     it('tracks edits for a thread whose migrated range targets a path not in the previous value', () => {
       const editor = withReact(createEditor());
-      editor.children = [
-        {type: 'paragraph', children: [{text: 'hello'}]}
-      ];
+      editor.children = editableTextValue('hello');
 
       const initialThreads = [];
 
@@ -194,10 +186,7 @@ describe('useCommentRangeRefs', () => {
       // valid.
       act(() => {
         result.current.resetRangeRefs();
-        editor.children = [
-          {type: 'paragraph', children: [{text: 'hello'}]},
-          {type: 'paragraph', children: [{text: 'world'}]}
-        ];
+        editor.children = editableTextValue(['hello', 'world']);
       });
 
       // Stand in for the `setCachedValue`-driven re-render that would

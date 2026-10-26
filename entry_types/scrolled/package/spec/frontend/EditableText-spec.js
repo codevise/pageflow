@@ -5,17 +5,12 @@ import {EditableText} from 'frontend';
 import styles from 'frontend/EditableText.module.css';
 
 import {render} from '@testing-library/react';
-import {renderInEntry} from 'support';
+import {renderInEntry, editableTextValue} from 'support';
 import '@testing-library/jest-dom/extend-expect'
 
 describe('EditableText', () => {
   it('renders class name', () => {
-    const value = [{
-      type: 'paragraph',
-      children: [
-        {text: 'Some text'}
-      ]
-    }];
+    const value = editableTextValue('Some text');
 
     const {container} = render(<EditableText value={value} className="some-class" />);
 
@@ -23,12 +18,7 @@ describe('EditableText', () => {
   });
 
   it('renders paragraphs', () => {
-    const value = [{
-      type: 'paragraph',
-      children: [
-        {text: 'Some text'}
-      ]
-    }];
+    const value = editableTextValue('Some text');
 
     const {getByText} = render(<EditableText value={value} />);
 
@@ -36,12 +26,7 @@ describe('EditableText', () => {
   });
 
   it('renders block quote', () => {
-    const value = [{
-      type: 'block-quote',
-      children: [
-        {text: 'Some text'}
-      ]
-    }];
+    const value = editableTextValue('Some text', {type: 'block-quote'});
 
     const {getByText} = render(<EditableText value={value} />);
 
@@ -49,12 +34,7 @@ describe('EditableText', () => {
   });
 
   it('renders headings', () => {
-    const value = [{
-      type: 'heading',
-      children: [
-        {text: 'Some Heading'}
-      ]
-    }];
+    const value = editableTextValue('Some Heading', {type: 'heading'});
 
     const {getByRole} = render(<EditableText value={value} />);
 
@@ -150,12 +130,7 @@ describe('EditableText', () => {
   });
 
   it('renders zero width no break space in empty leafs to prevent empty paragraphs from collapsing', () => {
-    const value = [{
-      type: 'paragraph',
-      children: [
-        {text: ''}
-      ]
-    }];
+    const value = editableTextValue('');
 
     const {container} = render(<EditableText value={value} />);
 
@@ -163,12 +138,7 @@ describe('EditableText', () => {
   });
 
   it('renders zero width no break space in blank leafs to prevent empty paragraphs from collapsing', () => {
-    const value = [{
-      type: 'paragraph',
-      children: [
-        {text: '  '}
-      ]
-    }];
+    const value = editableTextValue('  ');
 
     const {container} = render(<EditableText value={value} />);
 
@@ -319,12 +289,7 @@ describe('EditableText', () => {
   });
 
   it('uses body scaleCategory by default', () => {
-    const value = [{
-      type: 'paragraph',
-      children: [
-        {text: 'Some text'}
-      ]
-    }];
+    const value = editableTextValue('Some text');
 
     const {container} = render(<EditableText value={value} />);
 
@@ -332,12 +297,7 @@ describe('EditableText', () => {
   });
 
   it('supports using different scaleCategory', () => {
-    const value = [{
-      type: 'paragraph',
-      children: [
-        {text: 'Some text'}
-      ]
-    }];
+    const value = editableTextValue('Some text');
 
     const {container} = render(<EditableText value={value} scaleCategory="quoteText-lg" />);
 
@@ -345,12 +305,7 @@ describe('EditableText', () => {
   });
 
   it('supports typography variant prop', () => {
-    const value = [{
-      type: 'paragraph',
-      children: [
-        {text: 'Some text'}
-      ]
-    }];
+    const value = editableTextValue('Some text');
 
     const {container} = render(<EditableText value={value}
                                              scaleCategory="quoteText-lg"
@@ -360,12 +315,7 @@ describe('EditableText', () => {
   });
 
   it('supports typography size prop', () => {
-    const value = [{
-      type: 'paragraph',
-      children: [
-        {text: 'Some text'}
-      ]
-    }];
+    const value = editableTextValue('Some text');
 
     const {container} = render(<EditableText value={value}
                                              scaleCategory="question"

@@ -72,6 +72,73 @@ describe('inline editing useContentElementEditorState', () => {
     expect(captured.isSelected).toBe(true);
   });
 
+  it('exposes isMultiSelected for item in multi selection', () => {
+    let captured = {};
+    let setSelectionRef;
+
+    function Test() {
+      const state = useContentElementEditorState();
+      const {select} = useEditorSelection();
+
+      captured = state;
+      useEffect(() => {
+        setSelectionRef = select;
+      }, [select]);
+
+      return null;
+    }
+
+    renderEntry({
+      contentElement: {ui: <Test />}
+    });
+
+    act(() => setSelectionRef({
+      type: 'multiSelection',
+      itemType: 'contentElement',
+      items: [{id: 1}, {id: 2}]
+    }));
+
+    expect(captured.isMultiSelected).toBe(true);
+    expect(captured.isSelected).toBe(false);
+    expect(captured.type).toBeNull();
+
+    act(() => setSelectionRef({
+      type: 'multiSelection',
+      itemType: 'contentElement',
+      items: [{id: 2}, {id: 3}]
+    }));
+
+    expect(captured.isMultiSelected).toBe(false);
+  });
+
+  it('does not re-render content elements when another content element is selected', () => {
+    const rendered = jest.fn();
+    frontend.contentElementTypes.register('withRenderCallback', {
+      component: function WithRenderCallback({configuration}) {
+        useContentElementEditorState();
+        rendered(configuration.testId);
+
+        return <div data-testid={`contentElement-${configuration.testId}`} />;
+      }
+    });
+
+    const {getContentElementByTestId} = renderEntry({
+      seed: {
+        contentElements: [
+          {typeName: 'withRenderCallback', configuration: {testId: 5}},
+          {typeName: 'withRenderCallback', configuration: {testId: 6}},
+          {typeName: 'withRenderCallback', configuration: {testId: 7}}
+        ]
+      }
+    });
+
+    getContentElementByTestId(5).select();
+    rendered.mockClear();
+    getContentElementByTestId(6).select();
+
+    expect(rendered).not.toHaveBeenCalledWith(7);
+  });
+
   it('returns true for isEditable', () => {
     function Test() {
       const {isEditable} = useContentElementEditorState();

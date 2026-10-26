@@ -13,6 +13,7 @@ import {
 import {Toolbar} from './Toolbar';
 import {ForcePaddingContext} from '../Foreground';
 import {useEditorSelection} from './EditorState';
+import {hasSelectionModifier} from './multiSelection';
 import {useCommentSelection} from './useCommentSelection';
 import {useSelectCommentThreadHandler} from './useSelectCommentThreadHandler';
 import {MotifAreaVisibilityProvider} from '../MotifAreaVisibilityProvider';
@@ -100,6 +101,12 @@ export function SectionDecorator({backdrop, section, contentElements, transition
   });
 
   function selectIfOutsideContentItem(event) {
+    // Do not dissolve a multi selection when a modifier click lands
+    // next to the elements it contains.
+    if (hasSelectionModifier(event)) {
+      return;
+    }
+
     if (!event.target.closest(`.${contentElementStyles.wrapper}`) &&
         !event.target.closest(`.${backdropStyles.wrapper}`) &&
         !event.target.closest(`.${widgetSelectionRectStyles.wrapper}`) &&

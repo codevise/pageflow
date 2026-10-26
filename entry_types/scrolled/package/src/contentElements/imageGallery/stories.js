@@ -1,6 +1,7 @@
 import './frontend';
 import {contentElementWidths} from 'pageflow-scrolled/frontend';
 import {storiesOfContentElement, filePermaId} from 'pageflow-scrolled/spec/support/stories';
+import {editableTextValue} from 'pageflow-scrolled/spec/support/editableTextValues';
 
 storiesOfContentElement(module, {
   typeName: 'imageGallery',
@@ -82,14 +83,7 @@ storiesOfContentElement(module, {
       name: 'With Captions',
       configuration: {
         captions: {
-          1: [
-            {
-              type: 'paragraph',
-              children: [
-                {text: 'At vero eos et accusam et justo duo dolores et ea rebum.'}
-              ]
-            }
-          ]
+          1: editableTextValue('At vero eos et accusam et justo duo dolores et ea rebum.')
         }
       }
     },
@@ -97,14 +91,7 @@ storiesOfContentElement(module, {
       name: 'With Caption Variant',
       configuration: {
         captions: {
-          1: [
-            {
-              type: 'paragraph',
-              children: [
-                {text: 'At vero eos et accusam et justo duo dolores et ea rebum.'}
-              ]
-            }
-          ]
+          1: editableTextValue('At vero eos et accusam et justo duo dolores et ea rebum.')
         },
         captionVariant: 'inverted'
       },

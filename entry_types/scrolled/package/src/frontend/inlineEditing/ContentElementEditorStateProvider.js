@@ -7,7 +7,7 @@ import {useStorylineActivity} from '../storylineActivity';
 import {shallowEqual} from '../utils/shallowEqual';
 
 export function ContentElementEditorStateProvider({id, permaId, children}) {
-  const {isSelected, select, range} = useEditorSelection(
+  const {isSelected, isMultiSelected, select, extendSelection, range} = useEditorSelection(
     useMemo(() => ({id, type: 'contentElement'}), [id])
   );
   const {isSelected: commentsSelected, select: selectComments} = useEditorSelection(
@@ -40,13 +40,16 @@ export function ContentElementEditorStateProvider({id, permaId, children}) {
   const value = useMemo(() => ({
     isEditable: true,
     select,
+    extendSelection,
     selectComments,
     selectNewThread,
     isSelected: !!type,
+    isMultiSelected: inForeground && !!isMultiSelected,
     type,
     range,
     setTransientState
-  }), [select, selectComments, selectNewThread, type, range, setTransientState]);
+  }), [select, extendSelection, selectComments, selectNewThread, type,
+       inForeground, isMultiSelected, range, setTransientState]);
 
   return (
     <ContentElementEditorStateContext.Provider value={value}>

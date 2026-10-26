@@ -1,5 +1,6 @@
 import './frontend';
 import {storiesOfContentElement, filePermaId} from 'pageflow-scrolled/spec/support/stories';
+import {editableTextValue} from 'pageflow-scrolled/spec/support/editableTextValues';
 
 storiesOfContentElement(module, {
   typeName: 'hotspots',
@@ -17,7 +18,7 @@ storiesOfContentElement(module, {
     tooltipTexts: {
       1: {
         title: [{children: [{text: 'Some Title'}]}],
-        description: [{type: 'paragraph', children: [{text: 'This text describes area'}]}],
+        description: editableTextValue('This text describes area'),
         link: [{children: [{text: 'Read more'}]}]
       }
     }
@@ -46,11 +47,11 @@ storiesOfContentElement(module, {
         tooltipTexts: {
           1: {
             title: [{children: [{text: 'First Area'}]}],
-            description: [{type: 'paragraph', children: [{text: 'First area description'}]}]
+            description: editableTextValue('First area description')
           },
           2: {
             title: [{children: [{text: 'Second Area'}]}],
-            description: [{type: 'paragraph', children: [{text: 'Second area description'}]}]
+            description: editableTextValue('Second area description')
           }
         }
       }
@@ -74,11 +75,11 @@ storiesOfContentElement(module, {
         tooltipTexts: {
           1: {
             title: [{children: [{text: 'First Area'}]}],
-            description: [{type: 'paragraph', children: [{text: 'First area description'}]}]
+            description: editableTextValue('First area description')
           },
           2: {
             title: [{children: [{text: 'Second Area'}]}],
-            description: [{type: 'paragraph', children: [{text: 'Second area description'}]}]
+            description: editableTextValue('Second area description')
           }
         }
       },

@@ -1,9 +1,12 @@
-import React, {useState, useContext, useMemo, useCallback} from 'react';
+import React, {useState, useContext, useMemo, useCallback, useRef} from 'react';
+
+import {extendMultiSelection, isInMultiSelection} from './multiSelection';
 
 const Context = React.createContext({});
 
 export function EditorStateProvider(props) {
   const [selection, setSelectionState] = useState(null);
+  const selectionRef = useRef(null);
 
   const setSelection = useCallback(selection => {
     if (window.parent !== window) {
@@ -16,12 +19,17 @@ export function EditorStateProvider(props) {
       );
     }
 
+    selectionRef.current = selection;
     setSelectionState(selection);
   }, []);
 
+  const extendSelection = useCallback(options => {
+    setSelection(extendMultiSelection(selectionRef.current, options));
+  }, [setSelection]);
+
   const value = useMemo(() => ({
-    selection, setSelection
-  }), [setSelection, selection])
+    selection, setSelection, extendSelection
+  }), [setSelection, extendSelection, selection])
 
   return (
     <Context.Provider value={value}>
@@ -31,7 +39,7 @@ export function EditorStateProvider(props) {
 }
 
 export function useEditorSelection(options) {
-  const {selection, setSelection} = useContext(Context);
+  const {selection, setSelection, extendSelection: extend} = useContext(Context);
 
   const resetSelection = useCallback(() => {
     setSelection(null);
@@ -40,6 +48,10 @@ export function useEditorSelection(options) {
   const select = useCallback(selection => {
     setSelection(selection || options)
   }, [setSelection, options])
+
+  const extendSelection = useCallback(() => {
+    extend(options)
+  }, [extend, options])
 
   return useMemo(() => {
     if (!setSelection) return {};
@@ -53,9 +65,11 @@ export function useEditorSelection(options) {
     return {
       range: selection?.range,
       isSelected,
+      isMultiSelected: !!options && isInMultiSelection(selection, options),
       selection: isSelected ? selection : null,
       select,
+      extendSelection,
       resetSelection
     };
-  }, [options, selection, setSelection, select, resetSelection]);
+  }, [options, selection, setSelection, select, extendSelection, resetSelection]);
 }

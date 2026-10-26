@@ -29,6 +29,24 @@ describe('TabsView', () => {
     });
   });
 
+  describe('with label passed to tab', () => {
+    useFakeTranslations({
+      'tabs.one': 'Tab one'
+    });
+
+    it('uses label instead of translation', () => {
+      var tabsView = new TabsView({
+        i18n: 'tabs'
+      });
+
+      tabsView.tab('one', function() { return new Backbone.View(); }, {label: '3 Elements'});
+
+      var {getByRole} = renderBackboneView(tabsView);
+
+      expect(getByRole('tab').textContent).toEqual('3 Elements');
+    });
+  });
+
   describe('with fallbackTranslationKeyPrefix option', () => {
     useFakeTranslations({
       'tabs.one': 'Tab one',

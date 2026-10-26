@@ -5,6 +5,7 @@ import {fireEvent} from '@testing-library/react';
 import {EditableText} from 'frontend/commenting/EditableText';
 import {commentHighlightStyles as highlightStyles} from 'pageflow-scrolled/review';
 import {renderEntry, useCommentingPageObjects} from 'support/pageObjects/commenting';
+import {editableTextValue} from 'support';
 
 describe('comment visibility', () => {
   useCommentingPageObjects();
@@ -104,7 +105,7 @@ describe('comment visibility', () => {
   });
 
   it('hides inline comment highlights when hidden', () => {
-    const value = [{type: 'paragraph', children: [{text: 'Some text to comment on'}]}];
+    const value = editableTextValue('Some text to comment on');
 
     const entry = renderEntry({
       contentElement: {

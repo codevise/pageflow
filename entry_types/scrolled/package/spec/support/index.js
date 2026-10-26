@@ -1,5 +1,6 @@
 export * from 'pageflow-scrolled/testHelpers';
 
+export * from './editableTextValues';
 export * from './factories';
 export * from './fakeWindows';
 export * from './illustratedSelectInput';
