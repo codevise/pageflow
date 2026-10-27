@@ -62,6 +62,7 @@ export const InsertContentElementDialogView = Marionette.ItemView.extend({
     tabsView.tab('contentElementTypes', () => this.createCategoriesView());
     tabsView.tab('fragments', () => new FragmentsView({
       entry: this.options.entry,
+      section: this.targetSection(),
       insertOptions: this.options.insertOptions,
       fragments: this.fragments()
     }));
@@ -82,6 +83,14 @@ export const InsertContentElementDialogView = Marionette.ItemView.extend({
         insertOptions: this.options.insertOptions
       }
     });
+  },
+
+  targetSection() {
+    const {entry, insertOptions: {at, id}} = this.options;
+
+    return at === 'endOfSection' || at === 'backdropOfSection' ?
+           entry.sections.get(id) :
+           entry.contentElements.get(id)?.section;
   },
 
   fragments() {
@@ -177,6 +186,7 @@ const FragmentsView = Marionette.ItemView.extend({
         itemViewConstructor: FragmentCardView,
         itemViewOptions: {
           entry: this.options.entry,
+          section: this.options.section,
           insertOptions: this.options.insertOptions
         },
         blankSlateViewConstructor: FragmentsBlankSlateView
@@ -229,7 +239,8 @@ const FragmentCardView = Marionette.ItemView.extend({
 
     this.appendSubview(new FragmentThumbnailView({
       model: this.model,
-      entry: this.options.entry
+      entry: this.options.entry,
+      section: this.options.section
     }), {to: this.ui.fragmentThumbnail});
   }
 });

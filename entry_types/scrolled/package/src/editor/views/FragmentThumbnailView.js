@@ -11,7 +11,7 @@ export const FragmentThumbnailView = Marionette.ItemView.extend({
     ReactDOM.render(
       React.createElement(StandaloneSectionThumbnail, {
         sectionPermaId: this.model.firstSectionPermaId(),
-        seed: this.model.seed(this.options.entry.scrolledSeed)
+        seed: this.model.seed(this.options.entry.scrolledSeed, {section: this.options.section})
       }),
       this.el
     );

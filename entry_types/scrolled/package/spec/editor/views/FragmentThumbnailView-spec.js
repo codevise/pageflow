@@ -33,6 +33,23 @@ describe('FragmentThumbnailView', () => {
     expect(view.el.querySelector('[data-section-thumbnail]')).not.toBeNull();
   });
 
+  it('renders fragment with appearance of given section', () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({sections: [{id: 1, configuration: {invert: true}}]})
+    });
+    const fragment = createFragment();
+    jest.spyOn(fragment, 'seed');
+
+    renderBackboneView(new FragmentThumbnailView({
+      model: fragment,
+      entry,
+      section: entry.sections.get(1)
+    }));
+
+    expect(fragment.seed).toHaveBeenCalledWith(entry.scrolledSeed,
+                                               {section: entry.sections.get(1)});
+  });
+
   it('unmounts thumbnail when closed', () => {
     const view = new FragmentThumbnailView({model: createFragment(), entry: createEntry()});
 

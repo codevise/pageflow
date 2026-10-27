@@ -2,6 +2,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import {InsertContentElementDialogView} from 'editor/views/InsertContentElementDialogView';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
+import {Fragment} from 'editor/models/Fragment';
 
 import {factories, normalizeSeed, useFakeXhr} from 'support';
 import {
@@ -134,7 +135,7 @@ describe('InsertContentElementDialogView', () => {
         supportedPositions: ['inline']
       });
       const entry = factories.entry(ScrolledEntry, {}, {
-        entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
+        entryTypeSeed: normalizeSeed({sections: [{id: 5}], contentElements: [{id: 1, sectionId: 5}]})
       });
       entry.insertContentElementFragment = jest.fn(() => new Promise(() => {}));
       const view = new InsertContentElementDialogView({
@@ -269,6 +270,17 @@ describe('InsertContentElementDialogView', () => {
       fireEvent.click(within(result.getByRole('tabpanel')).getByRole('button', {name: /Pull quote/}));
 
       expect(close).toHaveBeenCalled();
+    });
+
+    it('renders fragments with appearance of section they are inserted into', () => {
+      const seed = jest.spyOn(Fragment.prototype, 'seed');
+      const result = renderDialog({libraries: [elementsFragmentLibrary()]});
+
+      showLibraryTab(result);
+
+      expect(seed).toHaveBeenCalledWith(expect.anything(),
+                                        {section: result.entry.sections.get(5)});
+      seed.mockRestore();
     });
 
     it('disables fragments when inserting in backdrop', () => {
