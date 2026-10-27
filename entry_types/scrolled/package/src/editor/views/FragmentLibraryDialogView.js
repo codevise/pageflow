@@ -84,7 +84,7 @@ export const FragmentLibraryDialogView = Marionette.ItemView.extend({
       return;
     }
 
-    this.fragments = this.libraries.sharedFragments();
+    this.fragments = this.libraries.sharedFragments({kind: 'sections'});
 
     this.subview(new CollectionView({
       el: this.ui.cards,

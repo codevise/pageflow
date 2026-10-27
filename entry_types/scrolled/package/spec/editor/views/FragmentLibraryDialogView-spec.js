@@ -118,6 +118,25 @@ describe('FragmentLibraryDialogView', () => {
     expect(cardTitles()).toEqual(['Title with video']);
   });
 
+  it('does not render content elements fragments', () => {
+    showDialog([
+      library({id: 3, title: 'Templates'},
+              [
+                {id: 1, permaId: 100, configuration: {title: 'Intro'}},
+                {
+                  id: 2, permaId: 200,
+                  configuration: {title: 'Quote', fragment: {kind: 'contentElements'}}
+                }
+              ],
+              [
+                {id: 10, permaId: 1000, chapterId: 1, configuration: {}},
+                {id: 11, permaId: 1100, chapterId: 2, configuration: {}}
+              ])
+    ]);
+
+    expect(cardTitles()).toEqual(['Intro']);
+  });
+
   it('falls back to placeholder title for unnamed fragment', () => {
     showDialog([
       library({id: 3, title: 'Templates'},

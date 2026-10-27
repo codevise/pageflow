@@ -34,6 +34,7 @@ export function fragmentsOfLibrary(library) {
       key: `${library.id}-${chapter.permaId}`,
       libraryId: library.id,
       chapterPermaId: chapter.permaId,
+      kind: chapter.configuration.fragment?.kind || 'sections',
       title: chapter.configuration.title,
       sections,
       collections: fragmentCollections(collections, chapter, sections)
