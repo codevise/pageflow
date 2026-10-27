@@ -1,7 +1,6 @@
 import {ExtractFragmentDialogView} from 'editor/views/ExtractFragmentDialogView';
 
 import {useFakeTranslations, renderBackboneView as render} from 'pageflow/testHelpers';
-import {useEditorGlobals} from 'support';
 
 import userEvent from '@testing-library/user-event';
 
@@ -14,11 +13,8 @@ describe('ExtractFragmentDialogView', () => {
     'pageflow_scrolled.editor.extract_fragment.shared_hint': 'Fragments are shared.'
   });
 
-  const {createEntry} = useEditorGlobals();
-
-  function renderDialog({chapterConfiguration = {title: 'Intro'}, onSubmit = jest.fn()} = {}) {
-    const entry = createEntry({chapters: [{id: 1, configuration: chapterConfiguration}]});
-    const view = new ExtractFragmentDialogView({chapter: entry.chapters.get(1), onSubmit});
+  function renderDialog({title = 'Intro', onSubmit = jest.fn()} = {}) {
+    const view = new ExtractFragmentDialogView({title, onSubmit});
 
     return {view, onSubmit, ...render(view)};
   }
@@ -35,8 +31,8 @@ describe('ExtractFragmentDialogView', () => {
     expect(getByText('Fragments are shared.')).toBeTruthy();
   });
 
-  it('prefills name with chapter title', () => {
-    const {getByRole} = renderDialog({chapterConfiguration: {title: 'Intro'}});
+  it('prefills name with given title', () => {
+    const {getByRole} = renderDialog({title: 'Intro'});
 
     expect(getByRole('textbox', {name: 'Name'}).value).toEqual('Intro');
   });

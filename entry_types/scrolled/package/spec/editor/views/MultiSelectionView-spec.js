@@ -4,7 +4,11 @@ import {editor} from 'pageflow-scrolled/editor';
 
 import {MultiSelectionView} from 'editor/views/MultiSelectionView';
 
-import {DropDownButton, useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
+import {ExtractFragmentDialogView} from 'editor/views/ExtractFragmentDialogView';
+
+import {
+  DropDownButton, useFakeFeatures, useFakeTranslations, renderBackboneView
+} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
 import {fireEvent, within} from '@testing-library/dom';
 
@@ -20,6 +24,8 @@ describe('MultiSelectionView', () => {
     'pageflow_scrolled.editor.destroy_content_elements_menu_item.destroy': 'Delete elements',
     'pageflow_scrolled.editor.destroy_content_elements_menu_item.confirm_destroy':
       'Really delete these elements?',
+    'pageflow_scrolled.editor.extract_content_elements_fragment_menu_item.label':
+      'Add to shared fragments',
     'pageflow.editor.templates.back_button_decorator.outline': 'Outline',
     'pageflow.editor.views.edit_configuration.actions': 'Actions'
   });
@@ -135,5 +141,38 @@ describe('MultiSelectionView', () => {
     DropDownButton.findAll(view)[0].selectMenuItemByLabel('Delete elements');
 
     expect(entry.deleteContentElements).toHaveBeenCalledWith(items);
+  });
+
+  it('does not offer adding content elements to shared fragments without fragments feature', () => {
+    const entry = createEntry({contentElements: [{id: 1, typeName: 'heading'}]});
+    const view = buildView(entry, [{id: 1}]);
+
+    renderBackboneView(view);
+
+    expect(DropDownButton.findAll(view)[0].menuItemLabels())
+      .not.toContain('Add to shared fragments');
+  });
+
+  describe('with fragments feature', () => {
+    useFakeFeatures('editor', ['fragments']);
+
+    afterEach(() => jest.restoreAllMocks());
+
+    it('offers adding selected content elements to shared fragments', () => {
+      jest.spyOn(ExtractFragmentDialogView, 'show').mockImplementation(() => {});
+      const entry = createEntry({
+        contentElements: [{id: 1, typeName: 'heading'}, {id: 2, typeName: 'heading'}]
+      });
+      entry.extractContentElementsToFragmentLibrary = jest.fn(() => new Promise(() => {}));
+      const items = [{id: 1}, {id: 2}];
+      const view = buildView(entry, items);
+
+      renderBackboneView(view);
+      DropDownButton.findAll(view)[0].selectMenuItemByLabel('Add to shared fragments');
+      ExtractFragmentDialogView.show.mock.calls[0][0].onSubmit('Quote');
+
+      expect(entry.extractContentElementsToFragmentLibrary)
+        .toHaveBeenCalledWith(items, {title: 'Quote'});
+    });
   });
 });

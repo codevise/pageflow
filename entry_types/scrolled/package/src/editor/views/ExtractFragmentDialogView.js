@@ -42,7 +42,7 @@ export const ExtractFragmentDialogView = Marionette.ItemView.extend({
   }),
 
   onRender() {
-    this.ui.input.val(this.options.chapter.configuration.get('title') || '');
+    this.ui.input.val(this.options.title || '');
   },
 
   onShow() {

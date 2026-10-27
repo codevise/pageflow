@@ -97,8 +97,8 @@ describe('ChapterMenuItems', () => {
 
     afterEach(() => jest.restoreAllMocks());
 
-    function createMenuItem(extraction) {
-      const entry = createEntry({chapters: [{id: 1}]});
+    function createMenuItem(extraction, configuration = {}) {
+      const entry = createEntry({chapters: [{id: 1, configuration}]});
       const chapter = entry.chapters.get(1);
       chapter.extractToFragmentLibrary = jest.fn().mockReturnValue(extraction);
 
@@ -119,13 +119,13 @@ describe('ChapterMenuItems', () => {
       expect(menuItem.get('label')).toBe('Add to shared fragments');
     });
 
-    it('opens name dialog for chapter when selected', () => {
-      const {chapter, menuItem} = createMenuItem(pendingExtraction());
+    it('opens name dialog prefilled with chapter title when selected', () => {
+      const {menuItem} = createMenuItem(pendingExtraction(), {title: 'Intro'});
 
       menuItem.selected();
 
       expect(ExtractFragmentDialogView.show)
-        .toHaveBeenCalledWith(expect.objectContaining({chapter}));
+        .toHaveBeenCalledWith(expect.objectContaining({title: 'Intro'}));
     });
 
     it('extracts chapter with submitted name', () => {

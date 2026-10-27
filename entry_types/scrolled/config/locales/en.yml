@@ -1269,7 +1269,7 @@ en:
         save: Save
       chapter_menu_items:
         copy_permalink: Copy permalink
-        extract_fragment: Add to shared fragments
+        extract_fragment: Add to shared fragments...
         extract_fragment_failed: The chapter could not be added to the shared fragments.
         extract_fragment_forbidden: You are not allowed to add chapters to the shared fragments of this account.
         extracted_fragment: Added to shared fragments
@@ -1437,6 +1437,12 @@ en:
         password_protected: Password protected
         placeholder: Select story
         show_entries: Show stories
+      extract_content_elements_fragment_menu_item:
+        extracted: Added to shared fragments
+        extracting: Adding to shared fragments...
+        failed: The elements could not be added to the shared fragments.
+        forbidden: You are not allowed to add elements to the shared fragments of this account.
+        label: Add to shared fragments...
       extract_fragment:
         cancel: Cancel
         header: Add to shared fragments

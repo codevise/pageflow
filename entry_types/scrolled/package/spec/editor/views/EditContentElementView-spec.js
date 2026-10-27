@@ -3,7 +3,9 @@ import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {TextInputView} from 'pageflow/ui';
 import {editor} from 'pageflow-scrolled/editor';
 
-import {ConfigurationEditor} from 'pageflow/testHelpers';
+import {ExtractFragmentDialogView} from 'editor/views/ExtractFragmentDialogView';
+
+import {ConfigurationEditor, useFakeFeatures, useFakeTranslations} from 'pageflow/testHelpers';
 import {factories, normalizeSeed, useEditorGlobals, useFakeXhr} from 'support';
 
 describe('EditContentElementView', () => {
@@ -64,6 +66,54 @@ describe('EditContentElementView', () => {
     expect(configurationEditorMethod).toHaveBeenCalledWith({
       entry,
       contentElement: contentElement
+    });
+  });
+
+  describe('actions menu', () => {
+    const {createEntry} = useEditorGlobals();
+
+    useFakeTranslations({
+      'pageflow_scrolled.editor.extract_content_elements_fragment_menu_item.label':
+        'Add to shared fragments'
+    });
+
+    function createView() {
+      const entry = createEntry({contentElements: [{id: 1, typeName: 'textBlock'}]});
+      editor.contentElementTypes.register('textBlock', {});
+
+      return new EditContentElementView({
+        model: entry.contentElements.get(1),
+        editor,
+        entry
+      });
+    }
+
+    it('does not offer adding content element to shared fragments without fragments feature', () => {
+      const view = createView();
+
+      expect(view.getActionsMenuItems().map(item => item.get('label')))
+        .not.toContain('Add to shared fragments');
+    });
+
+    describe('with fragments feature', () => {
+      useFakeFeatures('editor', ['fragments']);
+
+      afterEach(() => jest.restoreAllMocks());
+
+      it('offers adding content element to shared fragments', () => {
+        jest.spyOn(ExtractFragmentDialogView, 'show').mockImplementation(() => {});
+        const view = createView();
+        view.options.entry.extractContentElementsToFragmentLibrary =
+          jest.fn(() => new Promise(() => {}));
+
+        view.getActionsMenuItems()
+          .find(item => item.get('label') === 'Add to shared fragments')
+          .selected();
+        ExtractFragmentDialogView.show.mock.calls[0][0].onSubmit('Quote');
+
+        expect(view.options.entry.extractContentElementsToFragmentLibrary)
+          .toHaveBeenCalledWith([{id: 1}], {title: 'Quote'});
+      });
     });
   });
 

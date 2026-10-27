@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import {Entry, editor} from 'pageflow/editor';
 import I18n from 'i18n-js';
 import {features} from 'pageflow/frontend';
@@ -190,6 +191,17 @@ export const ScrolledEntry = Entry.extend({
 
   duplicateContentElement(contentElement) {
     return duplicateContentElement(this, contentElement);
+  },
+
+  extractContentElementsToFragmentLibrary(items, {title} = {}) {
+    return Promise.resolve($.ajax({
+      url: `${this.url()}/scrolled/content_element_fragment_extractions`,
+      type: 'POST',
+      data: {
+        content_element_ids: items.map(({id}) => id),
+        title
+      }
+    })).then(() => undefined);
   },
 
   fileReferences() {
