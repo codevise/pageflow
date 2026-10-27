@@ -1465,6 +1465,7 @@ en:
         fragments_heading: Shared fragments
         fragments_load_failed: The shared fragments could not be loaded.
         header: Insert element
+        insert_fragment_failed: The fragment could not be inserted.
         tabs:
           contentElementTypes: New element
           fragments: Fragments

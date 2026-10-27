@@ -62,6 +62,7 @@ export const InsertContentElementDialogView = Marionette.ItemView.extend({
     tabsView.tab('contentElementTypes', () => this.createCategoriesView());
     tabsView.tab('fragments', () => new FragmentsView({
       entry: this.options.entry,
+      insertOptions: this.options.insertOptions,
       fragments: this.fragments()
     }));
 
@@ -174,7 +175,10 @@ const FragmentsView = Marionette.ItemView.extend({
         el: this.ui.fragments,
         collection: fragments,
         itemViewConstructor: FragmentCardView,
-        itemViewOptions: {entry: this.options.entry},
+        itemViewOptions: {
+          entry: this.options.entry,
+          insertOptions: this.options.insertOptions
+        },
         blankSlateViewConstructor: FragmentsBlankSlateView
       }));
     }, () => {
@@ -198,14 +202,28 @@ const FragmentCardView = Marionette.ItemView.extend({
   className: styles.fragment,
 
   template: () => `
-    <span class="${styles.fragmentThumbnail}"></span>
-    <span class="${styles.fragmentTitle}"></span>
-    <span class="${styles.fragmentTypes}"></span>
+    <button class="${styles.fragmentButton}">
+      <span class="${styles.fragmentThumbnail}"></span>
+      <span class="${styles.fragmentTitle}"></span>
+      <span class="${styles.fragmentTypes}"></span>
+    </button>
   `,
 
-  ui: cssModulesUtils.ui(styles, 'fragmentThumbnail', 'fragmentTitle', 'fragmentTypes'),
+  ui: cssModulesUtils.ui(styles,
+                         'fragmentButton', 'fragmentThumbnail', 'fragmentTitle', 'fragmentTypes'),
+
+  events: cssModulesUtils.events(styles, {
+    'click fragmentButton': function() {
+      this.options.entry
+        .insertContentElementFragment(this.model, this.options.insertOptions)
+        .catch(() => app.trigger('error', {message: t('insert_fragment_failed')}));
+    }
+  }),
 
   onRender() {
+    this.ui.fragmentButton.prop('disabled',
+                                this.options.insertOptions.at === 'backdropOfSection');
+
     this.ui.fragmentTitle.text(this.model.get('title') || t('unnamed_fragment'));
     this.ui.fragmentTypes.text(contentElementTypeNames(this.model));
 

@@ -7,6 +7,7 @@ import {factories, normalizeSeed, useFakeXhr} from 'support';
 import {
   renderBackboneView, setupGlobals, useFakeFeatures, useFakeTranslations
 } from 'pageflow/testHelpers';
+import {app} from 'pageflow/editor';
 import {fireEvent, within} from '@testing-library/dom';
 import 'support/fakeResizeObserver';
 
@@ -24,6 +25,7 @@ describe('InsertContentElementDialogView', () => {
     'pageflow_scrolled.editor.insert_content_element.fragments_heading': 'Shared fragments',
     'pageflow_scrolled.editor.insert_content_element.fragments_blank_slate': 'No fragments yet.',
     'pageflow_scrolled.editor.insert_content_element.fragments_load_failed': 'Could not load.',
+    'pageflow_scrolled.editor.insert_content_element.insert_fragment_failed': 'Could not insert.',
     'pageflow_scrolled.editor.insert_content_element.unnamed_fragment': 'Untitled fragment'
   });
 
@@ -125,16 +127,20 @@ describe('InsertContentElementDialogView', () => {
       entry: () => factories.entry(ScrolledEntry)
     });
 
-    function renderDialog({libraries = []} = {}) {
+    function renderDialog({libraries = [], insertOptions = {at: 'after', id: 1}} = {}) {
       const editor = factories.editorApi();
-      editor.contentElementTypes.register('textBlock', {category: 'basic'});
+      editor.contentElementTypes.register('textBlock', {
+        category: 'basic',
+        supportedPositions: ['inline']
+      });
       const entry = factories.entry(ScrolledEntry, {}, {
         entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
       });
+      entry.insertContentElementFragment = jest.fn(() => new Promise(() => {}));
       const view = new InsertContentElementDialogView({
         entry,
         editor,
-        insertOptions: {at: 'after', id: 1}
+        insertOptions
       });
 
       testContext.server.respondWith(
@@ -142,7 +148,7 @@ describe('InsertContentElementDialogView', () => {
                                       JSON.stringify(libraries)]
       );
 
-      return {view, ...renderBackboneView(view)};
+      return {view, entry, ...renderBackboneView(view)};
     }
 
     function showLibraryTab({getByRole}) {
@@ -219,6 +225,62 @@ describe('InsertContentElementDialogView', () => {
 
       expect(within(result.getByRole('tabpanel')).getByRole('heading', {name: 'Shared fragments'}))
         .toBeTruthy();
+    });
+
+    function elementsFragmentLibrary() {
+      return library(
+        [elementsFragment.chapter],
+        [{id: 10, permaId: 1000, chapterId: 1, configuration: {}}],
+        [{id: 20, permaId: 2000, sectionId: 10, typeName: 'heading', configuration: {}}]
+      );
+    }
+
+    it('inserts clicked fragment with insert options', () => {
+      const result = renderDialog({libraries: [elementsFragmentLibrary()]});
+
+      showLibraryTab(result);
+      fireEvent.click(within(result.getByRole('tabpanel')).getByRole('button', {name: /Pull quote/}));
+
+      expect(result.entry.insertContentElementFragment).toHaveBeenCalledWith(
+        expect.objectContaining({attributes: expect.objectContaining({chapterPermaId: 100})}),
+        {at: 'after', id: 1}
+      );
+    });
+
+    it('reports error when inserting fragment fails', async () => {
+      const result = renderDialog({libraries: [elementsFragmentLibrary()]});
+      result.entry.insertContentElementFragment = () => Promise.reject(new Error());
+      const errors = [];
+      app.on('error', error => errors.push(error.message));
+
+      showLibraryTab(result);
+      fireEvent.click(within(result.getByRole('tabpanel')).getByRole('button', {name: /Pull quote/}));
+      await new Promise(resolve => setTimeout(resolve));
+
+      expect(errors).toEqual(['Could not insert.']);
+      app.off('error');
+    });
+
+    it('closes after fragment has been clicked', () => {
+      const result = renderDialog({libraries: [elementsFragmentLibrary()]});
+      const close = jest.spyOn(result.view, 'close');
+
+      showLibraryTab(result);
+      fireEvent.click(within(result.getByRole('tabpanel')).getByRole('button', {name: /Pull quote/}));
+
+      expect(close).toHaveBeenCalled();
+    });
+
+    it('disables fragments when inserting in backdrop', () => {
+      const result = renderDialog({
+        libraries: [elementsFragmentLibrary()],
+        insertOptions: {at: 'backdropOfSection', id: 10}
+      });
+
+      showLibraryTab(result);
+
+      expect(within(result.getByRole('tabpanel')).getByRole('button', {name: /Pull quote/}))
+        .toBeDisabled();
     });
 
     it('falls back to placeholder title for unnamed fragment', () => {

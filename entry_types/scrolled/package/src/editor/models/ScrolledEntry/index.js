@@ -24,6 +24,7 @@ import {configurationPlace} from '../configurationPlace';
 import settingsPictogram from '../../views/images/settingsPictogram.svg';
 
 import {insertContentElement} from './insertContentElement';
+import {insertContentElements} from './insertContentElements';
 import {moveContentElement} from './moveContentElement';
 import {deleteContentElements} from './deleteContentElements';
 import {duplicateContentElement} from './duplicateContentElement';
@@ -157,6 +158,39 @@ export const ScrolledEntry = Entry.extend({
                                   attributes,
                                   {at, splitPoint});
     }
+  },
+
+  insertContentElementFragment(fragment, {id, at, splitPoint}) {
+    return Promise.resolve($.ajax({
+      url: `${this.url()}/scrolled/content_element_fragment_preparations`,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        fragment: {
+          entry_id: fragment.get('libraryId'),
+          chapter_perma_id: fragment.get('chapterPermaId')
+        }
+      }
+    })).then(attributesList => {
+      this.linkedEntries.mergeLinkedEntries(
+        fragment.get('collections')?.linkedEntries || []
+      );
+
+      return Promise.resolve(this.refreshFiles()).then(() => {
+        if (at === 'endOfSection') {
+          const section = this.sections.get(id);
+
+          return insertContentElements(this, section, attributesList,
+                                       {sibling: section.contentElements.last(), at});
+        }
+        else {
+          const sibling = this.contentElements.get(id);
+
+          return insertContentElements(this, sibling.section, attributesList,
+                                       {sibling, at, splitPoint});
+        }
+      });
+    });
   },
 
   moveContentElement(

@@ -1483,6 +1483,7 @@ de:
         fragments_heading: Geteilte Fragmente
         fragments_load_failed: Die geteilten Fragmente konnten nicht geladen werden.
         header: Element einfügen
+        insert_fragment_failed: Das Fragment konnte nicht eingefügt werden.
         tabs:
           contentElementTypes: Neues Element
           fragments: Fragmente

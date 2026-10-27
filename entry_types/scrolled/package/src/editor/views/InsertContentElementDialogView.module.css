@@ -145,15 +145,35 @@
 }
 
 .fragment {
+  margin: 0 -1px -1px 0;
+}
+
+.fragmentButton {
+  composes: unstyledButton from './buttons.module.css';
   display: flex;
   flex-direction: column;
-  margin: 0 -1px -1px 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
   padding: space(3);
   border: solid 1px var(--ui-on-primary-color-lighter);
+  color: inherit;
+  background-color: transparent;
+  text-align: left;
+}
+
+.fragmentButton:not([disabled]):hover,
+.fragmentButton:not([disabled]):focus {
+  background-color: var(--ui-on-primary-color-lightest);
+}
+
+.fragmentButton[disabled] {
+  opacity: 0.3;
 }
 
 .fragmentThumbnail {
   display: block;
+  width: 100%;
   position: relative;
   height: 100px;
   overflow: hidden;
@@ -170,6 +190,7 @@
 }
 
 .fragmentTitle {
+  max-width: 100%;
   margin-top: space(2);
   overflow: hidden;
   text-overflow: ellipsis;
