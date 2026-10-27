@@ -45,6 +45,18 @@ module PageflowScrolled
         .perform(fragment_chapter(fragment_perma_id).sections, chapter:)
     end
 
+    def prepare_content_elements_for(fragment_perma_id:, entry:)
+      rewrite = FileReferencesRewrite.new(source_entry: self.entry, destination_entry: entry)
+
+      content_elements_fragment_chapter(fragment_perma_id).content_elements.map do |content_element|
+        ContentElement.new(
+          type_name: content_element.type_name,
+          configuration: rewrite.content_element_configuration(content_element.type_name,
+                                                               content_element.configuration)
+        )
+      end
+    end
+
     def extract_fragment_from(entry:, chapter:, title: nil)
       ActiveRecord::Base.transaction do
         @entry ||= create_entry(locale: entry.locale)
@@ -70,6 +82,15 @@ module PageflowScrolled
     def fragment_chapter(perma_id)
       content.chapters.find { |chapter| chapter.perma_id == perma_id.to_i } ||
         raise(ActiveRecord::RecordNotFound)
+    end
+
+    def content_elements_fragment_chapter(perma_id)
+      chapter = fragment_chapter(perma_id)
+
+      raise ActiveRecord::RecordNotFound unless chapter.configuration.dig('fragment', 'kind') ==
+                                                'contentElements'
+
+      chapter
     end
 
     def create_entry(locale:)
