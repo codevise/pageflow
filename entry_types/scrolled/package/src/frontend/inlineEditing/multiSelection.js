@@ -10,6 +10,28 @@ export function hasSelectionModifier(event) {
   return event.ctrlKey || event.metaKey;
 }
 
+export function watchSelectionModifier(window) {
+  const root = window.document.documentElement;
+  const events = ['keydown', 'keyup', 'mousemove'];
+
+  function update(event) {
+    root.toggleAttribute('data-selection-modifier', hasSelectionModifier(event));
+  }
+
+  function reset() {
+    root.removeAttribute('data-selection-modifier');
+  }
+
+  events.forEach(name => window.addEventListener(name, update));
+  window.addEventListener('blur', reset);
+
+  return () => {
+    events.forEach(name => window.removeEventListener(name, update));
+    window.removeEventListener('blur', reset);
+    reset();
+  };
+}
+
 export function extendMultiSelection(selection, {type, id}) {
   if (isMultiSelectionOf(selection, type)) {
     return isInMultiSelection(selection, {type, id}) ?

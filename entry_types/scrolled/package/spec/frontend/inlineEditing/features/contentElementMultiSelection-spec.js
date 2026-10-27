@@ -11,6 +11,20 @@ import '@testing-library/jest-dom/extend-expect'
 describe('inline editing content element multi selection', () => {
   useInlineEditingPageObjects();
 
+  it('flags document while selection modifier is held', () => {
+    renderEntry({
+      seed: {
+        contentElements: [{typeName: 'withTestId', configuration: {testId: 5}}]
+      }
+    });
+
+    fireEvent.keyDown(window, {key: 'Control', ctrlKey: true});
+
+    expect(document.documentElement).toHaveAttribute('data-selection-modifier');
+
+    fireEvent.keyUp(window, {key: 'Control'});
+  });
+
   it('marks both content elements as selected', () => {
     const {getContentElementByTestId} = renderEntry({
       seed: {

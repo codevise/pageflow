@@ -1,6 +1,7 @@
 import {
   extendMultiSelection,
-  isInMultiSelection
+  isInMultiSelection,
+  watchSelectionModifier
 } from 'frontend/inlineEditing/multiSelection';
 
 describe('extendMultiSelection', () => {
@@ -126,5 +127,58 @@ describe('isInMultiSelection', () => {
 
   it('returns false without selection', () => {
     expect(isInMultiSelection(null, {type: 'contentElement', id: 6})).toBe(false);
+  });
+});
+
+describe('watchSelectionModifier', () => {
+  let unwatch;
+
+  afterEach(() => unwatch());
+
+  function isFlagged() {
+    return document.documentElement.hasAttribute('data-selection-modifier');
+  }
+
+  it('flags document while modifier key is held', () => {
+    unwatch = watchSelectionModifier(window);
+
+    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'Meta', metaKey: true}));
+
+    expect(isFlagged()).toBe(true);
+  });
+
+  it('removes flag when modifier key is released', () => {
+    unwatch = watchSelectionModifier(window);
+
+    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'Control', ctrlKey: true}));
+    window.dispatchEvent(new KeyboardEvent('keyup', {key: 'Control'}));
+
+    expect(isFlagged()).toBe(false);
+  });
+
+  it('reads modifier state from mouse moves', () => {
+    unwatch = watchSelectionModifier(window);
+
+    window.dispatchEvent(new MouseEvent('mousemove', {ctrlKey: true}));
+
+    expect(isFlagged()).toBe(true);
+  });
+
+  it('removes flag when window loses focus', () => {
+    unwatch = watchSelectionModifier(window);
+
+    window.dispatchEvent(new MouseEvent('mousemove', {metaKey: true}));
+    window.dispatchEvent(new Event('blur'));
+
+    expect(isFlagged()).toBe(false);
+  });
+
+  it('removes flag and stops watching when unwatched', () => {
+    watchSelectionModifier(window)();
+    unwatch = () => {};
+
+    window.dispatchEvent(new MouseEvent('mousemove', {metaKey: true}));
+
+    expect(isFlagged()).toBe(false);
   });
 });

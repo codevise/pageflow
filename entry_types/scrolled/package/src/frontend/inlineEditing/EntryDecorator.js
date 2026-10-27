@@ -8,6 +8,7 @@ import {
 import {useEntryStateDispatch} from 'pageflow-scrolled/entryState';
 import {usePostMessageListener} from '../../shared/usePostMessageListener';
 import {EditorStateProvider, useEditorSelection} from './EditorState';
+import {watchSelectionModifier} from './multiSelection';
 import {
   useContentElementEditorCommandEmitter,
   ContentElementEditorCommandSubscriptionProvider
@@ -15,6 +16,8 @@ import {
 
 export function EntryDecorator({commentingInitialState, children}) {
   const contentElementEditorCommandEmitter = useContentElementEditorCommandEmitter();
+
+  useEffect(() => watchSelectionModifier(window), []);
 
   return (
     <EditorStateProvider>
