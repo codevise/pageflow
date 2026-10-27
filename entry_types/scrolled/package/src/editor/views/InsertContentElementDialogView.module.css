@@ -8,6 +8,10 @@
   color: var(--ui-on-primary-color);
 }
 
+.body {
+  display: contents;
+}
+
 .categories {
   padding: space(1) 0 space(1) space(1);
   margin: space(-1) 0 space(2) space(-1);
@@ -84,4 +88,104 @@
 
 .box .close:hover {
   border-color: var(--ui-on-primary-color) !important;
+}
+
+.withTabs {
+  box-sizing: border-box;
+  width: 90%;
+  max-width: 760px;
+  max-height: calc(100vh - 40px);
+}
+
+.withTabs .body,
+.withTabs .body :global(.tabs_view),
+.withTabs .body :global(.tabs_view-container) {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.withTabs .body :global(.tabs_view-scroller) {
+  flex-shrink: 0;
+  --ui-primary-color: var(--ui-on-primary-color);
+  --ui-on-surface-color-light: var(--ui-on-primary-color-light);
+  --ui-on-surface-color-lighter: var(--ui-on-primary-color-lighter);
+}
+
+.withTabs .categories,
+.fragmentsPane {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: space(3);
+}
+
+.fragmentsPane {
+  overflow-y: auto;
+}
+
+.withTabs .categoryName {
+  border-bottom: 0;
+  padding-bottom: 0;
+  margin: space(3) 0 space(1);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ui-on-primary-color-light);
+}
+
+.fragments {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  margin: 0 1px 1px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fragment {
+  display: flex;
+  flex-direction: column;
+  margin: 0 -1px -1px 0;
+  padding: space(3);
+  border: solid 1px var(--ui-on-primary-color-lighter);
+}
+
+.fragmentThumbnail {
+  display: block;
+  position: relative;
+  height: 100px;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: solid 1px var(--ui-on-primary-color-lightest);
+  border-radius: rounded(sm);
+  --checker-color: color-mix(in srgb, var(--ui-on-primary-color) 14%, var(--ui-primary-color));
+  --backdrop-default-background:
+    linear-gradient(45deg, var(--checker-color) 25%, transparent 25%) 0 0 / 96px 96px,
+    linear-gradient(135deg, var(--checker-color) 25%, transparent 25%) 48px 0 / 96px 96px,
+    linear-gradient(45deg, transparent 75%, var(--checker-color) 75%) 48px -48px / 96px 96px,
+    linear-gradient(135deg, transparent 75%, var(--checker-color) 75%) 0 48px / 96px 96px,
+    color-mix(in srgb, var(--ui-on-primary-color) 7%, var(--ui-primary-color));
+}
+
+.fragmentTitle {
+  margin-top: space(2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.fragmentTypes {
+  margin-top: space(1);
+  font-size: 11px;
+  color: var(--ui-on-primary-color-light);
+}
+
+.fragmentsBlankSlate {
+  grid-column: 1 / -1;
+  padding: space(4) 0;
+  text-align: center;
+  color: var(--ui-on-primary-color-light);
 }

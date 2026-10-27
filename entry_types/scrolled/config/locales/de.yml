@@ -1479,7 +1479,14 @@ de:
         label: Rechteangabe an dieser Stelle ausblenden
       insert_content_element:
         cancel: Abbrechen
+        fragments_blank_slate: Den geteilten Fragmenten wurden noch keine Elemente hinzugefügt.
+        fragments_heading: Geteilte Fragmente
+        fragments_load_failed: Die geteilten Fragmente konnten nicht geladen werden.
         header: Element einfügen
+        tabs:
+          contentElementTypes: Neues Element
+          fragments: Fragmente
+        unnamed_fragment: Unbenanntes Fragment
       no_options: Keine Optionen verfügbar
       section_item:
         cutoff: Paywall Grenze

@@ -1461,7 +1461,14 @@ en:
         label: Hide rights information here
       insert_content_element:
         cancel: Cancel
+        fragments_blank_slate: No elements have been added to the shared fragments yet.
+        fragments_heading: Shared fragments
+        fragments_load_failed: The shared fragments could not be loaded.
         header: Insert element
+        tabs:
+          contentElementTypes: New element
+          fragments: Fragments
+        unnamed_fragment: Untitled fragment
       no_options: No options available
       section_item:
         cutoff: Paywall cutoff
