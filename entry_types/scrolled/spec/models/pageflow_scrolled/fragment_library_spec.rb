@@ -112,6 +112,79 @@ module PageflowScrolled
       end
     end
 
+    describe '#prepare_content_elements_for' do
+      it 'returns unsaved content elements of fragment in order' do
+        library_entry = create(:entry, type_name: 'scrolled', fragment_library: 'shared')
+        fragment = create(:scrolled_chapter,
+                          revision: library_entry.draft,
+                          configuration: {'fragment' => {'kind' => 'contentElements'}})
+        section = create(:section, chapter: fragment)
+        create(:content_element, :text_block, section:, position: 1)
+        create(:content_element, :heading, section:, position: 0,
+                                           configuration: {'children' => 'Hello'})
+        entry = create(:entry, type_name: 'scrolled')
+        library = FragmentLibrary.new(Pageflow::DraftEntry.new(library_entry))
+
+        content_elements = library.prepare_content_elements_for(
+          fragment_perma_id: fragment.perma_id,
+          entry: Pageflow::DraftEntry.new(entry)
+        )
+
+        expect(content_elements.map(&:type_name)).to eq(%w[heading textBlock])
+        expect(content_elements.first.configuration).to eq('children' => 'Hello')
+        expect(content_elements).to all(be_new_record)
+      end
+
+      it 'rewrites file references and uses files in entry' do
+        library_entry = create(:entry, type_name: 'scrolled', fragment_library: 'shared')
+        library_draft_entry = Pageflow::DraftEntry.new(library_entry)
+        image_file = create(:image_file, used_in: library_entry.draft)
+        fragment = create(:scrolled_chapter,
+                          revision: library_entry.draft,
+                          configuration: {'fragment' => {'kind' => 'contentElements'}})
+        section = create(:section, chapter: fragment)
+        create(:content_element,
+               section:,
+               type_name: 'textBlock',
+               configuration: {
+                 'value' => [{'type' => 'paragraph', 'children' => [
+                   {'type' => 'link',
+                    'href' => {'file' => {
+                      'permaId' => library_draft_entry.find_file(Pageflow::ImageFile,
+                                                                 image_file.id).perma_id,
+                      'collectionName' => 'imageFiles'
+                    }},
+                    'children' => [{'text' => 'Download'}]}
+                 ]}]
+               })
+        entry = create(:entry, type_name: 'scrolled')
+        create_list(:image_file, 2, used_in: entry.draft)
+        draft_entry = Pageflow::DraftEntry.new(entry)
+        library = FragmentLibrary.new(library_draft_entry)
+
+        content_elements = library.prepare_content_elements_for(
+          fragment_perma_id: fragment.perma_id,
+          entry: draft_entry
+        )
+
+        expect(content_elements.first.configuration
+                 .dig('value', 0, 'children', 0, 'href', 'file', 'permaId'))
+          .to eq(draft_entry.find_file(Pageflow::ImageFile, image_file.id).perma_id)
+      end
+
+      it 'raises not found for section fragment' do
+        library_entry = create(:entry, type_name: 'scrolled', fragment_library: 'shared')
+        fragment = create(:scrolled_chapter, revision: library_entry.draft)
+        entry = create(:entry, type_name: 'scrolled')
+        library = FragmentLibrary.new(Pageflow::DraftEntry.new(library_entry))
+
+        expect {
+          library.prepare_content_elements_for(fragment_perma_id: fragment.perma_id,
+                                               entry: Pageflow::DraftEntry.new(entry))
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
     describe '.shared_for_account' do
       it 'returns oldest shared library of account' do
         account = create(:account)
@@ -163,6 +236,84 @@ module PageflowScrolled
         expect(library.content.chapters.map(&:configuration))
           .to match([include('title' => 'Intro')])
         expect(library.content.sections.size).to eq(1)
+      end
+    end
+
+    describe '#extract_content_elements_from' do
+      it 'creates library entry on first extraction' do
+        account = create(:account)
+        entry = create(:entry, type_name: 'scrolled', account:)
+        content_element = create(:content_element, revision: entry.draft)
+        library = FragmentLibrary.shared_for_account(account)
+
+        library.extract_content_elements_from(entry: Pageflow::DraftEntry.new(entry),
+                                              content_elements: [content_element])
+
+        expect(library).to be_persisted
+        expect(library.entry.to_model).to have_attributes(account:,
+                                                          fragment_library: 'shared')
+      end
+
+      it 'creates chapter marked as content elements fragment' do
+        account = create(:account)
+        entry = create(:entry, type_name: 'scrolled', account:)
+        content_element = create(:content_element, revision: entry.draft)
+        library = FragmentLibrary.shared_for_account(account)
+
+        library.extract_content_elements_from(entry: Pageflow::DraftEntry.new(entry),
+                                              content_elements: [content_element],
+                                              title: ' Pull quote ')
+
+        expect(library.content.chapters.map(&:configuration))
+          .to match([{'title' => 'Pull quote', 'fragment' => {'kind' => 'contentElements'}}])
+      end
+
+      it 'omits title if blank title is given' do
+        account = create(:account)
+        entry = create(:entry, type_name: 'scrolled', account:)
+        content_element = create(:content_element, revision: entry.draft)
+        library = FragmentLibrary.shared_for_account(account)
+
+        library.extract_content_elements_from(entry: Pageflow::DraftEntry.new(entry),
+                                              content_elements: [content_element],
+                                              title: ' ')
+
+        expect(library.content.chapters.first.configuration).not_to have_key('title')
+      end
+
+      it 'copies content elements into single section' do
+        account = create(:account)
+        entry = create(:entry, type_name: 'scrolled', account:)
+        section = create(:section, revision: entry.draft)
+        heading = create(:content_element, :heading, section:, position: 0)
+        text_block = create(:content_element, :text_block, section:, position: 1)
+        library = FragmentLibrary.shared_for_account(account)
+
+        library.extract_content_elements_from(entry: Pageflow::DraftEntry.new(entry),
+                                              content_elements: [heading, text_block])
+
+        expect(library.content.sections.size).to eq(1)
+        expect(library.content.content_elements.map(&:type_name))
+          .to eq(%w[heading textBlock])
+        expect(section.content_elements.reload).to eq([heading, text_block])
+      end
+
+      it 'appends fragment after existing fragments' do
+        account = create(:account)
+        library_entry = create(:entry, type_name: 'scrolled', account:,
+                                       fragment_library: 'shared')
+        create(:scrolled_chapter, revision: library_entry.draft, position: 0,
+                                  configuration: {'title' => 'Intro'})
+        entry = create(:entry, type_name: 'scrolled', account:)
+        content_element = create(:content_element, revision: entry.draft)
+        library = FragmentLibrary.shared_for_account(account)
+
+        library.extract_content_elements_from(entry: Pageflow::DraftEntry.new(entry),
+                                              content_elements: [content_element],
+                                              title: 'Quote')
+
+        expect(library.content.chapters.map { |chapter| chapter.configuration['title'] })
+          .to eq(%w[Intro Quote])
       end
     end
   end

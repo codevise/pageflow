@@ -4,9 +4,13 @@ import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
 
 import {DropDownButtonView} from 'pageflow/editor';
+import {features} from 'pageflow/frontend';
 import {TabsView, cssModulesUtils} from 'pageflow/ui';
 
-import {DestroyContentElementsMenuItem} from '../models/contentElementMenuItems';
+import {
+  DestroyContentElementsMenuItem,
+  ExtractContentElementsFragmentMenuItem
+} from '../models/contentElementMenuItems';
 
 import defaultPictogram from './images/defaultPictogram.svg';
 import styles from './MultiSelectionView.module.css';
@@ -35,9 +39,14 @@ export const MultiSelectionView = Marionette.ItemView.extend({
         .filter(contentElement => contentElement?.section)
     );
 
+    const fragments = features.isEnabled('fragments');
+
     this.appendSubview(new DropDownButtonView({
       items: new Backbone.Collection([
-        new DestroyContentElementsMenuItem({}, {entry, items})
+        ...(fragments ?
+            [new ExtractContentElementsFragmentMenuItem({}, {entry, items})] :
+            []),
+        new DestroyContentElementsMenuItem({separated: fragments}, {entry, items})
       ]),
       label: I18n.t('pageflow.editor.views.edit_configuration.actions'),
       ellipsisIcon: true,

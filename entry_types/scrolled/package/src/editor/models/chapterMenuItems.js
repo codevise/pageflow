@@ -26,7 +26,7 @@ export const ExtractFragmentMenuItem = Backbone.Model.extend({
 
   selected() {
     ExtractFragmentDialogView.show({
-      chapter: this.chapter,
+      title: this.chapter.configuration.get('title'),
       onSubmit: title => this.extract(title)
     });
   },

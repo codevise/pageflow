@@ -37,6 +37,47 @@ describe('FragmentLibrariesCollection', () => {
       expect(fragments.pluck('chapterPermaId')).toEqual([100, 200]);
     });
 
+    it('treats chapters without fragment kind as section fragments', () => {
+      const libraries = new FragmentLibrariesCollection([
+        library({id: 3}, {
+          chapters: [{id: 1, permaId: 100, configuration: {}}]
+        })
+      ]);
+
+      expect(libraries.sharedFragments().pluck('kind')).toEqual(['sections']);
+    });
+
+    it('reads kind of content elements fragments', () => {
+      const libraries = new FragmentLibrariesCollection([
+        library({id: 3}, {
+          chapters: [
+            {id: 1, permaId: 100, configuration: {fragment: {kind: 'contentElements'}}}
+          ]
+        })
+      ]);
+
+      expect(libraries.sharedFragments().pluck('kind')).toEqual(['contentElements']);
+    });
+
+    it('can be filtered by kind', () => {
+      const libraries = new FragmentLibrariesCollection([
+        library({id: 3}, {
+          chapters: [
+            {id: 1, permaId: 100, configuration: {title: 'Intro'}},
+            {
+              id: 2, permaId: 200,
+              configuration: {title: 'Quote', fragment: {kind: 'contentElements'}}
+            }
+          ]
+        })
+      ]);
+
+      expect(libraries.sharedFragments({kind: 'sections'}).pluck('title'))
+        .toEqual(['Intro']);
+      expect(libraries.sharedFragments({kind: 'contentElements'}).pluck('title'))
+        .toEqual(['Quote']);
+    });
+
     it('is empty without libraries', () => {
       const libraries = new FragmentLibrariesCollection([]);
 

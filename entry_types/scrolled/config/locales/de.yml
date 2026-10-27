@@ -1287,7 +1287,7 @@ de:
         save: Speichern
       chapter_menu_items:
         copy_permalink: Permalink kopieren
-        extract_fragment: Zu geteilten Fragmenten hinzufügen
+        extract_fragment: Zu geteilten Fragmenten hinzufügen...
         extract_fragment_failed: Das Kapitel konnte nicht zu den geteilten Fragmenten hinzugefügt werden.
         extract_fragment_forbidden: Sie dürfen den geteilten Fragmenten dieses Kontos keine Kapitel hinzufügen.
         extracted_fragment: Zu geteilten Fragmenten hinzugefügt
@@ -1455,6 +1455,12 @@ de:
         password_protected: Passwortgeschützt
         placeholder: Beitrag auswählen
         show_entries: Beiträge anzeigen
+      extract_content_elements_fragment_menu_item:
+        extracted: Zu geteilten Fragmenten hinzugefügt
+        extracting: Wird zu geteilten Fragmenten hinzugefügt...
+        failed: Die Elemente konnten nicht zu den geteilten Fragmenten hinzugefügt werden.
+        forbidden: Sie dürfen den geteilten Fragmenten dieses Kontos keine Elemente hinzufügen.
+        label: Zu geteilten Fragmenten hinzufügen...
       extract_fragment:
         cancel: Abbrechen
         header: Zu geteilten Fragmenten hinzufügen
@@ -1473,7 +1479,15 @@ de:
         label: Rechteangabe an dieser Stelle ausblenden
       insert_content_element:
         cancel: Abbrechen
+        fragments_blank_slate: Den geteilten Fragmenten wurden noch keine Elemente hinzugefügt.
+        fragments_heading: Geteilte Fragmente
+        fragments_load_failed: Die geteilten Fragmente konnten nicht geladen werden.
         header: Element einfügen
+        insert_fragment_failed: Das Fragment konnte nicht eingefügt werden.
+        tabs:
+          contentElementTypes: Neues Element
+          fragments: Fragmente
+        unnamed_fragment: Unbenanntes Fragment
       no_options: Keine Optionen verfügbar
       section_item:
         cutoff: Paywall Grenze

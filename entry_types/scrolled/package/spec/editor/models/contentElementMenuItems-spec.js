@@ -2,11 +2,14 @@ import {
   DestroyContentElementMenuItem,
   DestroyContentElementsMenuItem,
   DuplicateContentElementMenuItem,
+  ExtractContentElementsFragmentMenuItem,
   MoveContentElementMenuItem
 } from 'editor/models/contentElementMenuItems';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {SelectMoveDestinationDialogView} from 'editor/views/SelectMoveDestinationDialogView';
+import {ExtractFragmentDialogView} from 'editor/views/ExtractFragmentDialogView';
 
+import {app} from 'pageflow/editor';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {factories, normalizeSeed} from 'support';
 
@@ -498,6 +501,117 @@ describe('ContentElementMenuItems', () => {
       menuItem.selected();
 
       expect(entry.deleteContentElements).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('ExtractContentElementsFragmentMenuItem', () => {
+    useFakeTranslations({
+      'pageflow_scrolled.editor.extract_content_elements_fragment_menu_item.label':
+        'Add to shared fragments',
+      'pageflow_scrolled.editor.extract_content_elements_fragment_menu_item.extracting':
+        'Adding to shared fragments...',
+      'pageflow_scrolled.editor.extract_content_elements_fragment_menu_item.extracted':
+        'Added to shared fragments',
+      'pageflow_scrolled.editor.extract_content_elements_fragment_menu_item.failed':
+        'Could not add elements.',
+      'pageflow_scrolled.editor.extract_content_elements_fragment_menu_item.forbidden':
+        'Not allowed.'
+    });
+
+    beforeEach(() => {
+      jest.spyOn(ExtractFragmentDialogView, 'show').mockImplementation(() => {});
+    });
+
+    afterEach(() => jest.restoreAllMocks());
+
+    function createMenuItem(extraction) {
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          contentElements: [{id: 1}, {id: 2}]
+        })
+      });
+      entry.extractContentElementsToFragmentLibrary = jest.fn().mockReturnValue(extraction);
+      const items = [{id: 1}, {id: 2}];
+
+      return {entry, items, menuItem: new ExtractContentElementsFragmentMenuItem({}, {entry, items})};
+    }
+
+    function pendingExtraction() {
+      return new Promise(() => {});
+    }
+
+    function submitName(name) {
+      return ExtractFragmentDialogView.show.mock.calls[0][0].onSubmit(name);
+    }
+
+    it('has Add to shared fragments label', () => {
+      const {menuItem} = createMenuItem(pendingExtraction());
+
+      expect(menuItem.get('label')).toBe('Add to shared fragments');
+    });
+
+    it('extracts content elements with submitted name', () => {
+      const {entry, items, menuItem} = createMenuItem(pendingExtraction());
+
+      menuItem.selected();
+      submitName('Pull quote');
+
+      expect(entry.extractContentElementsToFragmentLibrary)
+        .toHaveBeenCalledWith(items, {title: 'Pull quote'});
+    });
+
+    it('does not extract content elements before name is submitted', () => {
+      const {entry, menuItem} = createMenuItem(pendingExtraction());
+
+      menuItem.selected();
+
+      expect(entry.extractContentElementsToFragmentLibrary).not.toHaveBeenCalled();
+    });
+
+    it('is disabled while extraction is pending', () => {
+      const {menuItem} = createMenuItem(pendingExtraction());
+
+      menuItem.selected();
+      submitName('Quote');
+
+      expect(menuItem.get('label')).toBe('Adding to shared fragments...');
+      expect(menuItem.get('disabled')).toBe(true);
+    });
+
+    it('stays disabled once content elements have been added', async () => {
+      const {menuItem} = createMenuItem(Promise.resolve());
+
+      menuItem.selected();
+      await submitName('Quote');
+
+      expect(menuItem.get('label')).toBe('Added to shared fragments');
+      expect(menuItem.get('disabled')).toBe(true);
+    });
+
+    it('is enabled again and reports error when extraction fails', async () => {
+      const {menuItem} = createMenuItem(Promise.reject({status: 500}));
+      const errors = [];
+      app.on('error', error => errors.push(error.message));
+
+      menuItem.selected();
+      await submitName('Quote');
+
+      expect(menuItem.get('label')).toBe('Add to shared fragments');
+      expect(menuItem.get('disabled')).toBe(false);
+      expect(errors).toEqual(['Could not add elements.']);
+      app.off('error');
+    });
+
+    it('reports missing permission', async () => {
+      const {menuItem} = createMenuItem(Promise.reject({status: 403}));
+      const errors = [];
+      app.on('error', error => errors.push(error.message));
+
+      menuItem.selected();
+      await submitName('Quote');
+
+      expect(errors).toEqual(['Not allowed.']);
+      app.off('error');
     });
   });
 });

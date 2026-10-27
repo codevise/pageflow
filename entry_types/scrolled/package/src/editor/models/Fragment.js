@@ -1,5 +1,7 @@
 import Backbone from 'backbone';
 
+const appearanceKeys = ['layout', 'appearance', 'invert'];
+
 export const Fragment = Backbone.Model.extend({
   idAttribute: 'key',
 
@@ -7,10 +9,17 @@ export const Fragment = Backbone.Model.extend({
     return this.get('sections')[0]?.permaId;
   },
 
-  seed(entrySeed) {
+  seed(entrySeed, {section} = {}) {
+    const collections = this.seedCollections(entrySeed);
+
     return {
       ...entrySeed,
-      collections: this.seedCollections(entrySeed)
+      collections: section ?
+                   withAppearanceOf(section, {
+                     collections,
+                     sectionPermaId: this.firstSectionPermaId()
+                   }) :
+                   collections
     };
   },
 
@@ -34,6 +43,7 @@ export function fragmentsOfLibrary(library) {
       key: `${library.id}-${chapter.permaId}`,
       libraryId: library.id,
       chapterPermaId: chapter.permaId,
+      kind: chapter.configuration.fragment?.kind || 'sections',
       title: chapter.configuration.title,
       sections,
       collections: fragmentCollections(collections, chapter, sections)
@@ -74,4 +84,23 @@ function entryIdsOfLinks(value) {
   }
 
   return [];
+}
+
+function withAppearanceOf(section, {collections, sectionPermaId}) {
+  const configuration = pick(section.configuration.attributes, appearanceKeys);
+
+  return {
+    ...collections,
+    sections: collections.sections.map(item =>
+      item.permaId === sectionPermaId ?
+      {...item, configuration} :
+      item
+    )
+  };
+}
+
+function pick(attributes, keys) {
+  return keys.reduce((result, key) => (
+    key in attributes ? {...result, [key]: attributes[key]} : result
+  ), {});
 }

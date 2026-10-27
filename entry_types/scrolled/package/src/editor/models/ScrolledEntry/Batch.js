@@ -282,7 +282,7 @@ export function Batch(entry, section, {reviewSession} = {}) {
     }
   }
 
-  function save({success} = {}) {
+  function save({success, error} = {}) {
     isDirty = false;
 
     const commentThreadSubjectRanges = createCommentThreadSubjectRanges();
@@ -294,6 +294,8 @@ export function Batch(entry, section, {reviewSession} = {}) {
         ...(Object.keys(commentThreadSubjectRanges).length > 0 &&
             {comment_thread_subject_ranges: commentThreadSubjectRanges})
       },
+
+      error,
 
       success(response) {
         // Each step's intermediate state is observable in the iframe, so
