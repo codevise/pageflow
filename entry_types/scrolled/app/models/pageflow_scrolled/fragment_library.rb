@@ -55,6 +55,16 @@ module PageflowScrolled
       end
     end
 
+    def extract_content_elements_from(entry:, content_elements:, title: nil)
+      ActiveRecord::Base.transaction do
+        @entry ||= create_entry(locale: entry.locale)
+
+        ContentElementsCopy
+          .new(source_entry: entry, destination_entry: self.entry)
+          .perform(content_elements, section: create_content_elements_fragment_section(title))
+      end
+    end
+
     private
 
     def fragment_chapter(perma_id)
@@ -77,10 +87,23 @@ module PageflowScrolled
     end
 
     def create_fragment_chapter(chapter, title)
+      create_chapter(fragment_configuration(chapter, title))
+    end
+
+    def create_content_elements_fragment_section(title)
+      chapter = create_chapter({
+        'title' => title.presence&.strip,
+        'fragment' => {'kind' => 'contentElements'}
+      }.compact)
+
+      chapter.sections.create!(position: 0, configuration: {})
+    end
+
+    def create_chapter(configuration)
       storyline = content.main_storyline
 
       storyline.chapters.create!(position: (storyline.chapters.maximum(:position) || -1) + 1,
-                                 configuration: fragment_configuration(chapter, title))
+                                 configuration:)
     end
 
     def fragment_configuration(chapter, title)
