@@ -1,16 +1,14 @@
 import I18n from 'i18n-js';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import React from 'react';
-import ReactDOM from 'react-dom';
 
 import {app, CollectionView, getLocalStorage} from 'pageflow/editor';
 import {cssModulesUtils} from 'pageflow/ui';
-import {StandaloneSectionThumbnail} from 'pageflow-scrolled/frontend';
 
 import {FragmentLibrariesCollection} from '../collections/FragmentLibrariesCollection';
 
 import {FragmentPreviewView} from './FragmentPreviewView';
+import {FragmentThumbnailView} from './FragmentThumbnailView';
 import {dialogView} from './mixins/dialogView';
 import dialogViewStyles from './mixins/dialogView.module.css';
 import styles from './FragmentLibraryDialogView.module.css';
@@ -169,21 +167,10 @@ const CardView = Marionette.ItemView.extend({
     this.updateSelected();
 
     this.ui.cardTitle.text(this.model.get('title') || t('unnamed'));
-    this.renderThumbnail();
-  },
-
-  onClose() {
-    ReactDOM.unmountComponentAtNode(this.ui.thumbnail[0]);
-  },
-
-  renderThumbnail() {
-    ReactDOM.render(
-      React.createElement(StandaloneSectionThumbnail, {
-        sectionPermaId: this.model.firstSectionPermaId(),
-        seed: this.model.seed(this.options.entry.scrolledSeed)
-      }),
-      this.ui.thumbnail[0]
-    );
+    this.appendSubview(new FragmentThumbnailView({
+      model: this.model,
+      entry: this.options.entry
+    }), {to: this.ui.thumbnail});
   },
 
   updateSelected() {
