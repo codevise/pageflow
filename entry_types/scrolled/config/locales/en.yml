@@ -1481,6 +1481,7 @@ en:
         cutoff: Paywall cutoff
         drag_hint: Drag to move section
         hidden: Only visible in editor
+        mark: Mark section
         save_error: There was an error while saving this section.
         transitions:
           beforeAfter: Static Backgrounds

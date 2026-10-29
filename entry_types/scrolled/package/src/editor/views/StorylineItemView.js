@@ -61,7 +61,8 @@ export const StorylineItemView = Marionette.Layout.extend({
       collection: this.model.chapters,
       itemViewConstructor: ChapterItemView,
       itemViewOptions: {
-        entry: this.options.entry
+        entry: this.options.entry,
+        sectionSelection: this.options.sectionSelection
       },
       blankSlateViewConstructor: this.model.isMain() ? null : ExcursionBlankSlateView
     });

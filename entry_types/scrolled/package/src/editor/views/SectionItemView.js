@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import {modelLifecycleTrackingView, DropDownButtonView} from 'pageflow/editor';
+import {modelLifecycleTrackingView, DropDownButtonView, MarkButtonView} from 'pageflow/editor';
 import {cssModulesUtils} from 'pageflow/ui';
 
 import {SectionThumbnailView} from './SectionThumbnailView'
@@ -36,6 +36,7 @@ export const SectionItemView = Marionette.ItemView.extend({
                  title="${I18n.t('pageflow_scrolled.editor.section_item.drag_hint')}"></div>
           </div>
         </div>
+        <div class="${styles.markButton}"></div>
         <span class="${styles.creatingIndicator}" />
         <span class="${styles.failedIndicator}"
               title="${I18n.t('pageflow_scrolled.editor.section_item.save_error')}" />
@@ -50,10 +51,14 @@ export const SectionItemView = Marionette.ItemView.extend({
 
   ui: cssModulesUtils.ui(styles,
                          'thumbnail', 'dropDownButton', 'editTransition',
-                         'transition', 'cutoffIndicator'),
+                         'transition', 'cutoffIndicator', 'markButton'),
 
   events: cssModulesUtils.events(styles, {
-    'click clickMask': function() {
+    'click clickMask': function(event) {
+      if (this.options.sectionSelection && (event.ctrlKey || event.metaKey)) {
+        this.options.sectionSelection.toggle(this.model);
+      }
+
       this.options.entry.trigger('selectSection', this.model);
       this.options.entry.trigger('scrollToSection', this.model);
     },
@@ -93,12 +98,19 @@ export const SectionItemView = Marionette.ItemView.extend({
     this.listenTo(this.model.configuration, 'change:hidden', () => {
       this.updateHidden();
     });
+
+    if (this.options.sectionSelection) {
+      this.listenTo(this.options.sectionSelection,
+                    'add remove reset change:selecting',
+                    this.updateMarked);
+    }
   },
 
   onRender() {
     this.updateTransition();
     this.updateCutoffIndicator();
     this.updateHidden();
+    this.updateMarked();
 
     if (this.updateActive()) {
       setTimeout(() => this.$el[0].scrollIntoView({block: 'nearest'}), 10)
@@ -123,6 +135,24 @@ export const SectionItemView = Marionette.ItemView.extend({
       borderless: true,
       openOnClick: true
     }), {to: this.ui.dropDownButton});
+
+    if (this.options.sectionSelection) {
+      this.appendMarkButton();
+    }
+  },
+
+  appendMarkButton() {
+    const markButton = new MarkButtonView({
+      model: this.model,
+      selection: this.options.sectionSelection,
+      label: I18n.t('pageflow_scrolled.editor.section_item.mark')
+    });
+
+    this.appendSubview(markButton, {to: this.ui.markButton});
+    this.listenTo(markButton, 'toggle', () => {
+      this.options.entry.trigger('selectSection', this.model);
+      this.options.entry.trigger('scrollToSection', this.model);
+    });
   },
 
   updateTransition() {
@@ -148,6 +178,11 @@ export const SectionItemView = Marionette.ItemView.extend({
     this.$el.attr('aria-current', active ? 'true' : null);
 
     return active;
+  },
+
+  updateMarked() {
+    this.$el.toggleClass(styles.marking, !!this.options.sectionSelection?.isActive());
+    this.$el.toggleClass(styles.marked, !!this.options.sectionSelection?.includes(this.model));
   },
 
   updateHidden() {

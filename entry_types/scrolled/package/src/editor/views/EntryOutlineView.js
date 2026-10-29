@@ -2,7 +2,8 @@ import Marionette from 'backbone.marionette';
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import {cssModulesUtils} from 'pageflow/ui';
-import {DropDownButtonView} from 'pageflow/editor';
+import {DropDownButtonView, ListSelection} from 'pageflow/editor';
+import {features} from 'pageflow/frontend';
 
 import {StorylinesTabsView} from './StorylinesTabsView';
 import {StorylineItemView} from './StorylineItemView';
@@ -22,6 +23,12 @@ export const EntryOutlineView = Marionette.Layout.extend({
   `,
 
   ui: cssModulesUtils.ui(styles, 'tabs', 'toolbar', 'dropDownButton'),
+
+  initialize() {
+    if (features.isEnabled('fragments')) {
+      this.sectionSelection = new ListSelection();
+    }
+  },
 
   onRender() {
     this.ui.toolbar.prepend(this.subview(new TrashButtonView({
@@ -52,7 +59,8 @@ export const EntryOutlineView = Marionette.Layout.extend({
       itemViewContstuctor: StorylineItemView,
       itemViewOptions: {
         entry: this.options.entry,
-        viewModel
+        viewModel,
+        sectionSelection: this.sectionSelection
       }
     });
 

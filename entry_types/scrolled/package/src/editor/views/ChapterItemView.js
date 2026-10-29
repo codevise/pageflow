@@ -70,18 +70,35 @@ export const ChapterItemView = Marionette.Layout.extend({
   },
 
   onRender() {
-    this.subview(new SortableCollectionView({
+    this.sectionsView = this.subview(new SortableCollectionView({
       el: this.ui.sections,
       collection: this.model.sections,
       itemViewConstructor: SectionItemView,
       itemViewOptions: {
-        entry: this.options.entry
+        entry: this.options.entry,
+        sectionSelection: this.options.sectionSelection
       },
       connectWith: cssModulesUtils.selector(styles, 'sections'),
       forceDraggableFallback: browser.agent.matchesDesktopSafari()
     }));
 
+    if (this.options.sectionSelection) {
+      this.listenTo(this.options.sectionSelection,
+                    'add remove reset change:selecting',
+                    this.updateSorting);
+      this.updateSorting();
+    }
+
     this.update();
+  },
+
+  updateSorting() {
+    if (this.options.sectionSelection.isActive()) {
+      this.sectionsView.disableSorting();
+    }
+    else {
+      this.sectionsView.enableSorting();
+    }
   },
 
   update() {

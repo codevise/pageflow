@@ -1,7 +1,9 @@
 import {SectionItemView} from 'editor/views/SectionItemView';
+import {ListSelection} from 'pageflow/editor';
 
 import {useEditorGlobals, useFakeXhr} from 'support';
 import {useFakeTranslations, renderBackboneView as render} from 'pageflow/testHelpers';
+import {fireEvent} from '@testing-library/dom';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('SectionItemView', () => {
@@ -13,6 +15,8 @@ describe('SectionItemView', () => {
     'pageflow_scrolled.editor.section_menu_items.set_cutoff': 'Set cutoff point',
     'pageflow_scrolled.editor.section_menu_items.reset_cutoff': 'Remove cutoff point',
     'pageflow_scrolled.editor.section_item.cutoff': 'Cutoff point',
+    'pageflow_scrolled.editor.section_item.drag_hint': 'Drag to move',
+    'pageflow_scrolled.editor.section_item.mark': 'Mark section',
   });
 
   const {createEntry} = useEditorGlobals();
@@ -225,6 +229,88 @@ describe('SectionItemView', () => {
       entry.set('currentSectionIndex', 0);
 
       expect(view.el).not.toHaveAttribute('aria-current', 'true');
+    });
+  });
+
+  describe('marking', () => {
+    function renderSectionItem({sectionSelection} = {}) {
+      const entry = createEntry({sections: [{id: 1, permaId: 100}]});
+      const section = entry.sections.get(1);
+      const view = new SectionItemView({entry, model: section, sectionSelection});
+
+      return {entry, section, ...render(view)};
+    }
+
+    it('does not render mark button without section selection', () => {
+      const {queryByRole} = renderSectionItem();
+
+      expect(queryByRole('button', {name: 'Mark section'})).toBeNull();
+    });
+
+    it('renders unpressed mark button', () => {
+      const {getByRole} = renderSectionItem({sectionSelection: new ListSelection()});
+
+      expect(getByRole('button', {name: 'Mark section'}))
+        .toHaveAttribute('aria-pressed', 'false');
+    });
+
+    it('marks section when mark button is clicked', () => {
+      const sectionSelection = new ListSelection();
+      const {section, getByRole} = renderSectionItem({sectionSelection});
+
+      fireEvent.click(getByRole('button', {name: 'Mark section'}));
+
+      expect(sectionSelection.includes(section)).toBe(true);
+      expect(getByRole('button', {name: 'Mark section'}))
+        .toHaveAttribute('aria-pressed', 'true');
+    });
+
+    it('unmarks marked section when mark button is clicked', () => {
+      const sectionSelection = new ListSelection();
+      const {section, getByRole} = renderSectionItem({sectionSelection});
+      sectionSelection.add(section);
+
+      fireEvent.click(getByRole('button', {name: 'Mark section'}));
+
+      expect(sectionSelection.includes(section)).toBe(false);
+    });
+
+    it('marks section on modifier click', () => {
+      const sectionSelection = new ListSelection();
+      const {section, getByTitle} = renderSectionItem({sectionSelection});
+
+      fireEvent.click(getByTitle('Drag to move'), {ctrlKey: true});
+
+      expect(sectionSelection.includes(section)).toBe(true);
+    });
+
+    it('marks section on click with meta key', () => {
+      const sectionSelection = new ListSelection();
+      const {section, getByTitle} = renderSectionItem({sectionSelection});
+
+      fireEvent.click(getByTitle('Drag to move'), {metaKey: true});
+
+      expect(sectionSelection.includes(section)).toBe(true);
+    });
+
+    it('does not mark section on plain click', () => {
+      const sectionSelection = new ListSelection();
+      const {section, getByTitle} = renderSectionItem({sectionSelection});
+
+      fireEvent.click(getByTitle('Drag to move'));
+
+      expect(sectionSelection.includes(section)).toBe(false);
+    });
+
+    it('scrolls to section when mark button is clicked', () => {
+      const sectionSelection = new ListSelection();
+      const {entry, section, getByRole} = renderSectionItem({sectionSelection});
+      const listener = jest.fn();
+      entry.on('scrollToSection', listener);
+
+      fireEvent.click(getByRole('button', {name: 'Mark section'}));
+
+      expect(listener).toHaveBeenCalledWith(section);
     });
   });
 });

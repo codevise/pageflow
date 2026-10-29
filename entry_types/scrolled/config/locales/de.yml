@@ -1499,6 +1499,7 @@ de:
         cutoff: Paywall Grenze
         drag_hint: Ziehen, um den Abschnitt zu verschieben
         hidden: Nur im Editor sichtbar
+        mark: Abschnitt markieren
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
         transitions:
           beforeAfter: Statische Hintergründe

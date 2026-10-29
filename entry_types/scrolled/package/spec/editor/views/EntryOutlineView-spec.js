@@ -3,7 +3,9 @@ import {EntryOutlineView} from 'editor/views/EntryOutlineView';
 import {useEditorGlobals} from 'support';
 import userEvent from '@testing-library/user-event';
 import {screen, within} from '@testing-library/dom';
-import {useFakeTranslations, renderBackboneView as render} from 'pageflow/testHelpers';
+import {
+  useFakeFeatures, useFakeTranslations, renderBackboneView as render
+} from 'pageflow/testHelpers';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('EntryOutlineView', () => {
@@ -13,7 +15,8 @@ describe('EntryOutlineView', () => {
     'pageflow_scrolled.editor.storyline_item.excursion_blank_slate': 'Excursions provide additional content outside the main path. Create your first excursion.',
     'pageflow_scrolled.editor.entry_outline.trash': 'Deleted content',
     'pageflow_scrolled.editor.entry_outline.reorder_chapters': 'Reorder chapters',
-    'pageflow_scrolled.editor.entry_outline.finish_reorder_chapters': 'Finish reordering'
+    'pageflow_scrolled.editor.entry_outline.finish_reorder_chapters': 'Finish reordering',
+    'pageflow_scrolled.editor.section_item.mark': 'Mark section'
   });
 
   const {createEntry} = useEditorGlobals();
@@ -410,5 +413,34 @@ describe('EntryOutlineView', () => {
     await user.click(screen.getByRole('tab', {name: 'Excursions'}));
 
     expect(screen.getByRole('link', {name: 'Reorder chapters'})).toBeInTheDocument();
+  });
+
+  it('does not let sections be marked by default', () => {
+    const entry = createEntry({
+      chapters: [{id: 1, permaId: 100, position: 0}],
+      sections: [{id: 10, permaId: 1000, chapterId: 1}]
+    });
+
+    render(new EntryOutlineView({entry}));
+
+    expect(screen.queryByRole('button', {name: 'Mark section'})).toBeNull();
+  });
+
+  describe('with fragments feature', () => {
+    useFakeFeatures('editor', ['fragments']);
+
+    it('lets sections be marked', async () => {
+      const entry = createEntry({
+        chapters: [{id: 1, permaId: 100, position: 0}],
+        sections: [{id: 10, permaId: 1000, chapterId: 1}]
+      });
+      const user = userEvent.setup();
+
+      render(new EntryOutlineView({entry}));
+      await user.click(screen.getByRole('button', {name: 'Mark section'}));
+
+      expect(screen.getByRole('button', {name: 'Mark section'}))
+        .toHaveAttribute('aria-pressed', 'true');
+    });
   });
 });

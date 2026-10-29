@@ -1,4 +1,6 @@
 import {ChapterItemView} from 'editor/views/ChapterItemView';
+import {ListSelection} from 'pageflow/editor';
+import {SortableCollectionView} from 'pageflow/ui';
 import {FragmentLibraryDialogView} from 'editor/views/FragmentLibraryDialogView';
 
 import {useEditorGlobals, useFakeXhr} from 'support';
@@ -127,6 +129,39 @@ describe('ChapterItemView', () => {
     render(view);
 
     expect(screen.queryByRole('button', {name: 'Insert fragment'})).toBeNull();
+  });
+
+  describe('with section selection', () => {
+    function renderChapterItem() {
+      const entry = createEntry({chapters: [{id: 1}], sections: [{id: 10, chapterId: 1}]});
+      const sectionSelection = new ListSelection();
+      const view = new ChapterItemView({entry, model: entry.chapters.get(1), sectionSelection});
+
+      render(view);
+
+      return {entry, sectionSelection};
+    }
+
+    afterEach(() => jest.restoreAllMocks());
+
+    it('disables sorting of sections while selection is active', () => {
+      const disableSorting = jest.spyOn(SortableCollectionView.prototype, 'disableSorting');
+      const {sectionSelection} = renderChapterItem();
+
+      sectionSelection.start();
+
+      expect(disableSorting).toHaveBeenCalled();
+    });
+
+    it('enables sorting of sections again when selection ends', () => {
+      const {sectionSelection} = renderChapterItem();
+      sectionSelection.start();
+      const enableSorting = jest.spyOn(SortableCollectionView.prototype, 'enableSorting');
+
+      sectionSelection.stop();
+
+      expect(enableSorting).toHaveBeenCalled();
+    });
   });
 
   describe('with fragments feature', () => {
