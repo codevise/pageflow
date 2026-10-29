@@ -3,6 +3,7 @@ PageflowScrolled::Engine.routes.draw do
     resources :fragment_libraries, only: [:index]
     resources :content_element_fragment_extractions, only: [:create]
     resources :content_element_fragment_preparations, only: [:create]
+    resources :section_fragment_extractions, only: [:create]
     resources :linkable_entries, only: [:index, :show]
     resources :trash_items, only: [:index, :destroy] do
       member do

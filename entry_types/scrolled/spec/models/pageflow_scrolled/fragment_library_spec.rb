@@ -239,6 +239,55 @@ module PageflowScrolled
       end
     end
 
+    describe '#extract_sections_from' do
+      it 'creates library entry on first extraction' do
+        account = create(:account)
+        entry = create(:entry, type_name: 'scrolled', account:)
+        section = create(:section, revision: entry.draft)
+        library = FragmentLibrary.shared_for_account(account)
+
+        library.extract_sections_from(entry: Pageflow::DraftEntry.new(entry), sections: [section])
+
+        expect(library).to be_persisted
+        expect(library.entry.to_model).to have_attributes(account:,
+                                                          fragment_library: 'shared')
+      end
+
+      it 'copies sections into chapter with title' do
+        account = create(:account)
+        entry = create(:entry, type_name: 'scrolled', account:)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        first_section = create(:section, chapter:, position: 0,
+                                         configuration: {'layout' => 'left'})
+        second_section = create(:section, chapter:, position: 1,
+                                          configuration: {'layout' => 'right'})
+        create(:content_element, :heading, section: second_section)
+        library = FragmentLibrary.shared_for_account(account)
+
+        library.extract_sections_from(entry: Pageflow::DraftEntry.new(entry),
+                                      sections: [first_section, second_section],
+                                      title: ' Intro ')
+
+        expect(library.content.chapters.map(&:configuration)).to eq([{'title' => 'Intro'}])
+        expect(library.content.sections.map(&:configuration))
+          .to match([include('layout' => 'left'), include('layout' => 'right')])
+        expect(library.content.content_elements.map(&:type_name)).to eq(%w[heading])
+      end
+
+      it 'omits title if blank title is given' do
+        account = create(:account)
+        entry = create(:entry, type_name: 'scrolled', account:)
+        section = create(:section, revision: entry.draft)
+        library = FragmentLibrary.shared_for_account(account)
+
+        library.extract_sections_from(entry: Pageflow::DraftEntry.new(entry),
+                                      sections: [section],
+                                      title: ' ')
+
+        expect(library.content.chapters.first.configuration).to eq({})
+      end
+    end
+
     describe '#extract_content_elements_from' do
       it 'creates library entry on first extraction' do
         account = create(:account)

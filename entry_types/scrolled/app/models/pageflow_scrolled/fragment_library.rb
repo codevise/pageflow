@@ -67,6 +67,16 @@ module PageflowScrolled
       end
     end
 
+    def extract_sections_from(entry:, sections:, title: nil)
+      ActiveRecord::Base.transaction do
+        @entry ||= create_entry(locale: entry.locale)
+
+        SectionsCopy
+          .new(source_entry: entry, destination_entry: self.entry)
+          .perform(sections, chapter: create_chapter({'title' => title.presence&.strip}.compact))
+      end
+    end
+
     def extract_content_elements_from(entry:, content_elements:, title: nil)
       ActiveRecord::Base.transaction do
         @entry ||= create_entry(locale: entry.locale)
