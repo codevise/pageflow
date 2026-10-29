@@ -1467,6 +1467,12 @@ de:
         name: Name des Fragments
         shared_hint: Fragmente werden mit allen Beiträgen des Kontos und allen Mitgliedern mit Bearbeitungsrechten geteilt.
         submit: Hinzufügen
+      extract_sections_fragment_menu_item:
+        extracted: Zu geteilten Fragmenten hinzugefügt
+        extracting: Wird zu geteilten Fragmenten hinzugefügt...
+        failed: Die Abschnitte konnten nicht zu den geteilten Fragmenten hinzugefügt werden.
+        forbidden: Sie dürfen den geteilten Fragmenten dieses Kontos keine Abschnitte hinzufügen.
+        label: Zu geteilten Fragmenten hinzufügen...
       fragment_library:
         blank_slate: Noch keine Fragmente vorhanden.
         cancel: Abbrechen

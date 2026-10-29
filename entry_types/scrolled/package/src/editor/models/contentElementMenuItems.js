@@ -1,8 +1,8 @@
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
-import {app, DestroyMenuItem} from 'pageflow/editor';
+import {DestroyMenuItem} from 'pageflow/editor';
 
-import {ExtractFragmentDialogView} from '../views/ExtractFragmentDialogView';
+import {ExtractFragmentMenuItem} from './ExtractFragmentMenuItem';
 import {SelectMoveDestinationDialogView} from '../views/SelectMoveDestinationDialogView';
 
 export const DuplicateContentElementMenuItem = Backbone.Model.extend({
@@ -86,43 +86,17 @@ export const DestroyContentElementsMenuItem = DestroyMenuItem.extend({
   }
 });
 
-export const ExtractContentElementsFragmentMenuItem = Backbone.Model.extend({
+export const ExtractContentElementsFragmentMenuItem = ExtractFragmentMenuItem.extend({
+  translationKeyPrefix: 'pageflow_scrolled.editor.extract_content_elements_fragment_menu_item',
+
   initialize(attributes, {entry, items}) {
     this.entry = entry;
     this.items = items;
-    this.update('label', {disabled: false});
+    ExtractFragmentMenuItem.prototype.initialize.call(this);
   },
 
-  selected() {
-    ExtractFragmentDialogView.show({
-      onSubmit: title => this.extract(title)
-    });
-  },
-
-  extract(title) {
-    this.update('extracting', {disabled: true});
-
-    return this.entry.extractContentElementsToFragmentLibrary(this.items, {title}).then(
-      () => this.update('extracted', {disabled: true}),
-      ({status}) => {
-        this.update('label', {disabled: false});
-        app.trigger('error', {
-          message: I18n.t(
-            'pageflow_scrolled.editor.extract_content_elements_fragment_menu_item.' +
-            (status === 403 ? 'forbidden' : 'failed')
-          )
-        });
-      }
-    );
-  },
-
-  update(labelKey, {disabled}) {
-    this.set({
-      label: I18n.t(
-        `pageflow_scrolled.editor.extract_content_elements_fragment_menu_item.${labelKey}`
-      ),
-      disabled
-    });
+  extractToFragmentLibrary(options) {
+    return this.entry.extractContentElementsToFragmentLibrary(this.items, options);
   }
 });
 

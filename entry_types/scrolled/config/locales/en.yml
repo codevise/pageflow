@@ -1449,6 +1449,12 @@ en:
         name: Name of the fragment
         shared_hint: Fragments are shared across all entries of the account and all its members with editor access.
         submit: Add
+      extract_sections_fragment_menu_item:
+        extracted: Added to shared fragments
+        extracting: Adding to shared fragments...
+        failed: The sections could not be added to the shared fragments.
+        forbidden: You are not allowed to add sections to the shared fragments of this account.
+        label: Add to shared fragments...
       fragment_library:
         blank_slate: No fragments yet.
         cancel: Cancel

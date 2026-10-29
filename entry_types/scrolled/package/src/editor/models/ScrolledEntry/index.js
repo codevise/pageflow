@@ -238,6 +238,17 @@ export const ScrolledEntry = Entry.extend({
     })).then(() => undefined);
   },
 
+  extractSectionsToFragmentLibrary(sections, {title} = {}) {
+    return Promise.resolve($.ajax({
+      url: `${this.url()}/scrolled/section_fragment_extractions`,
+      type: 'POST',
+      data: {
+        section_ids: sections.map(section => section.id),
+        title
+      }
+    })).then(() => undefined);
+  },
+
   fileReferences() {
     return this.fileReferencesIndex;
   },

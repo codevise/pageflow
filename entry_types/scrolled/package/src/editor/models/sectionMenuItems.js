@@ -1,7 +1,9 @@
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import {DestroyMenuItem} from 'pageflow/editor';
+import {features} from 'pageflow/frontend';
 
+import {ExtractFragmentMenuItem} from './ExtractFragmentMenuItem';
 import {SelectMoveDestinationDialogView} from '../views/SelectMoveDestinationDialogView';
 
 export const HideShowSectionMenuItem = Backbone.Model.extend({
@@ -132,6 +134,20 @@ export const MoveSectionMenuItem = Backbone.Model.extend({
   }
 });
 
+export const ExtractSectionsFragmentMenuItem = ExtractFragmentMenuItem.extend({
+  translationKeyPrefix: 'pageflow_scrolled.editor.extract_sections_fragment_menu_item',
+
+  initialize(attributes, {entry, sections}) {
+    this.entry = entry;
+    this.sections = sections;
+    ExtractFragmentMenuItem.prototype.initialize.call(this);
+  },
+
+  extractToFragmentLibrary(options) {
+    return this.entry.extractSectionsToFragmentLibrary(this.sections, options);
+  }
+});
+
 export const DestroySectionMenuItem = DestroyMenuItem.extend({
   translationKeyPrefix: 'pageflow_scrolled.editor.destroy_section_menu_item',
 
@@ -145,6 +161,8 @@ export const DestroySectionMenuItem = DestroyMenuItem.extend({
 });
 
 export function createSectionMenuItems({entry, section}) {
+  const fragments = features.isEnabled('fragments');
+
   return [
     new DuplicateSectionMenuItem({}, {section}),
     new MoveSectionMenuItem({}, {entry, section}),
@@ -153,7 +171,10 @@ export function createSectionMenuItems({entry, section}) {
     ...(entry.cutoff.isEnabled() ?
         [new CutoffSectionMenuItem({}, {cutoff: entry.cutoff, section})] :
         []),
-    new CopyPermalinkMenuItem({separated: true}, {entry, section}),
+    ...(fragments ?
+        [new ExtractSectionsFragmentMenuItem({separated: true}, {entry, sections: [section]})] :
+        []),
+    new CopyPermalinkMenuItem({separated: !fragments}, {entry, section}),
     new HideShowSectionMenuItem({separated: true}, {section}),
     new DestroySectionMenuItem({}, {section})
   ];

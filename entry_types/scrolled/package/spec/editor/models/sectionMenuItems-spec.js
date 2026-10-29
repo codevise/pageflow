@@ -6,11 +6,15 @@ import {
   CutoffSectionMenuItem,
   CopyPermalinkMenuItem,
   DestroySectionMenuItem,
-  MoveSectionMenuItem
+  MoveSectionMenuItem,
+  ExtractSectionsFragmentMenuItem,
+  createSectionMenuItems
 } from 'editor/models/sectionMenuItems';
 import {SelectMoveDestinationDialogView} from 'editor/views/SelectMoveDestinationDialogView';
+import {ExtractFragmentDialogView} from 'editor/views/ExtractFragmentDialogView';
 
-import {useFakeTranslations} from 'pageflow/testHelpers';
+import {app} from 'pageflow/editor';
+import {useFakeFeatures, useFakeTranslations} from 'pageflow/testHelpers';
 import {useEditorGlobals} from 'support';
 
 jest.mock('editor/views/SelectMoveDestinationDialogView', () => ({
@@ -31,7 +35,17 @@ describe('SectionMenuItems', () => {
     'pageflow_scrolled.editor.section_menu_items.copy_permalink': 'Copy permalink',
     'pageflow_scrolled.editor.section_menu_items.move': 'Move...',
     'pageflow_scrolled.editor.destroy_section_menu_item.destroy': 'Delete section',
-    'pageflow_scrolled.editor.destroy_section_menu_item.confirm_destroy': 'Really delete this section?'
+    'pageflow_scrolled.editor.destroy_section_menu_item.confirm_destroy': 'Really delete this section?',
+    'pageflow_scrolled.editor.extract_sections_fragment_menu_item.label':
+      'Add to shared fragments',
+    'pageflow_scrolled.editor.extract_sections_fragment_menu_item.extracting':
+      'Adding to shared fragments...',
+    'pageflow_scrolled.editor.extract_sections_fragment_menu_item.extracted':
+      'Added to shared fragments',
+    'pageflow_scrolled.editor.extract_sections_fragment_menu_item.failed':
+      'Could not add sections.',
+    'pageflow_scrolled.editor.extract_sections_fragment_menu_item.forbidden':
+      'Not allowed.'
   });
 
   const {createEntry} = useEditorGlobals();
@@ -356,6 +370,135 @@ describe('SectionMenuItems', () => {
       onSelect({chapter: targetChapter, position: 'into'});
 
       expect(targetChapter.moveSection).toHaveBeenCalledWith(section);
+    });
+  });
+
+  describe('ExtractSectionsFragmentMenuItem', () => {
+    beforeEach(() => {
+      jest.spyOn(ExtractFragmentDialogView, 'show').mockImplementation(() => {});
+    });
+
+    afterEach(() => jest.restoreAllMocks());
+
+    function createMenuItem(extraction) {
+      const entry = createEntry({sections: [{id: 1}, {id: 2}]});
+      entry.extractSectionsToFragmentLibrary = jest.fn().mockReturnValue(extraction);
+      const sections = [entry.sections.get(1), entry.sections.get(2)];
+
+      return {entry, sections, menuItem: new ExtractSectionsFragmentMenuItem({}, {entry, sections})};
+    }
+
+    function pendingExtraction() {
+      return new Promise(() => {});
+    }
+
+    function submitName(name) {
+      return ExtractFragmentDialogView.show.mock.calls[0][0].onSubmit(name);
+    }
+
+    it('has Add to shared fragments label', () => {
+      const {menuItem} = createMenuItem(pendingExtraction());
+
+      expect(menuItem.get('label')).toBe('Add to shared fragments');
+    });
+
+    it('extracts sections with submitted name', () => {
+      const {entry, sections, menuItem} = createMenuItem(pendingExtraction());
+
+      menuItem.selected();
+      submitName('Intro');
+
+      expect(entry.extractSectionsToFragmentLibrary)
+        .toHaveBeenCalledWith(sections, {title: 'Intro'});
+    });
+
+    it('is disabled while extraction is pending', () => {
+      const {menuItem} = createMenuItem(pendingExtraction());
+
+      menuItem.selected();
+      submitName('Intro');
+
+      expect(menuItem.get('label')).toBe('Adding to shared fragments...');
+      expect(menuItem.get('disabled')).toBe(true);
+    });
+
+    it('stays disabled once sections have been added', async () => {
+      const {menuItem} = createMenuItem(Promise.resolve());
+
+      menuItem.selected();
+      await submitName('Intro');
+
+      expect(menuItem.get('label')).toBe('Added to shared fragments');
+      expect(menuItem.get('disabled')).toBe(true);
+    });
+
+    it('is enabled again and reports error when extraction fails', async () => {
+      const {menuItem} = createMenuItem(Promise.reject({status: 500}));
+      const errors = [];
+      app.on('error', error => errors.push(error.message));
+
+      menuItem.selected();
+      await submitName('Intro');
+
+      expect(menuItem.get('label')).toBe('Add to shared fragments');
+      expect(menuItem.get('disabled')).toBe(false);
+      expect(errors).toEqual(['Could not add sections.']);
+      app.off('error');
+    });
+
+    it('reports missing permission', async () => {
+      const {menuItem} = createMenuItem(Promise.reject({status: 403}));
+      const errors = [];
+      app.on('error', error => errors.push(error.message));
+
+      menuItem.selected();
+      await submitName('Intro');
+
+      expect(errors).toEqual(['Not allowed.']);
+      app.off('error');
+    });
+  });
+
+  describe('createSectionMenuItems', () => {
+    it('does not offer adding section to shared fragments by default', () => {
+      const entry = createEntry({sections: [{id: 1}]});
+
+      const items = createSectionMenuItems({entry, section: entry.sections.get(1)});
+
+      expect(items.map(item => item.get('label'))).not.toContain('Add to shared fragments');
+    });
+
+    it('separates copy permalink item by default', () => {
+      const entry = createEntry({sections: [{id: 1}]});
+
+      const items = createSectionMenuItems({entry, section: entry.sections.get(1)});
+
+      expect(items.find(item => item.get('label') === 'Copy permalink').get('separated'))
+        .toBe(true);
+    });
+
+    describe('with fragments feature', () => {
+      useFakeFeatures('editor', ['fragments']);
+
+      it('offers adding section to shared fragments', () => {
+        const entry = createEntry({sections: [{id: 1}]});
+
+        const items = createSectionMenuItems({entry, section: entry.sections.get(1)});
+        const item = items.find(item => item.get('label') === 'Add to shared fragments');
+
+        expect(item.sections).toEqual([entry.sections.get(1)]);
+      });
+
+      it('separates adding to shared fragments instead of copy permalink item', () => {
+        const entry = createEntry({sections: [{id: 1}]});
+
+        const items = createSectionMenuItems({entry, section: entry.sections.get(1)});
+
+        expect(items.find(item => item.get('label') === 'Add to shared fragments')
+          .get('separated')).toBe(true);
+        expect(items.find(item => item.get('label') === 'Copy permalink').get('separated'))
+          .toBeFalsy();
+      });
     });
   });
 });
