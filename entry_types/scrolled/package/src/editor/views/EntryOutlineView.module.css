@@ -23,3 +23,69 @@
     --ui-on-button-color: var(--ui-primary-color);
   }
 }
+
+.selectionBar {
+  position: sticky;
+  /* Padding of .scrolling in pageflow/editor/base.scss */
+  top: -10px;
+  z-index: 2;
+  display: flow-root;
+  background-color: var(--ui-surface-color);
+}
+
+.selectionBarBox {
+  composes: banner from './banner.module.css';
+  margin: space(3) 0 space(2);
+}
+
+.selectionBar[hidden] {
+  display: none;
+}
+
+.selectionBar:not([hidden]) + :global(.tabs_view-container) {
+  /* Cancels margin-top of .chapters in StorylineItemView.module.css */
+  margin-top: space(-3);
+}
+
+.selectionBarStatus {
+  display: flex;
+  align-items: center;
+  gap: space(2);
+}
+
+.selectionBarText {
+  flex: 1;
+}
+
+.selectionBarActions {
+  display: flex;
+  align-self: flex-end;
+  gap: space(1);
+}
+
+.selectionBarDismiss {
+  composes: cancel from './icons.module.css';
+  flex: none;
+  width: space(6);
+  padding: space(1) 0;
+  border: none;
+  border-radius: rounded();
+  background-color: transparent;
+  color: var(--ui-primary-color-light);
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.selectionBarDismiss::before {
+  font-size: 16px;
+  vertical-align: top;
+}
+
+.selectionBarDismiss:hover {
+  background-color: var(--ui-on-surface-color-lightest);
+  color: var(--ui-primary-color);
+}
+
+.selectionBarAction {
+  composes: secondaryButton compactButton from './buttons.module.css';
+}

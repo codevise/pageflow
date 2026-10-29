@@ -1445,9 +1445,14 @@ de:
         remove: Entfernen
       entry_outline:
         add_chapter: Neues Kapitel
+        end_selection: Auswahl beenden
         header: Gliederung
         finish_reorder_chapters: Umsortieren beenden
         reorder_chapters: "Kapitel umsortieren..."
+        select_sections: "Abschnitte auswählen..."
+        selected_sections:
+          one: 1 Abschnitt ausgewählt
+          other: "%{count} Abschnitte ausgewählt"
         trash: Gelöschte Inhalte
       entry_select:
         no_matches: Keine passenden Beiträge
