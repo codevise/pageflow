@@ -5,7 +5,8 @@ import {
   DestroyContentElementMenuItem,
   DuplicateContentElementMenuItem,
   ExtractContentElementsFragmentMenuItem,
-  MoveContentElementMenuItem
+  MoveContentElementMenuItem,
+  SelectMultipleContentElementsMenuItem
 } from '../models/contentElementMenuItems';
 
 export const EditContentElementView = EditConfigurationView.extend({
@@ -36,6 +37,10 @@ export const EditContentElementView = EditConfigurationView.extend({
         contentElement: this.model,
         entry: this.options.entry,
         editor: this.options.editor
+      }),
+      new SelectMultipleContentElementsMenuItem({separated: true}, {
+        contentElement: this.model,
+        entry: this.options.entry
       }),
       ...(features.isEnabled('fragments') ?
           [new ExtractContentElementsFragmentMenuItem({}, {

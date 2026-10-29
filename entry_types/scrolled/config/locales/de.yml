@@ -1567,6 +1567,8 @@ de:
         header_insertPosition: Abschnitt verschieben
         header_sectionPart: Element verschieben
         hint: Wähle die Position aus, an die verschoben werden soll.
+      select_multiple_content_elements_menu_item:
+        label: "Mehrere auswählen..."
       selectable_storyline_item:
         blank_slate: Keine Kapitel
         blank_slate_excursions: Keine Exkurse
@@ -1817,6 +1819,8 @@ de:
         tabs:
           activity: Letzte Aktivität
       multi_selection_view:
+        end_selection_mode: Fertig
+        selection_mode_hint: Elemente in der Vorschau anklicken, um sie zur Auswahl hinzuzufügen oder daraus zu entfernen.
         tab:
           one: 1 Element
           other: "%{count} Elemente"

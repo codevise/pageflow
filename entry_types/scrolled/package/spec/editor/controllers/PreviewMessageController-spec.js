@@ -625,6 +625,85 @@ describe('PreviewMessageController', () => {
     );
   });
 
+  it('sends SELECT message for selection mode on startContentElementSelection event', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    const iframeWindow = createSendingIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT') {
+          resolve(event.data);
+        }
+      });
+      entry.trigger('startContentElementSelection', entry.contentElements.first());
+    })).resolves.toMatchObject({
+      type: 'SELECT',
+      payload: {
+        type: 'multiSelection',
+        itemType: 'contentElement',
+        items: [{id: 1}],
+        selectionMode: true
+      }
+    });
+  });
+
+  it('sends END_SELECTION_MODE message on endSelectionMode event', async () => {
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({})
+    });
+    const iframeWindow = createSendingIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow});
+
+    await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+    return expect(new Promise(resolve => {
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'END_SELECTION_MODE') {
+          resolve(event.data);
+        }
+      });
+      entry.trigger('endSelectionMode');
+    })).resolves.toMatchObject({type: 'END_SELECTION_MODE'});
+  });
+
+  it('passes selection mode to multi selection route', () => {
+    const editor = factories.editorApi();
+    const entry = factories.entry(ScrolledEntry, {}, {
+      entryTypeSeed: normalizeSeed({
+        contentElements: [{id: 1}]
+      })
+    });
+    const iframeWindow = createSendingIframeWindow();
+    controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+    return expect(new Promise(resolve => {
+      editor.on('navigate', resolve);
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {
+          type: 'multiSelection',
+          itemType: 'contentElement',
+          items: [{id: 1}],
+          selectionMode: true
+        }
+      }, '*');
+    })).resolves.toBe(
+      '/scrolled/multi_selection?payload=' +
+      encodeURIComponent(JSON.stringify({
+        itemType: 'contentElement',
+        items: [{id: 1}],
+        selectionMode: true
+      }))
+    );
+  });
+
   it('navigates to edit section route on SELECTED message for section settings', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {

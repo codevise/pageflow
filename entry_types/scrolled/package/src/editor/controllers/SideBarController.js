@@ -82,12 +82,13 @@ export const SideBarController = Marionette.Controller.extend({
   },
 
   multiSelection: function(payload) {
-    const {itemType, items} = JSON.parse(decodeURIComponent(payload));
+    const {itemType, items, selectionMode} = JSON.parse(decodeURIComponent(payload));
 
     this.region.show(new MultiSelectionView({
       entry: this.entry,
       itemType,
-      items
+      items,
+      selectionMode
     }));
   },
 

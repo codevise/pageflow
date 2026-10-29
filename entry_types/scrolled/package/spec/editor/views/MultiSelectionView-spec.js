@@ -27,14 +27,18 @@ describe('MultiSelectionView', () => {
     'pageflow_scrolled.editor.extract_content_elements_fragment_menu_item.label':
       'Add to shared fragments',
     'pageflow.editor.templates.back_button_decorator.outline': 'Outline',
-    'pageflow.editor.views.edit_configuration.actions': 'Actions'
+    'pageflow.editor.views.edit_configuration.actions': 'Actions',
+    'pageflow_scrolled.editor.multi_selection_view.selection_mode_hint':
+      'Click elements in the preview to add them.',
+    'pageflow_scrolled.editor.multi_selection_view.end_selection_mode': 'Done'
   });
 
-  function buildView(entry, items) {
+  function buildView(entry, items, options) {
     return new MultiSelectionView({
       entry,
       itemType: 'contentElement',
-      items
+      items,
+      ...options
     });
   }
 
@@ -174,5 +178,51 @@ describe('MultiSelectionView', () => {
       expect(entry.extractContentElementsToFragmentLibrary)
         .toHaveBeenCalledWith(items, {title: 'Quote'});
     });
+  });
+
+  it('does not render selection mode hint by default', () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, typeName: 'heading'}, {id: 2, typeName: 'heading'}]
+    });
+
+    const {queryByRole} = renderBackboneView(buildView(entry, [{id: 1}, {id: 2}]));
+
+    expect(queryByRole('button', {name: 'Done'})).toBeNull();
+  });
+
+  it('renders selection mode hint in selection mode', () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, typeName: 'heading'}]
+    });
+
+    const {getByText} = renderBackboneView(buildView(entry, [{id: 1}], {selectionMode: true}));
+
+    expect(getByText('Click elements in the preview to add them.')).toBeInTheDocument();
+  });
+
+  it('renders selection mode hint below tab bar', () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, typeName: 'heading'}]
+    });
+
+    const {getByRole, getByText} =
+      renderBackboneView(buildView(entry, [{id: 1}], {selectionMode: true}));
+
+    expect(getByRole('tablist').compareDocumentPosition(
+      getByText('Click elements in the preview to add them.')
+    ) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it('ends selection mode when done button is clicked', () => {
+    const entry = createEntry({
+      contentElements: [{id: 1, typeName: 'heading'}]
+    });
+    const listener = jest.fn();
+    entry.on('endSelectionMode', listener);
+
+    const {getByRole} = renderBackboneView(buildView(entry, [{id: 1}], {selectionMode: true}));
+    fireEvent.click(getByRole('button', {name: 'Done'}));
+
+    expect(listener).toHaveBeenCalled();
   });
 });

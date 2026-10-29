@@ -100,6 +100,20 @@ export const ExtractContentElementsFragmentMenuItem = ExtractFragmentMenuItem.ex
   }
 });
 
+export const SelectMultipleContentElementsMenuItem = Backbone.Model.extend({
+  initialize(attributes, {entry, contentElement}) {
+    this.entry = entry;
+    this.contentElement = contentElement;
+    this.set('label', I18n.t(
+      'pageflow_scrolled.editor.select_multiple_content_elements_menu_item.label'
+    ));
+  },
+
+  selected() {
+    this.entry.trigger('startContentElementSelection', this.contentElement);
+  }
+});
+
 export const MoveContentElementMenuItem = Backbone.Model.extend({
   initialize(attributes, options) {
     this.contentElement = options.contentElement;

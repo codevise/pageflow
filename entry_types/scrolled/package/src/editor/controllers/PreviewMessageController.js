@@ -177,6 +177,22 @@ export const PreviewMessageController = Object.extend({
             })
           );
 
+          this.listenTo(this.entry, 'startContentElementSelection', contentElement =>
+            postMessage({
+              type: 'SELECT',
+              payload: {
+                type: 'multiSelection',
+                itemType: 'contentElement',
+                items: [{id: contentElement.id}],
+                selectionMode: true
+              }
+            })
+          );
+
+          this.listenTo(this.entry, 'endSelectionMode', () =>
+            postMessage({type: 'END_SELECTION_MODE'})
+          );
+
           this.listenTo(this.entry.commentDisplayFilter,
                         'change:resolution change:alwaysShowComments',
                         filter =>
@@ -246,8 +262,8 @@ export const PreviewMessageController = Object.extend({
           }
         }
         else if (type === 'multiSelection') {
-          const {itemType, items} = message.data.payload;
-          const payload = encodeURIComponent(JSON.stringify({itemType, items}));
+          const {itemType, items, selectionMode} = message.data.payload;
+          const payload = encodeURIComponent(JSON.stringify({itemType, items, selectionMode}));
           this.editor.navigate(`/scrolled/multi_selection?payload=${payload}`, {trigger: true})
         }
         else if (type === 'sectionSettings') {

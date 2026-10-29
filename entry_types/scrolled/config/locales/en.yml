@@ -1549,6 +1549,8 @@ en:
         header_insertPosition: Move section
         header_sectionPart: Move element
         hint: Select the position to move to.
+      select_multiple_content_elements_menu_item:
+        label: "Select multiple..."
       selectable_storyline_item:
         blank_slate: No chapters
         blank_slate_excursions: No excursions
@@ -1797,6 +1799,8 @@ en:
         tabs:
           activity: Latest activity
       multi_selection_view:
+        end_selection_mode: Done
+        selection_mode_hint: Click elements in the preview to add them to or remove them from the selection.
         tab:
           one: 1 Element
           other: "%{count} Elements"

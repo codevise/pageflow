@@ -3,7 +3,8 @@ import {
   DestroyContentElementsMenuItem,
   DuplicateContentElementMenuItem,
   ExtractContentElementsFragmentMenuItem,
-  MoveContentElementMenuItem
+  MoveContentElementMenuItem,
+  SelectMultipleContentElementsMenuItem
 } from 'editor/models/contentElementMenuItems';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
 import {SelectMoveDestinationDialogView} from 'editor/views/SelectMoveDestinationDialogView';
@@ -612,6 +613,37 @@ describe('ContentElementMenuItems', () => {
 
       expect(errors).toEqual(['Not allowed.']);
       app.off('error');
+    });
+  });
+
+  describe('SelectMultipleContentElementsMenuItem', () => {
+    useFakeTranslations({
+      'pageflow_scrolled.editor.select_multiple_content_elements_menu_item.label':
+        'Select multiple'
+    });
+
+    it('has Select multiple label', () => {
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
+      });
+      const contentElement = entry.contentElements.get(1);
+
+      const menuItem = new SelectMultipleContentElementsMenuItem({}, {entry, contentElement});
+
+      expect(menuItem.get('label')).toBe('Select multiple');
+    });
+
+    it('starts content element selection when selected', () => {
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({contentElements: [{id: 1}]})
+      });
+      const contentElement = entry.contentElements.get(1);
+      const listener = jest.fn();
+      entry.on('startContentElementSelection', listener);
+
+      new SelectMultipleContentElementsMenuItem({}, {entry, contentElement}).selected();
+
+      expect(listener).toHaveBeenCalledWith(contentElement);
     });
   });
 });
