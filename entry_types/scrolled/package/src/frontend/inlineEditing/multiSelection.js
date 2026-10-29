@@ -5,6 +5,16 @@
 //       itemType: 'contentElement',
 //       items: [{id: 5}, {id: 6}]
 //     }
+//
+// In selection mode, started from the editor, plain clicks extend the
+// selection as well and it stays a multi selection down to one item:
+//
+//     {
+//       type: 'multiSelection',
+//       itemType: 'contentElement',
+//       items: [{id: 5}],
+//       selectionMode: true
+//     }
 
 export function hasSelectionModifier(event) {
   return event.ctrlKey || event.metaKey;
@@ -52,6 +62,18 @@ export function extendMultiSelection(selection, {type, id}) {
   return {type, id};
 }
 
+export function isInSelectionMode(selection) {
+  return !!selection && !!selection.selectionMode;
+}
+
+export function withoutSelectionMode({selectionMode, ...selection}) {
+  if (selection.items.length > 1) {
+    return selection;
+  }
+
+  return {type: selection.itemType, id: selection.items[0].id};
+}
+
 export function isInMultiSelection(selection, {type, id}) {
   return isMultiSelectionOf(selection, type) &&
          selection.items.some(item => item.id === id);
@@ -65,6 +87,10 @@ function isMultiSelectionOf(selection, type) {
 
 function withoutItem(selection, id) {
   const items = selection.items.filter(item => item.id !== id);
+
+  if (selection.selectionMode) {
+    return items.length ? {...selection, items} : selection;
+  }
 
   if (items.length > 1) {
     return {...selection, items};

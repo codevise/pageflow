@@ -9,7 +9,7 @@ import {useI18n} from '../i18n';
 import {api} from '../api';
 import {widths} from '../layouts';
 import {SelectionRect} from './SelectionRect';
-import {hasSelectionModifier} from './multiSelection';
+import {useSelectionMode} from './EditorState';
 import {DropTargets} from './DropTargets';
 import {MarginIndicator} from './MarginIndicator';
 import {
@@ -57,6 +57,7 @@ function DefaultSelectionRect(props) {
   const commentsSelected = type === 'contentElementComments' || type === 'newThread';
   const {resolution, alwaysShowComments} = useCommentDisplayFilter();
   const {t} = useI18n({locale: 'ui'});
+  const selectionMode = useSelectionMode();
 
   const selectionRectRef = useRef();
 
@@ -101,9 +102,9 @@ function DefaultSelectionRect(props) {
                    commentBadgeInset={!isSelected}
                    ariaLabel={t('pageflow_scrolled.inline_editing.select_content_element')}
                    insertButtonTitles={t('pageflow_scrolled.inline_editing.insert_content_element')}
-                   onMouseDown={event => hasSelectionModifier(event) &&
+                   onMouseDown={event => selectionMode.extendsSelection(event) &&
                                          event.preventDefault()}
-                   onClick={event => hasSelectionModifier(event) ?
+                   onClick={event => selectionMode.extendsSelection(event) ?
                                      extendSelection() :
                                      select()}
                    onInsertButtonClick={at =>
