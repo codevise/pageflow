@@ -25,7 +25,13 @@ export function SectionDecorator({backdrop, section, contentElements, transition
   const {t} = useI18n({locale: 'ui'});
   const commentingEnabled = features.isEnabled('commenting');
 
-  const {isSelected: isSectionSelected, select, resetSelection} = useEditorSelection({
+  const {
+    isSelected: isSectionSelected,
+    isMultiSelected: isSectionMultiSelected,
+    select,
+    extendSelection,
+    resetSelection
+  } = useEditorSelection({
     id: section.id,
     type: 'sectionSettings'
   });
@@ -78,10 +84,16 @@ export function SectionDecorator({backdrop, section, contentElements, transition
     type: 'contentElement'
   });
 
-  const {isSelected: isHighlighted} = useEditorSelection({
+  const {
+    isSelected: isSectionHighlighted,
+    isMultiSelected: isSectionMarked
+  } = useEditorSelection({
     id: section.id,
     type: 'section'
   });
+
+  const isInMultiSelection = isSectionMarked || isSectionMultiSelected;
+  const isHighlighted = isSectionHighlighted || isInMultiSelection;
 
   const transitionSelection = useEditorSelection({
     id: section.id,
@@ -101,19 +113,22 @@ export function SectionDecorator({backdrop, section, contentElements, transition
   });
 
   function selectIfOutsideContentItem(event) {
-    // Do not dissolve a multi selection when a modifier click lands
-    // next to the elements it contains.
-    if (hasSelectionModifier(event)) {
+    if (event.target.closest(`.${contentElementStyles.wrapper}`) ||
+        event.target.closest(`.${backdropStyles.wrapper}`) ||
+        event.target.closest(`.${widgetSelectionRectStyles.wrapper}`) ||
+        event.target.closest(`.${paddingIndicatorStyles.indicator}`) ||
+        event.target.closest(`.${styles.commentBadge}`) ||
+        event.target.closest('#fullscreenRoot') ||
+        event.target.closest('[data-floating-ui-portal]')) {
       return;
     }
 
-    if (!event.target.closest(`.${contentElementStyles.wrapper}`) &&
-        !event.target.closest(`.${backdropStyles.wrapper}`) &&
-        !event.target.closest(`.${widgetSelectionRectStyles.wrapper}`) &&
-        !event.target.closest(`.${paddingIndicatorStyles.indicator}`) &&
-        !event.target.closest(`.${styles.commentBadge}`) &&
-        !event.target.closest('#fullscreenRoot') &&
-        !event.target.closest('[data-floating-ui-portal]')) {
+    if (hasSelectionModifier(event)) {
+      if (features.isEnabled('fragments')) {
+        extendSelection();
+      }
+    }
+    else {
       isSectionSelected ? resetSelection() : select();
     }
   }
@@ -121,7 +136,7 @@ export function SectionDecorator({backdrop, section, contentElements, transition
   return (
     <div ref={wrapperRef}
          aria-label={t('pageflow_scrolled.inline_editing.select_section')}
-         aria-selected={isSelected}
+         aria-selected={isSelected || isInMultiSelection}
          className={className(isSelected, transitionSelection, isHighlighted, isBackdropElementSelected, transitions, clipBadgeCorner, commentingEnabled)}
          onMouseDown={selectIfOutsideContentItem}>
       <div className={styles.controls}>
