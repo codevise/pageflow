@@ -233,10 +233,10 @@ describe('SectionItemView', () => {
   });
 
   describe('marking', () => {
-    function renderSectionItem({sectionSelection} = {}) {
+    function renderSectionItem({markedSections} = {}) {
       const entry = createEntry({sections: [{id: 1, permaId: 100}]});
       const section = entry.sections.get(1);
-      const view = new SectionItemView({entry, model: section, sectionSelection});
+      const view = new SectionItemView({entry, model: section, markedSections});
 
       return {entry, section, ...render(view)};
     }
@@ -248,63 +248,63 @@ describe('SectionItemView', () => {
     });
 
     it('renders unpressed mark button', () => {
-      const {getByRole} = renderSectionItem({sectionSelection: new ListSelection()});
+      const {getByRole} = renderSectionItem({markedSections: new ListSelection()});
 
       expect(getByRole('button', {name: 'Mark section'}))
         .toHaveAttribute('aria-pressed', 'false');
     });
 
     it('marks section when mark button is clicked', () => {
-      const sectionSelection = new ListSelection();
-      const {section, getByRole} = renderSectionItem({sectionSelection});
+      const markedSections = new ListSelection();
+      const {section, getByRole} = renderSectionItem({markedSections});
 
       fireEvent.click(getByRole('button', {name: 'Mark section'}));
 
-      expect(sectionSelection.includes(section)).toBe(true);
+      expect(markedSections.includes(section)).toBe(true);
       expect(getByRole('button', {name: 'Mark section'}))
         .toHaveAttribute('aria-pressed', 'true');
     });
 
     it('unmarks marked section when mark button is clicked', () => {
-      const sectionSelection = new ListSelection();
-      const {section, getByRole} = renderSectionItem({sectionSelection});
-      sectionSelection.add(section);
+      const markedSections = new ListSelection();
+      const {section, getByRole} = renderSectionItem({markedSections});
+      markedSections.add(section);
 
       fireEvent.click(getByRole('button', {name: 'Mark section'}));
 
-      expect(sectionSelection.includes(section)).toBe(false);
+      expect(markedSections.includes(section)).toBe(false);
     });
 
     it('marks section on modifier click', () => {
-      const sectionSelection = new ListSelection();
-      const {section, getByTitle} = renderSectionItem({sectionSelection});
+      const markedSections = new ListSelection();
+      const {section, getByTitle} = renderSectionItem({markedSections});
 
       fireEvent.click(getByTitle('Drag to move'), {ctrlKey: true});
 
-      expect(sectionSelection.includes(section)).toBe(true);
+      expect(markedSections.includes(section)).toBe(true);
     });
 
     it('marks section on click with meta key', () => {
-      const sectionSelection = new ListSelection();
-      const {section, getByTitle} = renderSectionItem({sectionSelection});
+      const markedSections = new ListSelection();
+      const {section, getByTitle} = renderSectionItem({markedSections});
 
       fireEvent.click(getByTitle('Drag to move'), {metaKey: true});
 
-      expect(sectionSelection.includes(section)).toBe(true);
+      expect(markedSections.includes(section)).toBe(true);
     });
 
     it('does not mark section on plain click', () => {
-      const sectionSelection = new ListSelection();
-      const {section, getByTitle} = renderSectionItem({sectionSelection});
+      const markedSections = new ListSelection();
+      const {section, getByTitle} = renderSectionItem({markedSections});
 
       fireEvent.click(getByTitle('Drag to move'));
 
-      expect(sectionSelection.includes(section)).toBe(false);
+      expect(markedSections.includes(section)).toBe(false);
     });
 
     it('scrolls to section when mark button is clicked', () => {
-      const sectionSelection = new ListSelection();
-      const {entry, section, getByRole} = renderSectionItem({sectionSelection});
+      const markedSections = new ListSelection();
+      const {entry, section, getByRole} = renderSectionItem({markedSections});
       const listener = jest.fn();
       entry.on('scrollToSection', listener);
 

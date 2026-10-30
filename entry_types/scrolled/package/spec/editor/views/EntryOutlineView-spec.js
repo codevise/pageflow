@@ -567,6 +567,28 @@ describe('EntryOutlineView', () => {
         .toHaveAttribute('aria-pressed', 'false');
     });
 
+    it('shows sections marked before outline was rendered', () => {
+      const entry = createEntryWithSections();
+      entry.markedSections.add(entry.sections.get(10));
+
+      render(new EntryOutlineView({entry}));
+
+      expect(screen.getByText('1 section selected')).toBeInTheDocument();
+      expect(screen.getAllByRole('button', {name: 'Mark section'})[0])
+        .toHaveAttribute('aria-pressed', 'true');
+    });
+
+    it('ends marking when outline is closed', () => {
+      const entry = createEntryWithSections();
+      const view = new EntryOutlineView({entry});
+      render(view);
+      entry.markedSections.add(entry.sections.get(10));
+
+      view.close();
+
+      expect(entry.markedSections.isActive()).toBe(false);
+    });
+
     it('drops removed sections from selection', async () => {
       const entry = createEntryWithSections();
       const user = userEvent.setup();

@@ -134,31 +134,31 @@ describe('ChapterItemView', () => {
   describe('with section selection', () => {
     function renderChapterItem() {
       const entry = createEntry({chapters: [{id: 1}], sections: [{id: 10, chapterId: 1}]});
-      const sectionSelection = new ListSelection();
-      const view = new ChapterItemView({entry, model: entry.chapters.get(1), sectionSelection});
+      const markedSections = new ListSelection();
+      const view = new ChapterItemView({entry, model: entry.chapters.get(1), markedSections});
 
       render(view);
 
-      return {entry, sectionSelection};
+      return {entry, markedSections};
     }
 
     afterEach(() => jest.restoreAllMocks());
 
     it('disables sorting of sections while selection is active', () => {
       const disableSorting = jest.spyOn(SortableCollectionView.prototype, 'disableSorting');
-      const {sectionSelection} = renderChapterItem();
+      const {markedSections} = renderChapterItem();
 
-      sectionSelection.start();
+      markedSections.start();
 
       expect(disableSorting).toHaveBeenCalled();
     });
 
     it('enables sorting of sections again when selection ends', () => {
-      const {sectionSelection} = renderChapterItem();
-      sectionSelection.start();
+      const {markedSections} = renderChapterItem();
+      markedSections.start();
       const enableSorting = jest.spyOn(SortableCollectionView.prototype, 'enableSorting');
 
-      sectionSelection.stop();
+      markedSections.stop();
 
       expect(enableSorting).toHaveBeenCalled();
     });

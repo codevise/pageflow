@@ -55,8 +55,8 @@ export const SectionItemView = Marionette.ItemView.extend({
 
   events: cssModulesUtils.events(styles, {
     'click clickMask': function(event) {
-      if (this.options.sectionSelection && (event.ctrlKey || event.metaKey)) {
-        this.options.sectionSelection.toggle(this.model);
+      if (this.options.markedSections && (event.ctrlKey || event.metaKey)) {
+        this.options.markedSections.toggle(this.model);
       }
 
       this.options.entry.trigger('selectSection', this.model);
@@ -99,8 +99,8 @@ export const SectionItemView = Marionette.ItemView.extend({
       this.updateHidden();
     });
 
-    if (this.options.sectionSelection) {
-      this.listenTo(this.options.sectionSelection,
+    if (this.options.markedSections) {
+      this.listenTo(this.options.markedSections,
                     'add remove reset change:selecting',
                     this.updateMarked);
     }
@@ -136,7 +136,7 @@ export const SectionItemView = Marionette.ItemView.extend({
       openOnClick: true
     }), {to: this.ui.dropDownButton});
 
-    if (this.options.sectionSelection) {
+    if (this.options.markedSections) {
       this.appendMarkButton();
     }
   },
@@ -144,7 +144,7 @@ export const SectionItemView = Marionette.ItemView.extend({
   appendMarkButton() {
     const markButton = new MarkButtonView({
       model: this.model,
-      selection: this.options.sectionSelection,
+      selection: this.options.markedSections,
       label: I18n.t('pageflow_scrolled.editor.section_item.mark')
     });
 
@@ -181,8 +181,8 @@ export const SectionItemView = Marionette.ItemView.extend({
   },
 
   updateMarked() {
-    this.$el.toggleClass(styles.marking, !!this.options.sectionSelection?.isActive());
-    this.$el.toggleClass(styles.marked, !!this.options.sectionSelection?.includes(this.model));
+    this.$el.toggleClass(styles.marking, !!this.options.markedSections?.isActive());
+    this.$el.toggleClass(styles.marked, !!this.options.markedSections?.includes(this.model));
   },
 
   updateHidden() {

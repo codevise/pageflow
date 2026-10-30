@@ -2,7 +2,7 @@ import Marionette from 'backbone.marionette';
 import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import {cssModulesUtils} from 'pageflow/ui';
-import {DropDownButtonView, ListSelection} from 'pageflow/editor';
+import {DropDownButtonView} from 'pageflow/editor';
 import {features} from 'pageflow/frontend';
 
 import {StorylinesTabsView} from './StorylinesTabsView';
@@ -47,18 +47,18 @@ export const EntryOutlineView = Marionette.Layout.extend({
 
   events: cssModulesUtils.events(styles, {
     'click selectionBarDismiss': function() {
-      this.sectionSelection.stop();
+      this.markedSections.stop();
     },
 
     'click selectionBarAction': function() {
       const menuItem = new ExtractSectionsFragmentMenuItem({}, {
         entry: this.options.entry,
-        sections: this.sectionSelection.models.slice()
+        sections: this.markedSections.models.slice()
       });
 
       ExtractFragmentDialogView.show({
         onSubmit: title => {
-          this.sectionSelection.stop();
+          this.markedSections.stop();
           menuItem.extract(title);
         }
       });
@@ -67,7 +67,7 @@ export const EntryOutlineView = Marionette.Layout.extend({
 
   initialize() {
     if (features.isEnabled('fragments')) {
-      this.sectionSelection = new ListSelection();
+      this.markedSections = this.options.entry.markedSections;
     }
   },
 
@@ -87,9 +87,9 @@ export const EntryOutlineView = Marionette.Layout.extend({
 
     dropDownMenuItems.add(this.reorderChaptersMenutItem);
 
-    if (this.sectionSelection) {
+    if (this.markedSections) {
       dropDownMenuItems.add(new SelectSectionsMenuItem({}, {
-        sectionSelection: this.sectionSelection
+        markedSections: this.markedSections
       }));
 
       this.setupSelectionBar();
@@ -113,32 +113,32 @@ export const EntryOutlineView = Marionette.Layout.extend({
       itemViewOptions: {
         entry: this.options.entry,
         viewModel,
-        sectionSelection: this.sectionSelection
+        markedSections: this.markedSections
       }
     });
 
     this.listenTo(storylinesTabsView, 'change', () => {
       viewModel.set('collapsed', false);
-      this.sectionSelection?.stop();
+      this.markedSections?.stop();
     });
 
     this.appendSubview(storylinesTabsView, {to: this.ui.tabs});
 
     this.ui.tabs.find('.tabs_view-scroller').first().append(this.ui.toolbar);
 
-    if (this.sectionSelection) {
+    if (this.markedSections) {
       this.ui.tabs.find('.tabs_view-container').first().before(this.ui.selectionBar);
     }
   },
 
+  onClose() {
+    this.markedSections?.stop();
+  },
+
   setupSelectionBar() {
-    this.listenTo(this.sectionSelection,
+    this.listenTo(this.markedSections,
                   'add remove reset change:selecting',
                   this.updateSelectionBar);
-
-    this.listenTo(this.options.entry.sections, 'remove', section =>
-      this.sectionSelection.remove(section)
-    );
 
     this.updateSelectionBar();
   },
@@ -146,19 +146,19 @@ export const EntryOutlineView = Marionette.Layout.extend({
   makeSelectionAndReorderingExclusive(viewModel) {
     this.listenTo(viewModel, 'change:collapsed', (model, collapsed) => {
       if (collapsed) {
-        this.sectionSelection.stop();
+        this.markedSections.stop();
       }
     });
 
-    this.listenTo(this.sectionSelection, 'change:selecting add', () => {
-      if (this.sectionSelection.isActive()) {
+    this.listenTo(this.markedSections, 'change:selecting add', () => {
+      if (this.markedSections.isActive()) {
         viewModel.set('collapsed', false);
       }
     });
   },
 
   updateSelectionBar() {
-    const selection = this.sectionSelection;
+    const selection = this.markedSections;
 
     this.ui.selectionBar.prop('hidden', !selection.isActive());
     this.ui.selectionBarText.text(
@@ -171,25 +171,25 @@ export const EntryOutlineView = Marionette.Layout.extend({
 });
 
 const SelectSectionsMenuItem = Backbone.Model.extend({
-  initialize(attributes, {sectionSelection}) {
-    this.sectionSelection = sectionSelection;
+  initialize(attributes, {markedSections}) {
+    this.markedSections = markedSections;
 
-    this.listenTo(sectionSelection, 'add remove reset change:selecting', this.updateLabel);
+    this.listenTo(markedSections, 'add remove reset change:selecting', this.updateLabel);
     this.updateLabel();
   },
 
   selected() {
-    if (this.sectionSelection.isActive()) {
-      this.sectionSelection.stop();
+    if (this.markedSections.isActive()) {
+      this.markedSections.stop();
     }
     else {
-      this.sectionSelection.start();
+      this.markedSections.start();
     }
   },
 
   updateLabel() {
     this.set('label', I18n.t(
-      this.sectionSelection.isActive() ?
+      this.markedSections.isActive() ?
       'pageflow_scrolled.editor.entry_outline.end_selection' :
       'pageflow_scrolled.editor.entry_outline.select_sections'
     ));

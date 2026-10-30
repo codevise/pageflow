@@ -76,14 +76,14 @@ export const ChapterItemView = Marionette.Layout.extend({
       itemViewConstructor: SectionItemView,
       itemViewOptions: {
         entry: this.options.entry,
-        sectionSelection: this.options.sectionSelection
+        markedSections: this.options.markedSections
       },
       connectWith: cssModulesUtils.selector(styles, 'sections'),
       forceDraggableFallback: browser.agent.matchesDesktopSafari()
     }));
 
-    if (this.options.sectionSelection) {
-      this.listenTo(this.options.sectionSelection,
+    if (this.options.markedSections) {
+      this.listenTo(this.options.markedSections,
                     'add remove reset change:selecting',
                     this.updateSorting);
       this.updateSorting();
@@ -93,7 +93,7 @@ export const ChapterItemView = Marionette.Layout.extend({
   },
 
   updateSorting() {
-    if (this.options.sectionSelection.isActive()) {
+    if (this.options.markedSections.isActive()) {
       this.sectionsView.disableSorting();
     }
     else {

@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {Entry, editor} from 'pageflow/editor';
+import {Entry, ListSelection, editor} from 'pageflow/editor';
 import I18n from 'i18n-js';
 import {features} from 'pageflow/frontend';
 import {createReviewSession} from 'pageflow/review';
@@ -91,6 +91,9 @@ export const ScrolledEntry = Entry.extend({
     this.trashItems = new TrashItemsCollection([], {entry: this});
 
     this.cutoff = new Cutoff({entry: this});
+
+    this.markedSections = new ListSelection();
+    this.listenTo(this.sections, 'remove', section => this.markedSections.remove(section));
 
     editor.failures.watch(this.contentElements);
     editor.failures.watch(this.sections);
