@@ -704,6 +704,175 @@ describe('PreviewMessageController', () => {
     );
   });
 
+  describe('marked sections', () => {
+    function setup() {
+      const editor = factories.editorApi();
+      const entry = factories.entry(ScrolledEntry, {}, {
+        entryTypeSeed: normalizeSeed({
+          sections: [{id: 1}, {id: 2}]
+        })
+      });
+      const iframeWindow = createSendingIframeWindow();
+      controller = new PreviewMessageController({entry, iframeWindow, editor});
+
+      return {entry, editor, iframeWindow};
+    }
+
+    function nextSelectMessage(iframeWindow) {
+      return new Promise(resolve => {
+        function handler(event) {
+          if (event.data.type === 'SELECT') {
+            iframeWindow.removeEventListener('message', handler);
+            resolve(event.data.payload);
+          }
+        }
+
+        iframeWindow.addEventListener('message', handler);
+      });
+    }
+
+    it('sends SELECT message with marked sections', async () => {
+      const {entry, iframeWindow} = setup();
+      await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+
+      const message = nextSelectMessage(iframeWindow);
+      entry.markedSections.add(entry.sections.get(1));
+
+      expect(await message).toEqual({
+        type: 'multiSelection',
+        itemType: 'section',
+        items: [{id: 1}]
+      });
+    });
+
+    it('sends SELECT message with empty selection when marking ends', async () => {
+      const {entry, iframeWindow} = setup();
+      await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+      entry.markedSections.add(entry.sections.get(1));
+      await tick();
+
+      const message = nextSelectMessage(iframeWindow);
+      entry.markedSections.stop();
+
+      expect(await message).toBeNull();
+    });
+
+    it('marks sections of SELECTED multi selection of section settings', async () => {
+      const {entry, editor} = setup();
+
+      await new Promise(resolve => {
+        editor.on('navigate', resolve);
+        window.postMessage({
+          type: 'SELECTED',
+          payload: {
+            type: 'multiSelection',
+            itemType: 'sectionSettings',
+            items: [{id: 1}, {id: 2}]
+          }
+        }, '*');
+      });
+
+      expect(entry.markedSections.pluck('id')).toEqual([1, 2]);
+    });
+
+    it('navigates to outline on SELECTED multi selection of section settings', () => {
+      const {editor} = setup();
+
+      return expect(new Promise(resolve => {
+        editor.on('navigate', resolve);
+        window.postMessage({
+          type: 'SELECTED',
+          payload: {
+            type: 'multiSelection',
+            itemType: 'sectionSettings',
+            items: [{id: 1}, {id: 2}]
+          }
+        }, '*');
+      })).resolves.toBe('/');
+    });
+
+    it('keeps marks on SELECTED multi selection of sections', async () => {
+      const {entry} = setup();
+      entry.markedSections.add(entry.sections.get(1));
+
+      window.postMessage({
+        type: 'SELECTED',
+        payload: {type: 'multiSelection', itemType: 'section', items: [{id: 1}]}
+      }, '*');
+      await tick();
+
+      expect(entry.markedSections.pluck('id')).toEqual([1]);
+    });
+
+    it('keeps marks on SELECTED message for section', async () => {
+      const {entry} = setup();
+      entry.markedSections.add(entry.sections.get(1));
+
+      window.postMessage({type: 'SELECTED', payload: {type: 'section', id: 2}}, '*');
+      await tick();
+
+      expect(entry.markedSections.isActive()).toBe(true);
+    });
+
+    it('ends marking on SELECTED message for section settings', async () => {
+      const {entry} = setup();
+      entry.markedSections.add(entry.sections.get(1));
+
+      window.postMessage({type: 'SELECTED', payload: {type: 'sectionSettings', id: 2}}, '*');
+      await tick();
+
+      expect(entry.markedSections.isActive()).toBe(false);
+    });
+
+    it('does not reset selection of preview when marking ends because of it', async () => {
+      const {entry, iframeWindow} = setup();
+      await postReadyMessageAndWaitForAcknowledgement(iframeWindow);
+      entry.markedSections.add(entry.sections.get(1));
+      await tick();
+      const payloads = [];
+      iframeWindow.addEventListener('message', event => {
+        if (event.data.type === 'SELECT') {
+          payloads.push(event.data.payload);
+        }
+      });
+
+      window.postMessage({type: 'SELECTED', payload: {type: 'sectionSettings', id: 2}}, '*');
+      await tick();
+      await tick();
+
+      expect(payloads).toEqual([]);
+    });
+
+    it('ends marking on SELECTED message for empty selection', async () => {
+      const {entry} = setup();
+      entry.markedSections.start();
+
+      window.postMessage({type: 'SELECTED', payload: {}}, '*');
+      await tick();
+
+      expect(entry.markedSections.isActive()).toBe(false);
+    });
+
+    it('remembers section selected in preview', async () => {
+      const {entry} = setup();
+
+      window.postMessage({type: 'SELECTED', payload: {type: 'sectionSettings', id: 2}}, '*');
+      await tick();
+
+      expect(entry.get('selectedSectionId')).toBe(2);
+    });
+
+    it('forgets selected section when other item is selected in preview', async () => {
+      const {entry} = setup();
+
+      window.postMessage({type: 'SELECTED', payload: {type: 'section', id: 2}}, '*');
+      window.postMessage({type: 'SELECTED', payload: {type: 'widget', id: 'some'}}, '*');
+      await tick();
+
+      expect(entry.get('selectedSectionId')).toBeNull();
+    });
+  });
+
   it('navigates to edit section route on SELECTED message for section settings', () => {
     const editor = factories.editorApi();
     const entry = factories.entry(ScrolledEntry, {}, {

@@ -56,10 +56,12 @@ export const SectionItemView = Marionette.ItemView.extend({
   events: cssModulesUtils.events(styles, {
     'click clickMask': function(event) {
       if (this.options.markedSections && (event.ctrlKey || event.metaKey)) {
-        this.options.markedSections.toggle(this.model);
+        this.startMarking();
+      }
+      else {
+        this.options.entry.trigger('selectSection', this.model);
       }
 
-      this.options.entry.trigger('selectSection', this.model);
       this.options.entry.trigger('scrollToSection', this.model);
     },
 
@@ -150,9 +152,19 @@ export const SectionItemView = Marionette.ItemView.extend({
 
     this.appendSubview(markButton, {to: this.ui.markButton});
     this.listenTo(markButton, 'toggle', () => {
-      this.options.entry.trigger('selectSection', this.model);
       this.options.entry.trigger('scrollToSection', this.model);
     });
+  },
+
+  startMarking() {
+    const {entry, markedSections} = this.options;
+    const selectedSection = entry.sections.get(entry.get('selectedSectionId'));
+
+    if (selectedSection && selectedSection !== this.model) {
+      markedSections.add(selectedSection);
+    }
+
+    markedSections.add(this.model);
   },
 
   updateTransition() {

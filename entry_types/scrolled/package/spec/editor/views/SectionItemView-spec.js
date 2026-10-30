@@ -234,7 +234,7 @@ describe('SectionItemView', () => {
 
   describe('marking', () => {
     function renderSectionItem({markedSections} = {}) {
-      const entry = createEntry({sections: [{id: 1, permaId: 100}]});
+      const entry = createEntry({sections: [{id: 1, permaId: 100}, {id: 2, permaId: 200}]});
       const section = entry.sections.get(1);
       const view = new SectionItemView({entry, model: section, markedSections});
 
@@ -300,6 +300,50 @@ describe('SectionItemView', () => {
       fireEvent.click(getByTitle('Drag to move'));
 
       expect(markedSections.includes(section)).toBe(false);
+    });
+
+    it('also marks section selected in preview on first modifier click', () => {
+      const markedSections = new ListSelection();
+      const {entry, section, getByTitle} = renderSectionItem({markedSections});
+      entry.set('selectedSectionId', 2);
+
+      fireEvent.click(getByTitle('Drag to move'), {ctrlKey: true});
+
+      expect(markedSections.pluck('id')).toEqual([2, 1]);
+      expect(markedSections.includes(section)).toBe(true);
+    });
+
+    it('does not select section in preview on modifier click', () => {
+      const markedSections = new ListSelection();
+      const {entry, getByTitle} = renderSectionItem({markedSections});
+      const listener = jest.fn();
+      entry.on('selectSection', listener);
+
+      fireEvent.click(getByTitle('Drag to move'), {ctrlKey: true});
+
+      expect(listener).not.toHaveBeenCalled();
+    });
+
+    it('scrolls to section on modifier click', () => {
+      const markedSections = new ListSelection();
+      const {entry, section, getByTitle} = renderSectionItem({markedSections});
+      const listener = jest.fn();
+      entry.on('scrollToSection', listener);
+
+      fireEvent.click(getByTitle('Drag to move'), {ctrlKey: true});
+
+      expect(listener).toHaveBeenCalledWith(section);
+    });
+
+    it('does not select section in preview when mark button is clicked', () => {
+      const markedSections = new ListSelection();
+      const {entry, getByRole} = renderSectionItem({markedSections});
+      const listener = jest.fn();
+      entry.on('selectSection', listener);
+
+      fireEvent.click(getByRole('button', {name: 'Mark section'}));
+
+      expect(listener).not.toHaveBeenCalled();
     });
 
     it('scrolls to section when mark button is clicked', () => {
