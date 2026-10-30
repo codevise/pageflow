@@ -65,6 +65,40 @@ module PageflowScrolled
         expect(find_library(account)).to be_nil
       end
 
+      it 'lets user with editor role on existing library add fragment' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, type_name: 'scrolled', account:, with_editor: user,
+                               with_feature: 'fragments')
+        section = create(:section, revision: entry.draft)
+        library = create(:entry,
+                         type_name: 'scrolled',
+                         account:,
+                         fragment_library: 'shared',
+                         with_editor: user)
+
+        sign_in_and_lock(entry, user)
+        post_extraction(entry:, sections: [section])
+
+        expect(response.status).to eq(201)
+        expect(Chapter.all_for_revision(library.draft).count).to eq(1)
+      end
+
+      it 'does not let user who may not edit existing library add fragment' do
+        user = create(:user)
+        account = create(:account, with_previewer: user)
+        entry = create(:entry, type_name: 'scrolled', account:, with_editor: user,
+                               with_feature: 'fragments')
+        section = create(:section, revision: entry.draft)
+        library = create(:entry, type_name: 'scrolled', account:, fragment_library: 'shared')
+
+        sign_in_and_lock(entry, user)
+        post_extraction(entry:, sections: [section])
+
+        expect(response.status).to eq(403)
+        expect(Chapter.all_for_revision(library.draft)).to be_empty
+      end
+
       it 'responds with not found for section of other entry' do
         user = create(:user)
         account = create(:account, with_editor: user)

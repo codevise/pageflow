@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pageflow/shared_contexts/fake_translations'
 
 module PageflowScrolled
   RSpec.describe FragmentLibrary do
@@ -207,38 +208,6 @@ module PageflowScrolled
       end
     end
 
-    describe '#extract_fragment_from' do
-      it 'creates library entry on first extraction' do
-        account = create(:account, name: 'Acme')
-        entry = create(:entry, type_name: 'scrolled', account:)
-        chapter = create(:scrolled_chapter, revision: entry.draft)
-        library = FragmentLibrary.shared_for_account(account)
-
-        library.extract_fragment_from(entry: Pageflow::DraftEntry.new(entry), chapter:)
-
-        expect(library).to be_persisted
-        expect(library.entry.to_model).to have_attributes(account:,
-                                                          type_name: 'scrolled',
-                                                          fragment_library: 'shared')
-      end
-
-      it 'copies chapter with its sections into library' do
-        account = create(:account)
-        entry = create(:entry, type_name: 'scrolled', account:)
-        chapter = create(:scrolled_chapter,
-                         revision: entry.draft,
-                         configuration: {'title' => 'Intro'})
-        create(:section, chapter:)
-        library = FragmentLibrary.shared_for_account(account)
-
-        library.extract_fragment_from(entry: Pageflow::DraftEntry.new(entry), chapter:)
-
-        expect(library.content.chapters.map(&:configuration))
-          .to match([include('title' => 'Intro')])
-        expect(library.content.sections.size).to eq(1)
-      end
-    end
-
     describe '#extract_sections_from' do
       it 'creates library entry on first extraction' do
         account = create(:account)
@@ -250,6 +219,7 @@ module PageflowScrolled
 
         expect(library).to be_persisted
         expect(library.entry.to_model).to have_attributes(account:,
+                                                          type_name: 'scrolled',
                                                           fragment_library: 'shared')
       end
 
@@ -285,6 +255,39 @@ module PageflowScrolled
                                       title: ' ')
 
         expect(library.content.chapters.first.configuration).to eq({})
+      end
+
+      describe 'library title' do
+        include_context 'fake translations'
+
+        before do
+          translation(:de, 'pageflow_scrolled.fragment_library.title',
+                      'Bausteine von %{account_name}')
+          translation(:en, 'pageflow_scrolled.fragment_library.title',
+                      'Shared fragments of %{account_name}')
+        end
+
+        it 'includes account name in locale of entry' do
+          account = create(:account, name: 'Acme')
+          entry = create(:entry, type_name: 'scrolled', account:, draft_attributes: {locale: 'de'})
+          section = create(:section, revision: entry.draft)
+          library = FragmentLibrary.shared_for_account(account)
+
+          library.extract_sections_from(entry: Pageflow::DraftEntry.new(entry), sections: [section])
+
+          expect(library.entry.to_model.title).to eq('Bausteine von Acme')
+        end
+
+        it 'falls back to English for other locales' do
+          account = create(:account, name: 'Acme')
+          entry = create(:entry, type_name: 'scrolled', account:, draft_attributes: {locale: 'fr'})
+          section = create(:section, revision: entry.draft)
+          library = FragmentLibrary.shared_for_account(account)
+
+          library.extract_sections_from(entry: Pageflow::DraftEntry.new(entry), sections: [section])
+
+          expect(library.entry.to_model.title).to eq('Shared fragments of Acme')
+        end
       end
     end
 

@@ -31,7 +31,6 @@ PageflowScrolled::Engine.routes.draw do
           end
 
           resources :fragment_insertions, only: [:create]
-          resources :fragment_extractions, only: [:create]
 
           resources :sections, only: [:create, :update, :destroy] do
             collection do

@@ -440,52 +440,6 @@ describe('Chapter', () => {
     });
   });
 
-  describe('#extractToFragmentLibrary', () => {
-    beforeEach(() => {
-      testContext.entry = factories.entry(ScrolledEntry, {id: 1}, {
-        entryTypeSeed: normalizeSeed({
-          chapters: [{id: 10}]
-        })
-      });
-    });
-
-    setupGlobals({
-      entry: () => testContext.entry
-    });
-
-    useFakeXhr(() => testContext);
-
-    it('posts to fragment extractions of chapter', () => {
-      const {entry, requests} = testContext;
-
-      entry.chapters.first().extractToFragmentLibrary();
-
-      expect(requests[0].method).toBe('POST');
-      expect(requests[0].url)
-        .toBe('/editor/entries/1/scrolled/chapters/10/fragment_extractions');
-    });
-
-    it('posts given title', () => {
-      const {entry, requests} = testContext;
-
-      entry.chapters.first().extractToFragmentLibrary({title: 'Opening'});
-
-      expect(requests[0].requestBody).toContain('title=Opening');
-    });
-
-    it('resolves once library responds without body', async () => {
-      const {entry, server} = testContext;
-
-      const extraction = entry.chapters.first().extractToFragmentLibrary();
-      server.respond(
-        'POST', '/editor/entries/1/scrolled/chapters/10/fragment_extractions',
-        [201, {}, '']
-      );
-
-      await expect(extraction).resolves.toBeUndefined();
-    });
-  });
-
   describe('#moveSection', () => {
     describe('within same chapter', () => {
       beforeEach(() => {

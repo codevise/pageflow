@@ -140,14 +140,6 @@ export const Chapter = Backbone.Model.extend({
     });
   },
 
-  extractToFragmentLibrary({title} = {}) {
-    return Promise.resolve($.ajax({
-      url: `${this.url()}/fragment_extractions`,
-      type: 'POST',
-      data: {title}
-    })).then(() => undefined);
-  },
-
   addFragmentSections(sectionsAttributes) {
     const sections = sectionsAttributes.map(({contentElements, ...attributes}) => {
       this.sections.add(attributes, {contentElements: this.entry.contentElements});
