@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
 import {FileThumbnailView} from './FileThumbnailView';
+import {MarkButtonView} from './MarkButtonView';
 import {loadable} from './mixins/loadable';
 import {selectableView} from './mixins/selectableView';
 
@@ -17,21 +18,10 @@ export const ExplorerFileItemView = Marionette.ItemView.extend({
 
   ui: {
     fileName: '.file_name',
-    thumbnail: '.file_thumbnail',
-    markButton: '.explorer_file_item-mark'
+    thumbnail: '.file_thumbnail'
   },
 
   events: {
-    'click .explorer_file_item-mark': function() {
-      this.options.markedFiles.toggle(this.model);
-
-      if (this.options.markedFiles.includes(this.model)) {
-        this.select();
-      }
-
-      return false;
-    },
-
     'click': function() {
       if (!this.isDisabled()) {
         this.select();
@@ -53,14 +43,31 @@ export const ExplorerFileItemView = Marionette.ItemView.extend({
     this.update();
     this.updateMarked();
 
-    if (this.isDisabled() || !this.options.markedFiles) {
-      this.ui.markButton.remove();
-    }
-
     this.subview(new FileThumbnailView({
       el: this.ui.thumbnail,
       model: this.model
     }));
+
+    if (!this.isDisabled() && this.options.markedFiles) {
+      this.appendMarkButton();
+    }
+  },
+
+  appendMarkButton: function() {
+    var markButton = new MarkButtonView({
+      model: this.model,
+      selection: this.options.markedFiles,
+      label: I18n.t('pageflow.editor.views.explorer_file_item_view.mark'),
+      startMarkingLabel: I18n.t('pageflow.editor.views.explorer_file_item_view.start_marking')
+    });
+
+    this.appendSubview(markButton);
+
+    this.listenTo(markButton, 'toggle', function() {
+      if (this.options.markedFiles.includes(this.model)) {
+        this.select();
+      }
+    });
   },
 
   update: function() {
@@ -77,19 +84,8 @@ export const ExplorerFileItemView = Marionette.ItemView.extend({
   },
 
   updateMarked: function() {
-    var marked = !!this.options.markedFiles?.includes(this.model);
-
     this.$el.toggleClass('marking', this.isMarking());
-    this.$el.toggleClass('marked', marked);
-    var label = I18n.t(this.isMarking() ?
-                       'pageflow.editor.views.explorer_file_item_view.mark' :
-                       'pageflow.editor.views.explorer_file_item_view.start_marking');
-
-    this.ui.markButton.attr({
-      'aria-pressed': marked ? 'true' : 'false',
-      'aria-label': label,
-      title: label
-    });
+    this.$el.toggleClass('marked', !!this.options.markedFiles?.includes(this.model));
   },
 
   isDisabled: function() {

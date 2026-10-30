@@ -101,6 +101,7 @@ export * from './views/UploaderView';
 export * from './views/BackgroundPositioningView';
 export * from './views/BackgroundPositioningImageView';
 export * from './views/ExplorerFileItemView';
+export * from './views/MarkButtonView';
 export * from './views/ExplorerFileDetailsView';
 export * from './views/ExplorerFilesView';
 export * from './views/ExplorerFolderItemView';
