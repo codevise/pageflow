@@ -22,16 +22,29 @@ export const MultiSelectionView = Marionette.ItemView.extend({
     <a class="back">${I18n.t('pageflow.editor.templates.back_button_decorator.outline')}</a>
     <div class="${styles.actions}"></div>
     <div class="${styles.tabs}"></div>
+    <div class="${styles.selectionModeHint}">
+      <span>${I18n.t('pageflow_scrolled.editor.multi_selection_view.selection_mode_hint')}</span>
+      <button type="button" class="${styles.endSelectionMode}">
+        ${I18n.t('pageflow_scrolled.editor.multi_selection_view.end_selection_mode')}
+      </button>
+    </div>
   `,
 
-  ui: cssModulesUtils.ui(styles, 'actions', 'tabs'),
+  ui: cssModulesUtils.ui(styles, 'actions', 'tabs', 'selectionModeHint'),
 
   events: {
-    'click a.back': 'goBack'
+    'click a.back': 'goBack',
+
+    ...cssModulesUtils.events(styles, {
+      'click endSelectionMode': function() {
+        this.options.entry.trigger('endSelectionMode');
+      }
+    })
   },
 
   onRender() {
     const {entry, items} = this.options;
+
     const contentElements = sortByDocumentOrder(
       entry,
       items
@@ -62,6 +75,13 @@ export const MultiSelectionView = Marionette.ItemView.extend({
     });
 
     this.appendSubview(tabsView, {to: this.ui.tabs});
+
+    if (this.options.selectionMode) {
+      this.ui.tabs.find('.tabs_view-container').first().before(this.ui.selectionModeHint);
+    }
+    else {
+      this.ui.selectionModeHint.remove();
+    }
   },
 
   // Resetting the selection in the preview makes it navigate back to

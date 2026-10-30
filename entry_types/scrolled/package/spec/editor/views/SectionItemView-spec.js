@@ -1,7 +1,9 @@
 import {SectionItemView} from 'editor/views/SectionItemView';
+import {ListSelection} from 'pageflow/editor';
 
 import {useEditorGlobals, useFakeXhr} from 'support';
 import {useFakeTranslations, renderBackboneView as render} from 'pageflow/testHelpers';
+import {fireEvent} from '@testing-library/dom';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('SectionItemView', () => {
@@ -13,6 +15,8 @@ describe('SectionItemView', () => {
     'pageflow_scrolled.editor.section_menu_items.set_cutoff': 'Set cutoff point',
     'pageflow_scrolled.editor.section_menu_items.reset_cutoff': 'Remove cutoff point',
     'pageflow_scrolled.editor.section_item.cutoff': 'Cutoff point',
+    'pageflow_scrolled.editor.section_item.drag_hint': 'Drag to move',
+    'pageflow_scrolled.editor.section_item.mark': 'Mark section',
   });
 
   const {createEntry} = useEditorGlobals();
@@ -225,6 +229,132 @@ describe('SectionItemView', () => {
       entry.set('currentSectionIndex', 0);
 
       expect(view.el).not.toHaveAttribute('aria-current', 'true');
+    });
+  });
+
+  describe('marking', () => {
+    function renderSectionItem({markedSections} = {}) {
+      const entry = createEntry({sections: [{id: 1, permaId: 100}, {id: 2, permaId: 200}]});
+      const section = entry.sections.get(1);
+      const view = new SectionItemView({entry, model: section, markedSections});
+
+      return {entry, section, ...render(view)};
+    }
+
+    it('does not render mark button without section selection', () => {
+      const {queryByRole} = renderSectionItem();
+
+      expect(queryByRole('button', {name: 'Mark section'})).toBeNull();
+    });
+
+    it('renders unpressed mark button', () => {
+      const {getByRole} = renderSectionItem({markedSections: new ListSelection()});
+
+      expect(getByRole('button', {name: 'Mark section'}))
+        .toHaveAttribute('aria-pressed', 'false');
+    });
+
+    it('marks section when mark button is clicked', () => {
+      const markedSections = new ListSelection();
+      const {section, getByRole} = renderSectionItem({markedSections});
+
+      fireEvent.click(getByRole('button', {name: 'Mark section'}));
+
+      expect(markedSections.includes(section)).toBe(true);
+      expect(getByRole('button', {name: 'Mark section'}))
+        .toHaveAttribute('aria-pressed', 'true');
+    });
+
+    it('unmarks marked section when mark button is clicked', () => {
+      const markedSections = new ListSelection();
+      const {section, getByRole} = renderSectionItem({markedSections});
+      markedSections.add(section);
+
+      fireEvent.click(getByRole('button', {name: 'Mark section'}));
+
+      expect(markedSections.includes(section)).toBe(false);
+    });
+
+    it('marks section on modifier click', () => {
+      const markedSections = new ListSelection();
+      const {section, getByTitle} = renderSectionItem({markedSections});
+
+      fireEvent.click(getByTitle('Drag to move'), {ctrlKey: true});
+
+      expect(markedSections.includes(section)).toBe(true);
+    });
+
+    it('marks section on click with meta key', () => {
+      const markedSections = new ListSelection();
+      const {section, getByTitle} = renderSectionItem({markedSections});
+
+      fireEvent.click(getByTitle('Drag to move'), {metaKey: true});
+
+      expect(markedSections.includes(section)).toBe(true);
+    });
+
+    it('does not mark section on plain click', () => {
+      const markedSections = new ListSelection();
+      const {section, getByTitle} = renderSectionItem({markedSections});
+
+      fireEvent.click(getByTitle('Drag to move'));
+
+      expect(markedSections.includes(section)).toBe(false);
+    });
+
+    it('also marks section selected in preview on first modifier click', () => {
+      const markedSections = new ListSelection();
+      const {entry, section, getByTitle} = renderSectionItem({markedSections});
+      entry.set('selectedSectionId', 2);
+
+      fireEvent.click(getByTitle('Drag to move'), {ctrlKey: true});
+
+      expect(markedSections.pluck('id')).toEqual([2, 1]);
+      expect(markedSections.includes(section)).toBe(true);
+    });
+
+    it('does not select section in preview on modifier click', () => {
+      const markedSections = new ListSelection();
+      const {entry, getByTitle} = renderSectionItem({markedSections});
+      const listener = jest.fn();
+      entry.on('selectSection', listener);
+
+      fireEvent.click(getByTitle('Drag to move'), {ctrlKey: true});
+
+      expect(listener).not.toHaveBeenCalled();
+    });
+
+    it('scrolls to section on modifier click', () => {
+      const markedSections = new ListSelection();
+      const {entry, section, getByTitle} = renderSectionItem({markedSections});
+      const listener = jest.fn();
+      entry.on('scrollToSection', listener);
+
+      fireEvent.click(getByTitle('Drag to move'), {ctrlKey: true});
+
+      expect(listener).toHaveBeenCalledWith(section);
+    });
+
+    it('does not select section in preview when mark button is clicked', () => {
+      const markedSections = new ListSelection();
+      const {entry, getByRole} = renderSectionItem({markedSections});
+      const listener = jest.fn();
+      entry.on('selectSection', listener);
+
+      fireEvent.click(getByRole('button', {name: 'Mark section'}));
+
+      expect(listener).not.toHaveBeenCalled();
+    });
+
+    it('scrolls to section when mark button is clicked', () => {
+      const markedSections = new ListSelection();
+      const {entry, section, getByRole} = renderSectionItem({markedSections});
+      const listener = jest.fn();
+      entry.on('scrollToSection', listener);
+
+      fireEvent.click(getByRole('button', {name: 'Mark section'}));
+
+      expect(listener).toHaveBeenCalledWith(section);
     });
   });
 });

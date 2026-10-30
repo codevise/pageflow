@@ -1,0 +1,36 @@
+.mark_button {
+  @include fa-check-circle-icon;
+
+  width: space(6);
+  height: space(6);
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: var(--ui-on-primary-color);
+  filter: drop-shadow(0 0 2px #00000077);
+  font-size: 22px;
+  font-weight: bold;
+  line-height: space(6);
+  cursor: pointer;
+  opacity: 0;
+
+  &:focus-visible {
+    opacity: 0.8;
+  }
+
+  &.marking {
+    @include fa-circle-icon;
+
+    opacity: 0.8;
+  }
+
+  &.marking:hover {
+    @include fa-check-circle-icon;
+  }
+
+  &.marked {
+    @include fa-check-circle-icon;
+
+    opacity: 1;
+  }
+}

@@ -12,6 +12,16 @@
   @include icon-button;
 }
 
+.secondary_button {
+  @include simple-button;
+}
+
 .destructive_icon_button {
   @include icon-button("destructive");
+}
+
+// Defined last to override the padding of the buttons above.
+.compact_button {
+  padding-top: space(1);
+  padding-bottom: space(1);
 }

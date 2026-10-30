@@ -54,6 +54,11 @@
 .thumbnailContainer {
   position: relative;
   background-color: var(--ui-surface-color);
+  transition: transform 0.15s ease;
+}
+
+.marked .thumbnailContainer {
+  transform: scale(0.92);
 }
 
 .hidden .thumbnail > * > * {
@@ -115,6 +120,41 @@
 .destroying .dropDownButton,
 .failed .dropDownButton {
   display: none;
+}
+
+.markButton {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.marking .markButton {
+  display: block;
+}
+
+.markButton :global(.mark_button) {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+}
+
+.markButton :global(.mark_button)::before {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: space(6);
+  text-align: center;
+}
+
+.marking .dragHandle,
+.marking .dropDownButton {
+  display: none;
+}
+
+.marked .outline {
+  background-color: var(--ui-selection-color-lighter);
 }
 
 .editTransition {

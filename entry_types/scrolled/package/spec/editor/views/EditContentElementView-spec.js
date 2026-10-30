@@ -74,7 +74,21 @@ describe('EditContentElementView', () => {
 
     useFakeTranslations({
       'pageflow_scrolled.editor.extract_content_elements_fragment_menu_item.label':
-        'Add to shared fragments'
+        'Add to shared fragments',
+      'pageflow_scrolled.editor.select_multiple_content_elements_menu_item.label':
+        'Select multiple'
+    });
+
+    it('offers selecting multiple content elements', () => {
+      const view = createView();
+      const listener = jest.fn();
+      view.options.entry.on('startContentElementSelection', listener);
+
+      view.getActionsMenuItems()
+        .find(item => item.get('label') === 'Select multiple')
+        .selected();
+
+      expect(listener).toHaveBeenCalledWith(view.model);
     });
 
     function createView() {

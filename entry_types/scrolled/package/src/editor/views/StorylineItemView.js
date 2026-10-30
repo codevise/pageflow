@@ -12,7 +12,7 @@ export const StorylineItemView = Marionette.Layout.extend({
   className: styles.root,
 
   template: () => `
-    <div class="${styles.expandChapters} info_box info">
+    <div class="${styles.expandChapters}">
       <p>
         ${I18n.t('pageflow_scrolled.editor.storyline_item.reorder_chapters')}
       </p>
@@ -61,7 +61,8 @@ export const StorylineItemView = Marionette.Layout.extend({
       collection: this.model.chapters,
       itemViewConstructor: ChapterItemView,
       itemViewOptions: {
-        entry: this.options.entry
+        entry: this.options.entry,
+        markedSections: this.options.markedSections
       },
       blankSlateViewConstructor: this.model.isMain() ? null : ExcursionBlankSlateView
     });

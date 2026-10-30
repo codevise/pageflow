@@ -39,7 +39,7 @@ module PageflowScrolled
       @content ||= RevisionContent.new(entry.draft, include_hidden: true)
     end
 
-    def copy_fragment_to(fragment_perma_id:, entry:, chapter:)
+    def copy_sections_to(fragment_perma_id:, entry:, chapter:)
       SectionsCopy
         .new(source_entry: self.entry, destination_entry: entry)
         .perform(fragment_chapter(fragment_perma_id).sections, chapter:)
@@ -57,13 +57,13 @@ module PageflowScrolled
       end
     end
 
-    def extract_fragment_from(entry:, chapter:, title: nil)
+    def extract_sections_from(entry:, sections:, title: nil)
       ActiveRecord::Base.transaction do
         @entry ||= create_entry(locale: entry.locale)
 
         SectionsCopy
           .new(source_entry: entry, destination_entry: self.entry)
-          .perform(chapter.sections, chapter: create_fragment_chapter(chapter, title))
+          .perform(sections, chapter: create_chapter({'title' => title.presence&.strip}.compact))
       end
     end
 
@@ -107,10 +107,6 @@ module PageflowScrolled
       )
     end
 
-    def create_fragment_chapter(chapter, title)
-      create_chapter(fragment_configuration(chapter, title))
-    end
-
     def create_content_elements_fragment_section(title)
       chapter = create_chapter({
         'title' => title.presence&.strip,
@@ -125,11 +121,6 @@ module PageflowScrolled
 
       storyline.chapters.create!(position: (storyline.chapters.maximum(:position) || -1) + 1,
                                  configuration:)
-    end
-
-    def fragment_configuration(chapter, title)
-      title = title.presence&.strip
-      title ? chapter.configuration.merge('title' => title) : chapter.configuration
     end
 
     # @api private

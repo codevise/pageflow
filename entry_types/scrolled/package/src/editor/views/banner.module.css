@@ -1,0 +1,8 @@
+.banner {
+  display: flex;
+  flex-direction: column;
+  gap: space(2);
+  padding: space(2);
+  border-radius: rounded();
+  background-color: var(--ui-selection-color-lighter);
+}

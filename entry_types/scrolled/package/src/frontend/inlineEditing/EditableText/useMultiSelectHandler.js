@@ -1,13 +1,14 @@
 import {useCallback} from 'react';
 
-import {hasSelectionModifier} from '../multiSelection';
 import {useContentElementEditorState} from '../../useContentElementEditorState';
+import {useSelectionMode} from '../EditorState';
 
 export function useMultiSelectHandler() {
   const {extendSelection} = useContentElementEditorState();
+  const selectionMode = useSelectionMode();
 
   return useCallback(event => {
-    if (!hasSelectionModifier(event)) {
+    if (!selectionMode.extendsSelection(event)) {
       return;
     }
 
@@ -15,5 +16,5 @@ export function useMultiSelectHandler() {
     // would edit a content element that is part of a multi selection.
     event.preventDefault();
     extendSelection();
-  }, [extendSelection]);
+  }, [extendSelection, selectionMode]);
 }

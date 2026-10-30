@@ -1287,11 +1287,6 @@ de:
         save: Speichern
       chapter_menu_items:
         copy_permalink: Permalink kopieren
-        extract_fragment: Zu geteilten Fragmenten hinzufügen...
-        extract_fragment_failed: Das Kapitel konnte nicht zu den geteilten Fragmenten hinzugefügt werden.
-        extract_fragment_forbidden: Sie dürfen den geteilten Fragmenten dieses Kontos keine Kapitel hinzufügen.
-        extracted_fragment: Zu geteilten Fragmenten hinzugefügt
-        extracting_fragment: Wird zu geteilten Fragmenten hinzugefügt...
         move_to_main: In Kapitel umwandeln
         move_to_excursions: In Exkurs umwandeln
       destroy_chapter_menu_item:
@@ -1445,9 +1440,14 @@ de:
         remove: Entfernen
       entry_outline:
         add_chapter: Neues Kapitel
+        end_selection: Auswahl beenden
         header: Gliederung
         finish_reorder_chapters: Umsortieren beenden
         reorder_chapters: "Kapitel umsortieren..."
+        select_sections: "Abschnitte auswählen..."
+        selected_sections:
+          one: 1 Abschnitt ausgewählt
+          other: "%{count} Abschnitte ausgewählt"
         trash: Gelöschte Inhalte
       entry_select:
         no_matches: Keine passenden Beiträge
@@ -1467,6 +1467,12 @@ de:
         name: Name des Fragments
         shared_hint: Fragmente werden mit allen Beiträgen des Kontos und allen Mitgliedern mit Bearbeitungsrechten geteilt.
         submit: Hinzufügen
+      extract_sections_fragment_menu_item:
+        extracted: Zu geteilten Fragmenten hinzugefügt
+        extracting: Wird zu geteilten Fragmenten hinzugefügt...
+        failed: Die Abschnitte konnten nicht zu den geteilten Fragmenten hinzugefügt werden.
+        forbidden: Sie dürfen den geteilten Fragmenten dieses Kontos keine Abschnitte hinzufügen.
+        label: Zu geteilten Fragmenten hinzufügen...
       fragment_library:
         blank_slate: Noch keine Fragmente vorhanden.
         cancel: Abbrechen
@@ -1493,6 +1499,7 @@ de:
         cutoff: Paywall Grenze
         drag_hint: Ziehen, um den Abschnitt zu verschieben
         hidden: Nur im Editor sichtbar
+        mark: Abschnitt markieren
         save_error: Beim Speichern des Abschnitts ist ein Fehler aufgetreten.
         transitions:
           beforeAfter: Statische Hintergründe
@@ -1555,6 +1562,8 @@ de:
         header_insertPosition: Abschnitt verschieben
         header_sectionPart: Element verschieben
         hint: Wähle die Position aus, an die verschoben werden soll.
+      select_multiple_content_elements_menu_item:
+        label: "Mehrere auswählen..."
       selectable_storyline_item:
         blank_slate: Keine Kapitel
         blank_slate_excursions: Keine Exkurse
@@ -1805,6 +1814,8 @@ de:
         tabs:
           activity: Letzte Aktivität
       multi_selection_view:
+        end_selection_mode: Fertig
+        selection_mode_hint: Elemente in der Vorschau anklicken, um sie zur Auswahl hinzuzufügen oder daraus zu entfernen.
         tab:
           one: 1 Element
           other: "%{count} Elemente"

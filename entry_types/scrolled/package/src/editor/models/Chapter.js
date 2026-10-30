@@ -122,7 +122,7 @@ export const Chapter = Backbone.Model.extend({
 
   insertFragment(fragment) {
     return $.ajax({
-      url: `${this.url()}/fragment_insertions`,
+      url: `${this.url()}/section_fragment_insertions`,
       type: 'POST',
       dataType: 'json',
       data: {
@@ -138,14 +138,6 @@ export const Chapter = Backbone.Model.extend({
 
       return this.entry.refreshFiles().then(() => this.addFragmentSections(sections));
     });
-  },
-
-  extractToFragmentLibrary({title} = {}) {
-    return Promise.resolve($.ajax({
-      url: `${this.url()}/fragment_extractions`,
-      type: 'POST',
-      data: {title}
-    })).then(() => undefined);
   },
 
   addFragmentSections(sectionsAttributes) {

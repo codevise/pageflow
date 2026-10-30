@@ -40,13 +40,7 @@ ul.files_gallery {
     background-color: var(--ui-selection-color-lighter);
   }
 
-  > li:hover .explorer_file_item-mark,
-  .explorer_file_item-mark:focus-visible {
-    opacity: 0.8;
-  }
-
-  > li.marking .explorer_file_item-mark {
-    @include fa-circle-icon;
+  > li:hover .mark_button:not(.marked) {
     opacity: 0.8;
   }
 
@@ -54,35 +48,11 @@ ul.files_gallery {
     background-color: transparent;
   }
 
-  > li.marking .explorer_file_item-mark:hover {
-    @include fa-check-circle-icon;
-  }
-
-  > li.marked .explorer_file_item-mark {
-    @include fa-check-circle-icon;
-
-    opacity: 1;
-  }
-
   // Top right corner of the 100px wide thumbnail centered in the item.
-  .explorer_file_item-mark {
-    @include fa-check-circle-icon;
-
+  .mark_button {
     position: absolute;
     top: space(3);
     left: calc(50% + 50px - #{space(7)});
-    width: space(6);
-    height: space(6);
-    padding: 0;
-    border: none;
-    background-color: transparent;
-    color: var(--ui-on-primary-color);
-    filter: drop-shadow(0 0 2px #00000077);
-    font-size: 22px;
-    font-weight: bold;
-    line-height: space(6);
-    cursor: pointer;
-    opacity: 0;
   }
 
   > li.blank_slate,

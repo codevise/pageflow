@@ -177,6 +177,24 @@ export const PreviewMessageController = Object.extend({
             })
           );
 
+          this.listenTo(this.entry, 'startContentElementSelection', contentElement =>
+            postMessage({
+              type: 'SELECT',
+              payload: {
+                type: 'multiSelection',
+                itemType: 'contentElement',
+                items: [{id: contentElement.id}],
+                selectionMode: true
+              }
+            })
+          );
+
+          this.listenTo(this.entry, 'endSelectionMode', () =>
+            postMessage({type: 'END_SELECTION_MODE'})
+          );
+
+          this.watchMarkedSections(postMessage);
+
           this.listenTo(this.entry.commentDisplayFilter,
                         'change:resolution change:alwaysShowComments',
                         filter =>
@@ -222,8 +240,15 @@ export const PreviewMessageController = Object.extend({
                                message.data.payload.highlightedThreadId :
                                undefined,
           selectedCommentsSubject:
-            selectedCommentsSubjectFor(this.entry, message.data.payload)
+            selectedCommentsSubjectFor(this.entry, message.data.payload),
+          selectedSectionId: type === 'section' || type === 'sectionSettings' ? id : null
         });
+
+        if (!isSelectionOfSections(message.data.payload) &&
+            this.entry.markedSections?.isActive()) {
+          this.previewShowsMarkedSections = false;
+          this.entry.markedSections.stop();
+        }
 
         if (type === 'contentElementComments' || type === 'sectionComments') {
           if (!onCommentsView() && message.data.payload.source !== 'editor') {
@@ -246,9 +271,16 @@ export const PreviewMessageController = Object.extend({
           }
         }
         else if (type === 'multiSelection') {
-          const {itemType, items} = message.data.payload;
-          const payload = encodeURIComponent(JSON.stringify({itemType, items}));
-          this.editor.navigate(`/scrolled/multi_selection?payload=${payload}`, {trigger: true})
+          const {itemType, items, selectionMode} = message.data.payload;
+
+          if (itemType === 'sectionSettings') {
+            this.markSections(items);
+            this.editor.navigate('/', {trigger: true});
+          }
+          else if (itemType !== 'section') {
+            const payload = encodeURIComponent(JSON.stringify({itemType, items, selectionMode}));
+            this.editor.navigate(`/scrolled/multi_selection?payload=${payload}`, {trigger: true})
+          }
         }
         else if (type === 'sectionSettings') {
           this.editor.navigate(`/scrolled/sections/${id}`, {trigger: true})
@@ -339,6 +371,37 @@ export const PreviewMessageController = Object.extend({
     }
   },
 
+  watchMarkedSections(postMessage) {
+    const markedSections = this.entry.markedSections;
+    this.previewShowsMarkedSections = markedSections.isActive();
+
+    this.listenTo(markedSections, 'add remove reset change:selecting', () => {
+      const active = markedSections.isActive();
+
+      if (active || this.previewShowsMarkedSections) {
+        postMessage({
+          type: 'SELECT',
+          payload: active ?
+                   {
+                     type: 'multiSelection',
+                     itemType: 'section',
+                     items: markedSections.map(section => ({id: section.id}))
+                   } :
+                   null
+        });
+      }
+
+      this.previewShowsMarkedSections = active;
+    });
+  },
+
+  markSections(items) {
+    this.entry.markedSections.reset(
+      items.map(({id}) => this.entry.sections.get(id)).filter(Boolean)
+    );
+    this.entry.markedSections.start();
+  },
+
   preserveScrollPoint(callback) {
     if (this.preservedScrollTarget) {
       const {sectionId, align} = this.preservedScrollTarget;
@@ -393,4 +456,9 @@ function onCommentsView() {
 
   return fragment === 'scrolled/comments' ||
          fragment.startsWith('scrolled/comments?');
+}
+
+function isSelectionOfSections({type, itemType}) {
+  return type === 'section' ||
+         (type === 'multiSelection' && (itemType === 'section' || itemType === 'sectionSettings'));
 }

@@ -8,6 +8,14 @@
   composes: secondary_icon_button from global;
 }
 
+.secondaryButton {
+  composes: secondary_button from global;
+}
+
+.compactButton {
+  composes: compact_button from global;
+}
+
 .destructiveIconButton {
   composes: destructive_icon_button from global;
 }

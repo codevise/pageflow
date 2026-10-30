@@ -2,6 +2,17 @@
   padding-bottom: space(2);
 }
 
+.selectionModeHint {
+  composes: banner from './banner.module.css';
+  margin: space(3) 0;
+}
+
+.endSelectionMode {
+  composes: primaryIconButton compactButton from './buttons.module.css';
+  composes: check from './icons.module.css';
+  align-self: flex-end;
+}
+
 .actions {
   float: right;
 }

@@ -47,6 +47,62 @@ describe('ListSelection', () => {
     expect(selection.models).toEqual([file]);
   });
 
+  describe('#isActive', () => {
+    it('is false by default', () => {
+      const selection = new ListSelection();
+
+      expect(selection.isActive()).toBe(false);
+    });
+
+    it('is true while items are selected', () => {
+      const selection = new ListSelection([f.file({id: 1})]);
+
+      expect(selection.isActive()).toBe(true);
+    });
+
+    it('is true after start while no items are selected', () => {
+      const selection = new ListSelection();
+
+      selection.start();
+
+      expect(selection.isActive()).toBe(true);
+    });
+
+    it('is false after stop', () => {
+      const selection = new ListSelection([f.file({id: 1})]);
+
+      selection.start();
+      selection.stop();
+
+      expect(selection.isActive()).toBe(false);
+    });
+  });
+
+  describe('#start', () => {
+    it('does not trigger event when already started', () => {
+      const selection = new ListSelection();
+      const listener = jest.fn();
+      selection.start();
+      selection.on('change:selecting', listener);
+
+      selection.start();
+
+      expect(listener).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('#stop', () => {
+    it('does not trigger events when not active', () => {
+      const selection = new ListSelection();
+      const listener = jest.fn();
+      selection.on('all', listener);
+
+      selection.stop();
+
+      expect(listener).not.toHaveBeenCalled();
+    });
+  });
+
   describe('#destroyAll', () => {
     it('destroys every selected item', () => {
       const file = f.file({id: 1});

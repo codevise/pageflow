@@ -7,7 +7,8 @@ import {
 } from 'pageflow-scrolled/review';
 import {useEntryStateDispatch} from 'pageflow-scrolled/entryState';
 import {usePostMessageListener} from '../../shared/usePostMessageListener';
-import {EditorStateProvider, useEditorSelection} from './EditorState';
+import {EditorStateProvider, useEditorSelection, useSelectionMode} from './EditorState';
+import {watchSelectionModifier} from './multiSelection';
 import {
   useContentElementEditorCommandEmitter,
   ContentElementEditorCommandSubscriptionProvider
@@ -16,10 +17,13 @@ import {
 export function EntryDecorator({commentingInitialState, children}) {
   const contentElementEditorCommandEmitter = useContentElementEditorCommandEmitter();
 
+  useEffect(() => watchSelectionModifier(window), []);
+
   return (
     <EditorStateProvider>
       <ReviewStateProvider initialState={commentingInitialState}>
         <MessageHandler contentElementEditorCommandEmitter={contentElementEditorCommandEmitter} />
+        <SelectionModeHandler />
         <LocatedCommentThreadsProvider>
           <CommentDisplayFilterFromEditor>
             <ContentElementEditorCommandSubscriptionProvider emitter={contentElementEditorCommandEmitter}>
@@ -53,8 +57,37 @@ function CommentDisplayFilterFromEditor({children}) {
   );
 }
 
+function SelectionModeHandler() {
+  const {active, end} = useSelectionMode();
+
+  useEffect(() => {
+    if (!active) {
+      return;
+    }
+
+    const root = document.documentElement;
+
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        end();
+      }
+    }
+
+    root.setAttribute('data-selection-mode', '');
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      root.removeAttribute('data-selection-mode');
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [active, end]);
+
+  return null;
+}
+
 function MessageHandler({contentElementEditorCommandEmitter}) {
   const {select} = useEditorSelection()
+  const {end: endSelectionMode} = useSelectionMode();
   const dispatch = useEntryStateDispatch();
 
   const receiveMessage = useCallback(data => {
@@ -64,11 +97,14 @@ function MessageHandler({contentElementEditorCommandEmitter}) {
     else if (data.type === 'SELECT') {
       select(data.payload);
     }
+    else if (data.type === 'END_SELECTION_MODE') {
+      endSelectionMode();
+    }
     else if (data.type === 'CONTENT_ELEMENT_EDITOR_COMMAND') {
       contentElementEditorCommandEmitter.trigger(`command:${data.payload.contentElementId}`,
                                                  data.payload.command);
     }
-  }, [dispatch, select, contentElementEditorCommandEmitter]);
+  }, [dispatch, select, endSelectionMode, contentElementEditorCommandEmitter]);
 
   usePostMessageListener(receiveMessage);
 

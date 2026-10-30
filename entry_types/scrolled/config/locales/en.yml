@@ -1269,11 +1269,6 @@ en:
         save: Save
       chapter_menu_items:
         copy_permalink: Copy permalink
-        extract_fragment: Add to shared fragments...
-        extract_fragment_failed: The chapter could not be added to the shared fragments.
-        extract_fragment_forbidden: You are not allowed to add chapters to the shared fragments of this account.
-        extracted_fragment: Added to shared fragments
-        extracting_fragment: Adding to shared fragments...
         move_to_main: Turn into chapter
         move_to_excursions: Turn into excursion
       destroy_chapter_menu_item:
@@ -1427,9 +1422,14 @@ en:
         remove: Remove
       entry_outline:
         add_chapter: New chapter
+        end_selection: End selection
         header: Outline
         finish_reorder_chapters: Finish reordering
         reorder_chapters: "Reorder chapters..."
+        select_sections: "Select sections..."
+        selected_sections:
+          one: 1 section selected
+          other: "%{count} sections selected"
         trash: Deleted content
       entry_select:
         no_matches: No matching stories
@@ -1449,6 +1449,12 @@ en:
         name: Name of the fragment
         shared_hint: Fragments are shared across all entries of the account and all its members with editor access.
         submit: Add
+      extract_sections_fragment_menu_item:
+        extracted: Added to shared fragments
+        extracting: Adding to shared fragments...
+        failed: The sections could not be added to the shared fragments.
+        forbidden: You are not allowed to add sections to the shared fragments of this account.
+        label: Add to shared fragments...
       fragment_library:
         blank_slate: No fragments yet.
         cancel: Cancel
@@ -1475,6 +1481,7 @@ en:
         cutoff: Paywall cutoff
         drag_hint: Drag to move section
         hidden: Only visible in editor
+        mark: Mark section
         save_error: There was an error while saving this section.
         transitions:
           beforeAfter: Static Backgrounds
@@ -1537,6 +1544,8 @@ en:
         header_insertPosition: Move section
         header_sectionPart: Move element
         hint: Select the position to move to.
+      select_multiple_content_elements_menu_item:
+        label: "Select multiple..."
       selectable_storyline_item:
         blank_slate: No chapters
         blank_slate_excursions: No excursions
@@ -1785,6 +1794,8 @@ en:
         tabs:
           activity: Latest activity
       multi_selection_view:
+        end_selection_mode: Done
+        selection_mode_hint: Click elements in the preview to add them to or remove them from the selection.
         tab:
           one: 1 Element
           other: "%{count} Elements"

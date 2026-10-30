@@ -57,8 +57,12 @@ function createInlineEditingSectionPageObject(el) {
   return {
     ...baseCreateSectionPageObject(el),
 
-    select() {
-      fireEvent.mouseDown(selectionRect);
+    select({ctrlKey = false} = {}) {
+      fireEvent.mouseDown(selectionRect, {ctrlKey});
+    },
+
+    isSelected() {
+      return selectionRect.getAttribute('aria-selected') === 'true';
     },
 
     clickAddContentElement() {

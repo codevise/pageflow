@@ -1,6 +1,9 @@
 import {
   extendMultiSelection,
-  isInMultiSelection
+  isInMultiSelection,
+  isInSelectionMode,
+  watchSelectionModifier,
+  withoutSelectionMode
 } from 'frontend/inlineEditing/multiSelection';
 
 describe('extendMultiSelection', () => {
@@ -96,6 +99,58 @@ describe('extendMultiSelection', () => {
     expect(extendMultiSelection(selection, {type: 'contentElement', id: 5}))
       .toEqual({type: 'contentElement', id: 5});
   });
+
+  it('keeps multi selection with single item in selection mode', () => {
+    const selection = {
+      type: 'multiSelection',
+      itemType: 'contentElement',
+      items: [{id: 5}, {id: 6}],
+      selectionMode: true
+    };
+
+    expect(extendMultiSelection(selection, {type: 'contentElement', id: 6}))
+      .toEqual({
+        type: 'multiSelection',
+        itemType: 'contentElement',
+        items: [{id: 5}],
+        selectionMode: true
+      });
+  });
+
+  it('keeps last item in selection mode', () => {
+    const selection = {
+      type: 'multiSelection',
+      itemType: 'contentElement',
+      items: [{id: 5}],
+      selectionMode: true
+    };
+
+    expect(extendMultiSelection(selection, {type: 'contentElement', id: 5}))
+      .toBe(selection);
+  });
+});
+
+describe('isInSelectionMode', () => {
+  it('returns true for multi selection in selection mode', () => {
+    expect(isInSelectionMode({
+      type: 'multiSelection',
+      itemType: 'contentElement',
+      items: [{id: 5}],
+      selectionMode: true
+    })).toBe(true);
+  });
+
+  it('returns false for multi selection', () => {
+    expect(isInSelectionMode({
+      type: 'multiSelection',
+      itemType: 'contentElement',
+      items: [{id: 5}, {id: 6}]
+    })).toBe(false);
+  });
+
+  it('returns false without selection', () => {
+    expect(isInSelectionMode(null)).toBe(false);
+  });
 });
 
 describe('isInMultiSelection', () => {
@@ -126,5 +181,82 @@ describe('isInMultiSelection', () => {
 
   it('returns false without selection', () => {
     expect(isInMultiSelection(null, {type: 'contentElement', id: 6})).toBe(false);
+  });
+});
+
+describe('watchSelectionModifier', () => {
+  let unwatch;
+
+  afterEach(() => unwatch());
+
+  function isFlagged() {
+    return document.documentElement.hasAttribute('data-selection-modifier');
+  }
+
+  it('flags document while modifier key is held', () => {
+    unwatch = watchSelectionModifier(window);
+
+    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'Meta', metaKey: true}));
+
+    expect(isFlagged()).toBe(true);
+  });
+
+  it('removes flag when modifier key is released', () => {
+    unwatch = watchSelectionModifier(window);
+
+    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'Control', ctrlKey: true}));
+    window.dispatchEvent(new KeyboardEvent('keyup', {key: 'Control'}));
+
+    expect(isFlagged()).toBe(false);
+  });
+
+  it('reads modifier state from mouse moves', () => {
+    unwatch = watchSelectionModifier(window);
+
+    window.dispatchEvent(new MouseEvent('mousemove', {ctrlKey: true}));
+
+    expect(isFlagged()).toBe(true);
+  });
+
+  it('removes flag when window loses focus', () => {
+    unwatch = watchSelectionModifier(window);
+
+    window.dispatchEvent(new MouseEvent('mousemove', {metaKey: true}));
+    window.dispatchEvent(new Event('blur'));
+
+    expect(isFlagged()).toBe(false);
+  });
+
+  it('removes flag and stops watching when unwatched', () => {
+    watchSelectionModifier(window)();
+    unwatch = () => {};
+
+    window.dispatchEvent(new MouseEvent('mousemove', {metaKey: true}));
+
+    expect(isFlagged()).toBe(false);
+  });
+});
+
+describe('withoutSelectionMode', () => {
+  it('keeps multi selection of several items', () => {
+    expect(withoutSelectionMode({
+      type: 'multiSelection',
+      itemType: 'contentElement',
+      items: [{id: 5}, {id: 6}],
+      selectionMode: true
+    })).toEqual({
+      type: 'multiSelection',
+      itemType: 'contentElement',
+      items: [{id: 5}, {id: 6}]
+    });
+  });
+
+  it('turns multi selection of single item into selection of item', () => {
+    expect(withoutSelectionMode({
+      type: 'multiSelection',
+      itemType: 'contentElement',
+      items: [{id: 5}],
+      selectionMode: true
+    })).toEqual({type: 'contentElement', id: 5});
   });
 });

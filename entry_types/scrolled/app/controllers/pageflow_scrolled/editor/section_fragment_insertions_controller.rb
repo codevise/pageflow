@@ -1,7 +1,7 @@
 module PageflowScrolled
   module Editor
     # @api private
-    class FragmentInsertionsController < ActionController::Base
+    class SectionFragmentInsertionsController < ActionController::Base
       include Pageflow::EditorController
 
       before_action do
@@ -13,7 +13,7 @@ module PageflowScrolled
 
         @sections = authorized_scope(:read, FragmentLibrary)
                     .find(fragment_params[:entry_id])
-                    .copy_fragment_to(fragment_perma_id: fragment_params[:chapter_perma_id],
+                    .copy_sections_to(fragment_perma_id: fragment_params[:chapter_perma_id],
                                       entry: @entry,
                                       chapter:)
 

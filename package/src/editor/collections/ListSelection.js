@@ -9,11 +9,19 @@ export const ListSelection = Backbone.Collection.extend({
   // even while nothing is checked. Unchecking the last item would
   // otherwise pull the check boxes away from under the pointer.
   start: function() {
+    if (this.selecting) {
+      return;
+    }
+
     this.selecting = true;
     this.trigger('change:selecting');
   },
 
   stop: function() {
+    if (!this.isActive()) {
+      return;
+    }
+
     this.selecting = false;
     this.reset();
     this.trigger('change:selecting');
@@ -21,6 +29,10 @@ export const ListSelection = Backbone.Collection.extend({
 
   isSelecting: function() {
     return !!this.selecting;
+  },
+
+  isActive: function() {
+    return this.isSelecting() || !!this.length;
   },
 
   toggle: function(item) {

@@ -1,3 +1,10 @@
 .wrapper {
   position: relative;
 }
+
+:global([data-selection-modifier]) .wrapper,
+:global([data-selection-modifier]) .wrapper *,
+:global([data-selection-mode]) .wrapper,
+:global([data-selection-mode]) .wrapper * {
+  cursor: copy !important;
+}

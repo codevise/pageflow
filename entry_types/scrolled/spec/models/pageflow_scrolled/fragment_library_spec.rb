@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pageflow/shared_contexts/fake_translations'
 
 module PageflowScrolled
   RSpec.describe FragmentLibrary do
@@ -79,7 +80,7 @@ module PageflowScrolled
       end
     end
 
-    describe '#copy_fragment_to' do
+    describe '#copy_sections_to' do
       it 'copies sections of fragment chapter to end of chapter' do
         library_entry = create(:entry, type_name: 'scrolled', fragment_library: 'shared')
         fragment = create(:scrolled_chapter, revision: library_entry.draft)
@@ -89,7 +90,7 @@ module PageflowScrolled
         create(:section, chapter:, position: 0)
         library = FragmentLibrary.new(Pageflow::DraftEntry.new(library_entry))
 
-        sections = library.copy_fragment_to(fragment_perma_id: fragment.perma_id,
+        sections = library.copy_sections_to(fragment_perma_id: fragment.perma_id,
                                             entry: Pageflow::DraftEntry.new(entry),
                                             chapter:)
 
@@ -105,7 +106,7 @@ module PageflowScrolled
         library = FragmentLibrary.new(Pageflow::DraftEntry.new(library_entry))
 
         expect {
-          library.copy_fragment_to(fragment_perma_id: 404,
+          library.copy_sections_to(fragment_perma_id: 404,
                                    entry: Pageflow::DraftEntry.new(entry),
                                    chapter:)
         }.to raise_error(ActiveRecord::RecordNotFound)
@@ -207,14 +208,14 @@ module PageflowScrolled
       end
     end
 
-    describe '#extract_fragment_from' do
+    describe '#extract_sections_from' do
       it 'creates library entry on first extraction' do
-        account = create(:account, name: 'Acme')
+        account = create(:account)
         entry = create(:entry, type_name: 'scrolled', account:)
-        chapter = create(:scrolled_chapter, revision: entry.draft)
+        section = create(:section, revision: entry.draft)
         library = FragmentLibrary.shared_for_account(account)
 
-        library.extract_fragment_from(entry: Pageflow::DraftEntry.new(entry), chapter:)
+        library.extract_sections_from(entry: Pageflow::DraftEntry.new(entry), sections: [section])
 
         expect(library).to be_persisted
         expect(library.entry.to_model).to have_attributes(account:,
@@ -222,20 +223,71 @@ module PageflowScrolled
                                                           fragment_library: 'shared')
       end
 
-      it 'copies chapter with its sections into library' do
+      it 'copies sections into chapter with title' do
         account = create(:account)
         entry = create(:entry, type_name: 'scrolled', account:)
-        chapter = create(:scrolled_chapter,
-                         revision: entry.draft,
-                         configuration: {'title' => 'Intro'})
-        create(:section, chapter:)
+        chapter = create(:scrolled_chapter, revision: entry.draft)
+        first_section = create(:section, chapter:, position: 0,
+                                         configuration: {'layout' => 'left'})
+        second_section = create(:section, chapter:, position: 1,
+                                          configuration: {'layout' => 'right'})
+        create(:content_element, :heading, section: second_section)
         library = FragmentLibrary.shared_for_account(account)
 
-        library.extract_fragment_from(entry: Pageflow::DraftEntry.new(entry), chapter:)
+        library.extract_sections_from(entry: Pageflow::DraftEntry.new(entry),
+                                      sections: [first_section, second_section],
+                                      title: ' Intro ')
 
-        expect(library.content.chapters.map(&:configuration))
-          .to match([include('title' => 'Intro')])
-        expect(library.content.sections.size).to eq(1)
+        expect(library.content.chapters.map(&:configuration)).to eq([{'title' => 'Intro'}])
+        expect(library.content.sections.map(&:configuration))
+          .to match([include('layout' => 'left'), include('layout' => 'right')])
+        expect(library.content.content_elements.map(&:type_name)).to eq(%w[heading])
+      end
+
+      it 'omits title if blank title is given' do
+        account = create(:account)
+        entry = create(:entry, type_name: 'scrolled', account:)
+        section = create(:section, revision: entry.draft)
+        library = FragmentLibrary.shared_for_account(account)
+
+        library.extract_sections_from(entry: Pageflow::DraftEntry.new(entry),
+                                      sections: [section],
+                                      title: ' ')
+
+        expect(library.content.chapters.first.configuration).to eq({})
+      end
+
+      describe 'library title' do
+        include_context 'fake translations'
+
+        before do
+          translation(:de, 'pageflow_scrolled.fragment_library.title',
+                      'Bausteine von %{account_name}')
+          translation(:en, 'pageflow_scrolled.fragment_library.title',
+                      'Shared fragments of %{account_name}')
+        end
+
+        it 'includes account name in locale of entry' do
+          account = create(:account, name: 'Acme')
+          entry = create(:entry, type_name: 'scrolled', account:, draft_attributes: {locale: 'de'})
+          section = create(:section, revision: entry.draft)
+          library = FragmentLibrary.shared_for_account(account)
+
+          library.extract_sections_from(entry: Pageflow::DraftEntry.new(entry), sections: [section])
+
+          expect(library.entry.to_model.title).to eq('Bausteine von Acme')
+        end
+
+        it 'falls back to English for other locales' do
+          account = create(:account, name: 'Acme')
+          entry = create(:entry, type_name: 'scrolled', account:, draft_attributes: {locale: 'fr'})
+          section = create(:section, revision: entry.draft)
+          library = FragmentLibrary.shared_for_account(account)
+
+          library.extract_sections_from(entry: Pageflow::DraftEntry.new(entry), sections: [section])
+
+          expect(library.entry.to_model.title).to eq('Shared fragments of Acme')
+        end
       end
     end
 

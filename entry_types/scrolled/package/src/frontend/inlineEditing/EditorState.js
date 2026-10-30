@@ -1,6 +1,12 @@
 import React, {useState, useContext, useMemo, useCallback, useRef} from 'react';
 
-import {extendMultiSelection, isInMultiSelection} from './multiSelection';
+import {
+  extendMultiSelection,
+  hasSelectionModifier,
+  isInMultiSelection,
+  isInSelectionMode,
+  withoutSelectionMode
+} from './multiSelection';
 
 const Context = React.createContext({});
 
@@ -27,9 +33,15 @@ export function EditorStateProvider(props) {
     setSelection(extendMultiSelection(selectionRef.current, options));
   }, [setSelection]);
 
+  const endSelectionMode = useCallback(() => {
+    if (isInSelectionMode(selectionRef.current)) {
+      setSelection(withoutSelectionMode(selectionRef.current));
+    }
+  }, [setSelection]);
+
   const value = useMemo(() => ({
-    selection, setSelection, extendSelection
-  }), [setSelection, extendSelection, selection])
+    selection, setSelection, extendSelection, endSelectionMode
+  }), [setSelection, extendSelection, endSelectionMode, selection])
 
   return (
     <Context.Provider value={value}>
@@ -72,4 +84,15 @@ export function useEditorSelection(options) {
       resetSelection
     };
   }, [options, selection, setSelection, select, extendSelection, resetSelection]);
+}
+
+export function useSelectionMode() {
+  const {selection, endSelectionMode} = useContext(Context);
+  const active = isInSelectionMode(selection);
+
+  return useMemo(() => ({
+    active,
+    end: endSelectionMode,
+    extendsSelection: event => active || hasSelectionModifier(event)
+  }), [active, endSelectionMode]);
 }

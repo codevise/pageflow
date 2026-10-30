@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'pageflow/editor_controller_test_helper'
 
 module PageflowScrolled
-  RSpec.describe Editor::FragmentInsertionsController, type: :controller do
+  RSpec.describe Editor::SectionFragmentInsertionsController, type: :controller do
     render_views
     include Pageflow::EditorControllerTestHelper
 
