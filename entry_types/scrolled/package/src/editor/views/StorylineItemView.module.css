@@ -12,17 +12,21 @@
 }
 
 .expandChapters {
+  composes: banner from './banner.module.css';
   margin-top: space(2);
 }
 
+.expandChapters p {
+  margin: 0;
+}
+
 .expandChaptersButton {
-  composes: saveButton from './buttons.module.css';
-  padding-top: 3px !important;
-  padding-bottom: 3px !important;
+  composes: saveButton compactButton from './buttons.module.css';
+  align-self: flex-end;
 }
 
 .collapsed .expandChapters {
-  display: block !important;
+  display: flex !important;
 }
 
 .chapters {

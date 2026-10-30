@@ -12,7 +12,7 @@ export const StorylineItemView = Marionette.Layout.extend({
   className: styles.root,
 
   template: () => `
-    <div class="${styles.expandChapters} info_box info">
+    <div class="${styles.expandChapters}">
       <p>
         ${I18n.t('pageflow_scrolled.editor.storyline_item.reorder_chapters')}
       </p>
