@@ -39,7 +39,7 @@ module PageflowScrolled
       @content ||= RevisionContent.new(entry.draft, include_hidden: true)
     end
 
-    def copy_fragment_to(fragment_perma_id:, entry:, chapter:)
+    def copy_sections_to(fragment_perma_id:, entry:, chapter:)
       SectionsCopy
         .new(source_entry: self.entry, destination_entry: entry)
         .perform(fragment_chapter(fragment_perma_id).sections, chapter:)

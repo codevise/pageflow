@@ -80,7 +80,7 @@ module PageflowScrolled
       end
     end
 
-    describe '#copy_fragment_to' do
+    describe '#copy_sections_to' do
       it 'copies sections of fragment chapter to end of chapter' do
         library_entry = create(:entry, type_name: 'scrolled', fragment_library: 'shared')
         fragment = create(:scrolled_chapter, revision: library_entry.draft)
@@ -90,7 +90,7 @@ module PageflowScrolled
         create(:section, chapter:, position: 0)
         library = FragmentLibrary.new(Pageflow::DraftEntry.new(library_entry))
 
-        sections = library.copy_fragment_to(fragment_perma_id: fragment.perma_id,
+        sections = library.copy_sections_to(fragment_perma_id: fragment.perma_id,
                                             entry: Pageflow::DraftEntry.new(entry),
                                             chapter:)
 
@@ -106,7 +106,7 @@ module PageflowScrolled
         library = FragmentLibrary.new(Pageflow::DraftEntry.new(library_entry))
 
         expect {
-          library.copy_fragment_to(fragment_perma_id: 404,
+          library.copy_sections_to(fragment_perma_id: 404,
                                    entry: Pageflow::DraftEntry.new(entry),
                                    chapter:)
         }.to raise_error(ActiveRecord::RecordNotFound)

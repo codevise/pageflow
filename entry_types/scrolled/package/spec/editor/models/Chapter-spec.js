@@ -290,7 +290,7 @@ describe('Chapter', () => {
 
     function respond(server, sections) {
       server.respond(
-        'POST', '/editor/entries/1/scrolled/chapters/10/fragment_insertions',
+        'POST', '/editor/entries/1/scrolled/chapters/10/section_fragment_insertions',
         [201, {'Content-Type': 'application/json'}, JSON.stringify(sections)]
       );
       server.respond(
@@ -306,7 +306,7 @@ describe('Chapter', () => {
 
       expect(requests[0].method).toBe('POST');
       expect(requests[0].url)
-        .toBe('/editor/entries/1/scrolled/chapters/10/fragment_insertions');
+        .toBe('/editor/entries/1/scrolled/chapters/10/section_fragment_insertions');
       expect(requests[0].requestBody)
         .toContain('fragment%5Bchapter_perma_id%5D=700');
     });

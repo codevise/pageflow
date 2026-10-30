@@ -122,7 +122,7 @@ export const Chapter = Backbone.Model.extend({
 
   insertFragment(fragment) {
     return $.ajax({
-      url: `${this.url()}/fragment_insertions`,
+      url: `${this.url()}/section_fragment_insertions`,
       type: 'POST',
       dataType: 'json',
       data: {
