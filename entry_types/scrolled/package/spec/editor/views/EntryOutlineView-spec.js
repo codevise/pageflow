@@ -11,7 +11,9 @@ describe('EntryOutlineView', () => {
     'pageflow_scrolled.editor.storylines_tabs.main': 'Main',
     'pageflow_scrolled.editor.storylines_tabs.excursions': 'Excursions',
     'pageflow_scrolled.editor.storyline_item.excursion_blank_slate': 'Excursions provide additional content outside the main path. Create your first excursion.',
-    'pageflow_scrolled.editor.entry_outline.trash': 'Deleted content'
+    'pageflow_scrolled.editor.entry_outline.trash': 'Deleted content',
+    'pageflow_scrolled.editor.entry_outline.reorder_chapters': 'Reorder chapters',
+    'pageflow_scrolled.editor.entry_outline.finish_reorder_chapters': 'Finish reordering'
   });
 
   const {createEntry} = useEditorGlobals();
@@ -388,5 +390,25 @@ describe('EntryOutlineView', () => {
     render(new EntryOutlineView({entry}));
 
     expect(screen.getByRole('button', {name: 'Deleted content'})).toBeInTheDocument();
+  });
+
+  it('ends chapter reordering when switching storyline tabs', async () => {
+    const entry = createEntry({
+      storylines: [
+        {id: 10, permaId: 200, position: 0, role: 'main'},
+        {id: 11, permaId: 201, position: 1, configuration: {}}
+      ],
+      chapters: [
+        {id: 1, permaId: 100, position: 0, storylineId: 10},
+        {id: 2, permaId: 101, position: 0, storylineId: 11}
+      ]
+    });
+    const user = userEvent.setup();
+
+    render(new EntryOutlineView({entry}));
+    await user.click(screen.getByRole('link', {name: 'Reorder chapters'}));
+    await user.click(screen.getByRole('tab', {name: 'Excursions'}));
+
+    expect(screen.getByRole('link', {name: 'Reorder chapters'})).toBeInTheDocument();
   });
 });

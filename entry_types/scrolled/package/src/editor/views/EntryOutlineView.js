@@ -47,17 +47,17 @@ export const EntryOutlineView = Marionette.Layout.extend({
       openOnClick: true
     }), {to: this.ui.dropDownButton});
 
-    this.appendSubview(
-      new StorylinesTabsView({
+    const storylinesTabsView = new StorylinesTabsView({
+      entry: this.options.entry,
+      itemViewContstuctor: StorylineItemView,
+      itemViewOptions: {
         entry: this.options.entry,
-        itemViewContstuctor: StorylineItemView,
-        itemViewOptions: {
-          entry: this.options.entry,
-          viewModel
-        }
-      }),
-      {to: this.ui.tabs}
-    );
+        viewModel
+      }
+    });
+
+    this.listenTo(storylinesTabsView, 'change', () => viewModel.set('collapsed', false));
+    this.appendSubview(storylinesTabsView, {to: this.ui.tabs});
 
     this.ui.tabs.find('.tabs_view-scroller').first().append(this.ui.toolbar);
   }

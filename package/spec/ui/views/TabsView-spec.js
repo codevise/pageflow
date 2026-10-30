@@ -117,6 +117,55 @@ describe('TabsView', () => {
     });
   });
 
+  describe('change event', () => {
+    useFakeTranslations({
+      'tabs.one': 'Tab one',
+      'tabs.two': 'Tab two'
+    });
+
+    function renderTabs() {
+      var tabsView = new TabsView({i18n: 'tabs'});
+
+      tabsView.tab('one', function() { return new Backbone.View(); });
+      tabsView.tab('two', function() { return new Backbone.View(); });
+
+      var listener = jest.fn();
+      tabsView.on('change', listener);
+
+      return {tabsView, listener, ...renderBackboneView(tabsView)};
+    }
+
+    it('is triggered with name of tab when other tab is selected', () => {
+      var {listener, getByRole} = renderTabs();
+
+      fireEvent.click(getByRole('tab', {name: 'Tab two'}));
+
+      expect(listener).toHaveBeenCalledWith('two');
+    });
+
+    it('is not triggered for default tab', () => {
+      var {listener} = renderTabs();
+
+      expect(listener).not.toHaveBeenCalled();
+    });
+
+    it('is not triggered when current tab is selected again', () => {
+      var {listener, getByRole} = renderTabs();
+
+      fireEvent.click(getByRole('tab', {name: 'Tab one'}));
+
+      expect(listener).not.toHaveBeenCalled();
+    });
+
+    it('is not triggered when tab is refreshed', () => {
+      var {tabsView, listener} = renderTabs();
+
+      tabsView.refresh();
+
+      expect(listener).not.toHaveBeenCalled();
+    });
+  });
+
   describe('accessibility', () => {
     useFakeTranslations({
       'tabs.one': 'Tab one',

@@ -27,6 +27,9 @@ import template from '../templates/tabsView.jst';
  * @param {string} [options.i18n]
  *   Legacy alias for `fallbackTranslationKeyPrefix`.
  *
+ * Triggers a `change` event with the name of the new tab when the
+ * user or a call to `changeTab` switches to a different tab.
+ *
  * @class
  */
 export const TabsView = Marionette.Layout.extend(/* @lends TabView.prototype */{
@@ -106,7 +109,9 @@ export const TabsView = Marionette.Layout.extend(/* @lends TabView.prototype */{
       return;
     }
 
-    if (this.currentTabName !== name || options.refresh) {
+    var previousTabName = this.currentTabName;
+
+    if (previousTabName !== name || options.refresh) {
       this.container.show(this.tabFactoryFns[name]());
     }
 
@@ -114,6 +119,10 @@ export const TabsView = Marionette.Layout.extend(/* @lends TabView.prototype */{
 
     this._updateActiveTab(name, options.focusTab);
     this._updateActivePanel(name);
+
+    if (previousTabName && previousTabName !== name) {
+      this.trigger('change', name);
+    }
   },
 
   defaultTab: function() {

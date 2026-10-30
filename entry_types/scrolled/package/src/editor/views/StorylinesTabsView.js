@@ -26,6 +26,7 @@ export const StorylinesTabsView = Marionette.View.extend({
       }
     })
 
+    this.listenTo(this.tabsView, 'change', name => this.trigger('change', name));
     this.appendSubview(this.tabsView);
     return this;
   },
