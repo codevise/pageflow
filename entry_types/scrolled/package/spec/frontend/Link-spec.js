@@ -231,6 +231,22 @@ describe('Link', () => {
       expect(window.location.hash).toEqual('#section-1000');
       expect(getByTestId('activeExcursion')).toHaveTextContent('none');
     });
+
+    it('keeps native fragment navigation within active excursion', () => {
+      const {getByRole, getByTestId} = renderInEntry(
+        <>
+          <Link href={{section: 1011}}>Click</Link>
+          <ActiveExcursionTitle />
+        </>,
+        {seed: storylinesSeed}
+      );
+
+      act(() => changeLocationHash('#excursion'));
+      const defaultPrevented = !fireEvent.click(getByRole('link'));
+
+      expect(defaultPrevented).toBe(false);
+      expect(getByTestId('activeExcursion')).toHaveTextContent('excursion');
+    });
   });
 
   describe('with href to other entry', () => {
@@ -350,7 +366,8 @@ const storylinesSeed = {
   ],
   sections: [
     {id: 100, permaId: 1000, chapterId: 10},
-    {id: 101, permaId: 1010, chapterId: 11}
+    {id: 101, permaId: 1010, chapterId: 11},
+    {id: 102, permaId: 1011, chapterId: 11}
   ]
 };
 
