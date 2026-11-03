@@ -88,7 +88,7 @@ export function ActiveExcursionProvider({children}) {
 
     const {excursion} = findScrollTargetByHash(entryStructure, hash);
 
-    if (!excursion && !activeExcursionId) {
+    if (excursion?.id === activeExcursionId) {
       return;
     }
 
