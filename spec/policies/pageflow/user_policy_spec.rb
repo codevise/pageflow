@@ -91,6 +91,48 @@ module Pageflow
                     to: :set_admin,
                     topic: -> { create(:user, :member, on: create(:account)) }
 
+    describe 'read?' do
+      it 'allows manager to read member of managed account' do
+        account = create(:account)
+        manager = create(:user, :manager, on: account)
+        member = create(:user, :member, on: account)
+
+        policy = UserPolicy.new(manager, member)
+
+        expect(policy).to permit_action(:read)
+      end
+
+      it 'does not allow manager to read admin who is not member of managed account' do
+        manager = create(:user, :manager, on: create(:account))
+        admin = create(:user, :admin, on: create(:account))
+
+        policy = UserPolicy.new(manager, admin)
+
+        expect(policy).not_to permit_action(:read)
+      end
+
+      it 'allows manager to read admin who is member of managed account' do
+        account = create(:account)
+        manager = create(:user, :manager, on: account)
+        admin = create(:user, :admin, on: account)
+
+        policy = UserPolicy.new(manager, admin)
+
+        expect(policy).to permit_action(:read)
+      end
+    end
+
+    describe 'redirect_to_user?' do
+      it 'does not allow manager to redirect to admin who is not member of managed account' do
+        manager = create(:user, :manager, on: create(:account))
+        admin = create(:user, :admin, on: create(:account))
+
+        policy = UserPolicy.new(manager, admin)
+
+        expect(policy).not_to permit_action(:redirect_to_user)
+      end
+    end
+
     describe 'delete_own_user?' do
       it 'allows users when authorize_user_deletion is true' do
         Pageflow.config.authorize_user_deletion = ->(_user) { true }
