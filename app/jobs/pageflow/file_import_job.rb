@@ -16,7 +16,7 @@ module Pageflow
       upload_attachment file_record, temp_file
       file_record.publish!
     ensure
-      temp_file.delete
+      temp_file&.delete
     end
 
     def upload_attachment(file_record, temp_file)
