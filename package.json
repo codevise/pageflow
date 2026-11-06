@@ -31,7 +31,8 @@
     "build": "NODE_ENV=production rollup --config rollup.config.js"
   },
   "resolutions": {
-    "jest-environment-jsdom": "27.0.6"
+    "jest-environment-jsdom": "27.0.6",
+    "basic-ftp": "6.2.1"
   },
   "dependencies": {}
 }
