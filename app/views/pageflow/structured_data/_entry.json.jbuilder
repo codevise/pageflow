@@ -23,7 +23,9 @@ if meta_data[:publisher].present?
     json.name meta_data[:publisher].split(',').map(&:squish)
     json.logo do
       json.set! '@type', 'ImageObject'
-      json.url structured_data_normalize_protocol(asset_url(entry.theme.print_logo_path))
+      json.url structured_data_normalize_protocol(
+        entry.entry_type.theme_asset_resolver.publisher_logo_url(entry, view_context: self)
+      )
     end
   end
 end
