@@ -47,9 +47,18 @@ in_root { run('rake db:environment:set db:drop:all', capture: true, abort_on_fai
 
 rake 'db:create'
 
-# Install Webpacker
+# Install Shakapacker
 
-rake 'shakapacker:install' if ENV['PAGEFLOW_INSTALL_SHAKAPACKER'] == 'true'
+if ENV['PAGEFLOW_INSTALL_SHAKAPACKER'] == 'true'
+  # Shakapacker falls back to npm, while generators use yarn
+  package_json = JSON.pretty_generate(
+    private: true,
+    packageManager: "yarn@#{`yarn --version`.strip}"
+  )
+  create_file('package.json', "#{package_json}\n")
+
+  rake 'shakapacker:install[webpack]'
+end
 
 # Install pageflow and the tested engine via their generators.
 

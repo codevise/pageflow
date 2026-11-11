@@ -1,3 +1,5 @@
+require 'open-uri'
+
 module PageflowScrolled
   # @api private
   module ReactServerSideRenderingHelper
@@ -26,24 +28,25 @@ module PageflowScrolled
     # Scrolled from host application configuration.
     class ReactRenderer < ::React::ServerRendering::BundleRenderer
       def asset_container_class
-        WebpackerSplitChunksManifestContainer
+        ShakapackerSplitChunksManifestContainer
       end
     end
 
     # see https://github.com/reactjs/react-rails/issues/970#issuecomment-476338244
-    class WebpackerSplitChunksManifestContainer < React::ServerRendering::WebpackerManifestContainer
+    class ShakapackerSplitChunksManifestContainer
       CLIENT_EXEC =
         %r{__webpack_exec__\("./node_modules/webpack-dev-server/client/index\.js[^"]*"\),}
 
       def find_asset(logical_path) # rubocop:todo Metrics/AbcSize
-        asset_paths = manifest.lookup_pack_with_chunks(logical_path, type: :javascript)
+        asset_paths = Shakapacker.manifest.lookup_pack_with_chunks(logical_path,
+                                                                   type: :javascript)
 
         asset_contents =
-          if Webpacker.dev_server.running?
-            ds = Webpacker.dev_server
+          if Shakapacker.dev_server.running?
+            ds = Shakapacker.dev_server
             asset_paths.map do |asset_path|
               # Remove the protocol and host from the asset
-              # path. Sometimes webpacker includes this, sometimes
+              # path. Sometimes shakapacker includes this, sometimes
               # it does not
               asset_path.slice!("#{ds.protocol}://#{ds.host_with_port}")
               dev_server_asset =
@@ -51,8 +54,7 @@ module PageflowScrolled
 
               # Remove webpack-dev-server client code that tries to
               # interact with browser globals:
-              dev_server_asset.sub!(CLIENT_REQUIRE, '//\0') # for Webpack 4
-              dev_server_asset.sub!(CLIENT_EXEC, '/*\0*/')  # for Webpack 5
+              dev_server_asset.sub!(CLIENT_EXEC, '/*\0*/')
 
               dev_server_asset
             end
