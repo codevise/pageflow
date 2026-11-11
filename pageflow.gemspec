@@ -143,7 +143,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'bcrypt', '~> 3.1.7'
 
   # Files archiver for entry export
-  s.add_dependency 'rubyzip', '~> 1.2'
+  s.add_dependency 'rubyzip', '~> 3.0'
 
   # string encryptor/decryptor
   s.add_dependency 'symmetric-encryption', '~> 4.3.1'

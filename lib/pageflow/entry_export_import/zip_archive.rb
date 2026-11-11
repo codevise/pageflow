@@ -6,9 +6,8 @@ module Pageflow
     class ZipArchive
       def initialize(file_name)
         Zip.force_entry_names_encoding = 'UTF-8'
-        Zip.write_zip64_support = true
 
-        @file = Zip::File.open(file_name, Zip::File::CREATE)
+        @file = Zip::File.open(file_name, create: true)
       end
 
       def include?(path)
