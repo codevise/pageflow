@@ -59,6 +59,41 @@ module Pageflow
           expect(new_image.height).to eq(1)
         end
 
+        it 'handles svg files with svg tag after first kilobyte' do
+          processor = Webp.new(fixture_1200x800_svg_with_long_preamble, geometry: '600x300>')
+
+          result = processor.make
+          new_image = Vips::Image.new_from_file(result.path)
+
+          expect(result.path).to end_with('.webp')
+          expect(new_image.width).to eq(450)
+          expect(new_image.height).to eq(300)
+        end
+
+        it 'supports cropping svg files with svg tag after first kilobyte' do
+          processor = Webp.new(fixture_1200x800_svg_with_long_preamble, geometry: '600x200#')
+
+          result = processor.make
+          new_image = Vips::Image.new_from_file(result.path)
+
+          expect(new_image.width).to eq(600)
+          expect(new_image.height).to eq(200)
+        end
+
+        it 'handles other formats with svg extension' do
+          file = Tempfile.new(['image', '.svg'])
+          FileUtils.cp(fixture_1200x800_jpg.path, file.path)
+          processor = Webp.new(file, geometry: '600x300>')
+
+          result = processor.make
+          new_image = Vips::Image.new_from_file(result.path)
+
+          expect(new_image.width).to eq(450)
+          expect(new_image.height).to eq(300)
+        ensure
+          file&.close!
+        end
+
         def fixture_7x15_png
           File.open(Engine.root.join('spec', 'fixtures', 'image.png'))
         end
@@ -69,6 +104,10 @@ module Pageflow
 
         def fixture_1x1_gif
           File.open(Engine.root.join('spec', 'fixtures', 'image.gif'))
+        end
+
+        def fixture_1200x800_svg_with_long_preamble
+          File.open(Engine.root.join('spec', 'fixtures', 'long_preamble.svg'))
         end
       end
     end
