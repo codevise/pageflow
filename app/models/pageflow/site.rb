@@ -22,6 +22,13 @@ module Pageflow
 
     delegate :enabled_feature_names, to: :account
 
+    def home_url
+      url = super.to_s.strip
+      return url if url.empty? || url.match?(%r{\A(/|https?://)}i)
+
+      "https://#{url}"
+    end
+
     def legal_info(locale:)
       LegalInfo.new(self, locale)
     end

@@ -2,6 +2,26 @@ require 'spec_helper'
 
 module Pageflow
   describe Site do
+    describe 'home_url' do
+      {
+        'example.com/overview?lang=de#top' => 'https://example.com/overview?lang=de#top',
+        'example.com:8443/story' => 'https://example.com:8443/story',
+        '  example.com/story  ' => 'https://example.com/story',
+        'https://example.com/story' => 'https://example.com/story',
+        'HTTP://example.com/story' => 'HTTP://example.com/story',
+        '/my-story?lang=de#top' => '/my-story?lang=de#top',
+        '' => '',
+        '  ' => '',
+        nil => ''
+      }.each do |value, expected|
+        it "normalizes #{value.inspect} to #{expected.inspect}" do
+          site = build(:site, home_url: value)
+
+          expect(site.home_url).to eq(expected)
+        end
+      end
+    end
+
     describe '#display_name' do
       it 'uses placeholder' do
         site = build(:site)
