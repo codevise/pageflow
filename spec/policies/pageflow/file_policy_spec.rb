@@ -65,6 +65,17 @@ module Pageflow
         expect(policy).to permit_action(:use)
       end
 
+      it 'allows admins to use a file of any entry' do
+        user = create(:user, :admin)
+        entry = create(:entry)
+        file = create(:audio_file)
+        create(:file_usage, revision: entry.draft, file:)
+
+        policy = FilePolicy.new(user, file)
+
+        expect(policy).to permit_action(:use)
+      end
+
       it 'forbids to use a file when user cannot preview one of its entries or accounts' do
         user = create(:user)
         entry = create(:entry)

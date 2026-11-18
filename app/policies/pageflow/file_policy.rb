@@ -21,9 +21,9 @@ module Pageflow
     end
 
     def previewer_of_any_entry_using_file_or_its_account?(user, file)
-      entries_user_is_previewer_or_above_on = EntryPolicy::Scope
-                                              .new(user, Entry).resolve
-      entries_user_is_previewer_or_above_on.map(&:id).intersect?(file.using_entry_ids)
+      EntryPolicy::Scope.new(user, Entry).resolve
+                        .where(id: file.using_revisions.select(:entry_id))
+                        .exists?
     end
 
     def can_edit_any_entry_using_file?(file)
@@ -31,9 +31,9 @@ module Pageflow
     end
 
     def editor_of_any_entry_using_file_or_its_account?(user, file)
-      entries_user_is_editor_or_above_on = EntryPolicy::Scope
-                                           .new(user, Entry).editor_or_above
-      entries_user_is_editor_or_above_on.map(&:id).intersect?(file.using_entry_ids)
+      EntryPolicy::Scope.new(user, Entry).editor_or_above
+                        .where(id: file.using_revisions.select(:entry_id))
+                        .exists?
     end
   end
 end
