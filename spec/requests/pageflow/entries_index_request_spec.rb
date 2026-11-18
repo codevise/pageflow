@@ -40,6 +40,23 @@ module Pageflow
         expect(response).to redirect_to('http://example.com/overview')
       end
 
+      it 'redirects existing bare-domain home urls to https without resaving the site' do
+        site = create(:site, cname: 'pageflow.example.com')
+        site.update_column(:home_url, 'example.com/overview?lang=de#top')
+
+        get('/', params: {}, headers: {'HTTP_HOST' => 'pageflow.example.com'})
+
+        expect(response).to redirect_to('https://example.com/overview?lang=de#top')
+      end
+
+      it 'redirects root-relative home urls on the request host' do
+        create(:site, cname: 'pageflow.example.com', home_url: '/my-story?lang=de#top')
+
+        get('/', params: {}, headers: {'HTTP_HOST' => 'pageflow.example.com'})
+
+        expect(response).to redirect_to('http://pageflow.example.com/my-story?lang=de#top')
+      end
+
       it 'renders site root entry if present' do
         site = create(:site, cname: 'pageflow.example.com')
         create(:entry,
