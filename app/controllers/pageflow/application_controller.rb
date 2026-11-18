@@ -71,11 +71,7 @@ module Pageflow
 
     def debug_log_with_backtrace(exception)
       Rails.logger.debug exception
-      backtrace = ''
-      exception.backtrace.each do |line|
-        backtrace << line
-      end
-      Rails.logger.debug backtrace
+      Rails.logger.debug exception.backtrace.join("\n")
     end
   end
 end
