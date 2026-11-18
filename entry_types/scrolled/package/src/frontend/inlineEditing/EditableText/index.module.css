@@ -26,7 +26,8 @@
 .selection {
   display: none;
   position: absolute;
-  z-index: 1;
+  /* Keep the block toolbar above adjacent player controls (z-index 3). */
+  z-index: 4;
   width: 100%;
   pointer-events: none;
 }

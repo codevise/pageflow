@@ -6,7 +6,7 @@ import {EditableText} from '../EditableText';
 import {EditorStateProvider} from '../EditorState';
 import {ContentElementEditorStateProvider} from '../ContentElementEditorStateProvider';
 import {ContentElementAttributesProvider} from '../../useContentElementAttributes';
-import {RootProviders} from 'pageflow-scrolled/frontend';
+import {RootProviders, PlayerControls} from 'pageflow-scrolled/frontend';
 
 import {normalizeAndMergeFixture} from 'pageflow-scrolled/spec/support/stories';
 
@@ -26,6 +26,19 @@ export const lightBackground = () =>
 export const darkBackground = () =>
   <Background dark>
     <EditableText value={exampleValue}
+                  contentElementId={1} />
+  </Background>;
+
+export const belowPlayerControls = () =>
+  <Background>
+    <PlayerControls duration={12}
+                    currentTime={5}
+                    bufferedEnd={12}
+                    hideBigPlayButton>
+      <div style={{height: 180, background: '#333'}} />
+    </PlayerControls>
+    <EditableText value={exampleValue}
+                  selectionRect
                   contentElementId={1} />
   </Background>;
 
