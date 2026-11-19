@@ -112,6 +112,40 @@ describe('SidebarEditLinkView', () => {
     });
   });
 
+  it('offers theme background color presets as thumbnail background swatches', () => {
+    const entry = createEntry({
+      themeOptions: {
+        presets: {
+          backgroundColors: [{value: '#c9e9fb', name: 'Extra Light Blue'}]
+        }
+      },
+      contentElements: [
+        {
+          id: 1,
+          typeName: 'externalLinkList',
+          configuration: {
+            links: [{id: 1}]
+          }
+        }
+      ]
+    });
+    const contentElement = entry.contentElements.get(1);
+    const links = ExternalLinkCollection.forContentElement(contentElement, entry);
+    const view = new SidebarEditLinkView({
+      model: links.get(1),
+      collection: links,
+      entry,
+      contentElement
+    });
+
+    view.render();
+    const swatch =
+      view.$el.find('.color_picker-swatches button[title="Extra Light Blue"]')[0];
+
+    expect(swatch).toBeDefined();
+    expect(swatch.textContent).toBe('#c9e9fb');
+  });
+
   it('renders inputs described by schema', () => {
     const entry = createEntry({
       contentElements: [
