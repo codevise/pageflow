@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Backbone from 'backbone';
 
-import {DropDownButtonView} from 'pageflow/editor';
+import {DropDownButtonView} from 'pageflow/ui';
 
 import {renderBackboneView as render} from 'pageflow/testHelpers';
 import sinon from 'sinon';
@@ -198,9 +198,30 @@ describe('DropDownButtonView', () => {
     expect(items.eq(1)).toHaveClass('is_destructive');
   });
 
+  it('positions menu relative to its offset parent', () => {
+    const dropDownButtonView = new DropDownButtonView({
+      openOnClick: true,
+      items: new Backbone.Collection([{label: 'Item 1'}])
+    });
+    const {getByRole} = render(dropDownButtonView);
+    const menu = dropDownButtonView.el.querySelector('.drop_down_button_menu');
+
+    stubLayout(dropDownButtonView.el, {top: 100, left: 50});
+    Object.defineProperty(menu, 'offsetParent', {get: () => dropDownButtonView.el});
+    getByRole('button').click();
+
+    expect(menu.style.top).toEqual('0px');
+    expect(menu.style.left).toEqual('0px');
+  });
+
   function mapToText(el) {
     return el.map(function() {
       return $(this).text().trim();
     }).get();
   }
 });
+
+function stubLayout(element, {top, left}) {
+  element.getClientRects = () => [{}];
+  element.getBoundingClientRect = () => ({top, left, width: 0, height: 0});
+}

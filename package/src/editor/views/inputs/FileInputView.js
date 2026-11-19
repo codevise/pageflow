@@ -3,12 +3,11 @@ import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {inputView} from 'pageflow/ui';
+import {inputView, DropDownButtonView} from 'pageflow/ui';
 
 import {editor} from '../../base';
 
 import {BackgroundPositioningView} from '../BackgroundPositioningView';
-import {DropDownButtonView} from '../DropDownButtonView';
 import {FileSettingsDialogView} from '../FileSettingsDialogView';
 import {FileThumbnailView} from '../FileThumbnailView';
 

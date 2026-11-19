@@ -33,6 +33,9 @@ export * from './views/TableView';
 export * from './views/TabsView';
 export * from './views/AccordionView';
 export * from './views/TooltipView';
+export * from './views/DropDownButtonView';
+export * from './views/DropDownButtonItemListView';
+export * from './views/DropDownButtonItemView';
 
 export * from './views/inputs/CheckBoxGroupInputView';
 export * from './views/inputs/UrlDisplayView';

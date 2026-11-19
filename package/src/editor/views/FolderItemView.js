@@ -2,7 +2,7 @@ import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
-import {DropDownButtonView} from './DropDownButtonView';
+import {DropDownButtonView} from 'pageflow/ui';
 import {MoveToFolderDialogView} from './MoveToFolderDialogView';
 import {listHighlighting} from './mixins/listHighlighting';
 import {parentFolderLabel} from './mixins/parentFolderLabel';

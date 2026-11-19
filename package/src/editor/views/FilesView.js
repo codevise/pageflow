@@ -2,7 +2,7 @@ import Backbone from 'backbone';
 import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 
-import {TabsView} from 'pageflow/ui';
+import {TabsView, DropDownButtonView} from 'pageflow/ui';
 
 import {app} from '../app';
 import {editor} from '../base';
@@ -12,7 +12,6 @@ import {FilesExplorerView} from './FilesExplorerView';
 import {FilteredFilesView} from './FilteredFilesView';
 import {ChooseImporterView} from './ChooseImporterView';
 import {FilesImporterView} from './FilesImporterView';
-import {DropDownButtonView} from './DropDownButtonView';
 import {filesPath} from '../utils/filesPath';
 
 import {state} from '$state';
