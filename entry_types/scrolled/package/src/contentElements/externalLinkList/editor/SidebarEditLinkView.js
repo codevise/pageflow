@@ -31,9 +31,10 @@ export const SidebarEditLinkView = EditConfigurationView.extend({
   },
 
   configure(configurationEditor) {
+    const entry = this.options.entry;
     const contentElement = this.options.contentElement;
     const thumbnailAspectRatio = contentElement.configuration.get('thumbnailAspectRatio');
-    const previewAspectRatio = this.options.entry.getAspectRatio(thumbnailAspectRatio);
+    const previewAspectRatio = entry.getAspectRatio(thumbnailAspectRatio);
     const thumbnailFit = contentElement.configuration.get('thumbnailFit');
 
     configurationEditor.tab('edit_link', function() {
@@ -50,7 +51,9 @@ export const SidebarEditLinkView = EditConfigurationView.extend({
         dropDownMenuItems: [InlineFileRightsMenuItem]
       });
 
-      this.input('thumbnailBackgroundColor', ColorInputView);
+      this.input('thumbnailBackgroundColor', ColorInputView, {
+        swatches: entry.getBackgroundColorPresets()
+      });
 
       this.view(SeparatorView);
 
