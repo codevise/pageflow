@@ -10,6 +10,7 @@ editor.contentElementTypes.register('heading', {
   pictogram,
   supportedPositions: ['inline'],
   supportedWidthRange: ['md', 'xl'],
+  supportedStyles: ['margin'],
 
   defaultConfig: {width: contentElementWidths.xl, marginTop: 'none'},
 

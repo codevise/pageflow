@@ -228,7 +228,7 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
     };
   }
 
-  if (marginScale.values.length > 0) {
+  if (findSupportedStyle('margin') && marginScale.values.length > 0) {
     result.marginTop = {
       kind: 'spacing',
       label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginTop'),

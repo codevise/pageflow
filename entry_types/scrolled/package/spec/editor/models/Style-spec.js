@@ -267,7 +267,9 @@ describe('Style', () => {
 
   describe('.getTypesForContentElement', () => {
     it('returns empty object when no margin scale is defined', () => {
-      editor.contentElementTypes.register('textBlock', {});
+      editor.contentElementTypes.register('textBlock', {
+        supportedStyles: ['margin']
+      });
 
       const entry = factories.entry(
         ScrolledEntry,
@@ -288,7 +290,9 @@ describe('Style', () => {
     });
 
     it('returns margin types based on content element margin scale', () => {
-      editor.contentElementTypes.register('textBlock', {});
+      editor.contentElementTypes.register('textBlock', {
+        supportedStyles: ['margin']
+      });
 
       const entry = factories.entry(
         ScrolledEntry,
@@ -338,8 +342,39 @@ describe('Style', () => {
         }
       });
     });
+    it('does not return margin types when type does not support margin', () => {
+      editor.contentElementTypes.register('textBlock', {});
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'textBlock'}
+            ],
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementMargin-sm': '0.5rem',
+                  'contentElementMargin-md': '1rem'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
+
+      expect(result).not.toHaveProperty('marginTop');
+      expect(result).not.toHaveProperty('marginBottom');
+    });
+
     it('sets resetValue from content element defaultConfig', () => {
       editor.contentElementTypes.register('heading', {
+        supportedStyles: ['margin'],
         defaultConfig: {marginTop: 'none'}
       });
 
@@ -381,7 +416,9 @@ describe('Style', () => {
     });
 
     it('includes default value from margin scale', () => {
-      editor.contentElementTypes.register('textBlock', {});
+      editor.contentElementTypes.register('textBlock', {
+        supportedStyles: ['margin']
+      });
 
       const entry = factories.entry(
         ScrolledEntry,

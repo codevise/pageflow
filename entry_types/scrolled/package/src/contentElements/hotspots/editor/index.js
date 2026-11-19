@@ -23,7 +23,7 @@ editor.contentElementTypes.register('hotspots', {
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right', 'backdrop'],
   supportedWidthRange: ['xxs', 'full'],
   supportedCaptions: true,
-  supportedStyles: ['boxShadow', 'outline'],
+  supportedStyles: ['margin', 'boxShadow', 'outline'],
 
   editorPath(contentElement) {
     const activeAreaId = contentElement.transientState.get('activeAreaId');

@@ -9,6 +9,7 @@ editor.contentElementTypes.register('infoTable', {
   pictogram,
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['s', 'xl'],
+  supportedStyles: ['margin'],
 
   configurationEditor({entry, contentElement}) {
     this.tab('general', function() {

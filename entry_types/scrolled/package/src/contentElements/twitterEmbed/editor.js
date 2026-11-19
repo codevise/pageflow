@@ -7,6 +7,7 @@ editor.contentElementTypes.register('twitterEmbed', {
   category: 'media',
   featureName: 'legacy_social_embed_content_elements',
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
+  supportedStyles: ['margin'],
 
   configurationEditor({entry}) {
     this.tab('general', function() {
