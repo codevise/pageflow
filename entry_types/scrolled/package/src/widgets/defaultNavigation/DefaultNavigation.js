@@ -32,6 +32,7 @@ export function DefaultNavigation({
   configuration,
   ExtraButtons, Menu, MobileMenu,
   logo,
+  omitLogo,
   omitChapterNavigation
 }) {
   const {navExpanded, setNavExpanded, lockNavExpanded} = useDefaultNavigationState();
@@ -142,7 +143,7 @@ export function DefaultNavigation({
                                                         menuOpen={menuOpen}
                                                         visibleOnDesktop={hasDesktopMenu}/>}
 
-            <Logo {...logo} />
+            {!omitLogo && <Logo {...logo} />}
 
             {renderNav()}
             {CustomMenu && <CustomMenu configuration={configuration}

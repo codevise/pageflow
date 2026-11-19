@@ -78,4 +78,22 @@ describe('DefaultNavigation - Logo', () => {
     expect(getByRole('link', {name: 'Other logo'})).toHaveAttribute('href', 'https://other.example.com');
     expect(getByRole('img', {name: 'Other logo'})).toHaveAttribute('src', 'other-logo.png');
   });
+
+  it('supports omitting logo', () => {
+    const {queryByRole} = renderInEntry(
+      <DefaultNavigation configuration={{}} omitLogo={true} />,
+      {
+        seed: {
+          themeAssets: {
+            logoDesktop: 'logo.png'
+          },
+          themeOptions: {
+            logoAltText: 'My logo'
+          }
+        }
+      }
+    );
+
+    expect(queryByRole('img', {name: 'My logo'})).toBeNull();
+  });
 });
