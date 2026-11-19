@@ -120,6 +120,19 @@ export const ContentElement = Backbone.Model.extend({
       mapping.defaultCaptionVariant = 'captionVariant';
     }
 
+    if (this.supportsStyle('margin')) {
+      mapping.defaultContentElementMarginTop = 'marginTop';
+      mapping.defaultContentElementMarginBottom = 'marginBottom';
+    }
+
+    if (this.supportsStyle('boxShadow')) {
+      mapping.defaultContentElementBoxShadow = 'boxShadow';
+    }
+
+    if (this.supportsStyle('outline')) {
+      mapping.defaultContentElementOutlineColor = 'outlineColor';
+    }
+
     return mapping;
   },
 
@@ -184,6 +197,12 @@ export const ContentElement = Backbone.Model.extend({
 
   supportsCaption() {
     return !!this.getType().supportedCaptions;
+  },
+
+  supportsStyle(name) {
+    return (this.getType().supportedStyles || []).some(style =>
+      style === name || style.name === name
+    );
   },
 
   getEditorPath() {
