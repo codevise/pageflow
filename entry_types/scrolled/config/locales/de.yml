@@ -1761,6 +1761,11 @@ de:
           defaultCaptionVariant:
             label: Beschriftungsvariante
             inline_help: Standard-Darstellung der Beschriftungen neuer Elemente.
+          defaultContentElementStyles:
+            label: Stile
+            inline_help: |-
+              Standard-Stile neu hinzugefügter Elemente. Stile werden nur
+              auf Elemente angewendet, die sie unterstützen.
           defaultFileRightsDisplay:
             label: Rechteanzeige hochgeladener Dateien
             inline_help: |-

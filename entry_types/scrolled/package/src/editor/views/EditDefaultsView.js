@@ -1,10 +1,12 @@
 import I18n from 'i18n-js';
 import {EditConfigurationView, InfoBoxView} from 'pageflow/editor';
-import {CheckBoxInputView, SelectInputView, SliderInputView} from 'pageflow/ui';
+import {CheckBoxInputView, SelectInputView, SeparatorView, SliderInputView} from 'pageflow/ui';
 import {editor} from '../api';
 import {createDefaultsEntry} from '../models/createDefaultsEntry';
+import {Style} from '../models/Style';
 import {ContentElementTypeSeparatorView} from './ContentElementTypeSeparatorView';
 import {SectionPaddingVisualizationView} from './inputs/SectionPaddingVisualizationView';
+import {StyleListInputView} from './inputs/StyleListInputView';
 
 import defaultPictogram from './images/defaultPictogram.svg';
 import paddingTopIcon from './images/paddingTop.svg';
@@ -86,6 +88,13 @@ export function defineEntryDefaultsInputs(configurationEditor, {
         texts: captionVariantTexts
       });
     }
+
+    this.input('defaultContentElementStyles', StyleListInputView, {
+      types: Style.getTypesForEntryDefaults({entry}),
+      translationKeyPrefix: 'pageflow_scrolled.editor.content_element_style_list_input'
+    });
+
+    this.view(SeparatorView);
 
     if (editor.entryType.supportsExtendedFileRights) {
       this.input('defaultFileRightsDisplay', SelectInputView, {

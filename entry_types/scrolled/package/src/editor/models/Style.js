@@ -209,11 +209,9 @@ function getBackdropFrameEffectType(entry) {
 }
 
 Style.getTypesForContentElement = function({entry, contentElement}) {
-  const marginScale = entry.getScale('contentElementMargin');
   const defaultConfig = contentElement.getType().defaultConfig || {};
-  const result = {};
-
   const supportedStyles = contentElement.getType().supportedStyles || [];
+  const result = {};
 
   function findSupportedStyle(name) {
     return supportedStyles.find(s => s === name || s.name === name);
@@ -228,65 +226,120 @@ Style.getTypesForContentElement = function({entry, contentElement}) {
     };
   }
 
-  if (findSupportedStyle('margin') && marginScale.values.length > 0) {
-    result.marginTop = {
+  function resetValueOptions(propertyName) {
+    return propertyName in defaultConfig ? {resetValue: defaultConfig[propertyName]} : {};
+  }
+
+  if (findSupportedStyle('margin')) {
+    const margins = getMarginTypes({entry});
+
+    if (margins) {
+      result.marginTop = {...margins.marginTop, ...resetValueOptions('marginTop')};
+      result.marginBottom = {...margins.marginBottom, ...resetValueOptions('marginBottom')};
+    }
+  }
+
+  if (findSupportedStyle('boxShadow')) {
+    const boxShadow = getBoxShadowType({entry});
+
+    if (boxShadow) {
+      result.boxShadow = {...boxShadow, ...bindingOptions('boxShadow')};
+    }
+  }
+
+  if (findSupportedStyle('outline')) {
+    result.outlineColor = {
+      ...getOutlineColorType({
+        entry,
+        swatches: entry.getUsedContentElementColors('outlineColor')
+      }),
+      ...bindingOptions('outline')
+    };
+  }
+
+  return result;
+}
+
+const entryDefaultsPropertyNames = {
+  marginTop: 'defaultContentElementMarginTop',
+  marginBottom: 'defaultContentElementMarginBottom',
+  boxShadow: 'defaultContentElementBoxShadow',
+  outlineColor: 'defaultContentElementOutlineColor'
+};
+
+Style.getTypesForEntryDefaults = function({entry}) {
+  const types = {
+    ...getMarginTypes({entry}),
+    boxShadow: getBoxShadowType({entry}),
+    outlineColor: getOutlineColorType({entry, swatches: []})
+  };
+
+  return Object.fromEntries(
+    Object.entries(types)
+      .filter(([, type]) => type)
+      .map(([name, type]) => [name, {...type, propertyName: entryDefaultsPropertyNames[name]}])
+  );
+};
+
+function getMarginTypes({entry}) {
+  const marginScale = entry.getScale('contentElementMargin');
+
+  if (marginScale.values.length === 0) {
+    return null;
+  }
+
+  return {
+    marginTop: {
       kind: 'spacing',
       label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginTop'),
       propertyName: 'marginTop',
       inputType: 'slider',
       values: marginScale.values,
       texts: marginScale.texts,
-      defaultValue: marginScale.defaultValue,
-      ...('marginTop' in defaultConfig && {resetValue: defaultConfig.marginTop})
-    };
-
-    result.marginBottom = {
+      defaultValue: marginScale.defaultValue
+    },
+    marginBottom: {
       kind: 'spacing',
       label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.marginBottom'),
       propertyName: 'marginBottom',
       inputType: 'slider',
       values: marginScale.values,
       texts: marginScale.texts,
-      defaultValue: marginScale.defaultValue,
-      ...('marginBottom' in defaultConfig && {resetValue: defaultConfig.marginBottom})
-    };
-  }
-
-  if (findSupportedStyle('boxShadow')) {
-    const boxShadowScale = entry.getScale('contentElementBoxShadow');
-
-    if (boxShadowScale.values.length > 0) {
-      result.boxShadow = {
-        kind: 'decoration',
-        label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.boxShadow'),
-        propertyName: 'boxShadow',
-        inputType: 'slider',
-        values: boxShadowScale.values,
-        texts: boxShadowScale.texts,
-        defaultValue: boxShadowScale.defaultValue,
-        ...bindingOptions('boxShadow')
-      };
+      defaultValue: marginScale.defaultValue
     }
+  };
+}
+
+function getBoxShadowType({entry}) {
+  const boxShadowScale = entry.getScale('contentElementBoxShadow');
+
+  if (boxShadowScale.values.length === 0) {
+    return null;
   }
 
-  if (findSupportedStyle('outline')) {
-    const themeProperties = entry.getThemeProperties();
+  return {
+    kind: 'decoration',
+    label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.boxShadow'),
+    propertyName: 'boxShadow',
+    inputType: 'slider',
+    values: boxShadowScale.values,
+    texts: boxShadowScale.texts,
+    defaultValue: boxShadowScale.defaultValue
+  };
+}
 
-    result.outlineColor = {
-      kind: 'decoration',
-      label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.outlineColor'),
-      propertyName: 'outlineColor',
-      inputType: 'color',
-      defaultValue: themeProperties.root?.outlineColor,
-      inputOptions: {
-        alpha: true,
-        swatches: entry.getUsedContentElementColors('outlineColor')
-      },
-      ...bindingOptions('outline')
-    };
-  }
-
-  return result;
+function getOutlineColorType({entry, swatches}) {
+  return {
+    kind: 'decoration',
+    label: I18n.t('pageflow_scrolled.editor.content_element_style_list_input.outlineColor'),
+    propertyName: 'outlineColor',
+    inputType: 'color',
+    defaultValue: entry.getThemeProperties().root?.outlineColor,
+    inputOptions: {
+      alpha: true,
+      swatches
+    }
+  };
 }
 
 Style.getImageModifierTypes = function({entry}) {
