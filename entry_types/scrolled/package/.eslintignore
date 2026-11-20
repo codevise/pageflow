@@ -7,6 +7,7 @@
 /frontend
 /frontend-server.js
 /contentElements-editor.js
+/widgets-editor.js
 /contentElements-frontend.js
 /contentElements-frontend.css
 /review.js
