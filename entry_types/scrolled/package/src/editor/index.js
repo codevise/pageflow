@@ -26,6 +26,7 @@ export {ScrollRangeSelectInputView} from './views/inputs/ScrollRangeSelectInputV
 export {InlineFileRightsMenuItem} from './models/InlineFileRightsMenuItem';
 
 export {defineEntryDefaultsInputsFromSeed} from './views/EditDefaultsView';
+export {EditChapterView} from './views/EditChapterView';
 export {EditContentElementView} from './views/EditContentElementView';
 
 Object.assign(pageflow, globalInterop);

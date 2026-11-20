@@ -58,13 +58,17 @@ individual flags). See the helper's source for the exact surface.
 
 ## Configuration editor helpers
 
-`renderContentElementConfigurationEditor` renders the editor integration
-of a content element. Like the frontend helpers, it returns the
-`@testing-library/dom` queries bound to the rendered configuration
-editor, plus the `ByInputPropertyName` family
-(`getByInputPropertyName`, `queryAllByInputPropertyName`, …) from
-`inputPropertyNameQueries`. Both build on `renderConfigurationEditorView`
-from `pageflow/testHelpers`, which renders arbitrary views containing a
+`renderContentElementConfigurationEditor` and
+`renderChapterConfigurationEditor` render the editor integration of a
+content element and the chapter editor including tab view groups
+contributed by widgets. `renderWidgetConfigurationEditor` from
+`pageflow/testHelpers` renders the configuration editor of a widget.
+Like the frontend helpers, they return the `@testing-library/dom`
+queries bound to the rendered configuration editor, plus the
+`ByInputPropertyName` family (`getByInputPropertyName`,
+`queryAllByInputPropertyName`, …) from `inputPropertyNameQueries`. All
+of them build on `renderConfigurationEditorView` from
+`pageflow/testHelpers`, which renders arbitrary views containing a
 configuration editor.
 
 - Assert what users perceive through role and label queries, e.g.

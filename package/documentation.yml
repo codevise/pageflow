@@ -139,4 +139,5 @@ toc:
       - useFakeFeatures
       - useFakeTranslations
       - renderConfigurationEditorView
+      - renderWidgetConfigurationEditor
       - inputPropertyNameQueries
