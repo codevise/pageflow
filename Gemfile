@@ -27,7 +27,7 @@ gem 'activemodel-serializers-xml'
 # use shakapacker need to add it to their Gemfile themselves. Requiring
 # shakapacker in an engine file (like we normally do) would force all
 # host application to install shakapacker.
-gem 'shakapacker', '~> 7.0'
+gem 'shakapacker', '~> 10.3'
 
 # Make tests fail on JS errors
 gem 'capybara-chromedriver-logger',

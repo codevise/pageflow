@@ -7,7 +7,7 @@ module PageflowScrolled
 
     def self.js_snippet(request = nil)
       config_host = Rails.configuration.action_controller.asset_host
-      packs_dir = Webpacker.config.public_output_path.basename
+      packs_dir = Shakapacker.config.public_output_path.basename
       asset_host = if config_host.respond_to?(:call)
                      config_host.call(packs_dir, request)
                    else

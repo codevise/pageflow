@@ -152,7 +152,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'ruby-oembed', '~> 0.18.0'
 
   # Used for Webpack build in host application
-  s.add_development_dependency 'shakapacker', '~> 7.0'
+  s.add_development_dependency 'shakapacker', '~> 10.3'
 
   # Used by the dummy rails application
   s.add_development_dependency 'mysql2', '~> 0.5.2'

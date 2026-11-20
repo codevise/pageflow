@@ -9,18 +9,31 @@ A continuously scrolled Pageflow entry type.
 
 Pageflow Scrolled is currently distributed as part of the `pageflow`
 gem. The following steps assume that Pageflow has been set up already
-in the host application. Pageflow Scrolled requires Webpacker to be
-installed in the host application. Add Webpacker dependency to your
+in the host application. Pageflow Scrolled requires Shakapacker to be
+installed in the host application. Add Shakapacker dependency to your
 application's `Gemfile`:
 
 ```
-gem 'webpacker', '~> 4.2'
+gem 'shakapacker', '~> 10.3'
 ```
 
-Run the Webpacker install generator:
+The Pageflow Scrolled install generator adds packages via Yarn. Unless
+your application already has a `yarn.lock` file, declare Yarn as
+package manager in your application's `package.json` file, since
+Shakapacker uses npm otherwise:
 
 ```
-$ bundle exec rake webpacker:install
+{
+  "packageManager": "yarn@1.22.22"
+}
+```
+
+Run the Shakapacker install generator. Pageflow Scrolled extends the
+webpack config. Since Shakapacker uses Rspack by default, pass
+`webpack` as bundler:
+
+```
+$ bundle exec rake "shakapacker:install[webpack]"
 ```
 
 React is required as a peer dependency of the `pageflow-scrolled`
