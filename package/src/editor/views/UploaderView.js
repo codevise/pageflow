@@ -2,6 +2,7 @@ import Marionette from 'backbone.marionette';
 
 import {UploadError} from '../api/errors';
 import {app} from '../app';
+import {createConcurrencyLimiter} from '../utils/concurrencyLimiter';
 
 import {state} from '$state';
 
@@ -9,6 +10,7 @@ export const UploaderView = Marionette.View.extend({
   el: 'form#upload',
 
   initialize: function() {
+    this.uploadLimiter = createConcurrencyLimiter({maxConcurrent: 4});
     this.listenTo(app, 'request-upload', this.openFileDialog);
   },
 
@@ -27,16 +29,36 @@ export const UploaderView = Marionette.View.extend({
         try {
           state.fileUploader.add(data.files[0]).then(function (record) {
             data.record = record;
-            record.save(null, {
-              success: function() {
-                var directUploadConfig = data.record.get('direct_upload_config');
-                data.url = directUploadConfig.url;
-                data.formData = directUploadConfig.fields;
-                var xhr = data.submit();
-                that.listenTo(data.record, 'uploadCancelled', function() {
-                  xhr.abort();
-                });
+
+            that.listenTo(record, 'uploadCancelled', function() {
+              data.cancelled = true;
+            });
+
+            that.uploadLimiter.run(function(release) {
+              data.release = release;
+
+              if (data.cancelled) {
+                that.stopListening(record);
+                release();
+                return;
               }
+
+              record.save(null, {
+                success: function() {
+                  var directUploadConfig = data.record.get('direct_upload_config');
+                  data.url = directUploadConfig.url;
+                  data.formData = directUploadConfig.fields;
+                  var xhr = data.submit();
+                  that.listenTo(data.record, 'uploadCancelled', function() {
+                    xhr.abort();
+                  });
+                },
+                error: function() {
+                  that.stopListening(record);
+                  record.uploadFailed();
+                  release();
+                }
+              });
             });
           });
         }
@@ -67,6 +89,7 @@ export const UploaderView = Marionette.View.extend({
 
       always: function(event, data) {
         that.stopListening(data.record);
+        data.release();
       }
     });
 
