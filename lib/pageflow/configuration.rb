@@ -67,6 +67,23 @@ module Pageflow
     # can still see held activity.
     attr_accessor :comment_digest_max_hold
 
+    # Queue for processing jobs of image and text track files that are
+    # enqueued while their entry already has more than
+    # {#bulk_file_processing_threshold} files of the same type
+    # processing. Workers have to watch this queue after the resizing
+    # queue, otherwise jobs of bulk uploads are never processed.
+    # Defaults to `nil`, which keeps all jobs on the resizing queue.
+    #
+    # @since 17.3
+    attr_accessor :bulk_file_processing_queue
+
+    # Number of files of an entry that may be processing before
+    # further processing jobs go to {#bulk_file_processing_queue}.
+    # Defaults to 10.
+    #
+    # @since 17.3
+    attr_accessor :bulk_file_processing_threshold
+
     # Extend the configuration based on feature flags set for accounts
     # or entries.
     #
@@ -550,6 +567,8 @@ module Pageflow
       @comment_digest_max_lookback = 24.hours
       @comment_digest_quiet_period = 15.minutes
       @comment_digest_max_hold = 2.hours
+
+      @bulk_file_processing_threshold = 10
 
       @features = Features.new
       @hooks = Hooks.new
