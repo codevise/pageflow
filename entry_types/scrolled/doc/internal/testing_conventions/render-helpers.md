@@ -56,6 +56,25 @@ and state:
 context (pass `true` for editable defaults, or an object to override
 individual flags). See the helper's source for the exact surface.
 
+## Configuration editor helpers
+
+`renderContentElementConfigurationEditor` renders the editor integration
+of a content element. Like the frontend helpers, it returns the
+`@testing-library/dom` queries bound to the rendered configuration
+editor, plus the `ByInputPropertyName` family
+(`getByInputPropertyName`, `queryAllByInputPropertyName`, …) from
+`inputPropertyNameQueries`. Both build on `renderConfigurationEditorView`
+from `pageflow/testHelpers`, which renders arbitrary views containing a
+configuration editor.
+
+- Assert what users perceive through role and label queries, e.g.
+  `getByRole('tab', {name: 'Excursion'})`. Inputs hidden via
+  `visibleBinding` carry the `hidden` attribute, so role queries skip
+  them: assert `queryByRole(...)` is not in the document.
+- Use the property name queries to check which properties an editor
+  offers, or for inputs without an accessible role. Check visibility
+  with jest-dom's `toBeVisible`.
+
 ## Setup hooks
 
 Setup hooks are `useXxx()` functions called at the top of a `describe`

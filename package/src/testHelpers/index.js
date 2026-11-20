@@ -6,3 +6,5 @@ export * from './setupGlobals';
 export * from './useFakeFeatures';
 export * from './useFakeTranslations';
 export * from './renderBackboneView';
+export * from './renderConfigurationEditorView';
+export * from './inputPropertyNameQueries';

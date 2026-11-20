@@ -1,3 +1,5 @@
+import $ from 'jquery';
+import '@testing-library/jest-dom/extend-expect';
 import {editor} from 'pageflow-scrolled/editor';
 import {FileInput, SelectInput, useFakeFeatures, useFakeTranslations} from 'pageflow/testHelpers';
 
@@ -76,9 +78,9 @@ describe('lottieAnimation/editor', () => {
     it('displays select to choose playback mode', () => {
       const configurationEditor = renderConfigurationEditor({configuration: {}});
 
-      const input = SelectInput.findByPropertyName('playbackMode', {
-        inView: configurationEditor
-      });
+      const input = new SelectInput(
+        $(configurationEditor.getByInputPropertyName('playbackMode'))
+      );
 
       expect(input.values()).toEqual(['loop', 'playOnce', 'scroll']);
     });
@@ -88,9 +90,7 @@ describe('lottieAnimation/editor', () => {
         configuration: {playbackMode: 'playOnce'}
       });
 
-      expect(await illustratedOptionNames('startAnimationTrigger', {
-        inView: configurationEditor
-      })).toEqual([
+      expect(await illustratedOptionNames(configurationEditor, 'startAnimationTrigger')).toEqual([
         'When scrolled to center of viewport',
         'When first scrolled into view'
       ]);
@@ -101,8 +101,7 @@ describe('lottieAnimation/editor', () => {
         configuration: {playbackMode: 'scroll'}
       });
 
-      expect(configurationEditor.visibleInputPropertyNames())
-        .not.toContain('startAnimationTrigger');
+      expect(configurationEditor.getByInputPropertyName('startAnimationTrigger')).not.toBeVisible();
     });
 
     it('displays select to choose scroll range in scroll playback mode', async () => {
@@ -110,7 +109,7 @@ describe('lottieAnimation/editor', () => {
         configuration: {playbackMode: 'scroll'}
       });
 
-      expect(await illustratedOptionNames('scrollRange', {inView: configurationEditor})).toEqual([
+      expect(await illustratedOptionNames(configurationEditor, 'scrollRange')).toEqual([
         'While visible',
         'While completely visible',
         'While crossing the viewport center',
@@ -123,7 +122,7 @@ describe('lottieAnimation/editor', () => {
         configuration: {playbackMode: 'scroll', position: 'sticky'}
       });
 
-      expect(await illustratedOptionNames('scrollRange', {inView: configurationEditor})).toEqual([
+      expect(await illustratedOptionNames(configurationEditor, 'scrollRange')).toEqual([
         'While visible',
         'While completely visible',
         'While locked in place',
@@ -136,7 +135,7 @@ describe('lottieAnimation/editor', () => {
         configuration: {playbackMode: 'scroll', position: 'standAlone'}
       });
 
-      expect(await illustratedOptionNames('scrollRange', {inView: configurationEditor}))
+      expect(await illustratedOptionNames(configurationEditor, 'scrollRange'))
         .toContain('While locked in place');
     });
 
@@ -146,7 +145,7 @@ describe('lottieAnimation/editor', () => {
         configuration: {playbackMode: 'scroll', position: 'sticky'}
       });
 
-      expect(await illustratedOptionNames('scrollRange', {inView: configurationEditor}))
+      expect(await illustratedOptionNames(configurationEditor, 'scrollRange'))
         .toContain('While crossing the viewport center');
     });
 
@@ -155,8 +154,9 @@ describe('lottieAnimation/editor', () => {
         configuration: {playbackMode: 'loop'}
       });
 
-      expect(configurationEditor.visibleInputPropertyNames())
-        .not.toContain('scrollRange');
+      configurationEditor.getAllByInputPropertyName('scrollRange').forEach(input =>
+        expect(input).not.toBeVisible()
+      );
     });
 
     it('displays image modifiers input if animation is present', () => {
@@ -165,15 +165,13 @@ describe('lottieAnimation/editor', () => {
         configuration: {id: 100}
       });
 
-      expect(configurationEditor.visibleInputPropertyNames())
-        .toContain('imageModifiers');
+      expect(configurationEditor.getByInputPropertyName('imageModifiers')).toBeVisible();
     });
 
     it('does not display image modifiers input by default', () => {
       const configurationEditor = renderConfigurationEditor({configuration: {}});
 
-      expect(configurationEditor.visibleInputPropertyNames())
-        .not.toContain('imageModifiers');
+      expect(configurationEditor.getByInputPropertyName('imageModifiers')).not.toBeVisible();
     });
 
     it('offers to position animation inside crop', () => {
@@ -182,7 +180,7 @@ describe('lottieAnimation/editor', () => {
         configuration: {id: 100, imageModifiers: [{name: 'crop', value: 'wide'}]}
       });
 
-      expect(FileInput.findByPropertyName('id', {inView: configurationEditor}).menuItemNames())
+      expect(new FileInput($(configurationEditor.getByInputPropertyName('id'))).menuItemNames())
         .toContain('edit_background_positioning');
     });
 
@@ -192,7 +190,7 @@ describe('lottieAnimation/editor', () => {
         configuration: {id: 100}
       });
 
-      expect(FileInput.findByPropertyName('id', {inView: configurationEditor}).menuItemNames())
+      expect(new FileInput($(configurationEditor.getByInputPropertyName('id'))).menuItemNames())
         .not.toContain('edit_background_positioning');
     });
   });

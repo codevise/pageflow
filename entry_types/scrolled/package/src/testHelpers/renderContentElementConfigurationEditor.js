@@ -1,10 +1,15 @@
 import {editor, EditContentElementView} from 'pageflow-scrolled/editor';
 import {ConfigurationEditorTabView} from 'pageflow/ui';
-import {ConfigurationEditor, renderBackboneView} from 'pageflow/testHelpers';
+import {renderConfigurationEditorView} from 'pageflow/testHelpers';
 
 /**
  * Render the configuration editor of a content element. Content element
  * packs can use this to assert how their editor integration behaves.
+ *
+ * Returns the queries of `@testing-library/dom` and the
+ * `inputPropertyNameQueries` of `pageflow/testHelpers` bound to the
+ * configuration editor, and the configuration editor element as
+ * `container`.
  *
  * @param {Object} options
  * @param {Object} options.entry - Entry the content element belongs to.
@@ -12,6 +17,12 @@ import {ConfigurationEditor, renderBackboneView} from 'pageflow/testHelpers';
  *
  * @example
  * import {renderContentElementConfigurationEditor} from 'pageflow-scrolled/testHelpers';
+ *
+ * const {getByRole, queryByInputPropertyName} =
+ *   renderContentElementConfigurationEditor({entry, contentElement});
+ *
+ * expect(getByRole('textbox', {name: 'Caption'})).toBeInTheDocument();
+ * expect(queryByInputPropertyName('marqueeSpeed')).toBeNull();
  */
 export function renderContentElementConfigurationEditor({entry, contentElement}) {
   // Normally contributed by the text inline file rights widget type
@@ -20,13 +31,9 @@ export function renderContentElementConfigurationEditor({entry, contentElement})
     'ContentElementInlineFileRightsSettings', () => {}
   );
 
-  const view = new EditContentElementView({
+  return renderConfigurationEditorView(new EditContentElementView({
     model: contentElement,
     editor,
     entry
-  });
-
-  renderBackboneView(view);
-
-  return ConfigurationEditor.find(view);
+  }));
 }

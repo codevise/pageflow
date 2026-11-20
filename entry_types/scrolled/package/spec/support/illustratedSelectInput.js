@@ -1,12 +1,13 @@
 import userEvent from '@testing-library/user-event';
 import {within} from '@testing-library/dom';
-import {Input} from 'pageflow/testHelpers';
 
 // Options of illustrated selects are only rendered while the dropdown
 // is open.
-export async function illustratedOptionNames(propertyName, {inView}) {
-  const input = Input.findByPropertyName(propertyName, {inView, visible: true});
-  const queries = within(input.$el[0]);
+export async function illustratedOptionNames(configurationEditor, propertyName) {
+  const input = configurationEditor
+    .getAllByInputPropertyName(propertyName)
+    .find(element => !element.hidden);
+  const queries = within(input);
   const user = userEvent.setup();
 
   await user.click(queries.getByRole('button'));
