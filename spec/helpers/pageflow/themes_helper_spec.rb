@@ -31,6 +31,23 @@ module Pageflow
 
         expect(result.dig('options', 'some')).to eq('value')
       end
+
+      it 'uses supplied theme asset resolver' do
+        Pageflow.config.themes.register(:test_theme)
+        resolver = double(
+          preview_image_url: 'https://example.com/preview.png',
+          preview_thumbnail_url: 'https://example.com/preview_thumbnail.png'
+        )
+
+        result = JSON.parse(
+          helper.theme_json_seeds(Pageflow.config, theme_asset_resolver: resolver)
+        ).last
+
+        expect(result).to include(
+          'preview_image_url' => 'https://example.com/preview.png',
+          'preview_thumbnail_url' => 'https://example.com/preview_thumbnail.png'
+        )
+      end
     end
   end
 end

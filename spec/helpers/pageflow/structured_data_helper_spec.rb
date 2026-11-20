@@ -61,6 +61,27 @@ module Pageflow
                                    'thumbnailUrl' => image_file.thumbnail_url(:thumbnail_large))
     end
 
+    it 'uses entry type theme asset resolver for publisher logo' do
+      entry = create(:published_entry,
+                     revision_attributes: {publisher: 'Some publisher'})
+      resolver = double
+      allow(entry.entry_type).to receive(:theme_asset_resolver).and_return(resolver)
+      allow(resolver).to receive(:publisher_logo_url)
+        .with(entry, view_context: anything)
+        .and_return('https://example.com/publisher.png')
+
+      html = helper.structured_data_for_entry(entry)
+
+      expect(html).to have_json_ld(
+        'publisher' => a_hash_including(
+          'logo' => {
+            '@type' => 'ImageObject',
+            'url' => 'https://example.com/publisher.png'
+          }
+        )
+      )
+    end
+
     it 'skips metadata if not present' do
       pageflow_configure do |config|
         config.default_keywords_meta_tag = ''
