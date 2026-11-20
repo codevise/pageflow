@@ -5,7 +5,6 @@ import {EditSectionPaddingsView} from 'editor/views/EditSectionPaddingsView';
 import {useFakeTranslations, renderBackboneView} from 'pageflow/testHelpers';
 import {useEditorGlobals, useFakeXhr} from 'support';
 import '@testing-library/jest-dom/extend-expect';
-import 'support/toBeVisibleViaBinding';
 
 describe('EditSectionPaddingsView', () => {
   useFakeXhr();
@@ -200,10 +199,10 @@ describe('EditSectionPaddingsView', () => {
 
         const {getByRole, queryByRole} = renderBackboneView(view);
 
-        expect(getByRole('img', {name: 'Auto'})).toBeVisibleViaBinding();
-        expect(getByRole('img', {name: 'SideBySide'})).toBeVisibleViaBinding();
+        expect(getByRole('img', {name: 'Auto'})).toBeVisible();
+        expect(getByRole('img', {name: 'SideBySide'})).toBeVisible();
         expect(getByRole('img', {name: 'Bottom'})).toBeInTheDocument();
-        expect(getByRole('img', {name: 'Manual'})).not.toBeVisibleViaBinding();
+        expect(queryByRole('img', {name: 'Manual'})).not.toBeInTheDocument();
         expect(queryByRole('img', {name: 'TopPadding'})).not.toBeInTheDocument();
       });
 
@@ -223,9 +222,9 @@ describe('EditSectionPaddingsView', () => {
           entry
         });
 
-        const {getByRole} = renderBackboneView(view);
+        const {queryByRole} = renderBackboneView(view);
 
-        expect(getByRole('img', {name: 'SideBySide'})).not.toBeVisibleViaBinding();
+        expect(queryByRole('img', {name: 'SideBySide'})).not.toBeInTheDocument();
       });
 
       it('hides paddingTop slider when layout is center', () => {
@@ -246,7 +245,7 @@ describe('EditSectionPaddingsView', () => {
 
         renderBackboneView(view);
 
-        expect(view.el.querySelector('.slider_input')).not.toBeVisibleViaBinding();
+        expect(view.el.querySelector('.slider_input')).not.toBeVisible();
       });
 
       it('shows edit motif area button', () => {
@@ -266,7 +265,7 @@ describe('EditSectionPaddingsView', () => {
 
         const {getByRole} = renderBackboneView(view);
 
-        expect(getByRole('button', {name: 'Edit motif area'})).toBeVisibleViaBinding();
+        expect(getByRole('button', {name: 'Edit motif area'})).toBeVisible();
       });
     });
 
@@ -286,10 +285,10 @@ describe('EditSectionPaddingsView', () => {
           entry
         });
 
-        const {getByRole} = renderBackboneView(view);
+        const {getByRole, queryByRole} = renderBackboneView(view);
 
-        expect(getByRole('img', {name: 'Manual'})).toBeVisibleViaBinding();
-        expect(getByRole('img', {name: 'SideBySide'})).not.toBeVisibleViaBinding();
+        expect(getByRole('img', {name: 'Manual'})).toBeVisible();
+        expect(queryByRole('img', {name: 'SideBySide'})).not.toBeInTheDocument();
       });
 
       it('hides edit motif area button', () => {
@@ -307,9 +306,9 @@ describe('EditSectionPaddingsView', () => {
           entry
         });
 
-        const {getByRole} = renderBackboneView(view);
+        const {queryByRole} = renderBackboneView(view);
 
-        expect(getByRole('button', {name: 'Edit motif area'})).not.toBeVisibleViaBinding();
+        expect(queryByRole('button', {name: 'Edit motif area'})).not.toBeInTheDocument();
       });
 
       it('shows paddingTop slider when layout is center', () => {
@@ -330,7 +329,7 @@ describe('EditSectionPaddingsView', () => {
 
         renderBackboneView(view);
 
-        expect(view.el.querySelector('.slider_input')).toBeVisibleViaBinding();
+        expect(view.el.querySelector('.slider_input')).toBeVisible();
       });
     });
   });
@@ -526,10 +525,10 @@ describe('EditSectionPaddingsView', () => {
           entry
         });
 
-        const {getByRole} = renderBackboneView(view);
+        const {getByRole, queryByRole} = renderBackboneView(view);
 
-        expect(getByRole('img', {name: 'Manual'})).toBeVisibleViaBinding();
-        expect(getByRole('img', {name: 'SideBySide'})).not.toBeVisibleViaBinding();
+        expect(getByRole('img', {name: 'Manual'})).toBeVisible();
+        expect(queryByRole('img', {name: 'SideBySide'})).not.toBeInTheDocument();
       });
 
       it('toggles visualization when clicking auto radio', async () => {
@@ -544,14 +543,14 @@ describe('EditSectionPaddingsView', () => {
         });
 
         const user = userEvent.setup();
-        const {getByRole} = renderBackboneView(view);
+        const {getByRole, queryByRole} = renderBackboneView(view);
 
-        expect(getByRole('img', {name: 'Manual'})).toBeVisibleViaBinding();
+        expect(getByRole('img', {name: 'Manual'})).toBeVisible();
 
         await user.click(getByRole('radio', {name: 'Auto mode'}));
 
-        expect(getByRole('img', {name: 'Auto'})).toBeVisibleViaBinding();
-        expect(getByRole('img', {name: 'Manual'})).not.toBeVisibleViaBinding();
+        expect(getByRole('img', {name: 'Auto'})).toBeVisible();
+        expect(queryByRole('img', {name: 'Manual'})).not.toBeInTheDocument();
       });
 
       it('hides edit motif area button initially', () => {
@@ -565,9 +564,9 @@ describe('EditSectionPaddingsView', () => {
           entry
         });
 
-        const {getByRole} = renderBackboneView(view);
+        const {queryByRole} = renderBackboneView(view);
 
-        expect(getByRole('button', {name: 'No motif area selected'})).not.toBeVisibleViaBinding();
+        expect(queryByRole('button', {name: 'No motif area selected'})).not.toBeInTheDocument();
       });
 
       it('shows edit motif area button with warning styling when clicking auto radio', async () => {
@@ -586,7 +585,7 @@ describe('EditSectionPaddingsView', () => {
 
         await user.click(getByRole('radio', {name: 'Auto mode'}));
 
-        expect(getByRole('button', {name: 'No motif area selected'})).toBeVisibleViaBinding();
+        expect(getByRole('button', {name: 'No motif area selected'})).toBeVisible();
       });
     });
 
@@ -602,10 +601,10 @@ describe('EditSectionPaddingsView', () => {
           entry
         });
 
-        const {getByRole} = renderBackboneView(view);
+        const {getByRole, queryByRole} = renderBackboneView(view);
 
-        expect(getByRole('img', {name: 'Manual'})).toBeVisibleViaBinding();
-        expect(getByRole('img', {name: 'SideBySide'})).not.toBeVisibleViaBinding();
+        expect(getByRole('img', {name: 'Manual'})).toBeVisible();
+        expect(queryByRole('img', {name: 'SideBySide'})).not.toBeInTheDocument();
       });
 
       it('sets exposeMotifArea to true when motif area is assigned', async () => {
@@ -658,7 +657,7 @@ describe('EditSectionPaddingsView', () => {
 
         const {getByRole} = renderBackboneView(view);
 
-        expect(getByRole('button', {name: 'No motif area selected'})).toBeVisibleViaBinding();
+        expect(getByRole('button', {name: 'No motif area selected'})).toBeVisible();
       });
 
       it('does not show ignore button on landscape tab', () => {
@@ -1091,11 +1090,11 @@ describe('EditSectionPaddingsView', () => {
         });
 
         const user = userEvent.setup();
-        const {getByRole, queryByRole, getByText} = renderBackboneView(view);
+        const {queryByRole, getByText} = renderBackboneView(view);
 
         await user.click(getByText('Portrait'));
 
-        expect(getByRole('button', {name: 'No motif area selected'})).not.toBeVisibleViaBinding();
+        expect(queryByRole('button', {name: 'No motif area selected'})).not.toBeInTheDocument();
         expect(queryByRole('button', {name: 'Ignore image'})).not.toBeInTheDocument();
       });
 
@@ -1119,11 +1118,11 @@ describe('EditSectionPaddingsView', () => {
         });
 
         const user = userEvent.setup();
-        const {getByRole, queryByRole, getByText} = renderBackboneView(view);
+        const {queryByRole, getByText} = renderBackboneView(view);
 
         await user.click(getByText('Portrait'));
 
-        expect(getByRole('button', {name: 'No motif area selected'})).not.toBeVisibleViaBinding();
+        expect(queryByRole('button', {name: 'No motif area selected'})).not.toBeInTheDocument();
         expect(queryByRole('button', {name: 'Ignore image'})).not.toBeInTheDocument();
       });
 

@@ -578,17 +578,17 @@ describe('pageflow.inputView', () => {
   });
 
   describe('visibleBinding', () => {
-    it('does not set hidden class by default', () => {
+    it('is not hidden by default', () => {
       var view = createInputView({
         model: new Backbone.Model()
       });
 
       view.render();
 
-      expect(view.$el).not.toHaveClass('hidden_via_binding');
+      expect(view.el.hidden).toBe(false);
     });
 
-    it('sets hidden class when attribute is false', () => {
+    it('is hidden when attribute is false', () => {
       var view = createInputView({
         model: new Backbone.Model({active: false}),
         visibleBinding: 'active'
@@ -596,10 +596,10 @@ describe('pageflow.inputView', () => {
 
       view.render();
 
-      expect(view.$el).toHaveClass('hidden_via_binding');
+      expect(view.el.hidden).toBe(true);
     });
 
-    it('does not set hidden class when attribute is true', () => {
+    it('is not hidden when attribute is true', () => {
       var view = createInputView({
         model: new Backbone.Model({active: true}),
         visibleBinding: 'active'
@@ -607,10 +607,10 @@ describe('pageflow.inputView', () => {
 
       view.render();
 
-      expect(view.$el).not.toHaveClass('hidden_via_binding');
+      expect(view.el.hidden).toBe(false);
     });
 
-    it('sets hidden class when attribute changes to false', () => {
+    it('is hidden when attribute changes to false', () => {
       var view = createInputView({
         model: new Backbone.Model({active: true}),
         visibleBinding: 'active'
@@ -620,7 +620,7 @@ describe('pageflow.inputView', () => {
 
       view.model.set('active', false);
 
-      expect(view.$el).toHaveClass('hidden_via_binding');
+      expect(view.el.hidden).toBe(true);
     });
 
     it('allows overriding updateVisible method for custom behavior', () => {
@@ -650,7 +650,7 @@ describe('pageflow.inputView', () => {
     });
 
     describe('with visibleBindingValue option', () => {
-      it('sets hidden class when value of attribute does not match', () => {
+      it('is hidden when value of attribute does not match', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: true}),
           visibleBinding: 'hidden',
@@ -659,10 +659,10 @@ describe('pageflow.inputView', () => {
 
         view.render();
 
-        expect(view.$el).toHaveClass('hidden_via_binding');
+        expect(view.el.hidden).toBe(true);
       });
 
-      it('does not set hidden class when value of attribute matches', () => {
+      it('is not hidden when value of attribute matches', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: false}),
           visibleBinding: 'hidden',
@@ -671,12 +671,12 @@ describe('pageflow.inputView', () => {
 
         view.render();
 
-        expect(view.$el).not.toHaveClass('hidden_via_binding');
+        expect(view.el.hidden).toBe(false);
       });
     });
 
     describe('with function for visible option', () => {
-      it('sets hidden class when function returns false', () => {
+      it('is hidden when function returns false', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: true}),
           visibleBinding: 'hidden',
@@ -685,10 +685,10 @@ describe('pageflow.inputView', () => {
 
         view.render();
 
-        expect(view.$el).toHaveClass('hidden_via_binding');
+        expect(view.el.hidden).toBe(true);
       });
 
-      it('does not set hidden class when function returns true', () => {
+      it('is not hidden when function returns true', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: false}),
           visibleBinding: 'hidden',
@@ -697,7 +697,7 @@ describe('pageflow.inputView', () => {
 
         view.render();
 
-        expect(view.$el).not.toHaveClass('hidden_via_binding');
+        expect(view.el.hidden).toBe(false);
       });
 
       describe('with multiple binding attributes', () => {
@@ -714,7 +714,7 @@ describe('pageflow.inputView', () => {
           expect(visibleFunction).toHaveBeenCalledWith([false, true]);
         });
 
-        it('sets hidden class when attribute changes to false', () => {
+        it('is hidden when attribute changes to false', () => {
           var view = createInputView({
             model: new Backbone.Model({hidden: false, active: true}),
             visibleBinding: ['hidden', 'active'],
@@ -724,13 +724,13 @@ describe('pageflow.inputView', () => {
           view.render();
           view.model.set('active', false);
 
-          expect(view.$el).toHaveClass('hidden_via_binding');
+          expect(view.el.hidden).toBe(true);
         });
       });
     });
 
     describe('with boolean for visible option', () => {
-      it('sets hidden class if false', () => {
+      it('is hidden if false', () => {
         var view = createInputView({
           model: new Backbone.Model({hidden: true}),
           visibleBinding: 'hidden',
@@ -739,7 +739,7 @@ describe('pageflow.inputView', () => {
 
         view.render();
 
-        expect(view.$el).toHaveClass('hidden_via_binding');
+        expect(view.el.hidden).toBe(true);
       });
 
       it('does not set hidden if true', () => {
@@ -751,7 +751,7 @@ describe('pageflow.inputView', () => {
 
         view.render();
 
-        expect(view.$el).not.toHaveClass('hidden_via_binding');
+        expect(view.el.hidden).toBe(false);
       });
     });
   });

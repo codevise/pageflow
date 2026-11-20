@@ -241,7 +241,8 @@ textarea.short {
   text-decoration: underline;
 }
 
-.hidden_via_binding {
+.input[hidden],
+.info_box[hidden] {
   display: none;
 }
 
