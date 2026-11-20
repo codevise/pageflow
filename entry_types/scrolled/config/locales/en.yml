@@ -61,6 +61,16 @@ en:
               label: Hide unmute button
             accentColor:
               label: "Accent color"
+          excursionSheet:
+            returnButtonLabel:
+              inline_help: Default label of the return button at the end of excursions. Can be overridden for individual excursions.
+              label: Return button label
+            sheetWidth:
+              inline_help: Default width of excursions. Can be overridden for individual excursions.
+              label: Overlay width
+              values:
+                full: Full width
+                inset: With side margins
           iconScrollIndicator:
             animation:
               label: Animation
@@ -100,9 +110,11 @@ en:
       configuration_editor:
         tabs:
           defaultNavigation: Default navigation
+          excursionSheet: Excursion sheet
           iconScrollIndicator: Icon Scroll Indicator
     widgets:
       roles:
+        excursion: Excursion
         inlineFileRights: Inline file rights
         scrollIndicator: Scroll indicator
     backdrop_content_elements:
@@ -140,6 +152,8 @@ en:
       feature_name: Icon Scroll Indicator
     iconScrollIndicator:
       widget_type_name: Icon at bottom of viewport
+    excursionSheet:
+      widget_type_name: Excursion sheet
     excursion_sheets:
       feature_name: "Excursion sheet widgets"
     file_rights_from_references:
