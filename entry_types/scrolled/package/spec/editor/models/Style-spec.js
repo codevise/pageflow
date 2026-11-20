@@ -2,6 +2,7 @@ import {Style} from 'editor/models/Style';
 
 import {editor} from 'pageflow-scrolled/editor';
 import {ScrolledEntry} from 'editor/models/ScrolledEntry';
+import {createDefaultsEntry} from 'editor/models/createDefaultsEntry';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {factories, normalizeSeed} from 'support';
 
@@ -267,7 +268,9 @@ describe('Style', () => {
 
   describe('.getTypesForContentElement', () => {
     it('returns empty object when no margin scale is defined', () => {
-      editor.contentElementTypes.register('textBlock', {});
+      editor.contentElementTypes.register('textBlock', {
+        supportedStyles: ['margin']
+      });
 
       const entry = factories.entry(
         ScrolledEntry,
@@ -288,7 +291,9 @@ describe('Style', () => {
     });
 
     it('returns margin types based on content element margin scale', () => {
-      editor.contentElementTypes.register('textBlock', {});
+      editor.contentElementTypes.register('textBlock', {
+        supportedStyles: ['margin']
+      });
 
       const entry = factories.entry(
         ScrolledEntry,
@@ -338,8 +343,39 @@ describe('Style', () => {
         }
       });
     });
+    it('does not return margin types when type does not support margin', () => {
+      editor.contentElementTypes.register('textBlock', {});
+
+      const entry = factories.entry(
+        ScrolledEntry,
+        {},
+        {
+          entryTypeSeed: normalizeSeed({
+            contentElements: [
+              {id: 1, typeName: 'textBlock'}
+            ],
+            themeOptions: {
+              properties: {
+                root: {
+                  'contentElementMargin-sm': '0.5rem',
+                  'contentElementMargin-md': '1rem'
+                }
+              }
+            }
+          })
+        }
+      );
+
+      const contentElement = entry.contentElements.get(1);
+      const result = Style.getTypesForContentElement({entry, contentElement});
+
+      expect(result).not.toHaveProperty('marginTop');
+      expect(result).not.toHaveProperty('marginBottom');
+    });
+
     it('sets resetValue from content element defaultConfig', () => {
       editor.contentElementTypes.register('heading', {
+        supportedStyles: ['margin'],
         defaultConfig: {marginTop: 'none'}
       });
 
@@ -381,7 +417,9 @@ describe('Style', () => {
     });
 
     it('includes default value from margin scale', () => {
-      editor.contentElementTypes.register('textBlock', {});
+      editor.contentElementTypes.register('textBlock', {
+        supportedStyles: ['margin']
+      });
 
       const entry = factories.entry(
         ScrolledEntry,
@@ -679,6 +717,74 @@ describe('Style', () => {
       const result = Style.getTypesForContentElement({entry, contentElement});
 
       expect(result).not.toHaveProperty('outlineColor');
+    });
+  });
+
+  describe('.getTypesForEntryDefaults', () => {
+    function createEntry() {
+      return createDefaultsEntry({
+        seed: normalizeSeed({
+          themeOptions: {
+            properties: {
+              root: {
+                'contentElementMargin-sm': '0.5rem',
+                'contentElementMargin-md': '1rem',
+                'contentElementBoxShadow-sm': '0 1px 3px rgba(0,0,0,0.12)',
+                'contentElementBoxShadow-md': '0 4px 6px rgba(0,0,0,0.1)',
+                outlineColor: '#000000'
+              }
+            }
+          }
+        }),
+        themeName: 'default'
+      });
+    }
+
+    it('returns style types backed by entry defaults properties', () => {
+      const result = Style.getTypesForEntryDefaults({entry: createEntry()});
+
+      expect(result).toMatchObject({
+        marginTop: {
+          inputType: 'slider',
+          propertyName: 'defaultContentElementMarginTop',
+          values: ['sm', 'md']
+        },
+        marginBottom: {
+          inputType: 'slider',
+          propertyName: 'defaultContentElementMarginBottom',
+          values: ['sm', 'md']
+        },
+        boxShadow: {
+          inputType: 'slider',
+          propertyName: 'defaultContentElementBoxShadow',
+          values: ['sm', 'md']
+        },
+        outlineColor: {
+          inputType: 'color',
+          propertyName: 'defaultContentElementOutlineColor',
+          defaultValue: '#000000'
+        }
+      });
+    });
+
+    it('does not return scale based types when theme does not define scales', () => {
+      const entry = createDefaultsEntry({
+        seed: normalizeSeed(),
+        themeName: 'default'
+      });
+
+      const result = Style.getTypesForEntryDefaults({entry});
+
+      expect(Object.keys(result)).toEqual(['outlineColor']);
+    });
+
+    it('neither sets resetValue nor binding', () => {
+      const result = Style.getTypesForEntryDefaults({entry: createEntry()});
+
+      Object.values(result).forEach(type => {
+        expect(type).not.toHaveProperty('resetValue');
+        expect(type).not.toHaveProperty('binding');
+      });
     });
   });
 

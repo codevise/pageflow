@@ -57,7 +57,6 @@ toc:
       General purpose Backbone views and mixins exported by `pageflow/editor`.
     children:
       - modelLifecycleTrackingView
-      - DropDownButtonView
       - DestroyMenuItem
       - ListView
       - MarkButtonView
@@ -119,6 +118,7 @@ toc:
     children:
       - AccordionView
       - ConfigurationEditorView
+      - DropDownButtonView
       - FileMetaDataItemValueView
       - TabsView
 

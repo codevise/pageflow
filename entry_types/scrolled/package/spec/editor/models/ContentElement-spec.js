@@ -699,6 +699,99 @@ describe('ContentElement', () => {
         expect(contentElement.configuration.has('captionVariant')).toEqual(false);
       });
     });
+
+    describe('with default styles', () => {
+      beforeEach(() => {
+        editor.contentElementTypes.register('elementSupportingStyles', {
+          supportedStyles: ['margin', 'boxShadow', 'outline']
+        });
+        editor.contentElementTypes.register('elementWithBoundStyles', {
+          supportedStyles: [
+            {name: 'boxShadow', binding: 'posterId', when: posterId => !!posterId}
+          ]
+        });
+        editor.contentElementTypes.register('elementWithMarginInDefaultConfig', {
+          supportedStyles: ['margin'],
+          defaultConfig: {marginTop: 'none'}
+        });
+        editor.contentElementTypes.register('elementNotSupportingStyles', {});
+      });
+
+      function createEntry() {
+        return factories.entry(
+          ScrolledEntry,
+          {
+            metadata: {
+              configuration: {
+                defaultContentElementMarginTop: 'sm',
+                defaultContentElementMarginBottom: 'xs',
+                defaultContentElementBoxShadow: 'md',
+                defaultContentElementOutlineColor: '#ff0000'
+              }
+            }
+          },
+          {
+            entryTypeSeed: normalizeSeed({
+              contentElements: []
+            })
+          }
+        );
+      }
+
+      it('sets styles supported by element', () => {
+        const entry = createEntry();
+
+        const contentElement = new entry.contentElements.model({
+          typeName: 'elementSupportingStyles'
+        });
+        contentElement.applyDefaultConfiguration({entry});
+
+        expect(contentElement.configuration.attributes).toMatchObject({
+          marginTop: 'sm',
+          marginBottom: 'xs',
+          boxShadow: 'md',
+          outlineColor: '#ff0000'
+        });
+      });
+
+      it('sets styles supported via bound style definitions', () => {
+        const entry = createEntry();
+
+        const contentElement = new entry.contentElements.model({
+          typeName: 'elementWithBoundStyles'
+        });
+        contentElement.applyDefaultConfiguration({entry});
+
+        expect(contentElement.configuration.get('boxShadow')).toEqual('md');
+        expect(contentElement.configuration.has('marginBottom')).toEqual(false);
+        expect(contentElement.configuration.has('outlineColor')).toEqual(false);
+      });
+
+      it('does not set styles if element does not support them', () => {
+        const entry = createEntry();
+
+        const contentElement = new entry.contentElements.model({
+          typeName: 'elementNotSupportingStyles'
+        });
+        contentElement.applyDefaultConfiguration({entry});
+
+        expect(contentElement.configuration.has('marginTop')).toEqual(false);
+        expect(contentElement.configuration.has('marginBottom')).toEqual(false);
+        expect(contentElement.configuration.has('boxShadow')).toEqual(false);
+        expect(contentElement.configuration.has('outlineColor')).toEqual(false);
+      });
+
+      it('overrides margin from default config', () => {
+        const entry = createEntry();
+
+        const contentElement = new entry.contentElements.model({
+          typeName: 'elementWithMarginInDefaultConfig'
+        });
+        contentElement.applyDefaultConfiguration({entry});
+
+        expect(contentElement.configuration.get('marginTop')).toEqual('sm');
+      });
+    });
   });
 
   describe('#getEditorPath', () => {

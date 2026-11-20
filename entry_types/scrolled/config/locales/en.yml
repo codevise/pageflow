@@ -1742,6 +1742,11 @@ en:
           defaultCaptionVariant:
             label: Caption variant
             inline_help: Default look of captions of newly added elements.
+          defaultContentElementStyles:
+            label: Styles
+            inline_help: |-
+              Default styles of newly added elements. Styles are only
+              applied to elements that support them.
           defaultFileRightsDisplay:
             label: Display rights of uploaded files
             inline_help: |-

@@ -10,7 +10,7 @@ editor.contentElementTypes.register('inlineBeforeAfter', {
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right', 'backdrop'],
   supportedWidthRange: ['xxs', 'full'],
   supportedCaptions: true,
-  supportedStyles: ['boxShadow', 'outline'],
+  supportedStyles: ['margin', 'boxShadow', 'outline'],
 
   configurationEditor({entry}) {
     this.tab('general', function() {

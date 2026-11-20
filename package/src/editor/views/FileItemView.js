@@ -4,7 +4,7 @@ import I18n from 'i18n-js';
 
 import {editor} from '../base';
 
-import {DropDownButtonView} from './DropDownButtonView';
+import {DropDownButtonView} from 'pageflow/ui';
 import {FileMetaDataOverlayView} from './FileMetaDataOverlayView';
 import {FileSettingsDialogView} from './FileSettingsDialogView';
 import {FileThumbnailView} from './FileThumbnailView';

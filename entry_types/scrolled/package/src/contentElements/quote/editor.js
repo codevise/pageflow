@@ -9,6 +9,7 @@ editor.contentElementTypes.register('quote', {
   pictogram,
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xs', 'xl'],
+  supportedStyles: ['margin'],
 
   defaultConfig: {textSize: 'medium'},
 

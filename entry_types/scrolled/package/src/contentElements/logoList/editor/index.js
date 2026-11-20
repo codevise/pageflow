@@ -22,6 +22,7 @@ editor.contentElementTypes.register('logoList', {
   featureName: 'logo_list_content_element',
   supportedPositions: ['inline'],
   supportedWidthRange: ['md', 'full'],
+  supportedStyles: ['margin'],
 
   editorPath(contentElement) {
     const selectedItemId = contentElement.transientState.get('selectedItemId');

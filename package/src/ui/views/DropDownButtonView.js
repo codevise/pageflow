@@ -110,12 +110,15 @@ export const DropDownButtonView = Marionette.ItemView.extend({
 
   positionMenu: function() {
     var offset = this.$el.offset();
+    var parentOffset = this.ui.menu.offsetParent().offset();
+    var top = offset.top - parentOffset.top;
+    var left = offset.left - parentOffset.left;
 
     this.ui.menu.css({
-      top: offset.top + this.$el.height(),
+      top: top + this.$el.height(),
       left: this.options.alignMenu === 'right' ?
-            offset.left + this.$el.width() - this.ui.menu.outerWidth() :
-            offset.left,
+            left + this.$el.width() - this.ui.menu.outerWidth() :
+            left,
       width: this.options.fullWidth ? this.$el.width() : null
     });
   },

@@ -42,6 +42,14 @@ export class ContentElementTypeRegistry {
    *   Pass array consisting of two widths of the form `xxs`, `xs`, `sm`,
    *   `md`, `lg`, `xl` or `full` representing the smallest andlargest
    *   supported width. By default only width `md` is supported.
+   * @param {Array} [options.supportedStyles] -
+   *   Styles offered in the style list of the common content element
+   *   attributes. Can contain `margin`, `boxShadow` and `outline`.
+   *   Entries can also be objects of the form `{name, binding, when}`
+   *   to make a style only available while `when` returns true for
+   *   the value of the configuration property `binding`. Entry
+   *   defaults for styles are only applied to content elements of
+   *   types that support the style.
    * @param {Function} [options.configurationPlace] -
    *   Function that receives a content element and the path of one of
    *   its configuration properties. Can return a `label` naming that

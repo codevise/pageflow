@@ -8,6 +8,7 @@ editor.contentElementTypes.register('socialEmbed', {
   pictogram,
   category: 'media',
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
+  supportedStyles: ['margin'],
   featureName: 'social_embed_content_element',
 
   defaultConfig: {provider: 'bluesky'},

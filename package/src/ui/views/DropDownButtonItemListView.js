@@ -1,4 +1,4 @@
-import {CollectionView} from 'pageflow/ui';
+import {CollectionView} from './CollectionView';
 
 import {DropDownButtonItemView} from './DropDownButtonItemView';
 

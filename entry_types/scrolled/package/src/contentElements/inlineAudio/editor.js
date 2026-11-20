@@ -20,6 +20,7 @@ editor.contentElementTypes.register('inlineAudio', {
   supportedWidthRange: ['xxs', 'full'],
   supportedCaptions: true,
   supportedStyles: [
+    'margin',
     {
       name: 'boxShadow',
       when: posterId => !!posterId,

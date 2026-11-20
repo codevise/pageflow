@@ -11,7 +11,7 @@ editor.contentElementTypes.register('dataWrapperChart', {
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
   supportedCaptions: true,
-  supportedStyles: ['boxShadow', 'outline'],
+  supportedStyles: ['margin', 'boxShadow', 'outline'],
 
   configurationEditor({entry}) {
     this.tab('general', function() {

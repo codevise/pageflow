@@ -3,9 +3,8 @@ import I18n from 'i18n-js';
 import Marionette from 'backbone.marionette';
 import _ from 'underscore';
 
-import {DropDownButtonView} from './DropDownButtonView';
 import {failureIndicatingView} from './mixins/failureIndicatingView';
-import {ConfigurationEditorView} from 'pageflow/ui';
+import {ConfigurationEditorView, DropDownButtonView} from 'pageflow/ui';
 import {editor} from '../base';
 
 /**

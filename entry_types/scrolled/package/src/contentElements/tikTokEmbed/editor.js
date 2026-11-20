@@ -8,6 +8,7 @@ editor.contentElementTypes.register('tikTokEmbed', {
   featureName: 'legacy_social_embed_content_elements',
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['md', 'full'],
+  supportedStyles: ['margin'],
 
   configurationEditor({entry}) {
     this.tab('general', function() {

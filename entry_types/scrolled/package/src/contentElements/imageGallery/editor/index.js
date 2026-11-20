@@ -23,7 +23,7 @@ editor.contentElementTypes.register('imageGallery', {
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
   supportedCaptions: {disableWhenNoCaption: false},
-  supportedStyles: ['boxShadow', 'outline'],
+  supportedStyles: ['margin', 'boxShadow', 'outline'],
 
   configurationPlace(contentElement, path) {
     const [propertyName, indexOrId, itemProperty] = path;

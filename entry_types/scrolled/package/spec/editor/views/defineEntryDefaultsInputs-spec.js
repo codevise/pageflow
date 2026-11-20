@@ -17,7 +17,11 @@ describe('defineEntryDefaultsInputs', () => {
 
   useFakeTranslations({
     'pageflow_scrolled.editor.edit_defaults.tabs.sections': 'Sections',
-    'pageflow_scrolled.editor.edit_defaults.tabs.content_elements': 'New Elements'
+    'pageflow_scrolled.editor.edit_defaults.tabs.content_elements': 'New Elements',
+    'pageflow_scrolled.editor.edit_defaults.attributes.defaultContentElementStyles.inline_help':
+      'Only applied to supporting elements',
+    'pageflow_scrolled.editor.content_element_style_list_input.add': 'Add style',
+    'pageflow_scrolled.editor.content_element_style_list_input.marginBottom': 'Margin bottom'
   });
 
   function renderWithDefaultsEntry() {
@@ -34,7 +38,22 @@ describe('defineEntryDefaultsInputs', () => {
     });
 
     const entry = createDefaultsEntry({
-      seed: {config: {theme: {options: {properties: {'figureCaption-inverted': {}}}}}},
+      seed: {
+        config: {
+          theme: {
+            options: {
+              properties: {
+                root: {
+                  'contentElementMargin-xs': '0.25rem',
+                  'contentElementMargin-md': '1rem',
+                  'contentElementMarginStyleDefault': '0.25rem'
+                },
+                'figureCaption-inverted': {}
+              }
+            }
+          }
+        }
+      },
       themeName: 'default'
     });
 
@@ -88,7 +107,26 @@ describe('defineEntryDefaultsInputs', () => {
         'defaultContentElementFullWidthInPhoneLayout',
         'defaultCaptionVariant',
         'defaultFileRightsDisplay',
+        'defaultContentElementStyles',
         'default-testElement-enableFullscreen'
       ]));
+  });
+
+  it('explains which elements default styles apply to', () => {
+    const {getByRole, getByText} = renderWithDefaultsEntry();
+
+    fireEvent.click(getByRole('tab', {name: 'New Elements'}));
+
+    expect(getByText('Only applied to supporting elements')).toBeInTheDocument();
+  });
+
+  it('stores default styles in entry defaults properties', () => {
+    const {getByRole, configurationEditor} = renderWithDefaultsEntry();
+
+    fireEvent.click(getByRole('tab', {name: 'New Elements'}));
+    fireEvent.click(getByRole('button', {name: 'Add style'}));
+    fireEvent.click(getByRole('link', {name: 'Margin bottom'}));
+
+    expect(configurationEditor.model.get('defaultContentElementMarginBottom')).toEqual('xs');
   });
 });

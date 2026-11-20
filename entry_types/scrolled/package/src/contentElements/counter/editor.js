@@ -11,6 +11,7 @@ editor.contentElementTypes.register('counter', {
   pictogram,
   supportedPositions: ['inline', 'side', 'sticky', 'standAlone', 'left', 'right'],
   supportedWidthRange: ['xxs', 'full'],
+  supportedStyles: ['margin'],
 
   defaultConfig: {
     targetValue: 100,
