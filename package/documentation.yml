@@ -138,3 +138,6 @@ toc:
       - setupGlobals
       - useFakeFeatures
       - useFakeTranslations
+      - renderConfigurationEditorView
+      - renderWidgetConfigurationEditor
+      - inputPropertyNameQueries

@@ -8,7 +8,9 @@ import {ReturnButton} from './ReturnButton';
 
 import styles from './ExcursionSheet.module.css';
 
-export function ExcursionSheet({excursion, onClose, setIsCoveringBackground, children}) {
+export function ExcursionSheet({
+  excursion, configuration = {}, onClose, setIsCoveringBackground, children
+}) {
   const contentRef = useRef();
   const [intersectingSectionInverted, setIntersectingSectionInverted] = useState(false);
 
@@ -19,7 +21,7 @@ export function ExcursionSheet({excursion, onClose, setIsCoveringBackground, chi
       <div className={styles.backdrop}
            onClick={onClose} />
       <div key={excursion.id}
-           className={classNames(styles.container, styles[`width-${excursion.sheetWidth}`])}>
+           className={classNames(styles.container, styles[`width-${excursion.sheetWidth || configuration.sheetWidth}`])}>
         <CloseButton invert={intersectingSectionInverted}
                      onClick={onClose} />
         <div ref={contentRef} className={styles.content}>
@@ -32,7 +34,7 @@ export function ExcursionSheet({excursion, onClose, setIsCoveringBackground, chi
             </SectionIntersectionObserver>
           </div>
         </div>
-        <ReturnButton label={excursion.returnButtonLabel}
+        <ReturnButton label={excursion.returnButtonLabel || configuration.returnButtonLabel}
                       onClose={onClose} />
       </div>
     </>

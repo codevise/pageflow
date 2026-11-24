@@ -7,7 +7,6 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import {useFakeTranslations} from 'pageflow/testHelpers';
 import {renderReactBasedBackboneView as render} from 'pageflow-scrolled/testHelpers';
-import 'support/toBeVisibleViaBinding';
 
 describe('ColorSelectOrCustomColorInputView', () => {
   useFakeTranslations({
@@ -177,9 +176,9 @@ describe('ColorSelectOrCustomColorInputView', () => {
         visibleBindingValue: false
       });
 
-      const {getByRole} = render(inputView);
+      const {queryByRole} = render(inputView);
 
-      expect(getByRole('button', {name: 'Red'})).not.toBeVisibleViaBinding();
+      expect(queryByRole('button', {name: 'Red'})).not.toBeInTheDocument();
     });
 
     it('shows select input when visibleBinding condition is met', () => {
@@ -201,7 +200,7 @@ describe('ColorSelectOrCustomColorInputView', () => {
 
       const {getByRole} = render(inputView);
 
-      expect(getByRole('button', {name: 'Red'})).toBeVisibleViaBinding();
+      expect(getByRole('button', {name: 'Red'})).toBeVisible();
     });
 
     it('hides custom color input based on visibleBinding', () => {
@@ -221,9 +220,9 @@ describe('ColorSelectOrCustomColorInputView', () => {
         visibleBindingValue: false
       });
 
-      const {getByRole} = render(inputView);
+      const {queryByRole} = render(inputView);
 
-      expect(getByRole('textbox')).not.toBeVisibleViaBinding();
+      expect(queryByRole('textbox')).not.toBeInTheDocument();
     });
 
     it('shows custom color input when visibleBinding condition is met', () => {
@@ -245,7 +244,7 @@ describe('ColorSelectOrCustomColorInputView', () => {
 
       const {getByRole} = render(inputView);
 
-      expect(getByRole('textbox')).toBeVisibleViaBinding();
+      expect(getByRole('textbox')).toBeVisible();
     });
 
     it('uses custom visibleBindingModel for select input', () => {
@@ -268,9 +267,9 @@ describe('ColorSelectOrCustomColorInputView', () => {
         visibleBindingModel: bindingModel
       });
 
-      const {getByRole} = render(inputView);
+      const {queryByRole} = render(inputView);
 
-      expect(getByRole('button', {name: 'Red'})).not.toBeVisibleViaBinding();
+      expect(queryByRole('button', {name: 'Red'})).not.toBeInTheDocument();
     });
 
     it('uses custom visibleBindingModel for custom color input', () => {
@@ -293,9 +292,9 @@ describe('ColorSelectOrCustomColorInputView', () => {
         visibleBindingModel: bindingModel
       });
 
-      const {getByRole} = render(inputView);
+      const {queryByRole} = render(inputView);
 
-      expect(getByRole('textbox')).not.toBeVisibleViaBinding();
+      expect(queryByRole('textbox')).not.toBeInTheDocument();
     });
 
     it('supports visible function without visibleBinding', () => {
@@ -313,9 +312,9 @@ describe('ColorSelectOrCustomColorInputView', () => {
         visible: () => false
       });
 
-      const {getByRole} = render(inputView);
+      const {queryByRole} = render(inputView);
 
-      expect(getByRole('button', {name: 'Red'})).not.toBeVisibleViaBinding();
+      expect(queryByRole('button', {name: 'Red'})).not.toBeInTheDocument();
     });
 
     it('supports visible function for custom color input', () => {
@@ -333,9 +332,9 @@ describe('ColorSelectOrCustomColorInputView', () => {
         visible: () => false
       });
 
-      const {getByRole} = render(inputView);
+      const {queryByRole} = render(inputView);
 
-      expect(getByRole('textbox')).not.toBeVisibleViaBinding();
+      expect(queryByRole('textbox')).not.toBeInTheDocument();
     });
 
     it('supports visibleBinding with visible function instead of visibleBindingValue', () => {
@@ -355,9 +354,9 @@ describe('ColorSelectOrCustomColorInputView', () => {
         visible: state => state !== 'locked'
       });
 
-      const {getByRole} = render(inputView);
+      const {queryByRole} = render(inputView);
 
-      expect(getByRole('button', {name: 'Red'})).not.toBeVisibleViaBinding();
+      expect(queryByRole('button', {name: 'Red'})).not.toBeInTheDocument();
     });
   });
 

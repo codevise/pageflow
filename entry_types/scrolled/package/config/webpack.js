@@ -121,6 +121,9 @@ module.exports = {
         'pageflow-scrolled/widgets/iconScrollIndicator.css'
       ]
     },
+    'pageflow-scrolled/widgets-editor': {
+      import: ['pageflow-scrolled/widgets-editor']
+    },
     'pageflow-scrolled-frontend-inlineEditing': {
       import: [
         'pageflow-scrolled/frontend/inlineEditing.css',

@@ -130,4 +130,56 @@ describe('ExcursionSheet', () => {
       expect(setIsCoveringBackground).toHaveBeenCalledWith(false);
     });
   });
+
+  describe('return button', () => {
+    it('uses label of excursion', () => {
+      const {getByRole} = renderInEntry(
+        <ExcursionSheet
+          excursion={{...excursion, returnButtonLabel: 'Back'}}
+          configuration={{returnButtonLabel: 'Back to story'}}
+          onClose={jest.fn()}
+          setIsCoveringBackground={jest.fn()} />
+      );
+
+      expect(getByRole('button', {name: 'Back'})).toBeInTheDocument();
+    });
+
+    it('falls back to label from widget configuration', () => {
+      const {getByRole} = renderInEntry(
+        <ExcursionSheet
+          excursion={{...excursion, returnButtonLabel: ''}}
+          configuration={{returnButtonLabel: 'Back to story'}}
+          onClose={jest.fn()}
+          setIsCoveringBackground={jest.fn()} />
+      );
+
+      expect(getByRole('button', {name: 'Back to story'})).toBeInTheDocument();
+    });
+  });
+
+  describe('sheet width', () => {
+    it('uses width of excursion', () => {
+      const {container} = renderInEntry(
+        <ExcursionSheet
+          excursion={{...excursion, sheetWidth: 'full'}}
+          configuration={{sheetWidth: 'inset'}}
+          onClose={jest.fn()}
+          setIsCoveringBackground={jest.fn()} />
+      );
+
+      expect(container.querySelector(`.${styles['width-inset']}`)).toBeNull();
+    });
+
+    it('falls back to width from widget configuration', () => {
+      const {container} = renderInEntry(
+        <ExcursionSheet
+          excursion={excursion}
+          configuration={{sheetWidth: 'inset'}}
+          onClose={jest.fn()}
+          setIsCoveringBackground={jest.fn()} />
+      );
+
+      expect(container.querySelector(`.${styles['width-inset']}`)).not.toBeNull();
+    });
+  });
 });

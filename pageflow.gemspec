@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
                 'entry_types/scrolled/package/' \
                 '{config/**/*,contentElements-frontend.{js,css},frontend-server.js,' \
                 'contentElements/*.{css,js},review.{css,js},' \
-                'widgets/*.{css,js},widgets-server.js,' \
+                'widgets/*.{css,js},widgets-server.js,widgets-editor.js,' \
                 'values/*,testHelpers.js,' \
                 'contentElements-editor.js,entryState.js,frontend/*.{js,css},editor.{js,css},' \
                 'package.json}',

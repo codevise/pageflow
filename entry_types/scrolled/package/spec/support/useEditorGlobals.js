@@ -44,6 +44,7 @@ export function useEditorGlobals({fileTypes = []} = {}) {
         imageFiles, videoFiles, audioFiles, textTrackFiles,
         filesAttributes,
         site,
+        widgets,
         ...seedOptions
       } = options;
 
@@ -58,12 +59,40 @@ export function useEditorGlobals({fileTypes = []} = {}) {
             text_track_files: textTrackFiles,
             ...filesAttributes
           },
+          ...widgetsOptions(widgets),
           entryTypeSeed: normalizeSeed(seedOptions)
         })
       });
 
       return entry;
     }
+  };
+}
+
+// Widget types are set up from the passed widgets. Their client side
+// configs are taken from registrations of imported modules:
+//
+//     createEntry({
+//       widgets: [{role: 'header', typeName: 'someNavigation', configuration: {}}]
+//     });
+function widgetsOptions(widgets) {
+  if (!widgets) {
+    return {widgetTypes: editor.widgetTypes};
+  }
+
+  editor.widgetTypes.setup(widgets.reduce((result, {role, typeName}) => {
+    result[role] = [...(result[role] || []), {name: typeName, translationKey: typeName}];
+    return result;
+  }, {}));
+
+  return {
+    widgetTypes: editor.widgetTypes,
+    widgetsAttributes: widgets.map(({role, typeName, configuration}) => ({
+      id: role,
+      role,
+      type_name: typeName,
+      configuration
+    }))
   };
 }
 

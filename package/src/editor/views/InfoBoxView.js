@@ -28,7 +28,8 @@ export const InfoBoxView = Marionette.ItemView.extend({
   },
 
   updateVisible() {
-    this.$el.toggleClass('hidden_via_binding',
-                         this.getBooleanAttributBoundOption('visible') === false);
+    const hidden = this.getBooleanAttributBoundOption('visible') === false;
+
+    this.$el.prop('hidden', hidden);
   }
 });

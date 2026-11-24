@@ -72,6 +72,7 @@ toc:
       - toContainContentElementBox
       - toContainFitViewport
       - renderContentElementConfigurationEditor
+      - renderChapterConfigurationEditor
       - useConfigurationEditorMatchers
       - toRenderInputsMatching
   - name: Storybook Support

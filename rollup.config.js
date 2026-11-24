@@ -352,6 +352,15 @@ const pageflowScrolled = [
     ]
   },
   {
+    input: pageflowScrolledPackageRoot + '/src/widgets/editor.js',
+    output: {
+      file: pageflowScrolledPackageRoot + '/widgets-editor.js',
+      format: 'esm',
+    },
+    external,
+    plugins: plugins()
+  },
+  {
     input: pageflowScrolledPackageRoot + '/src/contentElements/frontend.js',
     output: {
       file: pageflowScrolledPackageRoot + '/contentElements-frontend.js',

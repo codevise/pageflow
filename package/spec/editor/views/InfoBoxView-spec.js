@@ -15,10 +15,10 @@ describe('InfoBoxView', () => {
 
       renderBackboneView(view);
 
-      expect(view.el).toHaveClass('hidden_via_binding');
+      expect(view.el.hidden).toBe(true);
     });
 
-    it('does not set hidden class when value of attribute matches', () => {
+    it('does not hide element when value of attribute matches', () => {
       const view = new InfoBoxView({
         model: new Backbone.Model({hidden: false}),
         visibleBinding: 'hidden',
@@ -27,7 +27,7 @@ describe('InfoBoxView', () => {
 
       renderBackboneView(view);
 
-      expect(view.el).not.toHaveClass('hidden_via_binding');
+      expect(view.el.hidden).toBe(false);
     });
   });
 

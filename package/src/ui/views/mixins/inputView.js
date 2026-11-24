@@ -280,7 +280,8 @@ export const inputView = {
   },
 
   updateVisible: function() {
-    this.$el.toggleClass('hidden_via_binding',
-                         this.getBooleanAttributBoundOption('visible') === false);
+    var hidden = this.getBooleanAttributBoundOption('visible') === false;
+
+    this.$el.prop('hidden', hidden);
   }
 };

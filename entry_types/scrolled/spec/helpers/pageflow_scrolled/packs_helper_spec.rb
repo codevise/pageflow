@@ -435,6 +435,15 @@ module PageflowScrolled
         expect(result).to include('pageflow-scrolled-editor')
       end
 
+      it 'includes widgets editor pack after editor pack' do
+        entry = create(:published_entry, type_name: 'scrolled')
+
+        result = helper.scrolled_editor_packs(entry)
+
+        expect(result.first(2))
+          .to eq(['pageflow-scrolled-editor', 'pageflow-scrolled/widgets-editor'])
+      end
+
       it 'includes additional editor packs in editor' do
         pageflow_configure do |config|
           config.for_entry_type(PageflowScrolled.entry_type) do |entry_type_config|

@@ -1,4 +1,6 @@
 import 'contentElements/logoList/editor';
+import $ from 'jquery';
+import '@testing-library/jest-dom/extend-expect';
 
 import {SliderInput} from 'pageflow/testHelpers';
 import {renderContentElementConfigurationEditor, useEditorGlobals} from 'support';
@@ -34,13 +36,13 @@ describe('logoList configuration editor', () => {
       themeProperties: {'logoListLogoHeight-sm': '2rem', 'logoListLogoHeight-md': '3rem'}
     });
 
-    expect(configurationEditor.inputPropertyNames()).toContain('logoHeight');
+    expect(configurationEditor.queryByInputPropertyName('logoHeight')).toBeInTheDocument();
   });
 
   it('hides logo height input if theme does not define scale', () => {
     const {configurationEditor} = render();
 
-    expect(configurationEditor.inputPropertyNames()).not.toContain('logoHeight');
+    expect(configurationEditor.queryByInputPropertyName('logoHeight')).not.toBeInTheDocument();
   });
 
   it('displays marquee speed input if marquee is enabled', () => {
@@ -49,13 +51,13 @@ describe('logoList configuration editor', () => {
       themeProperties: marqueeSpeedScale
     });
 
-    expect(configurationEditor.visibleInputPropertyNames()).toContain('marqueeSpeed');
+    expect(configurationEditor.getByInputPropertyName('marqueeSpeed')).toBeVisible();
   });
 
   it('hides marquee speed input if marquee is disabled', () => {
     const {configurationEditor} = render({themeProperties: marqueeSpeedScale});
 
-    expect(configurationEditor.visibleInputPropertyNames()).not.toContain('marqueeSpeed');
+    expect(configurationEditor.getByInputPropertyName('marqueeSpeed')).not.toBeVisible();
   });
 
   it('labels marquee speed steps with multipliers', () => {
@@ -64,7 +66,7 @@ describe('logoList configuration editor', () => {
       themeProperties: {...marqueeSpeedScale, 'logoListMarqueeSpeed-lg': '1.5'}
     });
 
-    expect(SliderInput.findByPropertyName('marqueeSpeed', {inView: configurationEditor})
+    expect(new SliderInput($(configurationEditor.getByInputPropertyName('marqueeSpeed')))
       .displayedValue()).toEqual('1.5×');
   });
 
@@ -75,14 +77,14 @@ describe('logoList configuration editor', () => {
       themeTranslations: {scales: {logoListMarqueeSpeed: {md: 'Normal'}}}
     });
 
-    expect(SliderInput.findByPropertyName('marqueeSpeed', {inView: configurationEditor})
+    expect(new SliderInput($(configurationEditor.getByInputPropertyName('marqueeSpeed')))
       .displayedValue()).toEqual('Normal');
   });
 
   it('hides marquee speed input if theme does not define scale', () => {
     const {configurationEditor} = render({configuration: {marquee: true}});
 
-    expect(configurationEditor.inputPropertyNames()).not.toContain('marqueeSpeed');
+    expect(configurationEditor.queryByInputPropertyName('marqueeSpeed')).not.toBeInTheDocument();
   });
 
   it('starts marquee preview when sliding speed slider', () => {
@@ -91,7 +93,7 @@ describe('logoList configuration editor', () => {
       themeProperties: marqueeSpeedScale
     });
 
-    SliderInput.findByPropertyName('marqueeSpeed', {inView: configurationEditor})
+    new SliderInput($(configurationEditor.getByInputPropertyName('marqueeSpeed')))
       .startSliding();
 
     expect(postCommand).toHaveBeenCalledWith(1, {type: 'START_MARQUEE_PREVIEW'});
@@ -103,7 +105,7 @@ describe('logoList configuration editor', () => {
       themeProperties: marqueeSpeedScale
     });
 
-    SliderInput.findByPropertyName('marqueeSpeed', {inView: configurationEditor})
+    new SliderInput($(configurationEditor.getByInputPropertyName('marqueeSpeed')))
       .stopSliding();
 
     expect(postCommand).toHaveBeenCalledWith(1, {type: 'STOP_MARQUEE_PREVIEW'});

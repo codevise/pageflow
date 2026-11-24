@@ -61,6 +61,16 @@ de:
               label: "'Ton aktivieren'-Button ausblenden"
             accentColor:
               label: "Akzentfarbe"
+          excursionSheet:
+            returnButtonLabel:
+              inline_help: Standardtext für den Zurück-Button am Ende von Exkursen. Kann für einzelne Exkurse überschrieben werden.
+              label: Text für Zurück-Button
+            sheetWidth:
+              inline_help: Standardbreite für Exkurse. Kann für einzelne Exkurse überschrieben werden.
+              label: Overlay-Breite
+              values:
+                full: Volle Breite
+                inset: Mit seitlichem Abstand
           iconScrollIndicator:
             animation:
               label: Animation
@@ -100,9 +110,11 @@ de:
       configuration_editor:
         tabs:
           defaultNavigation: Standard Navigation
+          excursionSheet: Exkurs-Sheet
           iconScrollIndicator: Icon Scroll-Indikator
     widgets:
       roles:
+        excursion: Exkurs
         inlineFileRights: Inline-Datei-Rechte
         scrollIndicator: Scroll-Indikator
     backdrop_content_elements:
@@ -140,6 +152,8 @@ de:
       feature_name: Icon Scroll-Indikator
     iconScrollIndicator:
       widget_type_name: Icon unten am Viewport-Rand
+    excursionSheet:
+      widget_type_name: Exkurs-Sheet
     excursion_sheets:
       feature_name: "Exkurs-Sheet-Widgets"
     file_rights_from_references:
