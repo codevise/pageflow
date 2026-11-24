@@ -3,6 +3,7 @@ require 'selenium-webdriver'
 require 'capybara/chromedriver/logger'
 
 require 'pageflow/support/config/capybara/selenium_error_patch'
+require 'pageflow/support/config/capybara/chrome_reset_patch'
 
 Capybara.register_driver :selenium_chrome_headless_no_sandbox do |app|
   options = Selenium::WebDriver::Options.chrome(
@@ -45,7 +46,11 @@ Capybara::Chromedriver::Logger.filters = [
 
   # Ignore failure of debounced request to refresh partials while db
   # has already been cleaned
-  /partials - Failed to load resource: the server responded with a status of 401/
+  /partials - Failed to load resource: the server responded with a status of 401/,
+
+  # Logged by Chrome 158+ when jQuery 1.x registers an unload handler
+  # inside iframes
+  /Permissions policy violation: unload is not allowed in this document/
 ]
 
 RSpec.configure do |config|
