@@ -42,6 +42,26 @@ describe Admin::MembershipsController do
     end
   end
 
+  describe '#index' do
+    it 'responds with not found without parent' do
+      sign_in(create(:user, :admin), scope: :user)
+
+      get :index, format: :json
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
+  describe '#new' do
+    it 'responds with not found without parent' do
+      sign_in(create(:user, :admin), scope: :user)
+
+      get :new
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
   describe '#create' do
     describe 'as admin' do
       it 'allows to add user to account' do

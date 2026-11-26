@@ -83,6 +83,9 @@ module Pageflow
       helper Admin::MembershipsHelper
       helper Admin::FormHelper
 
+      before_action :require_parent,
+                    only: [:index, :new, :create, :edit, :update, :destroy]
+
       def index
         if params[:user_id].present?
           redirect_to admin_user_url(params[:user_id])
@@ -110,6 +113,12 @@ module Pageflow
       end
 
       private
+
+      def require_parent
+        return if [:user_id, :entry_id, :account_id].any? { |key| params[key].present? }
+
+        head :not_found
+      end
 
       def permitted_params
         if [:create, :new].include?(action_name.to_sym)
