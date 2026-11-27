@@ -10,7 +10,7 @@ module Pageflow
 
     validates_inclusion_of :template, in: ->(_) { Pageflow.config.page_types.names }
 
-    scope :displayed_in_navigation, -> { where(display_in_navigation: true) }
+    scope :displayed_in_navigation, -> { where(display_in_navigation: true).eager_load(:chapter) }
 
     def entry_for_auto_generated_perma_id
       chapter.storyline.revision.entry
